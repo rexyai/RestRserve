@@ -64,6 +64,11 @@ message("------------------------------------------------")
       if(!resouce_exist) {
         msg = sprintf("Resource '%s' doesn't exist", URI)
       } else {
+        status = 405L
+        response$status_code = status
+        available_routes = RestRserveApp$routes()
+        available_routes = available_routes[which(names(available_routes) == URI)]
+        response$headers = sprintf("Allow: %s", paste(available_routes, collapse = " "))
         msg = sprintf("Resource '%s' exists but doesn't allow '%s' method", URI, METHOD)
       }
       response$payload = msg
