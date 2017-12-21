@@ -1,5 +1,16 @@
+#' @title starts RestRserve application
+#' @description Assuming that RserveApplication is deployed to a \code{dir},
+#' \code{restrserve_start} starts Rserve from it. Application "deployed" means that
+#' directory contains \code{Rserve.conf} file which has been generated with
+#' \link{restrserve_deploy} function
+#' @param dir character, path to the directory where application was deployed
+#' @param debug logical, \code{FALSE} by default. Whether to start \link{Rserve} in debug mode.
+#' @param ... other parameters to \link{Rserve} call
+#' @return named integer. Value is a PID of the Rserve daemon. Name is a path to a file where PID is stored.
+#' After start Rserve creates a file with its PID. By default tt is called "Rserve.pid" and created inside \code{dir}.
+#' This could be specified in \link{restrserve_deploy} during application deployment.
 #' @export
-start_rserve_service = function(dir, debug = FALSE) {
+restrserve_start = function(dir, debug = FALSE, ...) {
   stopifnot(is.character(dir) && length(dir) == 1L)
   stopifnot(is.logical(debug) && length(debug) == 1L)
   dir = normalizePath(dir, mustWork = TRUE)
@@ -21,19 +32,22 @@ start_rserve_service = function(dir, debug = FALSE) {
   }
 
 
-  Rserve::Rserve(debug = debug, args = sprintf("--silent --vanilla --RS-conf %s", configuraion_path))
+  Rserve::Rserve(debug = debug, args = sprintf("--silent --vanilla --RS-conf %s", configuraion_path), ...)
 
   # now try to read pid from pidfile
   pid = read_pid(pid_path)
   pid
 }
 
+# given a path to a file function assumme there is 1 line in the file
+# and this line contains PID of the preocess (validate it by triyng to convert to int)
+# it perform several attempts to read PID from a file with retries
 read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
   pid = -1L
   names(pid) = pid_path
 
   for(n_attempts in seq_len(n_retry)) {
-    pidline = readLines(pid_path)
+    pidline = readLines(pid_path, n = 1L)
     if(length(pidline) != 1) {
       message(sprintf("wait for %.3f sec and retry (#%d) to read pid from %s", wait_retry, n_attempts, pid_path))
       Sys.sleep(wait_retry)

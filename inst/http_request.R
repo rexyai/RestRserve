@@ -12,7 +12,7 @@ if(is.null(RestRserveApp_check))
 if(!inherits(RestRserveApp_check, "RestRserveApplication"))
   stop("Object 'RestRserveApp' was found in the global environment, but it doesn't inherit from 'RestRserveApplication'")
 
-registered_endpoints = RestRserveApp$list_registered_endpoints()
+registered_endpoints = RestRserveApp$routes()
 if(length(registered_endpoints) == 0)
   warning("'RestRserveApp' doesn't contain any endpoints")
 #------------------------------------------------------------
@@ -42,8 +42,8 @@ message("------------------------------------------------")
     URI = request[["uri"]]
     METHOD = request[["method"]]
 
-    resouce_exist  = RestRserveApp$check_handler_exists(URI)
-    method_correct = RestRserveApp$check_handler_method_correct(URI, METHOD)
+    resouce_exist  = RestRserveApp$check_path_exists(URI)
+    method_correct = RestRserveApp$check_path_method_exists(URI, METHOD)
 
     if(resouce_exist && method_correct) {
       #call_handler will return object of type "RestRserveResponse"

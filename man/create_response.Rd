@@ -8,12 +8,15 @@ create_response(payload = "", content_type = "text/html",
   headers = character(0), status_code = 200L)
 }
 \arguments{
-\item{payload}{can be a character vector of length one or a raw vector.}
+\item{payload}{must be a character vector of length one or a raw vector.}
 
-\item{content_type}{must be a character vector of length one}
+\item{content_type}{\code{"text/html"} must be a character vector of length one}
 
-\item{headers}{must be a character vector - the elements will have CRLF appended.
+\item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
 Neither Content-type nor Content-length may be used.}
 
-\item{status_code}{must be an integer (default is 200L)}
+\item{status_code}{\code{200L} must be an integer}
+}
+\value{
+object of the class \code{"RestRserveResponse"} which is essentially a R's list.
 }

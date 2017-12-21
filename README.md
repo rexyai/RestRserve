@@ -47,7 +47,7 @@ RestRserveApp = RestRserve::RestRserveApplication$new()
 #------------------------------------------------------------------------------------------
 # register endpoints and corresponding R handlers
 #------------------------------------------------------------------------------------------
-RestRserveApp$register_endpoint(endpoint = "/fib", method = "GET", FUN = fib)
+RestRserveApp$add_endpoint(path = "/fib", method = "GET", FUN = fib)
 ```
 
 
@@ -71,7 +71,7 @@ app_path = system.file("fib.R", package = "RestRserve")
 # is a path to "fib.R" demo application which comes whith a package
 # for example on my machine it is here:
 # "/usr/local/lib/R/3.4/site-library/RestRserve/fib.R"
-RestRserve::deploy_rserve_service(file = app_path, dir = dir, configuration = configuration)
+RestRserve::restrserve_deploy(file = app_path, dir = dir, configuration = configuration)
 ```
 
 This will generate Rserve configuration file (`Rserve.conf`) and put it along with a copy of user application (`current_app_snapshot` is just a copy of `app_path`("/usr/local/lib/R/3.4/site-library/RestRserve/fib.R") ) to the specified directory `dir`:
@@ -83,13 +83,13 @@ Note however that original path to user application `fib.R` will be used when se
 
 ### Start application
 
-`start_rserve_service()` starts service in daemon mode. It returns named integer:
+`restrserve_start()` starts service in daemon mode. It returns named integer:
 
 * path to the file where this pid is stored as a name
 * pid of the application as a value
 
 ```r
-PID = RestRserve::start_rserve_service(dir)
+PID = RestRserve::restrserve_start(dir)
 PID
 #/Users/dmitry/RestRserveFib/Rserve.pid 
 #                                  67439

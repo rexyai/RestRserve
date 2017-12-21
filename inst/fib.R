@@ -33,4 +33,4 @@ RestRserveApp = RestRserve::RestRserveApplication$new()
 #------------------------------------------------------------------------------------------
 # register endpoints and corresponding R handlers
 #------------------------------------------------------------------------------------------
-RestRserveApp$register_endpoint(endpoint = "/fib", method = "GET", FUN = fib)
+RestRserveApp$add_endpoint(path = "/fib", method = "GET", FUN = fib)

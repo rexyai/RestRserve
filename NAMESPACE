@@ -2,5 +2,6 @@
 
 export(RestRserveApplication)
 export(create_response)
-export(deploy_rserve_service)
-export(start_rserve_service)
+export(restrserve_defaul_conf)
+export(restrserve_deploy)
+export(restrserve_start)

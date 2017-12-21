@@ -1,46 +1,69 @@
+#' @title Default RestRserve configuration
+#' @description returns default RestRserve configuration
+#' @return named character vector - names are Rserve configuration parameters
+#' and values are corresponding configuration entries
 #' @export
-deploy_rserve_service = function(file,
-                                 dir = "RestRserveApplication",
-                                 configuration = c("http.port" = "80",
-                                                   "encoding" = "utf8",
-                                                   "port" = "6311"),
-                                 configuration_file = NULL,
-                                 pid_file = file.path(dir, "Rserve.pid")) {
+restrserve_defaul_conf = function() {
+  c("http.port" = "80",
+    "encoding" = "utf8",
+    "port" = "6311")
+}
 
-    file = normalizePath(file, mustWork = TRUE)
-    stopifnot(file.exists(file))
+#' @title Deploys RestRserve application to a directory
+#' @description Takes file with RestRserve application, generates Rserve configuration
+#' and put it to a specified directory. Later application could be started with \link{restrserve_start}.
+#' @param file file with user code. In order to deploy application user have to
+#' creates instance of \code{RestRserveApplication} \bold{with a name \code{RestRserveApp}}.
+#' @param dir '\code{character}, path to the directory where to deploy application and configuration
+#' @param configuration character vector - names are Rserve configuration parameters
+#' and values are corresponding configuration entries
+#' @param configuration_file \code{NULL} or path to a file with Rserve configuration. If not \code{NULL} then
+#' values of the \code{configuration_file} will be added after parameter values
+#' from \code{configuration} argument above.
+#' @param pid_file character, path to a file where to put PID after starting application
+#' (after \link{restrserve_start} call).
+#' @return \code{TRUE} invisibly if deployment was successful
+#' @export
+restrserve_deploy = function(file,
+                             dir = "RestRserveApplication",
+                             configuration = restrserve_defaul_conf(),
+                             configuration_file = NULL,
+                             pid_file = file.path(dir, "Rserve.pid")) {
 
-    if(!dir.exists(dir))
-      dir.create(dir, recursive = TRUE)
+  file = normalizePath(file, mustWork = TRUE)
+  stopifnot(file.exists(file))
 
-    dir = normalizePath(dir, mustWork = TRUE)
+  if(!dir.exists(dir))
+    dir.create(dir, recursive = TRUE)
 
-    # copy user-supplied code to deployment dir
-    file.copy(file, file.path(dir, "current_app_snapshot"))
+  dir = normalizePath(dir, mustWork = TRUE)
 
-    # create configuration entries (and validate `configuration`)
-    configuration_lines = create_rserve_configuration_lines(configuration)
-    # add configuration
-    #------------------------
-    source_user_code = paste("source", file, collapse = " ")
-    source_http_request = paste("source", system.file("http_request.R", package = "RestRserve"), collapse = " ")
+  # copy user-supplied code to deployment dir
+  file.copy(file, file.path(dir, "current_app_snapshot"))
 
-    # load config configuration_file if it was provided
-    configuration_file_lines = character(0)
+  # create configuration entries (and validate `configuration`)
+  configuration_lines = create_rserve_configuration_lines(configuration)
+  # add configuration
+  #------------------------
+  source_user_code = paste("source", file, collapse = " ")
+  source_http_request = paste("source", system.file("http_request.R", package = "RestRserve"), collapse = " ")
 
-    if(!is.null(configuration_file)) {
-      configuration_file = normalizePath(configuration_file, mustWork = TRUE)
-      stopifnot(file.exists(configuration_file))
-      configuration_file_lines = readLines(configuration_file)
-    }
-    # `configuration_file_lines` comes after `configuration_lines` so can override them
-    configuration_lines =  c(configuration_lines,
-                             configuration_file_lines,
-                             source_user_code,
-                             source_http_request,
-                             paste("pid.file", pid_file))
+  # load config configuration_file if it was provided
+  configuration_file_lines = character(0)
 
-    configuraion_path = file.path(dir, "Rserve.conf")
-    writeLines(configuration_lines, configuraion_path)
+  if(!is.null(configuration_file)) {
+    configuration_file = normalizePath(configuration_file, mustWork = TRUE)
+    stopifnot(file.exists(configuration_file))
+    configuration_file_lines = readLines(configuration_file)
+  }
+  # `configuration_file_lines` comes after `configuration_lines` so can override them
+  configuration_lines =  c(configuration_lines,
+                           configuration_file_lines,
+                           source_user_code,
+                           source_http_request,
+                           paste("pid.file", pid_file))
 
+  configuraion_path = file.path(dir, "Rserve.conf")
+  writeLines(configuration_lines, configuraion_path)
+  invisible(TRUE)
 }
