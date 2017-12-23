@@ -32,6 +32,9 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$add_endpoint(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
   user function \bold{must} return object of the class \bold{"RestRserveResponse"} which can be easily constructed with
   \link{create_response}}
+  \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
+     \code{port} - http port for application.
+     \code{...} - key-value pairs of the Rserve configuration.}
   \item{\code{$call_handler(request, path)}}{Used internally, \bold{usually users} don't need to call it.
   Calls handler function for a given request and path.}
   \item{\code{$routes()}}{Lists all registered routes}
@@ -39,6 +42,7 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   Returns TRUE/FALSE if path registered / not registered}
   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
   Returns TRUE/FALSE path-method pair registered / not registered}
+  \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
 }
 }
 

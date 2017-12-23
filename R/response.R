@@ -15,6 +15,8 @@
 # status code: must be an integer if present (default is 200)
 #-------------------------------------------------
 #' @title creates http response
+#' @description facilitates in creation of proper response object. User functions should always return
+#' object created with this function.
 #' @param payload must be a character vector of length one or a raw vector.
 #' @param content_type \code{"text/html"} must be a character vector of length one
 #' @param headers \code{character(0)} must be a character vector - the elements will have CRLF appended.

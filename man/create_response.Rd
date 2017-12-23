@@ -20,3 +20,7 @@ Neither Content-type nor Content-length may be used.}
 \value{
 object of the class \code{"RestRserveResponse"} which is essentially a R's list.
 }
+\description{
+facilitates in creation of proper response object. User functions should always return
+object created with this function.
+}

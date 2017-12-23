@@ -18,6 +18,9 @@
 #'   \item{\code{$add_endpoint(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
 #'   user function \bold{must} return object of the class \bold{"RestRserveResponse"} which can be easily constructed with
 #'   \link{create_response}}
+#'   \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
+#'      \code{port} - http port for application.
+#'      \code{...} - key-value pairs of the Rserve configuration.}
 #'   \item{\code{$call_handler(request, path)}}{Used internally, \bold{usually users} don't need to call it.
 #'   Calls handler function for a given request and path.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
@@ -25,6 +28,7 @@
 #'   Returns TRUE/FALSE if path registered / not registered}
 #'   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
 #'   Returns TRUE/FALSE path-method pair registered / not registered}
+#'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
 #'}
 #' @section Arguments:
 #' \describe{
@@ -137,6 +141,35 @@ RestRserveApplication = R6::R6Class(
       }
       names(endpoints_methods) = endpoints
       endpoints_methods
+    },
+    run = function(port = "80", ...) {
+      stopifnot(is.character(port) || is.integer(port))
+      stopifnot(length(port) == 1L)
+
+      keep_http_request = .GlobalEnv[[".http.request"]]
+      keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]
+      # restore global environment on exit
+      on.exit({
+        .GlobalEnv[[".http.request"]] = keep_http_request
+        .GlobalEnv[["RestRserveApp"]] = keep_RestRserveApp
+      })
+      # temporary modify global environment
+      .GlobalEnv[[".http.request"]] = RestRserve:::http_request
+      .GlobalEnv[["RestRserveApp"]] = self
+      self$print_endpoints_summary()
+      Rserve::run.Rserve("http.port" = port, ...)
+    },
+    print_endpoints_summary = function() {
+      registered_endpoints = self$routes()
+      if(length(registered_endpoints) == 0)
+        warning("'RestRserveApp' doesn't contain any endpoints")
+      #------------------------------------------------------------
+      # print registered methods
+      #------------------------------------------------------------
+      endpoints_summary = paste(names(registered_endpoints),  registered_endpoints, sep = ": ", collapse = "\n")
+      message("------------------------------------------------")
+      message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
+      message("------------------------------------------------")
     }
   ),
   private = list(

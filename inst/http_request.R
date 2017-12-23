@@ -10,17 +10,7 @@ if(is.null(RestRserveApp_check))
 if(!inherits(RestRserveApp_check, "RestRserveApplication"))
   stop("Object 'RestRserveApp' was found in the global environment, but it doesn't inherit from 'RestRserveApplication'")
 
-registered_endpoints = RestRserveApp$routes()
-if(length(registered_endpoints) == 0)
-  warning("'RestRserveApp' doesn't contain any endpoints")
-#------------------------------------------------------------
-# print registered methods
-#------------------------------------------------------------
-endpoints_summary = paste(names(registered_endpoints),  registered_endpoints, sep = ": ", collapse = "\n")
-message("------------------------------------------------")
-message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
-message("------------------------------------------------")
-#------------------------------------------------------------
+RestRserveApp$print_endpoints_summary()
 
 # Now we imply that RestRserveApp is in global environment
 .http.request = RestRserve:::http_request

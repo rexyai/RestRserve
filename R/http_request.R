@@ -1,4 +1,6 @@
 http_request = function(url, query, body, headers) {
+  app = .GlobalEnv[["RestRserveApp"]]
+
   TRACEBACK_MAX_NCHAR = 1000L
   # first parse incoming request
   request = parse_request(url, query, body, headers)
@@ -14,12 +16,12 @@ http_request = function(url, query, body, headers) {
   URI = request[["uri"]]
   METHOD = request[["method"]]
 
-  resouce_exist  = RestRserveApp$check_path_exists(URI)
-  method_correct = RestRserveApp$check_path_method_exists(URI, METHOD)
+  resouce_exist  = app$check_path_exists(URI)
+  method_correct = app$check_path_method_exists(URI, METHOD)
 
   if(resouce_exist && method_correct) {
     #call_handler will return object of type "RestRserveResponse"
-    result = try(RestRserveApp$call_handler(request, URI), silent = TRUE)
+    result = try(app$call_handler(request, URI), silent = TRUE)
     if(class(result) == "try-error") {
       response$status_code = 520L
       response$content_type = "text/plain"
@@ -38,7 +40,7 @@ http_request = function(url, query, body, headers) {
     } else {
       status = 405L
       response$status_code = status
-      available_routes = RestRserveApp$routes()
+      available_routes = app$routes()
       available_routes = available_routes[which(names(available_routes) == URI)]
       response$headers = sprintf("Allow: %s", paste(available_routes, collapse = " "))
       msg = sprintf("Resource '%s' exists but doesn't allow '%s' method", URI, METHOD)
