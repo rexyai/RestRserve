@@ -135,33 +135,33 @@ apib -c 16 -d 10 http://127.0.0.1:8002/fib?n=5
 ```
 
 ```txt
-(5 / 10) 15428.092 0% cpu
-(10 / 10) 15368.102 0% cpu
-Duration:             10.004 seconds
-Attempted requests:   154048
-Successful requests:  154048
+(5 / 10) 19310.240 0% cpu
+(10 / 10) 19098.729 0% cpu
+Duration:             10.009 seconds
+Attempted requests:   192220
+Successful requests:  192220
 Non-200 results:      0
 Connections opened:   16
 Socket errors:        0
 
-Throughput:           15398.071 requests/second
-Average latency:      1.035 milliseconds
-Minimum latency:      0.332 milliseconds
-Maximum latency:      206.119 milliseconds
-Latency std. dev:     5.681 milliseconds
-50% latency:          0.485 milliseconds
-90% latency:          0.725 milliseconds
-98% latency:          4.381 milliseconds
-99% latency:          10.496 milliseconds
+Throughput:           19204.666 requests/second
+Average latency:      0.832 milliseconds
+Minimum latency:      0.312 milliseconds
+Maximum latency:      165.797 milliseconds
+Latency std. dev:     1.851 milliseconds
+50% latency:          0.709 milliseconds
+90% latency:          1.081 milliseconds
+98% latency:          2.012 milliseconds
+99% latency:          2.774 milliseconds
 
 Client CPU average:    0%
 Client CPU max:        0%
 Client memory usage:    0%
 
-Total bytes sent:      10.14 megabytes
-Total bytes received:  9.55 megabytes
-Send bandwidth:        8.11 megabits / second
-Receive bandwidth:     7.64 megabits / second
+Total bytes sent:      12.65 megabytes
+Total bytes received:  11.92 megabytes
+Send bandwidth:        10.11 megabits / second
+Receive bandwidth:     9.52 megabits / second
 ```
 
 ### Stop application
