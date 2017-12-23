@@ -1,5 +1,5 @@
 http_request = function(url, query, body, headers) {
-
+  TRACEBACK_MAX_NCHAR = 1000L
   # first parse incoming request
   request = parse_request(url, query, body, headers)
 

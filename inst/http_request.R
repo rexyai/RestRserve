@@ -1,5 +1,3 @@
-TRACEBACK_MAX_NCHAR = 1000L
-
 #------------------------------------------------------------
 # validate that we RestRserveApp object in global environment
 #------------------------------------------------------------
