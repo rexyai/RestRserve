@@ -44,7 +44,6 @@ restrserve_start = function(dir, debug = FALSE, ...) {
 # it perform several attempts to read PID from a file with retries
 read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
   pid = -1L
-  names(pid) = pid_path
 
   for(n_attempts in seq_len(n_retry)) {
     pidline = readLines(pid_path, n = 1L)
@@ -59,6 +58,7 @@ read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
       break
     }
   }
+  names(pid) = pid_path
   if(pid == -1L)
     warning(sprintf("can't read pid from %s - returning dummy -1 value", pid_path))
   pid
