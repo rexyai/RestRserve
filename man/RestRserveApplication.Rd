@@ -43,6 +43,8 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
   Returns TRUE/FALSE path-method pair registered / not registered}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
+  \item{\code{$add_swagger_ui()}}{Adds endpoint to show swagger-ui. After calling it should be available at
+  \code{http://host:port/__swagger__/}}
 }
 }
 

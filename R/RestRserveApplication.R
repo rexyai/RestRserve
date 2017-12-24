@@ -29,6 +29,8 @@
 #'   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
 #'   Returns TRUE/FALSE path-method pair registered / not registered}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
+#'   \item{\code{$add_swagger_ui()}}{Adds endpoint to show swagger-ui. After calling it should be available at
+#'   \code{http://host:port/__swagger__/}}
 #'}
 #' @section Arguments:
 #' \describe{
@@ -170,6 +172,31 @@ RestRserveApplication = R6::R6Class(
       message("------------------------------------------------")
       message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
       message("------------------------------------------------")
+    },
+    add_swagger_ui = function() {
+
+      if(!require(swagger, quietly = TRUE))
+        stop("please install 'swagger' package first")
+
+      self$add_endpoint(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
+        create_response(system.file("dist/swagger-ui-bundle.js", package = "swagger"), payload_file = TRUE)
+      })
+
+      self$add_endpoint(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
+        create_response(system.file("dist/swagger-ui.css", package = "swagger"),
+                                    content_type = "text/css",
+                                    payload_file = TRUE)
+      })
+
+      self$add_endpoint(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
+        create_response(system.file("dist/swagger-ui-standalone-preset.js", package = "swagger"), payload_file = TRUE)
+      })
+
+      self$add_endpoint(path = "/swagger.json", method = "GET", FUN = private$generate_openapi_spec)
+
+      self$add_endpoint(path = "/__swagger__/", method = "GET", FUN = function(request) {
+        create_response(system.file("swagger-ui/index.html", package = "RestRserve"), payload_file = TRUE)
+      })
     }
   ),
   private = list(
@@ -186,6 +213,11 @@ RestRserveApplication = R6::R6Class(
       if(!(method %in% private$supported_methods))
         stop("method should be on of the ['GET', 'POST', 'HEAD']")
       method
+    },
+    # function should generate swagger.json specification
+    # for now it is just placeholder
+    generate_openapi_spec = function(request) {
+      create_response(readLines("http://petstore.swagger.io/v2/swagger.json", warn = FALSE), content_type = "application/json")
     }
   )
 )
