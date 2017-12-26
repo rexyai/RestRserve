@@ -18,29 +18,28 @@
 #' @description facilitates in creation of proper response object. User functions should always return
 #' object created with this function.
 #' @param payload must be a character vector of length one or a raw vector.
+#' If it is a named character with a name \code{file} or \code{tmpfile}
+#' then the value is considered as a path to a file and content oh this file is served as payload.
+#' The latter will be deleted once served.
 #' @param content_type \code{"text/html"} must be a character vector of length one
 #' @param headers \code{character(0)} must be a character vector - the elements will have CRLF appended.
 #' Neither Content-type nor Content-length may be used.
 #' @param status_code  \code{200L} must be an integer
-#' @param payload_file \code{FALSE}, logical. If true than \code{payload} argument will be treated as a
-#' path to a file. This file will be served "as is" as a response.
 #' @return object of the class \code{"RestRserveResponse"} which is essentially a R's list.
 #' @export
 create_response = function(payload = "",
                            content_type = "text/html",
                            headers = character(0),
-                           status_code = 200L,
-                           payload_file = FALSE) {
-  if(!is.logical(payload_file) || length(payload_file) != 1L)
-    stop("'payload_file' should be logical of length 1")
-
+                           status_code = 200L) {
   response = list(payload = payload,
                   content_type = content_type,
                   headers = headers,
                   status_code = status_code)
   validate_reponse(response)
 
-  if(payload_file) names(response)[[1]] = "file"
+  payload_name = names(payload)
+  if(is.character(payload) && (identical(payload_name, "file") || identical(payload_name, "tmpfile")))
+    names(response)[[1]] = payload_name
 
   class(response) = "RestRserveResponse"
   response

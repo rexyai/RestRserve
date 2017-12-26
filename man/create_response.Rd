@@ -5,10 +5,13 @@
 \title{creates http response}
 \usage{
 create_response(payload = "", content_type = "text/html",
-  headers = character(0), status_code = 200L, payload_file = FALSE)
+  headers = character(0), status_code = 200L)
 }
 \arguments{
-\item{payload}{must be a character vector of length one or a raw vector.}
+\item{payload}{must be a character vector of length one or a raw vector.
+If it is a named character with a name \code{file} or \code{tmpfile}
+then the value is considered as a path to a file and content oh this file is served as payload.
+The latter will be deleted once served.}
 
 \item{content_type}{\code{"text/html"} must be a character vector of length one}
 
@@ -16,9 +19,6 @@ create_response(payload = "", content_type = "text/html",
 Neither Content-type nor Content-length may be used.}
 
 \item{status_code}{\code{200L} must be an integer}
-
-\item{payload_file}{\code{FALSE}, logical. If true than \code{payload} argument will be treated as a
-path to a file. This file will be served "as is" as a response.}
 }
 \value{
 object of the class \code{"RestRserveResponse"} which is essentially a R's list.
