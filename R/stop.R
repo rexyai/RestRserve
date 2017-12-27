@@ -32,5 +32,5 @@ restrserve_stop = function(dir) {
   if(class(PID) == "try-error" || length(PID) != 1L)
     stop("first line from '%s' is '%s' - doens't look like PID", pid_path, PID)
 
-  invisible(system2("kill", sprintf("-TERM -- -%d", PID)))
+  invisible(system2("kill", sprintf("-s TERM -- -%d", PID)))
 }
