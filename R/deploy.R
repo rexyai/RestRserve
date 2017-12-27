@@ -47,7 +47,7 @@ restrserve_deploy = function(file,
 
   # copy user-supplied code to deployment dir
   file_snap = file.path(dir, "current_app_snapshot")
-  file.copy(file, file_snap)
+  file.copy(file, file_snap, overwrite = TRUE)
 
   # create configuration entries (and validate `configuration`)
   configuration_lines = create_rserve_configuration_lines(configuration)
