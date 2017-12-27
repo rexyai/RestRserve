@@ -5,7 +5,7 @@
 \title{Deploys RestRserve application to a directory}
 \usage{
 restrserve_deploy(file, dir = "RestRserveApplication",
-  configuration = restrserve_defaul_conf(), configuration_file = NULL,
+  configuration = restrserve_default_conf(), configuration_file = NULL,
   pid_file = file.path(dir, "Rserve.pid"))
 }
 \arguments{

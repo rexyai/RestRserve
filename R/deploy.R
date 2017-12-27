@@ -3,7 +3,7 @@
 #' @return named character vector - names are Rserve configuration parameters
 #' and values are corresponding configuration entries
 #' @export
-restrserve_defaul_conf = function() {
+restrserve_default_conf = function() {
   c("http.port" = "80",
     "encoding" = "utf8",
     "port" = "6311")
@@ -26,7 +26,7 @@ restrserve_defaul_conf = function() {
 #' @export
 restrserve_deploy = function(file,
                              dir = "RestRserveApplication",
-                             configuration = restrserve_defaul_conf(),
+                             configuration = restrserve_default_conf(),
                              configuration_file = NULL,
                              pid_file = file.path(dir, "Rserve.pid")) {
 

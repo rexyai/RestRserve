@@ -2,6 +2,6 @@
 
 export(RestRserveApplication)
 export(create_response)
-export(restrserve_defaul_conf)
+export(restrserve_default_conf)
 export(restrserve_deploy)
 export(restrserve_start)
