@@ -78,12 +78,12 @@ app_path = system.file("fib.R", package = "RestRserve")
 RestRserve::restrserve_deploy(file = app_path, dir = dir, configuration = configuration)
 ```
 
-This will generate Rserve configuration file (`Rserve.conf`) and put it along with a copy of user application (`current_app_snapshot` is just a copy of `app_path`("/usr/local/lib/R/3.4/site-library/RestRserve/fib.R") ) to the specified directory `dir`:
+This will generate Rserve configuration file (`Rserve.conf`) and put it along with a copy of user application (in pour current example `current_app_snapshot` is just a copy of a file at `app_path`("/usr/local/lib/R/3.4/site-library/RestRserve/fib.R") ) to the specified application directory `dir`:
 ```r
 list.files(dir)
 #"current_app_snapshot" "Rserve.conf" 
 ```
-Note however that original path to user application `fib.R` will be used when service is starting. We keep copy `current_app_snapshot` for convenience in order to understand what is running more easily.
+Note that by default `current_app_snapshot` will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see `start_from_snapshot` argument of the `restrserve_deploy()`.
 
 ### Start application
 
