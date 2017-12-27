@@ -16,12 +16,7 @@ Creating application is very simple. For example let's create endpoint which wil
 # after intallation available at
 # `system.file("fib.R", package = "RestRserve")`
 
-fib = function(request) {
-  try({n = as.integer( request$query_vector[["n"]] )}, silent = TRUE)
-
-  if((class(n) == "try-error") || length(request$query_vector) != 1L)
-    stop("request should look like 'n=5'")
-
+calc_fib = function(n) {
   if(n < 0L)
     stop("n should be >= 0")
 
@@ -37,7 +32,16 @@ fib = function(request) {
   for(i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
 
-  RestRserve::create_response(payload = as.character(x[[n]]), content_type = "text/plain",
+  x[[n]]
+}
+
+fib = function(request) {
+  try({n = as.integer( request$query_vector[["n"]] )}, silent = TRUE)
+
+  if((class(n) == "try-error") || length(request$query_vector) != 1L)
+    stop("request should look like 'n=5'")
+
+  RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
                               headers = character(0), status_code = 200L)
 }
 #------------------------------------------------------------------------------------------
