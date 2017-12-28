@@ -87,10 +87,11 @@ RestRserveApplication = R6::R6Class(
 
       method = private$check_method_supported(method)
       stopifnot(is.character(path) && length(path) == 1L)
+      stopifnot(startsWith(path, "/"))
       stopifnot(is.function(FUN))
 
       if(length(formals(FUN)) != 1L)
-        stop("function should has exactly one argument - request")
+        stop("function should take exactly one argument - request")
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
@@ -102,37 +103,31 @@ RestRserveApplication = R6::R6Class(
       TRUE
     },
     #------------------------------------------------------------------------
-    call_handler = compiler::cmpfun(
-      function(request, path) {
-        stopifnot(is.character(path) && length(path) == 1L)
-        METHOD = request$method
-        FUN = private$handlers[[path]][[METHOD]]
+    call_handler = function(request, path) {
+      stopifnot(is.character(path) && length(path) == 1L)
+      METHOD = request$method
+      FUN = private$handlers[[path]][[METHOD]]
 
-        if(is.null(FUN))
-          stop(sprintf("method '%s' for path '%s' doesnt't exist", METHOD, path))
+      if(is.null(FUN))
+        stop(sprintf("method '%s' for path '%s' doesnt't exist", METHOD, path))
 
-        res = FUN(request)
-        if(class(res) != "RestRserveResponse")
-          stop(sprintf("Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`",
-                       path))
-        res
-      }
-    ),
+      res = FUN(request)
+      if(class(res) != "RestRserveResponse")
+        stop(sprintf("Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`",
+                     path))
+      res
+    },
     #------------------------------------------------------------------------
-    check_path_exists = compiler::cmpfun(
-      function(path) {
-        stopifnot(is.character(path) && length(path) == 1L)
-        !is.null(private$handlers[[path]])
-      }
-    ),
+    check_path_exists = function(path) {
+      stopifnot(is.character(path) && length(path) == 1L)
+      !is.null(private$handlers[[path]])
+    },
     #------------------------------------------------------------------------
-    check_path_method_exists = compiler::cmpfun(
-      function(path, method) {
-        stopifnot(is.character(path) && length(path) == 1L)
-        method = private$check_method_supported(method)
-        return(method %in% names(private$handlers[[path]]))
-      }
-    ),
+    check_path_method_exists = function(path, method) {
+      stopifnot(is.character(path) && length(path) == 1L)
+      method = private$check_method_supported(method)
+      return(method %in% names(private$handlers[[path]]))
+    },
     #------------------------------------------------------------------------
     routes = function() {
       endpoints = names(private$handlers)

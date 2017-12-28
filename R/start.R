@@ -31,18 +31,20 @@ restrserve_start = function(dir, debug = FALSE, ...) {
     pid_path = pid_key_value[[2]]
   }
 
-
-  Rserve::Rserve(debug = debug, args = sprintf("--silent --vanilla --RS-conf %s", configuraion_path), ...)
-
-  # now try to read pid from pidfile
-  pid = read_pid(pid_path)
-  pid
+  status = Rserve::Rserve(debug = debug, args = sprintf("--silent --vanilla --RS-conf %s", configuraion_path), ...)
+  if(status == 0L) {
+    # now try to read pid from pidfile
+    read_pid(pid_path)
+  } else {
+    stop("can't start Rserve - see traceback")
+  }
 }
 
 # given a path to a file function assumme there is 1 line in the file
 # and this line contains PID of the preocess (validate it by triyng to convert to int)
 # it perform several attempts to read PID from a file with retries
 read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
+  Sys.sleep(wait_retry)
   pid = -1L
 
   for(n_attempts in seq_len(n_retry)) {

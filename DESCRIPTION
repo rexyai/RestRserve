@@ -1,12 +1,12 @@
 Package: RestRserve
 Type: Package
-Title: Transforms R Code to a Http-Service
+Title: Exposes R Code as a Http-Service
 Version: 0.1.0
-Author: Dmitriy Selivanov
+Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
   Allows to easily create high-performance HTTP API from R functions. 
-  Facilitates in http-service deployment and starting.
+  Facilitates in deployment and management.
 License: GPL (>= 2)
 ByteCompile: TRUE
 Imports: 

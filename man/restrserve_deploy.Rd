@@ -5,8 +5,8 @@
 \title{Deploys RestRserve application to a directory}
 \usage{
 restrserve_deploy(file, dir = "RestRserveApplication",
-  configuration = restrserve_defaul_conf(), configuration_file = NULL,
-  pid_file = file.path(dir, "Rserve.pid"))
+  configuration = restrserve_default_conf(), configuration_file = NULL,
+  pid_file = file.path(dir, "Rserve.pid"), start_from_snapshot = TRUE)
 }
 \arguments{
 \item{file}{file with user code. In order to deploy application user have to
@@ -23,6 +23,12 @@ from \code{configuration} argument above.}
 
 \item{pid_file}{character, path to a file where to put PID after starting application
 (after \link{restrserve_start} call).}
+
+\item{start_from_snapshot}{\code{logical} whether to use snapshot of the user code from to start application.
+User supplied code from \code{file} will be copied to the \code{dir}.
+Copy of the \code{file} will have a name \code{current_app_snapshot}.
+If \code{start_from_snapshot = TRUE} (default) then application will be started using \code{current_app_snapshot} file.
+If \code{start_from_snapshot = FALSE} then original \code{file} will be used.}
 }
 \value{
 \code{TRUE} invisibly if deployment was successful

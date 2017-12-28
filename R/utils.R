@@ -1,9 +1,7 @@
-URLenc = compiler::cmpfun(
-  function(x) {
-    x = as.character(x)
-    vapply(x, utils::URLencode, character(1L), USE.NAMES = FALSE)
-  }
-)
+URLenc = function(x) {
+  x = as.character(x)
+  vapply(x, utils::URLencode, character(1L), USE.NAMES = FALSE)
+}
 
 create_rserve_configuration_lines = function(configuration = c("encoding" = "utf8")) {
 
