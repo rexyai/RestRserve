@@ -85,10 +85,11 @@ RestRserveApplication = R6::R6Class(
 
       method = private$check_method_supported(method)
       stopifnot(is.character(path) && length(path) == 1L)
+      stopifnot(startsWith(path, "/"))
       stopifnot(is.function(FUN))
 
       if(length(formals(FUN)) != 1L)
-        stop("function should has exactly one argument - request")
+        stop("function should take exactly one argument - request")
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
