@@ -14,7 +14,8 @@ Imports:
   Rserve (>= 1.7.3)
 Suggests:
   testthat, 
-  swagger
+  swagger, 
+  yaml
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1

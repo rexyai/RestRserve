@@ -31,7 +31,7 @@
 <li>
   <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -46,7 +46,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
       </header><div class="row">
   <div class="contents col-md-9">
     <div id="restrserve" class="section level2">
@@ -80,17 +80,18 @@
 }
 
 fib =<span class="st"> </span><span class="cf">function</span>(request) {
-  <span class="kw">try</span>({n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query_vector[[<span class="st">"n"</span>]] )}, <span class="dt">silent =</span> <span class="ot">TRUE</span>)
+  <span class="kw">try</span>({n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">"n"</span>]] )}, <span class="dt">silent =</span> <span class="ot">TRUE</span>)
 
-  <span class="cf">if</span>((<span class="kw">class</span>(n) <span class="op">==</span><span class="st"> "try-error"</span>) <span class="op">||</span><span class="st"> </span><span class="kw">length</span>(request<span class="op">$</span>query_vector) <span class="op">!=</span><span class="st"> </span>1L)
+  <span class="cf">if</span>((<span class="kw">class</span>(n) <span class="op">==</span><span class="st"> "try-error"</span>) <span class="op">||</span><span class="st"> </span><span class="kw">length</span>(request<span class="op">$</span>query) <span class="op">!=</span><span class="st"> </span>1L)
     <span class="kw">stop</span>(<span class="st">"request should look like 'n=5'"</span>)
-    
+
   <span class="co"># note that function MUST return 'RestRserveResponse' object which is easy to construct with</span>
   <span class="co"># RestRserve::create_response()</span>
-  
+
   RestRserve<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RestRserve/topics/create_response">create_response</a></span>(<span class="dt">payload =</span> <span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n)), <span class="dt">content_type =</span> <span class="st">"text/plain"</span>,
                               <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>), <span class="dt">status_code =</span> 200L)
 }
+
 <span class="co"># create application</span>
 app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
 <span class="co"># register endpoints and corresponding R handlers</span>
@@ -107,6 +108,55 @@ app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt
 <p><strong>Test it works</strong>:</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> http://localhost:8001/fib?n=10
 <span class="co"># 55</span></code></pre></div>
+</div>
+<div id="swagger-ui" class="section level3">
+<h3 class="hasAnchor">
+<a href="#swagger-ui" class="anchor"></a>Swagger UI</h3>
+<p>Optionally RestRserve can generate <a href="https://www.openapis.org/">OpenAPI</a> document according to the <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md">specification</a>. You just need to provide docstringings in YAML format in your functions:</p>
+<ol>
+<li>OpenAPI definition block should start and end with <code>#' ---</code> (at least 3 <code>-</code> after <code>#'</code>)</li>
+<li>Definition should be valid YAML according to the <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md">specification</a>.</li>
+<li>Each line in YAML starts with <code>#'</code> - mind whitespace after roxygen2-style comment start <code>#'</code>
+</li>
+<li>For customization see <code>app$add_openapi()</code> method arguments and <code>openapi_*()</code> family of functions (not all constructors for OpenAPI objects are fully implemented - contributions are very welcome).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fib =<span class="st"> </span><span class="cf">function</span>(request) {
+
+  <span class="co">#' ---</span>
+  <span class="co">#' description: Calculates Fibonacci number</span>
+  <span class="co">#' parameters:</span>
+  <span class="co">#'   - name: "n"</span>
+  <span class="co">#'     description: "x for Fibonnacci number"</span>
+  <span class="co">#'     in: query</span>
+  <span class="co">#'     schema:</span>
+  <span class="co">#'       type: integer</span>
+  <span class="co">#'     example: 10</span>
+  <span class="co">#'     required: true</span>
+  <span class="co">#' responses:</span>
+  <span class="co">#'   200:</span>
+  <span class="co">#'     description: API response</span>
+  <span class="co">#'     content:</span>
+  <span class="co">#'       text/plain:</span>
+  <span class="co">#'         schema:</span>
+  <span class="co">#'           type: string</span>
+  <span class="co">#'           example: 5</span>
+  <span class="co">#' ---</span>
+
+  <span class="kw">try</span>({n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">"n"</span>]] )}, <span class="dt">silent =</span> <span class="ot">TRUE</span>)
+
+  <span class="cf">if</span>((<span class="kw">class</span>(n) <span class="op">==</span><span class="st"> "try-error"</span>) <span class="op">||</span><span class="st"> </span><span class="kw">length</span>(request<span class="op">$</span>query) <span class="op">!=</span><span class="st"> </span>1L)
+    <span class="kw">stop</span>(<span class="st">"request should look like 'n=5'"</span>)
+
+  RestRserve<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RestRserve/topics/create_response">create_response</a></span>(<span class="dt">payload =</span> <span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n)), <span class="dt">content_type =</span> <span class="st">"text/plain"</span>,
+                              <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>), <span class="dt">status_code =</span> 200L)
+}
+
+app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
+app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">FUN =</span> fib)
+app<span class="op">$</span><span class="kw">add_openapi</span>()
+app<span class="op">$</span><span class="kw">add_swagger_ui</span>()
+app<span class="op">$</span><span class="kw">run</span>(<span class="dt">port =</span> <span class="st">"8001"</span>)</code></pre></div>
+<p><img src="swagger-ui.png" alt="swagger-ui"></p>
 </div>
 <div id="deploy-application" class="section level3">
 <h3 class="hasAnchor">

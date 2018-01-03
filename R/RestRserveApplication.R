@@ -7,7 +7,7 @@
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
 #' \item \code{app$add_endpoint(path = "/echo", method = "GET", FUN =  function(request) {
-#'   RestRserve::create_response(payload = request$query_vector[[1]], content_type = "text/plain")
+#'   RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
 #'   })}
 #' \item \code{app$routes()}
 #' }
@@ -29,9 +29,11 @@
 #'   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
 #'   Returns TRUE/FALSE path-method pair registered / not registered}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-#'   \item{\code{$add_swagger_ui()}}{Adds endpoint to show swagger-ui. After calling it should be available at
-#'   \code{http://host:port/__swagger__/}}
-#'}
+#'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
+#'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
+#'   \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
+#'   to show swagger-ui. After calling it should be available at \code{http://host:port/__swagger__/}}
+#' }
 #' @section Arguments:
 #' \describe{
 #'  \item{app}{A \code{RestRserveApplication.} object}
@@ -44,7 +46,7 @@
 #'    \describe{
 #'       \item{uri}{ = \code{"/somemethod"}, always character of length 1}
 #'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query_vector}{ = \code{c("a" = "1", "b" = "2")}, character vector}
+#'       \item{query}{ = \code{c("a" = "1", "b" = "2")}, character vector}
 #'       \item{content_type}{ = \code{""}, always character of length 1}
 #'       \item{content_length}{ = \code{0L}, always integer of length 1}
 #'       \item{body}{ = \code{NULL}.
@@ -63,14 +65,14 @@
 #' @format \code{\link{R6Class}} object.
 #' @examples
 #' echo_handler = function(request) {
-#'  RestRserve::create_response(payload = request$query_vector[[1]],
+#'  RestRserve::create_response(payload = request$query[[1]],
 #'                              content_type = "text/plain",
 #'                             headers = "Location: /echo",
 #'                             status_code = 201L)
 #' }
 #' app = RestRserveApplication$new()
 #' app$add_endpoint(path = "/echo", method = "GET", FUN = echo_handler)
-#' req = list(query_vector = c("a" = "2"), method = "GET")
+#' req = list(query = c("a" = "2"), method = "GET")
 #' answer = app$call_handler(request = req, path = "/echo")
 #' answer$payload
 #' # "2"
@@ -100,6 +102,19 @@ RestRserveApplication = R6::R6Class(
         warning(sprintf("overwriting existing '%s' method for path '%s'", method, path))
 
       private$handlers[[path]][[method]] = compiler::cmpfun(FUN)
+
+      # try to parse functions and find openapi definitions
+      openapi_definition_lines = extract_docstrings_yaml(FUN)
+      # openapi_definition_lines = character(0) means
+      # - there are no openapi definitions
+      if(length(openapi_definition_lines) > 0) {
+
+        if(is.null(private$handlers_openapi_definitions[[path]]))
+          private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
+
+        private$handlers_openapi_definitions[[path]][[method]] = openapi_definition_lines
+      }
+
       TRUE
     },
     #------------------------------------------------------------------------
@@ -168,34 +183,23 @@ RestRserveApplication = R6::R6Class(
       message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
       message("------------------------------------------------")
     },
-    add_swagger_ui = function() {
-
-      if(!require(swagger, quietly = TRUE))
-        stop("please install 'swagger' package first")
-
-      self$add_endpoint(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
-        create_response(system.file("dist/swagger-ui-bundle.js", package = "swagger"), payload_file = TRUE)
+    add_openapi = function(path = "/openapi.yaml", openapi = openapi_create()) {
+      if(!require(yaml, quietly = TRUE))
+        stop("please install 'yaml' package first")
+      openapi = c(openapi, list(paths = private$get_openapi_paths()))
+      self$add_endpoint(path = path, method = "GET", FUN = function(request) {
+        create_response(yaml::as.yaml(openapi), content_type = "text/plain")
       })
-
-      self$add_endpoint(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
-        create_response(system.file("dist/swagger-ui.css", package = "swagger"),
-                                    content_type = "text/css",
-                                    payload_file = TRUE)
-      })
-
-      self$add_endpoint(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
-        create_response(system.file("dist/swagger-ui-standalone-preset.js", package = "swagger"), payload_file = TRUE)
-      })
-
-      self$add_endpoint(path = "/swagger.json", method = "GET", FUN = private$generate_openapi_spec)
-
-      self$add_endpoint(path = "/__swagger__/", method = "GET", FUN = function(request) {
-        create_response(system.file("swagger-ui/index.html", package = "RestRserve"), payload_file = TRUE)
-      })
+    },
+    add_swagger_ui = function(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml") {
+      if(path_openapi_yaml != "/openapi.yaml")
+        stop("At the moment the only supported value is: `path_openapi_yaml = \"/openapi.yaml\"` ")
+      private$add_swagger_static(path, path_openapi_yaml)
     }
   ),
   private = list(
     handlers = NULL,
+    handlers_openapi_definitions = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are supported
@@ -209,10 +213,46 @@ RestRserveApplication = R6::R6Class(
         stop("method should be on of the ['GET', 'POST', 'HEAD']")
       method
     },
-    # function should generate swagger.json specification
-    # for now it is just placeholder
-    generate_openapi_spec = function(request) {
-      create_response(readLines("http://petstore.swagger.io/v2/swagger.json", warn = FALSE), content_type = "application/json")
+    get_openapi_paths = function() {
+      paths = names(private$handlers_openapi_definitions)
+      paths_descriptions = list()
+      for(p in paths) {
+        methods = names(private$handlers_openapi_definitions[[p]])
+        methods_descriptions = list()
+        for(m in methods) {
+          openapi_definitions_yaml = yaml::yaml.load(private$handlers_openapi_definitions[[p]][[m]])
+          if(is.null(openapi_definitions_yaml))
+            warning(sprintf("can't properly parse YAML for '%s - %s'", p, m))
+          else
+            methods_descriptions[[tolower(m)]] = openapi_definitions_yaml
+        }
+        paths_descriptions[[p]] = methods_descriptions
+      }
+      paths_descriptions
+    },
+    add_swagger_static = function(path, path_openapi_yaml) {
+
+      if(!require(swagger, quietly = TRUE))
+        stop("please install 'swagger' package first")
+
+      if(path != "/__swagger__/")
+        stop("Only path = '/__swagger__/' supported at the  moment")
+
+      # add static files
+      #------------------------------------------------------
+      self$add_endpoint(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
+        create_response(c(file = system.file("dist/swagger-ui-bundle.js", package = "swagger")))
+      })
+      self$add_endpoint(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
+        create_response(c(file = system.file("dist/swagger-ui.css", package = "swagger")), content_type = "text/css")
+      })
+      self$add_endpoint(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
+        create_response(c(file = system.file("dist/swagger-ui-standalone-preset.js", package = "swagger")))
+      })
+      self$add_endpoint(path = path, method = "GET", FUN = function(request) {
+        create_response(c(file = system.file("swagger-ui/index.html", package = "RestRserve")))
+      })
+      #------------------------------------------------------
     }
   )
 )

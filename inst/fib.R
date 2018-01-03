@@ -21,9 +21,30 @@ calc_fib = function(n) {
 }
 
 fib = function(request) {
-  try({n = as.integer( request$query_vector[["n"]] )}, silent = TRUE)
 
-  if((class(n) == "try-error") || length(request$query_vector) != 1L)
+  #' ---
+  #' description: Calculates Fibonacci number
+  #' parameters:
+  #'   - name: "n"
+  #'     description: "x for Fibonnacci number"
+  #'     in: query
+  #'     schema:
+  #'       type: integer
+  #'     example: 10
+  #'     required: true
+  #' responses:
+  #'   200:
+  #'     description: API response
+  #'     content:
+  #'       text/plain:
+  #'         schema:
+  #'           type: string
+  #'           example: 5
+  #' ---
+
+  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
+
+  if((class(n) == "try-error") || length(request$query) != 1L)
     stop("request should look like 'n=5'")
 
   RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
