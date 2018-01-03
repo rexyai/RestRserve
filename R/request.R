@@ -4,7 +4,7 @@
 parse_request = function(url, query, body, headers) {
   request = list(uri = url,
                  method = "GET",
-                 query_vector = character(0),
+                 query = character(0),
                  content_type = "",
                  content_length = -1L,
                  body = NULL,
@@ -13,7 +13,7 @@ parse_request = function(url, query, body, headers) {
 
   ## back-door for parsed queries
   if (length(query))
-    request$query_vector = query
+    request$query = query
 
   ## process headers to pull out request method (if supplied) and cookies
   if (is.raw(headers))
