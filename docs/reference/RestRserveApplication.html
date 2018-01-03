@@ -96,7 +96,7 @@ allowing to easily register R functions for handling http-requests.</p>
     <ul>
 <li><p><code>app = RestRserveApplication$new()</code></p></li>
 <li><p><code>app$add_endpoint(path = "/echo", method = "GET", FUN =  function(request) {
-  RestRserve::create_response(payload = request$query_vector[[1]], content_type = "text/plain")
+  RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
   })</code></p></li>
 <li><p><code>app$routes()</code></p></li>
 </ul><p>For usage details see <b>Methods, Arguments and Examples</b> sections.</p>
@@ -120,6 +120,10 @@ allowing to easily register R functions for handling http-requests.</p>
   <dt><code>$check_path_method_exists(path, method)</code></dt><dd><p>Mainly for internal usage.
   Returns TRUE/FALSE path-method pair registered / not registered</p></dd>
   <dt><code>$print_endpoints_summary()</code></dt><dd><p>Prints all the registered routes with allowed methods</p></dd>
+  <dt><code>$add_openapi(path = "/openapi.yaml", openapi = openapi_create())</code></dt><dd><p>Adds endpoint
+  to serve <a href='https://www.openapis.org/'>OpenAPI</a> description of available methods.</p></dd>
+  <dt><code>$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")</code></dt><dd><p>Adds endpoint
+  to show swagger-ui. After calling it should be available at <code>http://host:port/__swagger__/</code></p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -136,7 +140,7 @@ allowing to easily register R functions for handling http-requests.</p>
    <dl class='dl-horizontal'>
       <dt>uri</dt><dd><p>= <code>"/somemethod"</code>, always character of length 1</p></dd>
       <dt>method</dt><dd><p>= <code>"GET"</code>, always character of length 1</p></dd>
-      <dt>query_vector</dt><dd><p>= <code>c("a" = "1", "b" = "2")</code>, character vector</p></dd>
+      <dt>query</dt><dd><p>= <code>c("a" = "1", "b" = "2")</code>, character vector</p></dd>
       <dt>content_type</dt><dd><p>= <code>""</code>, always character of length 1</p></dd>
       <dt>content_length</dt><dd><p>= <code>0L</code>, always integer of length 1</p></dd>
       <dt>body</dt><dd><p>= <code>NULL</code>.
@@ -154,13 +158,13 @@ allowing to easily register R functions for handling http-requests.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>echo_handler</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>request</span>) {
- <span class='kw pkg'>RestRserve</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RestRserve/topics/create_response'>create_response</a></span>(<span class='kw'>payload</span> <span class='kw'>=</span> <span class='no'>request</span>$<span class='no'>query_vector</span><span class='kw'>[[</span><span class='fl'>1</span>]],
+ <span class='kw pkg'>RestRserve</span><span class='kw ns'>::</span><span class='fu'><a href='http://www.rdocumentation.org/packages/RestRserve/topics/create_response'>create_response</a></span>(<span class='kw'>payload</span> <span class='kw'>=</span> <span class='no'>request</span>$<span class='no'>query</span><span class='kw'>[[</span><span class='fl'>1</span>]],
                              <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>,
                             <span class='kw'>headers</span> <span class='kw'>=</span> <span class='st'>"Location: /echo"</span>,
                             <span class='kw'>status_code</span> <span class='kw'>=</span> <span class='fl'>201L</span>)
 }
 <span class='no'>app</span> <span class='kw'>=</span> <span class='no'>RestRserveApplication</span>$<span class='fu'>new</span>()
-<span class='no'>app</span>$<span class='fu'>add_endpoint</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>echo_handler</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>req</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>query_vector</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span> <span class='kw'>=</span> <span class='st'>"2"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>)
+<span class='no'>app</span>$<span class='fu'>add_endpoint</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>echo_handler</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>req</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span> <span class='kw'>=</span> <span class='st'>"2"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>)
 <span class='no'>answer</span> <span class='kw'>=</span> <span class='no'>app</span>$<span class='fu'>call_handler</span>(<span class='kw'>request</span> <span class='kw'>=</span> <span class='no'>req</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>)
 <span class='no'>answer</span>$<span class='no'>payload</span></div><div class='output co'>#&gt; [1] "2"</div><div class='input'># "2"
 </div></pre>

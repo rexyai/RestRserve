@@ -18,7 +18,7 @@ allowing to easily register R functions for handling http-requests.
 \itemize{
 \item \code{app = RestRserveApplication$new()}
 \item \code{app$add_endpoint(path = "/echo", method = "GET", FUN =  function(request) {
-  RestRserve::create_response(payload = request$query_vector[[1]], content_type = "text/plain")
+  RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
   })}
 \item \code{app$routes()}
 }
@@ -43,6 +43,10 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
   Returns TRUE/FALSE path-method pair registered / not registered}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
+  \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
+  to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
+  \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
+  to show swagger-ui. After calling it should be available at \code{http://host:port/__swagger__/}}
 }
 }
 
@@ -59,7 +63,7 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
    \describe{
       \item{uri}{ = \code{"/somemethod"}, always character of length 1}
       \item{method}{ = \code{"GET"}, always character of length 1}
-      \item{query_vector}{ = \code{c("a" = "1", "b" = "2")}, character vector}
+      \item{query}{ = \code{c("a" = "1", "b" = "2")}, character vector}
       \item{content_type}{ = \code{""}, always character of length 1}
       \item{content_length}{ = \code{0L}, always integer of length 1}
       \item{body}{ = \code{NULL}.
@@ -79,14 +83,14 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
 
 \examples{
 echo_handler = function(request) {
- RestRserve::create_response(payload = request$query_vector[[1]],
+ RestRserve::create_response(payload = request$query[[1]],
                              content_type = "text/plain",
                             headers = "Location: /echo",
                             status_code = 201L)
 }
 app = RestRserveApplication$new()
 app$add_endpoint(path = "/echo", method = "GET", FUN = echo_handler)
-req = list(query_vector = c("a" = "2"), method = "GET")
+req = list(query = c("a" = "2"), method = "GET")
 answer = app$call_handler(request = req, path = "/echo")
 answer$payload
 # "2"

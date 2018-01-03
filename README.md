@@ -32,9 +32,9 @@ calc_fib = function(n) {
 }
 
 fib = function(request) {
-  try({n = as.integer( request$query_vector[["n"]] )}, silent = TRUE)
+  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
 
-  if((class(n) == "try-error") || length(request$query_vector) != 1L)
+  if((class(n) == "try-error") || length(request$query) != 1L)
     stop("request should look like 'n=5'")
     
   # note that function MUST return 'RestRserveResponse' object which is easy to construct with
@@ -43,6 +43,7 @@ fib = function(request) {
   RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
                               headers = character(0), status_code = 200L)
 }
+
 # create application
 app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers
@@ -69,6 +70,56 @@ Please note that if you launch it from Rstudio, then your Rstudio session will b
 curl http://localhost:8001/fib?n=10
 # 55
 ```
+
+### Swagger UI
+
+Optionally RestRserve can generate [OpenAPI](https://www.openapis.org/) document according to the [specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md). You just need to provide docstringings in YAML format in your functions:
+
+1. OpenAPI definition block should start and end with `#' ---` (at least 3 `-` after `#'`)
+1. Definition should be valid YAML according to the [specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md).
+1. Each line in YAML starts with `#' ` - mind whitespace after roxygen2-style comment start `#'`
+1. For customization see `app$add_openapi()` method arguments and `openapi_*()` family of functions (not all constructors for OpenAPI objects are fully implemented - contributions are very welcome). 
+
+```r
+fib = function(request) {
+
+  #' ---
+  #' description: Calculates Fibonacci number
+  #' parameters:
+  #'   - name: "n"
+  #'     description: "x for Fibonnacci number"
+  #'     in: query
+  #'     schema:
+  #'       type: integer
+  #'     example: 10
+  #'     required: true
+  #' responses:
+  #'   200:
+  #'     description: API response
+  #'     content:
+  #'       text/plain:
+  #'         schema:
+  #'           type: string
+  #'           example: 5
+  #' ---
+  
+  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
+
+  if((class(n) == "try-error") || length(request$query) != 1L)
+    stop("request should look like 'n=5'")
+
+  RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
+                              headers = character(0), status_code = 200L)
+}
+
+app = RestRserve::RestRserveApplication$new()
+app$add_endpoint(path = "/fib", method = "GET", FUN = fib)
+app$add_openapi()
+app$add_swagger_ui()
+app$run(port = "8001")
+```
+
+![swagger-ui](docs/swagger-ui.png)
 
 ### Deploy application
 

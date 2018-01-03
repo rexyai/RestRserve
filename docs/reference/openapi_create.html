@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • RestRserve</title>
+<title>creates OpenAPI objects — openapi_create • RestRserve</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -37,7 +37,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -73,82 +73,41 @@
       </header>
 
       <div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>
-        Reference
-        <small>version&nbsp;0.1.0</small>
-      </h1>
+    <h1>creates OpenAPI objects</h1>
     </div>
 
-    <div class="contents">
-      <table class="ref-index">
+    
+    <p>Facilitates in building <a href='https://www.openapis.org/'>OpenAPI</a> description document by
+creating objects described in
+ <a href='https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md'>https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md</a></p>
+    
 
-      <colgroup>
-        <col class="alias" />
-        <col class="title" />
-      </colgroup>
+    <pre class="usage"><span class='fu'>openapi_create</span>(<span class='kw'>openapi</span> <span class='kw'>=</span> <span class='fu'>openapi_openapi_version</span>(), <span class='kw'>info</span> <span class='kw'>=</span> <span class='fu'>openapi_info</span>(),
+  <span class='kw'>servers</span> <span class='kw'>=</span> <span class='fu'>openapi_servers</span>(), <span class='no'>...</span>)
 
-      <tbody>
-        <tr>
-          <th colspan="2">
-            <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-            <p class="section-desc"></p>
-          </th>
-        </tr>
-        <tr>
-          <!--  -->
-          <td>
-            <p><code><a href="create_response.html">create_response</a></code> </p>
-          </td>
-          <td><p>creates http response</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="openapi_create.html">openapi_create</a></code> <code><a href="openapi_create.html">openapi_openapi_version</a></code> <code><a href="openapi_create.html">openapi_info</a></code> <code><a href="openapi_create.html">openapi_servers</a></code> <code><a href="openapi_create.html">openapi_server</a></code> <code><a href="openapi_create.html">openapi_contact</a></code> <code><a href="openapi_create.html">openapi_license</a></code> </p>
-          </td>
-          <td><p>creates OpenAPI objects</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="restrserve_default_conf.html">restrserve_default_conf</a></code> </p>
-          </td>
-          <td><p>Default RestRserve configuration</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="restrserve_deploy.html">restrserve_deploy</a></code> </p>
-          </td>
-          <td><p>Deploys RestRserve application to a directory</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="restrserve_start.html">restrserve_start</a></code> </p>
-          </td>
-          <td><p>starts RestRserve application</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="restrserve_stop.html">restrserve_stop</a></code> </p>
-          </td>
-          <td><p>stops RestRserve application</p></td>
-        </tr><tr>
-          <!--  -->
-          <td>
-            <p><code><a href="RestRserveApplication.html">RestRserveApplication</a></code> </p>
-          </td>
-          <td><p>Creates RestRserveApplication.</p></td>
-        </tr>
-      </tbody>
-      </table>
-    </div>
+<span class='fu'>openapi_openapi_version</span>(<span class='kw'>openapi_version</span> <span class='kw'>=</span> <span class='st'>"3.0.1"</span>)
+
+<span class='fu'>openapi_info</span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"RestRserve OpenAPI"</span>, <span class='kw'>version</span> <span class='kw'>=</span> <span class='st'>"1.0"</span>,
+  <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>termsOfService</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>contact</span> <span class='kw'>=</span> <span class='fu'>openapi_contact</span>(),
+  <span class='kw'>license</span> <span class='kw'>=</span> <span class='fu'>openapi_license</span>())
+
+<span class='fu'>openapi_servers</span>(<span class='kw'>servers</span> <span class='kw'>=</span> <span class='fu'>list</span>())
+
+<span class='fu'>openapi_server</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='st'>"/"</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>variables</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>openapi_contact</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>email</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>openapi_license</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+        
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+                </ul>
+
   </div>
 </div>
 
