@@ -1,3 +1,28 @@
+# Project goals
+
+- develop high-performance **http interface** which will allow to use R code as a **backend** for web-services
+- make creation and deployment of applications simple and robust
+
+# Development
+
+### Design
+
+- minimal number of dependencies
+    - `Rserve`
+    - `R6` (which has 0 zero dependencies)
+    - `swagger` (swagger-ui assets for)
+    - `yaml` (which is used for OpenAPI and actually not absolutely necessary)
+- we borrow some API ideas from [aiohttp](https://docs.aiohttp.org/en/stable/web.html)
+
+### Programming style
+
+- we use ` = ` for assignement
+- for `R6` classes we use CamelCase
+- for the rest we_use_underscore
+- we don't use `.` inside names
+- stick to base R style (except point above)
+- fail fast - catch errors at the early stages
+
 # Rserve resources
 
 [Rserve](https://github.com/s-u/Rserve/) is amazing software highly undervalued by the community. Here we keep links to useful resources about Rserve:
