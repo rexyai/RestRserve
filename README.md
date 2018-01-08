@@ -1,3 +1,11 @@
+## Contents
+
+- RestRserve [Hello-world](#create-application)
+- Easily create [Swagger UI and OpenAPI](#swagger-ui-and-openapi)
+- [Deployment application](#deploy-application) with one line of code
+- [Stress test](#stress-test) - serve 20000 requests/sec from a laptop with `RestRserve`
+- [Acknowledgements](#acknowledgements)
+
 ## RestRserve
 
 **RestRserve** is a **concurrent high-performance http-server for R applications**. 
@@ -13,19 +21,12 @@ The main contribution of the RestRserve is a set of functions for convenient reg
 Creating application is very simple. For example let's create endpoint which will caclulate [Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number) for us:
 ```r
 calc_fib = function(n) {
-  if(n < 0L)
-    stop("n should be >= 0")
+  if(n < 0L) stop("n should be >= 0")
+  if(n == 0L) return(0L)
+  if(n == 1L || n == 2L) return(1L)
 
-  if(n == 0L)
-    return(0L)
-
-  if(n == 1L || n == 2L)
-    return(1L)
-
-  x = numeric(n)
-  x[1:2] = c(1L, 1L)
-
-  for(i in 3L:n)
+  x = rep(1L, n)
+  for(i in 3L:n) 
     x[[i]] = x[[i - 1]] + x[[i - 2]]
 
   x[[n]]
@@ -37,9 +38,6 @@ fib = function(request) {
   if((class(n) == "try-error") || length(request$query) != 1L)
     stop("request should look like 'n=5'")
     
-  # note that function MUST return 'RestRserveResponse' object which is easy to construct with
-  # RestRserve::create_response()
-  
   RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
                               headers = character(0), status_code = 200L)
 }
@@ -50,7 +48,7 @@ app = RestRserve::RestRserveApplication$new()
 app$add_endpoint(path = "/fib", method = "GET", FUN = fib)
 ```
 
-Note that every user **function which is registered as endpoint handler should ALWAYS return 'RestRserveResponse' object** which is easy to construct with `RestRserve::create_response` (essentially a `list` with particular fields) .
+Note that every user function which is registered as endpoint handler should **ALWAYS return 'RestRserveResponse' object** which is easy to construct with `RestRserve::create_response` (essentially a `list` with particular fields) .
 
 ### Start application in interactive mode
 
@@ -71,7 +69,7 @@ curl http://localhost:8001/fib?n=10
 # 55
 ```
 
-### Swagger UI
+### Swagger UI and OpenAPI
 
 Optionally RestRserve can generate [OpenAPI](https://www.openapis.org/) document according to the [specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md). You just need to provide docstringings in YAML format in your functions:
 
@@ -171,7 +169,7 @@ PID
 #                                  67439
 ```
 
-### Test it works
+**Test it works**
 
 
 Send request to existing `/fib` endpoint :
@@ -187,7 +185,7 @@ Content-length: 16
 n=5
 ```
 
-### Test it handles requests to non-existing endpoints
+**Test it handles requests to non-existing endpoints**
 
 Send request to non-existing `/incorrectmethod` endpoint:
 ```sh
@@ -247,3 +245,9 @@ Stop particular application (with all the childs):
 ```r
 restrserve_stop(dir)
 ```
+
+# Acknowledgements
+
+- [Simon Urbanek](https://github.com/s-u/) (@s-u) for awesome [Rserve](https://github.com/s-u/Rserve) and all the work on R itself and on his other packages
+- [Jeff Allen](https://github.com/trestletech) (@trestletech) for [plumber](https://github.com/trestletech/plumber). We borrowed code snippet for swagger-ui adjusment
+- [Artem Klevtsov](https://github.com/artemklevtsov) (@artemklevtsov) for useful comments
