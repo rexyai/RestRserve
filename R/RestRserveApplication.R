@@ -6,7 +6,7 @@
 #' @section Usage:
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
-#' \item \code{app$add_endpoint(path = "/echo", method = "GET", FUN =  function(request) {
+#' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
 #'   RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
 #'   })}
 #' \item \code{app$routes()}
@@ -15,7 +15,7 @@
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
-#'   \item{\code{$add_endpoint(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
+#'   \item{\code{$add_route(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
 #'   user function \bold{must} return object of the class \bold{"RestRserveResponse"} which can be easily constructed with
 #'   \link{create_response}}
 #'   \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
@@ -71,7 +71,7 @@
 #'                             status_code = 201L)
 #' }
 #' app = RestRserveApplication$new()
-#' app$add_endpoint(path = "/echo", method = "GET", FUN = echo_handler)
+#' app$add_route(path = "/echo", method = "GET", FUN = echo_handler)
 #' req = list(query = c("a" = "2"), method = "GET")
 #' answer = app$call_handler(request = req, path = "/echo")
 #' answer$payload
@@ -85,7 +85,7 @@ RestRserveApplication = R6::R6Class(
       private$handlers = new.env(parent = emptyenv())
     },
     #------------------------------------------------------------------------
-    add_endpoint = function(path, method, FUN) {
+    add_route = function(path, method, FUN) {
 
       method = private$check_method_supported(method)
       stopifnot(is.character(path) && length(path) == 1L)
@@ -187,7 +187,7 @@ RestRserveApplication = R6::R6Class(
       if(!require(yaml, quietly = TRUE))
         stop("please install 'yaml' package first")
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
-      self$add_endpoint(path = path, method = "GET", FUN = function(request) {
+      self$add_route(path = path, method = "GET", FUN = function(request) {
         create_response(yaml::as.yaml(openapi), content_type = "text/plain")
       })
     },
@@ -240,16 +240,16 @@ RestRserveApplication = R6::R6Class(
 
       # add static files
       #------------------------------------------------------
-      self$add_endpoint(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
+      self$add_route(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
         create_response(c(file = system.file("dist/swagger-ui-bundle.js", package = "swagger")))
       })
-      self$add_endpoint(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
+      self$add_route(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
         create_response(c(file = system.file("dist/swagger-ui.css", package = "swagger")), content_type = "text/css")
       })
-      self$add_endpoint(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
+      self$add_route(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
         create_response(c(file = system.file("dist/swagger-ui-standalone-preset.js", package = "swagger")))
       })
-      self$add_endpoint(path = path, method = "GET", FUN = function(request) {
+      self$add_route(path = path, method = "GET", FUN = function(request) {
         create_response(c(file = system.file("swagger-ui/index.html", package = "RestRserve")))
       })
       #------------------------------------------------------

@@ -44,14 +44,14 @@ test_that("openapi", {
   }
 
   app = RestRserveApplication$new()
-  app$add_endpoint(path = "/f1", method = "GET", FUN = f1)
-  app$add_endpoint(path = "/f1", method = "POST", FUN = f1)
+  app$add_route(path = "/f1", method = "GET", FUN = f1)
+  app$add_route(path = "/f1", method = "POST", FUN = f1)
   # should not be valid openapi - wrong bounds (starts with only 2 '--' )
-  app$add_endpoint(path = "/f2", method = "GET", FUN = f2)
+  app$add_route(path = "/f2", method = "GET", FUN = f2)
   # should be valid openapi
-  app$add_endpoint(path = "/f3", method = "GET", FUN = f3)
-  app$add_endpoint(path = "/f4", method = "GET", FUN = f4)
-  app$add_endpoint(path = "/f5", method = "GET", FUN = f5)
+  app$add_route(path = "/f3", method = "GET", FUN = f3)
+  app$add_route(path = "/f4", method = "GET", FUN = f4)
+  app$add_route(path = "/f5", method = "GET", FUN = f5)
 
   app$add_openapi()
   # use internal api for testing

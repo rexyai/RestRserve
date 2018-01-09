@@ -95,7 +95,7 @@ allowing to easily register R functions for handling http-requests.</p>
     
     <ul>
 <li><p><code>app = RestRserveApplication$new()</code></p></li>
-<li><p><code>app$add_endpoint(path = "/echo", method = "GET", FUN =  function(request) {
+<li><p><code>app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
   RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
   })</code></p></li>
 <li><p><code>app$routes()</code></p></li>
@@ -106,7 +106,7 @@ allowing to easily register R functions for handling http-requests.</p>
     
     <dl class='dl-horizontal'>
   <dt><code>$new()</code></dt><dd><p>Constructor for RestRserveApplication. For the moment doesn't take any parameters.</p></dd>
-  <dt><code>$add_endpoint(path, method, FUN)</code></dt><dd><p>Adds endpoint and register user-supplied R function as a handler.
+  <dt><code>$add_route(path, method, FUN)</code></dt><dd><p>Adds endpoint and register user-supplied R function as a handler.
   user function <b>must</b> return object of the class <b>"RestRserveResponse"</b> which can be easily constructed with
   <a href='create_response.html'>create_response</a></p></dd>
   <dt><code>$run(port = "80", ...)</code></dt><dd><p>starts RestRserve application from current R session.
@@ -164,7 +164,7 @@ allowing to easily register R functions for handling http-requests.</p>
                             <span class='kw'>status_code</span> <span class='kw'>=</span> <span class='fl'>201L</span>)
 }
 <span class='no'>app</span> <span class='kw'>=</span> <span class='no'>RestRserveApplication</span>$<span class='fu'>new</span>()
-<span class='no'>app</span>$<span class='fu'>add_endpoint</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>echo_handler</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>req</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span> <span class='kw'>=</span> <span class='st'>"2"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>)
+<span class='no'>app</span>$<span class='fu'>add_route</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>echo_handler</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='no'>req</span> <span class='kw'>=</span> <span class='fu'>list</span>(<span class='kw'>query</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"a"</span> <span class='kw'>=</span> <span class='st'>"2"</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"GET"</span>)
 <span class='no'>answer</span> <span class='kw'>=</span> <span class='no'>app</span>$<span class='fu'>call_handler</span>(<span class='kw'>request</span> <span class='kw'>=</span> <span class='no'>req</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/echo"</span>)
 <span class='no'>answer</span>$<span class='no'>payload</span></div><div class='output co'>#&gt; [1] "2"</div><div class='input'># "2"
 </div></pre>

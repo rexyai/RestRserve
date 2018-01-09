@@ -49,7 +49,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-    <div id="restrserve" class="section level2">
+
+<div id="contents" class="section level2">
+<h2 class="hasAnchor">
+<a href="#contents" class="anchor"></a>Contents</h2>
+<ul>
+<li>RestRserve <a href="#create-application">Hello-world</a>
+</li>
+<li>Easily create <a href="#swagger-ui-and-openapi">Swagger UI and OpenAPI</a>
+</li>
+<li>
+<a href="#deploy-application">Deployment application</a> with one line of code</li>
+<li>
+<a href="#stress-test">Stress test</a> - serve 20000 requests/sec from a laptop with <code>RestRserve</code>
+</li>
+<li><a href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+</div>
+<div id="restrserve" class="section level2">
 <h2 class="hasAnchor">
 <a href="#restrserve" class="anchor"></a>RestRserve</h2>
 <p><strong>RestRserve</strong> is a <strong>concurrent high-performance http-server for R applications</strong>.</p>
@@ -61,18 +78,11 @@
 <a href="#create-application" class="anchor"></a>Create application</h3>
 <p>Creating application is very simple. For example let’s create endpoint which will caclulate <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci number</a> for us:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calc_fib =<span class="st"> </span><span class="cf">function</span>(n) {
-  <span class="cf">if</span>(n <span class="op">&lt;</span><span class="st"> </span>0L)
-    <span class="kw">stop</span>(<span class="st">"n should be &gt;= 0"</span>)
+  <span class="cf">if</span>(n <span class="op">&lt;</span><span class="st"> </span>0L) <span class="kw">stop</span>(<span class="st">"n should be &gt;= 0"</span>)
+  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>0L) <span class="kw">return</span>(0L)
+  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>1L <span class="op">||</span><span class="st"> </span>n <span class="op">==</span><span class="st"> </span>2L) <span class="kw">return</span>(1L)
 
-  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>0L)
-    <span class="kw">return</span>(0L)
-
-  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>1L <span class="op">||</span><span class="st"> </span>n <span class="op">==</span><span class="st"> </span>2L)
-    <span class="kw">return</span>(1L)
-
-  x =<span class="st"> </span><span class="kw">numeric</span>(n)
-  x[<span class="dv">1</span><span class="op">:</span><span class="dv">2</span>] =<span class="st"> </span><span class="kw">c</span>(1L, 1L)
-
+  x =<span class="st"> </span><span class="kw">rep</span>(1L, n)
   <span class="cf">for</span>(i <span class="cf">in</span> 3L<span class="op">:</span>n)
     x[[i]] =<span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]] <span class="op">+</span><span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">2</span>]]
 
@@ -85,9 +95,6 @@ fib =<span class="st"> </span><span class="cf">function</span>(request) {
   <span class="cf">if</span>((<span class="kw">class</span>(n) <span class="op">==</span><span class="st"> "try-error"</span>) <span class="op">||</span><span class="st"> </span><span class="kw">length</span>(request<span class="op">$</span>query) <span class="op">!=</span><span class="st"> </span>1L)
     <span class="kw">stop</span>(<span class="st">"request should look like 'n=5'"</span>)
 
-  <span class="co"># note that function MUST return 'RestRserveResponse' object which is easy to construct with</span>
-  <span class="co"># RestRserve::create_response()</span>
-
   RestRserve<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/RestRserve/topics/create_response">create_response</a></span>(<span class="dt">payload =</span> <span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n)), <span class="dt">content_type =</span> <span class="st">"text/plain"</span>,
                               <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>), <span class="dt">status_code =</span> 200L)
 }
@@ -95,8 +102,8 @@ fib =<span class="st"> </span><span class="cf">function</span>(request) {
 <span class="co"># create application</span>
 app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
 <span class="co"># register endpoints and corresponding R handlers</span>
-app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">FUN =</span> fib)</code></pre></div>
-<p>Note that every user <strong>function which is registered as endpoint handler should ALWAYS return ‘RestRserveResponse’ object</strong> which is easy to construct with <code><a href="http://www.rdocumentation.org/packages/RestRserve/topics/create_response">RestRserve::create_response</a></code> (essentially a <code>list</code> with particular fields) .</p>
+app<span class="op">$</span><span class="kw">add_route</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">FUN =</span> fib)</code></pre></div>
+<p>Note that every user function which is registered as endpoint handler should <strong>ALWAYS return ‘RestRserveResponse’ object</strong> which is easy to construct with <code><a href="http://www.rdocumentation.org/packages/RestRserve/topics/create_response">RestRserve::create_response</a></code> (essentially a <code>list</code> with particular fields) .</p>
 </div>
 <div id="start-application-in-interactive-mode" class="section level3">
 <h3 class="hasAnchor">
@@ -109,9 +116,9 @@ app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> http://localhost:8001/fib?n=10
 <span class="co"># 55</span></code></pre></div>
 </div>
-<div id="swagger-ui" class="section level3">
+<div id="swagger-ui-and-openapi" class="section level3">
 <h3 class="hasAnchor">
-<a href="#swagger-ui" class="anchor"></a>Swagger UI</h3>
+<a href="#swagger-ui-and-openapi" class="anchor"></a>Swagger UI and OpenAPI</h3>
 <p>Optionally RestRserve can generate <a href="https://www.openapis.org/">OpenAPI</a> document according to the <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md">specification</a>. You just need to provide docstringings in YAML format in your functions:</p>
 <ol>
 <li>OpenAPI definition block should start and end with <code>#' ---</code> (at least 3 <code>-</code> after <code>#'</code>)</li>
@@ -152,7 +159,7 @@ app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt
 }
 
 app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
-app<span class="op">$</span><span class="kw">add_endpoint</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">FUN =</span> fib)
+app<span class="op">$</span><span class="kw">add_route</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">FUN =</span> fib)
 app<span class="op">$</span><span class="kw">add_openapi</span>()
 app<span class="op">$</span><span class="kw">add_swagger_ui</span>()
 app<span class="op">$</span><span class="kw">run</span>(<span class="dt">port =</span> <span class="st">"8001"</span>)</code></pre></div>
@@ -199,10 +206,7 @@ RestRserve<span class="op">::</span><span class="kw"><a href="http://www.rdocume
 PID
 <span class="co">#/Users/dmitry/RestRserveFib/Rserve.pid </span>
 <span class="co">#                                  67439</span></code></pre></div>
-</div>
-<div id="test-it-works" class="section level3">
-<h3 class="hasAnchor">
-<a href="#test-it-works" class="anchor"></a>Test it works</h3>
+<p><strong>Test it works</strong></p>
 <p>Send request to existing <code>/fib</code> endpoint :</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> -sD - localhost:8001/fib?n=10</code></pre></div>
 <pre class="text"><code>HTTP/1.1 200 OK
@@ -210,10 +214,7 @@ Content-type: text/plain
 Content-length: 16
 
 n=5</code></pre>
-</div>
-<div id="test-it-handles-requests-to-non-existing-endpoints" class="section level3">
-<h3 class="hasAnchor">
-<a href="#test-it-handles-requests-to-non-existing-endpoints" class="anchor"></a>Test it handles requests to non-existing endpoints</h3>
+<p><strong>Test it handles requests to non-existing endpoints</strong></p>
 <p>Send request to non-existing <code>/incorrectmethod</code> endpoint:</p>
 <div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> -sD - localhost:8001/incorrectmethod?n=10</code></pre></div>
 <pre class="text"><code>HTTP/1.1 404 Code 404
@@ -262,6 +263,19 @@ Receive bandwidth:     9.52 megabits / second</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/restrserve_stop.html">restrserve_stop</a></span>(dir)</code></pre></div>
 </div>
 </div>
+<div id="acknowledgements" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#acknowledgements" class="anchor"></a>Acknowledgements</h1></div>
+<ul>
+<li>
+<a href="https://github.com/s-u/">Simon Urbanek</a> (@s-u) for awesome <a href="https://github.com/s-u/Rserve">Rserve</a> and all the work on R itself and on his other packages</li>
+<li>
+<a href="https://github.com/trestletech">Jeff Allen</a> (@trestletech) for <a href="https://github.com/trestletech/plumber">plumber</a>. We borrowed code snippet for swagger-ui adjusment</li>
+<li>
+<a href="https://github.com/artemklevtsov">Artem Klevtsov</a> (@artemklevtsov) for useful comments</li>
+</ul>
+</div>
+
   </div>
 
   <div class="col-md-3" id="sidebar">

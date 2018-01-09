@@ -45,7 +45,7 @@ fib = function(request) {
 # create application
 app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers
-app$add_endpoint(path = "/fib", method = "GET", FUN = fib)
+app$add_route(path = "/fib", method = "GET", FUN = fib)
 ```
 
 Note that every user function which is registered as endpoint handler should **ALWAYS return 'RestRserveResponse' object** which is easy to construct with `RestRserve::create_response` (essentially a `list` with particular fields) .
@@ -111,7 +111,7 @@ fib = function(request) {
 }
 
 app = RestRserve::RestRserveApplication$new()
-app$add_endpoint(path = "/fib", method = "GET", FUN = fib)
+app$add_route(path = "/fib", method = "GET", FUN = fib)
 app$add_openapi()
 app$add_swagger_ui()
 app$run(port = "8001")
