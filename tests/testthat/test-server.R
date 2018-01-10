@@ -1,5 +1,9 @@
 context("Rserve test")
 
+skip_on_cran()
+skip_if_not_installed("sys")
+skip_if_not_installed("curl")
+
 pid <- sys::exec_background(Sys.which("Rscript"), normalizePath("hello.R"))
 
 # Wait to Rserve up
