@@ -4,13 +4,13 @@
 \alias{create_response}
 \title{creates http response}
 \usage{
-create_response(payload = "", content_type = "text/html",
+create_response(body = "", content_type = "text/html",
   headers = character(0), status_code = 200L)
 }
 \arguments{
-\item{payload}{must be a character vector of length one or a raw vector.
+\item{body}{must be a character vector of length one or a raw vector.
 If it is a named character with a name \code{file} or \code{tmpfile}
-then the value is considered as a path to a file and content oh this file is served as payload.
+then the value is considered as a path to a file and content oh this file is served as body.
 The latter will be deleted once served.}
 
 \item{content_type}{\code{"text/html"} must be a character vector of length one}

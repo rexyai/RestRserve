@@ -6,6 +6,31 @@ URLenc = function(x) {
   vapply(x, utils::URLencode, character(1L), USE.NAMES = FALSE)
 }
 #------------------------------------------------
+# combine http-headers by key
+# cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
+#------------------------------------------------
+combine_headers_by_key = function(x) {
+  header_keys = names(x)
+  uk = unique(header_keys)
+  # fast path - if all keys are unique
+  if(length(uk) == length(x))
+    return(x)
+
+  ind = match(header_keys, uk)
+  res = character(length(uk))
+  # handle cookies separately - need to be collapsed with "; "
+  j = which(uk == "cookie")
+  for(i in seq_along(uk)) {
+    res[[i]] =
+      if(isTRUE(i == j))
+        paste(x[i == ind], collapse = "; ")
+      else
+        paste(x[i == ind], collapse = ", ")
+  }
+  names(res) = uk
+  res
+}
+#------------------------------------------------
 # environments as basic dictionaries
 #------------------------------------------------
 dict_create = function() {

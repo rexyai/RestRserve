@@ -38,7 +38,7 @@ fib = function(request) {
   if((class(n) == "try-error") || length(request$query) != 1L)
     stop("request should look like 'n=5'")
     
-  RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
+  RestRserve::create_response(body = as.character(calc_fib(n)), content_type = "text/plain",
                               headers = character(0), status_code = 200L)
 }
 
@@ -106,7 +106,7 @@ fib = function(request) {
   if((class(n) == "try-error") || length(request$query) != 1L)
     stop("request should look like 'n=5'")
 
-  RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
+  RestRserve::create_response(body = as.character(calc_fib(n)), content_type = "text/plain",
                               headers = character(0), status_code = 200L)
 }
 

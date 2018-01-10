@@ -8,23 +8,23 @@ test_that("create RestRserveApp", {
   # registered successfully
   expect_true(app$add_route(path = "/echo", method = "GET", FUN = function(request) request$query[[1]]))
   # but doesn't return object of a "RestRserveResponse" class
-  expect_error(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$payload)
+  expect_error(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body)
   # can registr another path on the same route
   expect_true(app$add_route(path = "/echo", method = "HEAD", FUN = function(request) request$query[[1]]))
   # not register function which returns proper "RestRserveResponse" object
   expect_warning(app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-    RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
+    RestRserve::create_response(body = request$query[[1]], content_type = "text/plain")
   }))
   # returns value as expected
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$payload, "2")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body, "2")
   # post not registered yet
   expect_error(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo"))
 
   # can register "POST" method
   expect_true(app$add_route(path = "/echo", method = "POST", FUN = function(request) {
-    RestRserve::create_response(payload = "TRUE", content_type = "text/plain",
+    RestRserve::create_response(body = "TRUE", content_type = "text/plain",
                                 headers = "Location: /echo", status_code = 201L)
   }))
   # now should return "TRUE"
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$payload, "TRUE")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$body, "TRUE")
 })

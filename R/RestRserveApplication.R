@@ -7,7 +7,7 @@
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
 #' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-#'   RestRserve::create_response(payload = request$query[[1]], content_type = "text/plain")
+#'   RestRserve::create_response(body = request$query[[1]], content_type = "text/plain")
 #'   })}
 #' \item \code{app$routes()}
 #' }
@@ -44,28 +44,26 @@
 #'    Object corresponds to http-request and essentially \code{request} is a \code{list} with a fixed set of fields.
 #'    Representation of the "GET" request to "http://localhost:8001/somemethod?a=1&b=2" will look like:
 #'    \describe{
-#'       \item{uri}{ = \code{"/somemethod"}, always character of length 1}
+#'       \item{path}{ = \code{"/somepath"}, always character of length 1}
 #'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{ = \code{c("a" = "1", "b" = "2")}, character vector}
-#'       \item{content_type}{ = \code{""}, always character of length 1}
-#'       \item{content_length}{ = \code{0L}, always integer of length 1}
+#'       \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Queiry parameters key-value pairs.}
 #'       \item{body}{ = \code{NULL}.
 #'          \itemize{
 #'             \item \code{NULL} if the http body is empty or zero length.
 #'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
 #'             \item named \code{characeter vector} in the case of a URL encoded form.
-#'             It will have the same shape as the query string (named string vector)
+#'             It will have the same shape as the query string (named string vector).
 #'          }
 #'       }
-#'       \item{client_ip}{ = \code{"0.0.0.0"}, always character of length 1}
-#'       \item{raw_cookies}{ = \code{""}, always character of length 1}
+#'       \item{content_type}{ = \code{""}, always character of length 1}
+#'       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
 #'    }
 #'  }
 #' }
 #' @format \code{\link{R6Class}} object.
 #' @examples
 #' echo_handler = function(request) {
-#'  RestRserve::create_response(payload = request$query[[1]],
+#'  RestRserve::create_response(body = request$query[[1]],
 #'                              content_type = "text/plain",
 #'                             headers = "Location: /echo",
 #'                             status_code = 201L)
@@ -74,7 +72,7 @@
 #' app$add_route(path = "/echo", method = "GET", FUN = echo_handler)
 #' req = list(query = c("a" = "2"), method = "GET")
 #' answer = app$call_handler(request = req, path = "/echo")
-#' answer$payload
+#' answer$body
 #' # "2"
 #' @export
 RestRserveApplication = R6::R6Class(

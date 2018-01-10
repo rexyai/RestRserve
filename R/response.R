@@ -1,9 +1,9 @@
 # according to:
 # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L353
 #-------------------------------------------------
-# payload: can be a character vector of length one or a
+# body: can be a character vector of length one or a
 # raw vector. if the character vector is named "file" then
-# the content of a file of that name is the payload
+# the content of a file of that name is the body
 #
 # content-type: must be a character vector of length one
 # or NULL (if present, else default is "text/html")
@@ -17,9 +17,9 @@
 #' @title creates http response
 #' @description facilitates in creation of proper response object. User functions should always return
 #' object created with this function.
-#' @param payload must be a character vector of length one or a raw vector.
+#' @param body must be a character vector of length one or a raw vector.
 #' If it is a named character with a name \code{file} or \code{tmpfile}
-#' then the value is considered as a path to a file and content oh this file is served as payload.
+#' then the value is considered as a path to a file and content oh this file is served as body.
 #' The latter will be deleted once served.
 #' @param content_type \code{"text/html"} must be a character vector of length one
 #' @param headers \code{character(0)} must be a character vector - the elements will have CRLF appended.
@@ -27,19 +27,19 @@
 #' @param status_code  \code{200L} must be an integer
 #' @return object of the class \code{"RestRserveResponse"} which is essentially a R's list.
 #' @export
-create_response = function(payload = "",
+create_response = function(body = "",
                            content_type = "text/html",
                            headers = character(0),
                            status_code = 200L) {
-  response = list(payload = payload,
+  response = list(body = body,
                   content_type = content_type,
                   headers = headers,
                   status_code = status_code)
   validate_reponse(response)
 
-  payload_name = names(payload)
-  if(is.character(payload) && (identical(payload_name, "file") || identical(payload_name, "tmpfile")))
-    names(response)[[1]] = payload_name
+  body_name = names(body)
+  if(is.character(body) && (identical(body_name, "file") || identical(body_name, "tmpfile")))
+    names(response)[[1]] = body_name
 
   class(response) = "RestRserveResponse"
   response
@@ -56,8 +56,8 @@ validate_reponse = function(response) {
   if(!(is.character(response$content_type) && length(response$content_type) == 1L))
     stop("response$content_type must be a character vector of length one")
 
-  if(!((is.character(response$payload) && length(response$payload) == 1L) || is.raw(response$payload)))
-    stop("response$payload can be a character vector of length one or a raw vector")
+  if(!((is.character(response$body) && length(response$body) == 1L) || is.raw(response$body)))
+    stop("response$body can be a character vector of length one or a raw vector")
 
   if(!is.character(response$headers))
     stop("response$headers must be a character vector - the elements will have CRLF appended.
