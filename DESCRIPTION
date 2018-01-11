@@ -13,10 +13,9 @@ Imports:
   Rserve (>= 1.7.3),
   R6 (>= 2.2.2)
 Suggests:
-  testthat, 
-  swagger, 
+  testthat (>= 2.0.0),
+  swagger,
   yaml,
-  sys,
   curl
 Encoding: UTF-8
 LazyData: true

@@ -4,25 +4,31 @@ skip_on_cran()
 skip_if_not_installed("sys")
 skip_if_not_installed("curl")
 
-pid <- sys::exec_background(Sys.which("Rscript"), normalizePath("hello.R"))
+# Start RServe in background
+job <- parallel::mcparallel(source(normalizePath("restrserve-run.R")), name = "Rserve", detached = TRUE)
 
 # Wait to Rserve up
 Sys.sleep(1)
 
-teardown(tools::pskill(pid))
+# Will executed after test
+teardown(tools::pskill(job$pid))
 
+# Get HTTP status code
 get_status_code <- function(url) {
   curl::curl_fetch_memory(url)$status_code
 }
 
+# Get HTTP headers
 get_headers <- function(url) {
     curl::parse_headers_list(curl::curl_fetch_memory(url)$headers)
 }
 
+# Get HTTP page source code as text string
 get_text <- function(url) {
   rawToChar(curl::curl_fetch_memory(url)$content)
 }
 
+# URLs for the tests
 test_200 <- "http://localhost:6666/fib?n=10"
 test_404 <- "http://localhost:6666/some-path"
 test_520 <- "http://localhost:6666/fib"
