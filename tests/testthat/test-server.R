@@ -1,7 +1,6 @@
 context("Rserve test")
 
 skip_on_cran()
-skip_if_not_installed("sys")
 skip_if_not_installed("curl")
 
 # Start RServe in background
