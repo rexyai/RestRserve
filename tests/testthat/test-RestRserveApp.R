@@ -27,4 +27,23 @@ test_that("create RestRserveApp", {
   }))
   # now should return "TRUE"
   expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$body, "TRUE")
+
+})
+
+test_that("create RestRserveApp shortcuts", {
+  # test shortcuts
+  app = RestRserveApplication$new()
+  # POST
+  expect_true(app$add_post(path = "/echo", FUN = function(request) {
+    RestRserve::create_response(body = "TRUE", content_type = "text/plain",
+                                headers = "Location: /echo", status_code = 201L)
+  }))
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$body, "TRUE")
+
+  # GET
+  expect_true(app$add_get(path = "/echo", FUN = function(request) {
+    RestRserve::create_response(body = request$query[[1]], content_type = "text/plain",
+                                headers = "Location: /echo", status_code = 201L)
+  }))
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body, "2")
 })

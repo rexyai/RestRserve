@@ -113,7 +113,14 @@ RestRserveApplication = R6::R6Class(
         private$handlers_openapi_definitions[[path]][[method]] = openapi_definition_lines
       }
 
-      TRUE
+      invisible(TRUE)
+    },
+    # shortcuts
+    add_get = function(path, FUN) {
+      self$add_route(path, "GET", FUN)
+    },
+    add_post = function(path, FUN) {
+      self$add_route(path, "POST", FUN)
     },
     #------------------------------------------------------------------------
     call_handler = function(request, path) {
