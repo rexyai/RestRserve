@@ -8,7 +8,10 @@ test_that("create RestRserveApp", {
   # registered successfully
   expect_true(app$add_route(path = "/echo", method = "GET", FUN = function(request) request$query[[1]]))
   # but doesn't return object of a "RestRserveResponse" class
-  expect_error(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body)
+  resp = app$call_handler(request = list(query = c("a" = "2"), method = "GET", path = "/echo"))
+  expect_equal(resp$body,
+               "Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`")
+  expect_equal(resp$status_code, 500L)
   # can registr another path on the same route
   expect_true(app$add_route(path = "/echo", method = "HEAD", FUN = function(request) request$query[[1]]))
   # not register function which returns proper "RestRserveResponse" object
@@ -16,9 +19,11 @@ test_that("create RestRserveApp", {
     RestRserve::create_response(body = request$query[[1]], content_type = "text/plain")
   }))
   # returns value as expected
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body, "2")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET", path = "/echo"))$body, "2")
   # post not registered yet
-  expect_error(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo"))
+  resp = app$call_handler(request = list(query = c("a" = "2"), method = "POST", path = "/echo"))
+  expect_equal(resp$body, "Page not found")
+  expect_equal(resp$status_code, 404L)
 
   # can register "POST" method
   expect_true(app$add_route(path = "/echo", method = "POST", FUN = function(request) {
@@ -26,7 +31,7 @@ test_that("create RestRserveApp", {
                                 headers = "Location: /echo", status_code = 201L)
   }))
   # now should return "TRUE"
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$body, "TRUE")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST", path = "/echo"))$body, "TRUE")
 
 })
 
@@ -38,12 +43,12 @@ test_that("create RestRserveApp shortcuts", {
     RestRserve::create_response(body = "TRUE", content_type = "text/plain",
                                 headers = "Location: /echo", status_code = 201L)
   }))
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST"), path = "/echo")$body, "TRUE")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "POST", path = "/echo"))$body, "TRUE")
 
   # GET
   expect_true(app$add_get(path = "/echo", FUN = function(request) {
     RestRserve::create_response(body = request$query[[1]], content_type = "text/plain",
                                 headers = "Location: /echo", status_code = 201L)
   }))
-  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET"), path = "/echo")$body, "2")
+  expect_equal(app$call_handler(request = list(query = c("a" = "2"), method = "GET", path = "/echo"))$body, "2")
 })

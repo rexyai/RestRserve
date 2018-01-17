@@ -1,7 +1,7 @@
 Package: RestRserve
 Type: Package
 Title: Exposes R Code as a Http-Service
-Version: 0.1.0.3
+Version: 0.1.0.4
 Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
@@ -14,6 +14,7 @@ Imports:
   R6 (>= 2.2.2)
 Suggests:
   swagger,
+  mime,
   yaml,
   curl (>= 2.7),
   testthat (>= 2.0.0)

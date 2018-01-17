@@ -15,24 +15,28 @@
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
-#'   \item{\code{$add_route(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
-#'   user function \bold{must} return object of the class \bold{"RestRserveResponse"} which can be easily constructed with
-#'   \link{create_response}}
+#'   \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
+#'   and register user-supplied R function as a handler.
+#'   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
+#'   which can be easily constructed with \link{create_response}}
+#'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
+#'   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
+#'   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
+#'   file or directory at \code{file_path}. If \code{content_type = NULL}
+#'   then MIME code \code{content_type}  will be inferred automatically (from file extension).
+#'   If it will be impossible to guess about file type then \code{content_type} will be set to
+#'   \code{"application/octet-stream"}}
 #'   \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
 #'      \code{port} - http port for application.
 #'      \code{...} - key-value pairs of the Rserve configuration.}
-#'   \item{\code{$call_handler(request, path)}}{Used internally, \bold{usually users} don't need to call it.
-#'   Calls handler function for a given request and path.}
+#'   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
+#'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
-#'   \item{\code{$check_path_exists(path)}}{Mainly for internal usage.
-#'   Returns TRUE/FALSE if path registered / not registered}
-#'   \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
-#'   Returns TRUE/FALSE path-method pair registered / not registered}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
 #'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
 #'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
 #'   \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
-#'   to show swagger-ui. After calling it should be available at \code{http://host:port/__swagger__/}}
+#'   to show swagger-ui. After calling it should be available at \url{http://host:port/__swagger__/}}
 #' }
 #' @section Arguments:
 #' \describe{
@@ -70,8 +74,8 @@
 #' }
 #' app = RestRserveApplication$new()
 #' app$add_route(path = "/echo", method = "GET", FUN = echo_handler)
-#' req = list(query = c("a" = "2"), method = "GET")
-#' answer = app$call_handler(request = req, path = "/echo")
+#' req = list(query = c("a" = "2"), method = "GET", path = "/echo")
+#' answer = app$call_handler(request = req)
 #' answer$body
 #' # "2"
 #' @export
@@ -83,12 +87,19 @@ RestRserveApplication = R6::R6Class(
       private$handlers = new.env(parent = emptyenv())
     },
     #------------------------------------------------------------------------
-    add_route = function(path, method, FUN) {
+    add_route = function(path, method, FUN, path_as_prefix = FALSE, ...) {
 
-      method = private$check_method_supported(method)
       stopifnot(is.character(path) && length(path) == 1L)
       stopifnot(startsWith(path, "/"))
+
+      method = private$check_method_supported(method)
+
       stopifnot(is.function(FUN))
+
+      stopifnot(is.logical(path_as_prefix) && length(path_as_prefix) == 1L)
+
+      # remove trailing slashes
+      path = gsub(pattern = "/+$", replacement = "", x = path)
 
       if(length(formals(FUN)) != 1L)
         stop("function should take exactly one argument - request")
@@ -99,7 +110,9 @@ RestRserveApplication = R6::R6Class(
       if(!is.null(private$handlers[[path]][[method]]))
         warning(sprintf("overwriting existing '%s' method for path '%s'", method, path))
 
-      private$handlers[[path]][[method]] = compiler::cmpfun(FUN)
+      CMPFUN = compiler::cmpfun(FUN)
+      attr(CMPFUN, "handle_path_as_prefix") = path_as_prefix
+      private$handlers[[path]][[method]] = CMPFUN
 
       # try to parse functions and find openapi definitions
       openapi_definition_lines = extract_docstrings_yaml(FUN)
@@ -116,37 +129,115 @@ RestRserveApplication = R6::R6Class(
       invisible(TRUE)
     },
     # shortcuts
-    add_get = function(path, FUN) {
-      self$add_route(path, "GET", FUN)
+    add_get = function(path, FUN, ...) {
+      self$add_route(path, "GET", FUN, ...)
     },
-    add_post = function(path, FUN) {
-      self$add_route(path, "POST", FUN)
+
+    add_post = function(path, FUN, ...) {
+      self$add_route(path, "POST", FUN, ...)
+    },
+    # static files servers
+    add_static = function(path, file_path, content_type = NULL, ...) {
+      stopifnot(is_string_or_null(file_path))
+      stopifnot(is_string_or_null(content_type))
+
+      is_dir = file.info(file_path)[["isdir"]]
+
+      if(is.na(is_dir)) {
+        stop(sprintf("'%s' file or directory doesnt't exists", file_path))
+      }
+
+
+      mime_avalable = FALSE
+      if(is.null(content_type)) {
+        mime_avalable = require(mime, quietly = TRUE)
+        if(!mime_avalable) {
+          warning(sprintf("'mime' package is not installed - content_type will is set to '%s'", "application/octet-stream"))
+          mime_avalable = FALSE
+        }
+      }
+      # file_path is a DIRECTORY
+      if(is_dir) {
+        handler = function(request) {
+          fl = file.path(path.expand(file_path), substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
+
+          if(!file.exists(fl)) {
+            http_404_not_found()
+          } else {
+            content_type = "application/octet-stream"
+            if(mime_avalable) content_type = mime::guess_type(fl)
+
+            fl_is_dir = file.info(fl)[["isdir"]][[1]]
+            if(isTRUE(fl_is_dir)) {
+              http_404_not_found()
+            }
+            else {
+              create_response(body = c(file = fl), content_type = content_type, status_code = 200L)
+            }
+          }
+        }
+        self$add_get(path, handler, path_as_prefix = TRUE, ...)
+      } else {
+        # file_path is a FILE
+        file_path = path.expand(file_path)
+        handler = function(request) {
+
+          if(!file.exists(file_path))
+            return(http_404_not_found())
+
+          if(is.null(content_type)) {
+            if(mime_avalable)
+              content_type = mime::guess_type(file_path)
+          }
+          create_response(body = c(file = file_path), content_type = content_type, status_code = 200L)
+        }
+        self$add_get(path, handler, ...)
+      }
     },
     #------------------------------------------------------------------------
-    call_handler = function(request, path) {
-      stopifnot(is.character(path) && length(path) == 1L)
+    call_handler = function(request) {
+      path = request$path
+      if(!(is.character(path) && length(path) == 1L)) {
+        http_520_unknown_error("path should be character vector of length 1")
+      }
+      result = http_520_unknown_error("should not happen - please report to https://github.com/dselivanov/RestRserve/issues")
+
       METHOD = request$method
       FUN = private$handlers[[path]][[METHOD]]
 
-      if(is.null(FUN))
-        stop(sprintf("method '%s' for path '%s' doesnt't exist", METHOD, path))
+      if(!is.null(FUN)) {
+        # happy path
+        result = FUN(request)
+        if(class(result) != "RestRserveResponse")
+          result = http_500_internal_server_error("Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`")
+      } else {
+        # may be path is a prefix
+        registered_paths = names(private$handlers)
+        # add "/" to the end in order to not match not-complete pass.
+        # for example registered_paths = c("/a/abc") and path = "/a/ab"
+        handlers_match_start = startsWith(x = path, prefix = paste(registered_paths, "/", sep = ""))
+        if(!any(handlers_match_start))
+          result = http_404_not_found()
+        else {
+          # find method which match the path - should be unique
+          j = which(handlers_match_start)
+          if(length(j) != 1L) {
+            result = http_500_internal_server_error("more than one handler match to the request")
+          }
+          else {
+            FUN = private$handlers[[ registered_paths[[j]] ]][[METHOD]]
+            # now FUN is NULL or some function
+            # if it is a function then we need to check whther it was registered to handle patterned paths
+            if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
+              result = http_404_not_found()
+            } else {
+              result = FUN(request)
+            }
 
-      res = FUN(request)
-      if(class(res) != "RestRserveResponse")
-        stop(sprintf("Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`",
-                     path))
-      res
-    },
-    #------------------------------------------------------------------------
-    check_path_exists = function(path) {
-      stopifnot(is.character(path) && length(path) == 1L)
-      !is.null(private$handlers[[path]])
-    },
-    #------------------------------------------------------------------------
-    check_path_method_exists = function(path, method) {
-      stopifnot(is.character(path) && length(path) == 1L)
-      method = private$check_method_supported(method)
-      return(method %in% names(private$handlers[[path]]))
+          }
+        }
+      }
+      return(result)
     },
     #------------------------------------------------------------------------
     routes = function() {
@@ -196,10 +287,19 @@ RestRserveApplication = R6::R6Class(
         create_response(yaml::as.yaml(openapi), content_type = "text/plain")
       })
     },
-    add_swagger_ui = function(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml") {
-      if(path_openapi_yaml != "/openapi.yaml")
-        stop("At the moment the only supported value is: `path_openapi_yaml = \"/openapi.yaml\"` ")
-      private$add_swagger_static(path, path_openapi_yaml)
+    add_swagger_ui = function(path = "/swagger",
+                              port = "8001",
+                              path_swagger_assets = "/__swagger__/",
+                              path_openapi = "/openapi.yaml",
+                              file_path = tempfile(fileext = ".html")) {
+      if(!require(swagger, quietly = TRUE))
+        stop("please install 'swagger' package first")
+
+      path_openapi = gsub("^/*", "", path_openapi)
+
+      self$add_static(path_swagger_assets, system.file("dist", package = "swagger"))
+      write_swagger_ui_index_html(file_path, path_swagger_assets = path_swagger_assets, path_openapi = path_openapi)
+      self$add_static(path, file_path)
     }
   ),
   private = list(
@@ -237,30 +337,6 @@ RestRserveApplication = R6::R6Class(
         paths_descriptions[[p]] = methods_descriptions
       }
       paths_descriptions
-    },
-    add_swagger_static = function(path, path_openapi_yaml) {
-
-      if(!require(swagger, quietly = TRUE))
-        stop("please install 'swagger' package first")
-
-      if(path != "/__swagger__/")
-        stop("Only path = '/__swagger__/' supported at the  moment")
-
-      # add static files
-      #------------------------------------------------------
-      self$add_route(path = "/__swagger__/swagger-ui-bundle.js", method = "GET", FUN = function(request) {
-        create_response(c(file = system.file("dist/swagger-ui-bundle.js", package = "swagger")))
-      })
-      self$add_route(path = "/__swagger__/swagger-ui.css", method = "GET", FUN = function(request) {
-        create_response(c(file = system.file("dist/swagger-ui.css", package = "swagger")), content_type = "text/css")
-      })
-      self$add_route(path = "/__swagger__/swagger-ui-standalone-preset.js", method = "GET", FUN = function(request) {
-        create_response(c(file = system.file("dist/swagger-ui-standalone-preset.js", package = "swagger")))
-      })
-      self$add_route(path = path, method = "GET", FUN = function(request) {
-        create_response(c(file = system.file("swagger-ui/index.html", package = "RestRserve")))
-      })
-      #------------------------------------------------------
     }
   )
 )

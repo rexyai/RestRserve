@@ -2,6 +2,10 @@
 
 export(RestRserveApplication)
 export(create_response)
+export(http_404_not_found)
+export(http_405_method_not_allowed)
+export(http_500_internal_server_error)
+export(http_520_unknown_error)
 export(openapi_contact)
 export(openapi_create)
 export(openapi_info)

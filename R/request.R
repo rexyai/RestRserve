@@ -62,45 +62,16 @@ http_request = function(url, query, body, headers) {
   # first parse incoming request
   request = parse_request(url, query, body, headers)
 
-  # now create template for response
-  # Rserve protocol is defined here:
-  # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L353
-  response = list(body = character(0),
-                  content_type = "text/plain",
-                  headers = character(0),
-                  status_code = 200L)
-
   PATH = request[["path"]]
-  METHOD = request[["method"]]
 
-  resouce_exist  = app$check_path_exists(PATH)
-  method_correct = app$check_path_method_exists(PATH, METHOD)
+  # call_handler should return object of type "RestRserveResponse"
+  result = try(app$call_handler(request), silent = TRUE)
 
-  if(resouce_exist && method_correct) {
-    # call_handler will return object of type "RestRserveResponse"
-    result = try(app$call_handler(request, PATH), silent = TRUE)
-    if(class(result) == "try-error") {
-      response$status_code = 520L
-      msg_traceback = attributes(result)$condition$message
-      msg_traceback = substr(msg_traceback, 0, min(nchar(msg_traceback), TRACEBACK_MAX_NCHAR))
-      response$body = sprintf("Error in R code. Traceback :'%s')",  msg_traceback)
-    } else {
-      response = result
-    }
-  } else {
-    status = 404L
-    response$status_code = status
-    if(!resouce_exist) {
-      msg = sprintf("Resource '%s' doesn't exist", PATH)
-    } else {
-      status = 405L
-      response$status_code = status
-      available_routes = app$routes()
-      available_routes = available_routes[which(names(available_routes) == PATH)]
-      response$headers = sprintf("Allow: %s", paste(available_routes, collapse = " "))
-      msg = sprintf("Resource '%s' exists but doesn't allow '%s' method", PATH, METHOD)
-    }
-    response$body = msg
+  if(class(result) != "RestRserveResponse") {
+    msg_traceback = attributes(result)$condition$message
+    msg_traceback = substr(msg_traceback, 0, min(nchar(msg_traceback), TRACEBACK_MAX_NCHAR))
+    result = http_500_internal_server_error(sprintf("Error in R code. Traceback :'%s')",  msg_traceback))
   }
-  response
+
+  result
 }

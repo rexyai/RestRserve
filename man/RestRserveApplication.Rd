@@ -29,24 +29,28 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
 
 \describe{
   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
-  \item{\code{$add_route(path, method, FUN)}}{Adds endpoint and register user-supplied R function as a handler.
-  user function \bold{must} return object of the class \bold{"RestRserveResponse"} which can be easily constructed with
-  \link{create_response}}
+  \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
+  and register user-supplied R function as a handler.
+  User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
+  which can be easily constructed with \link{create_response}}
+  \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
+  \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
+  \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
+  file or directory at \code{file_path}. If \code{content_type = NULL}
+  then MIME code \code{content_type}  will be inferred automatically (from file extension).
+  If it will be impossible to guess about file type then \code{content_type} will be set to
+  \code{"application/octet-stream"}}
   \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
      \code{port} - http port for application.
      \code{...} - key-value pairs of the Rserve configuration.}
-  \item{\code{$call_handler(request, path)}}{Used internally, \bold{usually users} don't need to call it.
-  Calls handler function for a given request and path.}
+  \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
+  Calls handler function for a given request.}
   \item{\code{$routes()}}{Lists all registered routes}
-  \item{\code{$check_path_exists(path)}}{Mainly for internal usage.
-  Returns TRUE/FALSE if path registered / not registered}
-  \item{\code{$check_path_method_exists(path, method)}}{Mainly for internal usage.
-  Returns TRUE/FALSE path-method pair registered / not registered}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
   \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
-  to show swagger-ui. After calling it should be available at \code{http://host:port/__swagger__/}}
+  to show swagger-ui. After calling it should be available at \url{http://host:port/__swagger__/}}
 }
 }
 
@@ -88,8 +92,8 @@ echo_handler = function(request) {
 }
 app = RestRserveApplication$new()
 app$add_route(path = "/echo", method = "GET", FUN = echo_handler)
-req = list(query = c("a" = "2"), method = "GET")
-answer = app$call_handler(request = req, path = "/echo")
+req = list(query = c("a" = "2"), method = "GET", path = "/echo")
+answer = app$call_handler(request = req)
 answer$body
 # "2"
 }
