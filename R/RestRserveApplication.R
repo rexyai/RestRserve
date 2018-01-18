@@ -35,8 +35,9 @@
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
 #'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
 #'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
-#'   \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
-#'   to show swagger-ui. After calling it should be available at \url{http://host:port/__swagger__/}}
+#'   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
+#'                               path_swagger_assets = "/__swagger__/",
+#'                               file_path = tempfile(fileext = ".html"))}}{Adds endpoint to show swagger-ui.}
 #' }
 #' @section Arguments:
 #' \describe{
@@ -277,20 +278,33 @@ RestRserveApplication = R6::R6Class(
       endpoints_summary = paste(names(registered_endpoints),  registered_endpoints, sep = ": ", collapse = "\n")
       message("------------------------------------------------")
       message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
-      message("------------------------------------------------")
+      message("-----------------------------------------------")
     },
-    add_openapi = function(path = "/openapi.yaml", openapi = openapi_create()) {
+    add_openapi = function(path = "/openapi.yaml",
+                           openapi = openapi_create(),
+                           file_path = "openapi.yaml",
+                           ...) {
+      stopifnot(is.character(file_path) && length(file_path) == 1L)
+
       if(!require(yaml, quietly = TRUE))
         stop("please install 'yaml' package first")
+
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
-      self$add_route(path = path, method = "GET", FUN = function(request) {
-        create_response(yaml::as.yaml(openapi), content_type = "text/plain")
-      })
+
+      file_dir = dirname(file_path)
+      if(!dir.exists(file_dir))
+        dir.create(file_dir, recursive = TRUE, ...)
+
+      yaml::write_yaml(openapi, file = file_path, ...)
+
+      # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
+      # for now use  "application/x-yaml":
+      # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
+      self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml", ...)
     },
     add_swagger_ui = function(path = "/swagger",
-                              port = "8001",
-                              path_swagger_assets = "/__swagger__/",
                               path_openapi = "/openapi.yaml",
+                              path_swagger_assets = "/__swagger__/",
                               file_path = tempfile(fileext = ".html")) {
       if(!require(swagger, quietly = TRUE))
         stop("please install 'swagger' package first")

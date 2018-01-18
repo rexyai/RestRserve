@@ -6,15 +6,19 @@
 - [Stress test](#stress-test) - serve 20000 requests/sec from a laptop with `RestRserve`
 - [Acknowledgements](#acknowledgements)
 
-## RestRserve
+## What is RestRserve?
 
 **RestRserve** is a **concurrent high-performance http-server for R applications**. 
 
-It could handle about **[20000 simple requests per second](#stress-test)** on my macbook laptop with intel i7-7820HQ CPU, 4 cores / 8 threads (~ 40x faster than [plumber](https://github.com/trestletech/plumber) which can use only 1 thread).
+It could handle more than **[20000 requests per second](#stress-test) on a laptop** with intel i7-7820HQ CPU, 4 cores / 8 threads which is about 40x faster than [plumber](https://github.com/trestletech/plumber) (all credits should go to [Simon Urbanek](https://github.com/s-u) - RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rserve)).
 
-All credits should go to [Simon Urbanek](https://github.com/s-u) - RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rserve). 
+**RestRserve allows:**
 
-The main contribution of the RestRserve is a set of functions for convenient registering endpoints and deployment of applications. Also we will try to provide more detailed documentation.
+- easily setting up a handler (R function) for a given http route
+- serving static files
+- generating [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
+- exposing [Swagger UI](#swagger-ui)
+- deployment/starting/stopping applications
 
 ### Create application
 
@@ -24,28 +28,24 @@ calc_fib = function(n) {
   if(n < 0L) stop("n should be >= 0")
   if(n == 0L) return(0L)
   if(n == 1L || n == 2L) return(1L)
-
   x = rep(1L, n)
-  for(i in 3L:n) 
+  for(i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
-
   x[[n]]
 }
 
 fib = function(request) {
-  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
-
-  if((class(n) == "try-error") || length(request$query) != 1L)
-    stop("request should look like 'n=5'")
-    
-  RestRserve::create_response(body = as.character(calc_fib(n)), content_type = "text/plain",
-                              headers = character(0), status_code = 200L)
+  n = as.integer( request$query[["n"]] )
+  RestRserve::create_response(payload = as.character(calc_fib(n)),
+                              content_type = "text/plain",
+                              headers = character(0),
+                              status_code = 200L)
 }
 
 # create application
 app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers
-app$add_route(path = "/fib", method = "GET", FUN = fib)
+app$add_get(path = "/fib", FUN = fib)
 ```
 
 Note that every user function which is registered as endpoint handler should **ALWAYS return 'RestRserveResponse' object** which is easy to construct with `RestRserve::create_response` (essentially a `list` with particular fields) .
@@ -101,19 +101,19 @@ fib = function(request) {
   #'           example: 5
   #' ---
   
-  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
-
-  if((class(n) == "try-error") || length(request$query) != 1L)
-    stop("request should look like 'n=5'")
-
-  RestRserve::create_response(body = as.character(calc_fib(n)), content_type = "text/plain",
-                              headers = character(0), status_code = 200L)
+  n = as.integer( request$query[["n"]] )
+  RestRserve::create_response(payload = as.character(calc_fib(n)),
+                              content_type = "text/plain",
+                              headers = character(0),
+                              status_code = 200L)
 }
 
 app = RestRserve::RestRserveApplication$new()
-app$add_route(path = "/fib", method = "GET", FUN = fib)
-app$add_openapi()
-app$add_swagger_ui()
+app$add_get(path = "/fib", FUN = fib)
+app$add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")
+app$add_swagger_ui(path = "/swagger", 
+                   path_openapi = "/openapi.yaml", 
+                   path_swagger_assets = "/__swagger__")
 app$run(port = "8001")
 ```
 
@@ -209,33 +209,33 @@ apib -c 16 -d 10 http://127.0.0.1:8001/fib?n=5
 ```
 
 ```txt
-(5 / 10) 19310.240 0% cpu
-(10 / 10) 19098.729 0% cpu
-Duration:             10.009 seconds
-Attempted requests:   192220
-Successful requests:  192220
+(5 / 10) 20439.224 0% cpu
+(10 / 10) 21077.496 0% cpu
+Duration:             10.001 seconds
+Attempted requests:   207614
+Successful requests:  207614
 Non-200 results:      0
 Connections opened:   16
 Socket errors:        0
 
-Throughput:           19204.666 requests/second
-Average latency:      0.832 milliseconds
-Minimum latency:      0.312 milliseconds
-Maximum latency:      165.797 milliseconds
-Latency std. dev:     1.851 milliseconds
-50% latency:          0.709 milliseconds
-90% latency:          1.081 milliseconds
-98% latency:          2.012 milliseconds
-99% latency:          2.774 milliseconds
+Throughput:           20758.510 requests/second
+Average latency:      0.770 milliseconds
+Minimum latency:      0.209 milliseconds
+Maximum latency:      154.137 milliseconds
+Latency std. dev:     1.272 milliseconds
+50% latency:          0.737 milliseconds
+90% latency:          0.958 milliseconds
+98% latency:          1.221 milliseconds
+99% latency:          1.595 milliseconds
 
 Client CPU average:    0%
 Client CPU max:        0%
 Client memory usage:    0%
 
-Total bytes sent:      12.65 megabytes
-Total bytes received:  11.92 megabytes
-Send bandwidth:        10.11 megabits / second
-Receive bandwidth:     9.52 megabits / second
+Total bytes sent:      13.66 megabytes
+Total bytes received:  12.87 megabytes
+Send bandwidth:        10.93 megabits / second
+Receive bandwidth:     10.29 megabits / second
 ```
 
 ### Stop application

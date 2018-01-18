@@ -2,21 +2,12 @@
 # after intallation available at
 # `system.file("fib.R", package = "RestRserve")`
 calc_fib = function(n) {
-  if(n < 0L)
-    stop("n should be >= 0")
-
-  if(n == 0L)
-    return(0L)
-
-  if(n == 1L || n == 2L)
-    return(1L)
-
-  x = numeric(n)
-  x[1:2] = c(1L, 1L)
-
+  if(n < 0L) stop("n should be >= 0")
+  if(n == 0L) return(0L)
+  if(n == 1L || n == 2L) return(1L)
+  x = rep(1L, n)
   for(i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
-
   x[[n]]
 }
 
@@ -42,13 +33,11 @@ fib = function(request) {
   #'           example: 5
   #' ---
 
-  try({n = as.integer( request$query[["n"]] )}, silent = TRUE)
-
-  if((class(n) == "try-error") || length(request$query) != 1L)
-    stop("request should look like 'n=5'")
-
-  RestRserve::create_response(payload = as.character(calc_fib(n)), content_type = "text/plain",
-                              headers = character(0), status_code = 200L)
+  n = as.integer( request$query[["n"]] )
+  RestRserve::create_response(body = as.character(calc_fib(n)),
+                              content_type = "text/plain",
+                              headers = character(0),
+                              status_code = 200L)
 }
 #------------------------------------------------------------------------------------------
 # create application
@@ -57,4 +46,4 @@ RestRserveApp = RestRserve::RestRserveApplication$new()
 #------------------------------------------------------------------------------------------
 # register endpoints and corresponding R handlers
 #------------------------------------------------------------------------------------------
-RestRserveApp$add_route(path = "/fib", method = "GET", FUN = fib)
+RestRserveApp$add_get(path = "/fib", FUN = fib)

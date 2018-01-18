@@ -49,8 +49,9 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
-  \item{\code{$add_swagger_ui(path = "/__swagger__/", path_openapi_yaml = "/openapi.yaml")}}{Adds endpoint
-  to show swagger-ui. After calling it should be available at \url{http://host:port/__swagger__/}}
+  \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
+                              path_swagger_assets = "/__swagger__/",
+                              file_path = tempfile(fileext = ".html"))}}{Adds endpoint to show swagger-ui.}
 }
 }
 
