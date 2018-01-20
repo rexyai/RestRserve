@@ -52,3 +52,28 @@ is_string_or_null = function(x) {
   is.null(x) || (is.character(x) && length(x) == 1L)
 }
 #------------------------------------------------
+
+# borrowed from
+# https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
+try_capture_stack <- function(expr, env = environment()) {
+  quoted_code = quote(expr)
+  capture_calls <- function(e) {
+    e$calls <- head(sys.calls()[-seq_len(frame + 7)], -2)
+    signalCondition(e)
+  }
+  frame <- sys.nframe()
+  tryCatch(
+    withCallingHandlers(eval(quoted_code, env), error = capture_calls),
+    error = identity
+  )
+}
+
+get_traceback_message = function(err, nchar_max = 1000L) {
+  err_msg = err$message
+  stack_msg = vapply(err$calls, function(x) paste(capture.output(print(x)), collapse = "\n") , "")
+  stack_msg = paste(stack_msg, collapse = "\n")
+  call_msg  = paste(capture.output(print(err$call)), collapse = "|")
+  res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s",
+          err_msg, call_msg, stack_msg)
+  substr(res, 0L, nchar_max)
+}

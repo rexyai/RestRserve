@@ -62,15 +62,14 @@ http_request = function(url, query, body, headers) {
   # first parse incoming request
   request = parse_request(url, query, body, headers)
 
-  PATH = request[["path"]]
-
   # call_handler should return object of type "RestRserveResponse"
-  result = try(app$call_handler(request), silent = TRUE)
+  # this captures traceback in case of error
+  # also worth to check
+  # https://stackoverflow.com/questions/16879821/save-traceback-on-error-using-trycatch
+  result = try_capture_stack(app$call_handler(request))
 
-  if(class(result) != "RestRserveResponse") {
-    msg_traceback = attributes(result)$condition$message
-    msg_traceback = substr(msg_traceback, 0, min(nchar(msg_traceback), TRACEBACK_MAX_NCHAR))
-    result = http_500_internal_server_error(sprintf("Error in R code. Traceback :'%s')",  msg_traceback))
+  if(!inherits(result, "RestRserveResponse")) {
+    result = http_500_internal_server_error(get_traceback_message(result, TRACEBACK_MAX_NCHAR))
   }
 
   result

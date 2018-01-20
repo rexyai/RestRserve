@@ -53,7 +53,7 @@ test_that("openapi", {
   app$add_route(path = "/f4", method = "GET", FUN = f4)
   app$add_route(path = "/f5", method = "GET", FUN = f5)
 
-  app$add_openapi()
+  app$add_openapi(file_path = tempfile(fileext = ".yaml"))
   # use internal api for testing
   openapi_def = app$.__enclos_env__$private$get_openapi_paths()
 
