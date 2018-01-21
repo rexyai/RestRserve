@@ -210,7 +210,7 @@ RestRserveApplication = R6::R6Class(
         # happy path
         result = FUN(request)
         if(class(result) != "RestRserveResponse")
-          result = http_500_internal_server_error("Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`")
+          result = http_500_internal_server_error("Error in user-supplied code - it doesn't return 'RestRserveResponse' object created by RestRserve::create_response()")
       } else {
         # may be path is a prefix
         registered_paths = names(private$handlers)
@@ -223,7 +223,7 @@ RestRserveApplication = R6::R6Class(
           # find method which match the path - should be unique
           j = which(handlers_match_start)
           if(length(j) != 1L) {
-            result = http_500_internal_server_error("more than one handler match to the request")
+            result = http_500_internal_server_error("more than one handler match to the request path")
           }
           else {
             FUN = private$handlers[[ registered_paths[[j]] ]][[METHOD]]

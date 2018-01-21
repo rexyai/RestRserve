@@ -10,7 +10,7 @@ test_that("create RestRserveApp", {
   # but doesn't return object of a "RestRserveResponse" class
   resp = app$call_handler(request = list(query = c("a" = "2"), method = "GET", path = "/echo"))
   expect_equal(resp$body,
-               "Error in user-supplied code - it doesn't return 'RestRserveResponse' object. See `RestRserve::create_response()`")
+               "Error in user-supplied code - it doesn't return 'RestRserveResponse' object created by RestRserve::create_response()")
   expect_equal(resp$status_code, 500L)
   # can registr another path on the same route
   expect_true(app$add_route(path = "/echo", method = "HEAD", FUN = function(request) request$query[[1]]))
