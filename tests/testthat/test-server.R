@@ -1,3 +1,5 @@
+PORT = 6666L
+
 context("Rserve test")
 
 skip_on_cran()
@@ -10,7 +12,7 @@ job = parallel::mcparallel(source(normalizePath("restrserve-run.R")), name = "Rs
 Sys.sleep(1)
 
 # Will executed after test
-teardown(tools::pskill(job$pid))
+teardown(parallel:::mckill(job))
 
 # Get HTTP status code
 get_status_code = function(url) {
@@ -28,9 +30,9 @@ get_text = function(url) {
 }
 
 # URLs for the tests
-test_200 = "http://localhost:6666/fib?n=10"
-test_404 = "http://localhost:6666/some-path"
-test_500 = "http://localhost:6666/fib"
+test_200 = sprintf("http://localhost:%d/fib?n=10", PORT)
+test_404 = sprintf("http://localhost:%d/some-path", PORT)
+test_500 = sprintf("http://localhost:%d/fib", PORT)
 
 test_that("Check status code", {
     expect_equal(get_status_code(test_200), 200L)
@@ -49,4 +51,26 @@ test_that("Check answer", {
     expect_equal(get_text(test_404), "Page not found")
     err_500_text = 'Error in user code: subscript out of bounds\nCall: request$query[["n"]]\nTracebeck:\napp$call_handler(request)\nFUN(request)'
     expect_equal(get_text(test_500), err_500_text)
+})
+
+test_200_1 = sprintf("http://localhost:%d/desc", PORT)
+test_200_2 = sprintf("http://localhost:%d/html/index.html", PORT)
+test_404   = sprintf("http://localhost:%d/html/does-not-exist", PORT)
+
+test_that("Check static files answer", {
+  expect_equal(strsplit(get_text(test_200_1), "\n", TRUE)[[1]][[1]], "Package: RestRserve")
+  expect_true(grepl("The R Language", get_text(test_200_2), fixed = TRUE))
+  expect_equal(get_text(test_404), "Page not found")
+})
+
+test_that("Check static files code", {
+  expect_equal(get_status_code(test_200_1), 200L)
+  expect_equal(get_status_code(test_200_2), 200L)
+  expect_equal(get_status_code(test_404), 404L)
+})
+
+test_that("Check headers", {
+  expect_equal(get_headers(test_200_1)$`content-type`, "text/plain")
+  expect_equal(get_headers(test_200_2)$`content-type`, "text/html")
+  expect_equal(get_headers(test_404)$`content-type`, "text/plain")
 })
