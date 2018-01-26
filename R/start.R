@@ -15,6 +15,15 @@ restrserve_start = function(dir, debug = FALSE, ...) {
   stopifnot(is.logical(debug) && length(debug) == 1L)
   dir = normalizePath(dir, mustWork = TRUE)
   stopifnot(dir.exists(dir))
+  #------------------
+  # we want all file paths for static files like openapi.yaml, swagger-ui index.html to
+  # be relative to deployment directory
+  # so during the start we need to modify workdir and set it up equal to deployment dir
+  #------------------
+  wd = getwd()
+  on.exit(setwd(wd))
+  setwd(dir)
+  #------------------
 
   configuraion_path = file.path(dir, "Rserve.conf")
   if(!file.exists(configuraion_path))
