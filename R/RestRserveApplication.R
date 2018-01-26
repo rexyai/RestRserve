@@ -83,8 +83,15 @@
 RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
+    debug = NULL,
+    debug_message = function(...) {
+      if(self$debug)
+        message(...)
+      invisible(TRUE)
+    },
     #------------------------------------------------------------------------
-    initialize = function() {
+    initialize = function(debug = FALSE) {
+      self$debug = debug
       private$handlers = new.env(parent = emptyenv())
     },
     #------------------------------------------------------------------------
@@ -149,6 +156,7 @@ RestRserveApplication = R6::R6Class(
       if(is.na(is_dir)) {
         stop(sprintf("'%s' file or directory doesnt't exists", file_path))
       }
+      # now we know file exists
       file_path = normalizePath(file_path)
 
       mime_avalable = FALSE
@@ -161,6 +169,7 @@ RestRserveApplication = R6::R6Class(
       }
       # file_path is a DIRECTORY
       if(is_dir) {
+        self$debug_message("adding DIR ", file_path)
         handler = function(request) {
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
@@ -181,6 +190,7 @@ RestRserveApplication = R6::R6Class(
         }
         self$add_get(path, handler, path_as_prefix = TRUE, ...)
       } else {
+        self$debug_message("adding FILE ", file_path)
         # file_path is a FILE
         handler = function(request) {
 
