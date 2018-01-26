@@ -101,6 +101,9 @@ RestRserveApplication = R6::R6Class(
 
       # remove trailing slashes
       path = gsub(pattern = "/+$", replacement = "", x = path)
+      # if path was a root -> replace it back
+      if(path == "")
+        path = "/"
 
       if(length(formals(FUN)) != 1L)
         stop("function should take exactly one argument - request")
@@ -142,13 +145,11 @@ RestRserveApplication = R6::R6Class(
       stopifnot(is_string_or_null(file_path))
       stopifnot(is_string_or_null(content_type))
 
-      file_path = normalizePath(file_path)
       is_dir = file.info(file_path)[["isdir"]]
-
       if(is.na(is_dir)) {
         stop(sprintf("'%s' file or directory doesnt't exists", file_path))
       }
-
+      file_path = normalizePath(file_path)
 
       mime_avalable = FALSE
       if(is.null(content_type)) {
@@ -289,7 +290,7 @@ RestRserveApplication = R6::R6Class(
                            file_path = "openapi.yaml",
                            ...) {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
-      file_path = normalizePath(file_path)
+      file_path = path.expand(file_path)
 
       if(!require(yaml, quietly = TRUE))
         stop("please install 'yaml' package first")
@@ -301,7 +302,6 @@ RestRserveApplication = R6::R6Class(
         dir.create(file_dir, recursive = TRUE, ...)
 
       yaml::write_yaml(openapi, file = file_path, ...)
-
       # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
       # for now use  "application/x-yaml":
       # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
@@ -312,7 +312,7 @@ RestRserveApplication = R6::R6Class(
                               path_swagger_assets = "/__swagger__/",
                               file_path = tempfile(fileext = ".html")) {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
-      file_path = normalizePath(file_path)
+      file_path = path.expand(file_path)
 
       if(!require(swagger, quietly = TRUE))
         stop("please install 'swagger' package first")
