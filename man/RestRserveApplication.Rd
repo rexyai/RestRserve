@@ -40,8 +40,8 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   then MIME code \code{content_type}  will be inferred automatically (from file extension).
   If it will be impossible to guess about file type then \code{content_type} will be set to
   \code{"application/octet-stream"}}
-  \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
-     \code{port} - http port for application.
+  \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
+     \code{http_port} - http port for application.
      \code{...} - key-value pairs of the Rserve configuration.}
   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
   Calls handler function for a given request.}

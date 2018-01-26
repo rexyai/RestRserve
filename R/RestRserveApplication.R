@@ -26,8 +26,8 @@
 #'   then MIME code \code{content_type}  will be inferred automatically (from file extension).
 #'   If it will be impossible to guess about file type then \code{content_type} will be set to
 #'   \code{"application/octet-stream"}}
-#'   \item{\code{$run(port = "80", ...)}}{starts RestRserve application from current R session.
-#'      \code{port} - http port for application.
+#'   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
+#'      \code{http_port} - http port for application.
 #'      \code{...} - key-value pairs of the Rserve configuration.}
 #'   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
 #'   Calls handler function for a given request.}
@@ -142,6 +142,7 @@ RestRserveApplication = R6::R6Class(
       stopifnot(is_string_or_null(file_path))
       stopifnot(is_string_or_null(content_type))
 
+      file_path = normalizePath(file_path)
       is_dir = file.info(file_path)[["isdir"]]
 
       if(is.na(is_dir)) {
@@ -160,7 +161,7 @@ RestRserveApplication = R6::R6Class(
       # file_path is a DIRECTORY
       if(is_dir) {
         handler = function(request) {
-          fl = file.path(path.expand(file_path), substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
+          fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
             http_404_not_found()
@@ -180,7 +181,6 @@ RestRserveApplication = R6::R6Class(
         self$add_get(path, handler, path_as_prefix = TRUE, ...)
       } else {
         # file_path is a FILE
-        file_path = path.expand(file_path)
         handler = function(request) {
 
           if(!file.exists(file_path))
@@ -251,9 +251,13 @@ RestRserveApplication = R6::R6Class(
       names(endpoints_methods) = endpoints
       endpoints_methods
     },
-    run = function(port = "80", ...) {
-      stopifnot(is.character(port) || is.integer(port))
-      stopifnot(length(port) == 1L)
+    run = function(http_port = 8001L, ...) {
+      stopifnot(is.character(http_port) || is.numeric(http_port))
+      stopifnot(length(http_port) == 1L)
+      http_port = as.integer(http_port)
+
+      if( !is.null(list(...)[["http.port"]]) )
+        stop(sprintf("Parameter 'http.port'/'http_port' was specified twice"))
 
       keep_http_request = .GlobalEnv[[".http.request"]]
       keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]
@@ -266,7 +270,7 @@ RestRserveApplication = R6::R6Class(
       .GlobalEnv[[".http.request"]] = RestRserve:::http_request
       .GlobalEnv[["RestRserveApp"]] = self
       self$print_endpoints_summary()
-      Rserve::run.Rserve("http.port" = port, ...)
+      Rserve::run.Rserve("http.port" = http_port, ...)
     },
     print_endpoints_summary = function() {
       registered_endpoints = self$routes()
@@ -285,6 +289,7 @@ RestRserveApplication = R6::R6Class(
                            file_path = "openapi.yaml",
                            ...) {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
+      file_path = normalizePath(file_path)
 
       if(!require(yaml, quietly = TRUE))
         stop("please install 'yaml' package first")
@@ -306,6 +311,9 @@ RestRserveApplication = R6::R6Class(
                               path_openapi = "/openapi.yaml",
                               path_swagger_assets = "/__swagger__/",
                               file_path = tempfile(fileext = ".html")) {
+      stopifnot(is.character(file_path) && length(file_path) == 1L)
+      file_path = normalizePath(file_path)
+
       if(!require(swagger, quietly = TRUE))
         stop("please install 'swagger' package first")
 

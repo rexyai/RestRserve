@@ -25,4 +25,4 @@ app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers
 app$add_route(path = "/fib", method = "GET", FUN = fib)
 
-app$run(port = "6666")
+app$run(http_port = "6666")

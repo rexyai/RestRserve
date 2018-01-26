@@ -55,7 +55,7 @@ Note that every user function which is registered as endpoint handler should **A
 **Start** application from interactive session with following command:
 
 ```r
-app$run(port = "8001")
+app$run(http_port = "8001")
 ```
 
 This turns the current R session into Rserve session. Rserve takes over until it is shut down or receives a user interrupt signal. 
@@ -114,7 +114,7 @@ app$add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")
 app$add_swagger_ui(path = "/swagger", 
                    path_openapi = "/openapi.yaml", 
                    path_swagger_assets = "/__swagger__")
-app$run(port = "8001")
+app$run(http_port = "8001")
 ```
 
 ![swagger-ui](docs/swagger-ui.png)
