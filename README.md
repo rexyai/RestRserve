@@ -36,7 +36,7 @@ calc_fib = function(n) {
 
 fib = function(request) {
   n = as.integer( request$query[["n"]] )
-  RestRserve::create_response(payload = as.character(calc_fib(n)),
+  RestRserve::create_response(body = as.character(calc_fib(n)),
                               content_type = "text/plain",
                               headers = character(0),
                               status_code = 200L)
