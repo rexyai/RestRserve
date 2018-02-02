@@ -47,6 +47,10 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   Calls handler function for a given request.}
   \item{\code{$routes()}}{Lists all registered routes}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
+  \item{\code{$set_404_handler(FUN)}}{Register custom 404 response handler. \code{FUN} should be a
+  function which takes exactly one argument - request and return \code{RestRserveResponse} object.
+  Default handler is \code{FUN = function(request) http_404_not_found()}. See \link{http_404_not_found} for
+  details}
   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",

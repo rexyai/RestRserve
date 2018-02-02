@@ -30,6 +30,7 @@ app$add_route(path = "/fib", method = "GET", FUN = fib)
 # serve static file
 app$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
 # serve static dir
-app$add_static(path = "/html", file_path = DIR = file.path(R.home(), "doc/html"))
+app$add_static(path = "/html", file_path = file.path(R.home(), "doc/html"))
+app$set_404_handler(function(request) http_404_not_found("Page not found custom"))
 
 app$run(http_port = PORT)

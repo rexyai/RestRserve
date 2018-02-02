@@ -33,6 +33,10 @@
 #'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
+#'   \item{\code{$set_404_handler(FUN)}}{Register custom 404 response handler. \code{FUN} should be a
+#'   function which takes exactly one argument - request and return \code{RestRserveResponse} object.
+#'   Default handler is \code{FUN = function(request) http_404_not_found()}. See \link{http_404_not_found} for
+#'   details}
 #'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
 #'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
 #'   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
@@ -91,6 +95,7 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     initialize = function(debug = FALSE) {
+      private$http_404_handler = self$set_404_handler(function(request) http_404_not_found())
       self$debug = debug
       private$handlers = new.env(parent = emptyenv())
     },
@@ -174,14 +179,14 @@ RestRserveApplication = R6::R6Class(
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            http_404_not_found()
+            private$http_404_handler(request)
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              http_404_not_found()
+              private$http_404_handler(request)
             }
             else {
               create_response(body = c(file = fl), content_type = content_type, status_code = 200L)
@@ -195,7 +200,7 @@ RestRserveApplication = R6::R6Class(
         handler = function(request) {
 
           if(!file.exists(file_path))
-            return(http_404_not_found())
+            return(private$http_404_handler(request))
 
           if(is.null(content_type)) {
             if(mime_avalable)
@@ -212,6 +217,7 @@ RestRserveApplication = R6::R6Class(
       if(!(is.character(path) && length(path) == 1L)) {
         http_520_unknown_error("path should be character vector of length 1")
       }
+      # placeholder for result - should be properly set below
       result = http_520_unknown_error("should not happen - please report to https://github.com/dselivanov/RestRserve/issues")
 
       METHOD = request$method
@@ -221,7 +227,7 @@ RestRserveApplication = R6::R6Class(
         # happy path
         result = FUN(request)
         if(class(result) != "RestRserveResponse")
-          result = http_500_internal_server_error("Error in user-supplied code - it doesn't return 'RestRserveResponse' object created by RestRserve::create_response()")
+          result = http_500_internal_server_error("Error in handler function - it doesn't return 'RestRserveResponse' object created by RestRserve::create_response()")
       } else {
         # may be path is a prefix
         registered_paths = names(private$handlers)
@@ -229,7 +235,7 @@ RestRserveApplication = R6::R6Class(
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
         handlers_match_start = startsWith(x = path, prefix = paste(registered_paths, "/", sep = ""))
         if(!any(handlers_match_start))
-          result = http_404_not_found()
+          result = private$http_404_handler(request)
         else {
           # find method which match the path - should be unique
           j = which(handlers_match_start)
@@ -241,7 +247,7 @@ RestRserveApplication = R6::R6Class(
             # now FUN is NULL or some function
             # if it is a function then we need to check whther it was registered to handle patterned paths
             if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-              result = http_404_not_found()
+              result = private$http_404_handler(request)
             } else {
               result = FUN(request)
             }
@@ -332,9 +338,24 @@ RestRserveApplication = R6::R6Class(
       self$add_static(path_swagger_assets, system.file("dist", package = "swagger"))
       write_swagger_ui_index_html(file_path, path_swagger_assets = path_swagger_assets, path_openapi = path_openapi)
       self$add_static(path, file_path)
+    },
+    set_404_handler = function(FUN) {
+
+      if(length(formals(FUN)) != 1L)
+        stop("function should take exactly one argument - request")
+
+      FUN_WRAPPED = function(request) {
+        result = FUN(request)
+        if(!inherits(result, "RestRserveResponse"))
+          result = http_500_internal_server_error("Error in 404 error handler function - it doesn't return 'RestRserveResponse' object")
+        result
+      }
+
+      private$http_404_handler = compiler::cmpfun(FUN_WRAPPED)
     }
   ),
   private = list(
+    http_404_handler = NULL,
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     # according to
