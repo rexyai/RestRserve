@@ -220,6 +220,10 @@ RestRserveApplication = R6::R6Class(
       # placeholder for result - should be properly set below
       result = http_520_unknown_error("should not happen - please report to https://github.com/dselivanov/RestRserve/issues")
 
+      # no registered endpoints -return 404
+      if(identical(names(private$handlers), character(0)))
+        return(private$http_404_handler(request))
+
       METHOD = request$method
       FUN = private$handlers[[path]][[METHOD]]
 
@@ -231,6 +235,7 @@ RestRserveApplication = R6::R6Class(
       } else {
         # may be path is a prefix
         registered_paths = names(private$handlers)
+        # self$debug_message("registered_paths: ", registered_paths)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
         handlers_match_start = startsWith(x = path, prefix = paste(registered_paths, "/", sep = ""))
@@ -239,6 +244,7 @@ RestRserveApplication = R6::R6Class(
         else {
           # find method which match the path - should be unique
           j = which(handlers_match_start)
+          # self$debug_message("index handlers_match_start ", j)
           if(length(j) != 1L) {
             result = http_500_internal_server_error("more than one handler match to the request path")
           }

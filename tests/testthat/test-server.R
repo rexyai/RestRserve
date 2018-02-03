@@ -48,7 +48,7 @@ test_that("Check headers", {
 
 test_that("Check answer", {
     expect_equal(get_text(test_200), "55")
-    expect_equal(get_text(test_404), "Page not found custom")
+    expect_equal(get_text(test_404), "Page not found")
     err_500_text = 'Error in user code: subscript out of bounds\nCall: request$query[["n"]]\nTracebeck:\napp$call_handler(request)\nFUN(request)'
     expect_equal(get_text(test_500), err_500_text)
 })
@@ -60,7 +60,7 @@ test_404   = sprintf("http://localhost:%d/html/does-not-exist", PORT)
 test_that("Check static files answer", {
   expect_equal(strsplit(get_text(test_200_1), "\n", TRUE)[[1]][[1]], "Package: RestRserve")
   expect_true(grepl("The R Language", get_text(test_200_2), fixed = TRUE))
-  expect_equal(get_text(test_404), "Page not found custom")
+  expect_equal(get_text(test_404), "Page not found")
 })
 
 test_that("Check static files code", {
