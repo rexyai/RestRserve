@@ -366,15 +366,15 @@ RestRserveApplication = R6::R6Class(
     handlers_openapi_definitions = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
-    # only "GET", "POST", ""HEAD" are supported
-    supported_methods = c("GET", "POST", "HEAD"),
+    # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
+    supported_methods = c("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"),
     check_method_supported = function(method) {
       if(!is.character(method))
-        stop("method should be on of the ['GET', 'POST', 'HEAD']")
+        stop(sprintf("method should be on of the [%s]", paste(private$supported_methods, collapse = ", ")))
       if(!(length(method) == 1L))
-        stop("method should be on of the ['GET', 'POST', 'HEAD']")
+        stop(sprintf("method should be on of the [%s]", paste(private$supported_methods, collapse = ", ")))
       if(!(method %in% private$supported_methods))
-        stop("method should be on of the ['GET', 'POST', 'HEAD']")
+        stop(sprintf("method should be on of the [%s]", paste(private$supported_methods, collapse = ", ")))
       method
     },
     get_openapi_paths = function() {
