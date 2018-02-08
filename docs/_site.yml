@@ -1,0 +1,19 @@
+name: "RestRserve"
+output_dir: "."
+navbar:
+  title: "RestRserve"
+  left:
+    - text: "Home"
+      href: index.html
+  right:
+    - icon: fa-github
+      href: https://github.com/dselivanov/RestRserve
+
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+    theme: cosmo
+    highlight: haddock
