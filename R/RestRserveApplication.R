@@ -386,8 +386,8 @@ RestRserveApplication = R6::R6Class(
         for(m in methods) {
 
           yaml_string = enc2utf8(paste(private$handlers_openapi_definitions[[p]][[m]], collapse = "\n"))
-          openapi_definitions_yaml = yaml::yaml.load(yaml_string)
-
+          openapi_definitions_yaml = yaml::yaml.load(yaml_string,
+                                                     handlers = list("float#fix" = function(x) as.numeric(x)))
           if(is.null(openapi_definitions_yaml))
             warning(sprintf("can't properly parse YAML for '%s - %s'", p, m))
           else
