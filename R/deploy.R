@@ -69,11 +69,12 @@ restrserve_deploy = function(file,
     configuration_file_lines = readLines(configuration_file)
   }
   # `configuration_file_lines` comes after `configuration_lines` so can override them
-  configuration_lines =  c(configuration_lines,
-                           configuration_file_lines,
-                           source_user_code,
+  configuration_lines =  c(source_user_code,
                            source_http_request,
-                           paste("pid.file", pid_file))
+                           configuration_lines,
+                           configuration_file_lines,
+                           paste("pid.file", pid_file)
+                           )
 
   configuraion_path = file.path(dir, "Rserve.conf")
   writeLines(configuration_lines, configuraion_path)
