@@ -4,7 +4,7 @@
 #' and values are corresponding configuration entries
 #' @export
 restrserve_default_conf = function() {
-  c("http.port" = "80",
+  c("http.port" = "8001",
     "encoding" = "utf8",
     "port" = "6311")
 }
@@ -24,8 +24,8 @@ restrserve_default_conf = function() {
 #' (after \link{restrserve_start} call).
 #' @param start_from_snapshot \code{logical} whether to use snapshot of the user code from to start application.
 #' User supplied code from \code{file} will be copied to the \code{dir}.
-#' Copy of the \code{file} will have a name \code{current_app_snapshot}.
-#' If \code{start_from_snapshot = TRUE} (default) then application will be started using \code{current_app_snapshot} file.
+#' Copy of the \code{file} will have a name \code{current_app_snapshot.R}.
+#' If \code{start_from_snapshot = TRUE} (default) then application will be started using \code{current_app_snapshot.R} file.
 #' If \code{start_from_snapshot = FALSE} then original \code{file} will be used.
 #' @return \code{TRUE} invisibly if deployment was successful
 #' @export
@@ -46,7 +46,7 @@ restrserve_deploy = function(file,
   dir = normalizePath(dir, mustWork = TRUE)
 
   # copy user-supplied code to deployment dir
-  file_snap = file.path(dir, "current_app_snapshot")
+  file_snap = file.path(dir, "current_app_snapshot.R")
   file.copy(file, file_snap, overwrite = TRUE)
 
   # create configuration entries (and validate `configuration`)
