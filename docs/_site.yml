@@ -5,6 +5,10 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Examples"
+      menu:
+        - text: "Serving machine learning models"
+          href: serving-ml.html
   right:
     - icon: fa-github
       href: https://github.com/dselivanov/RestRserve

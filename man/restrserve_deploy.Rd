@@ -26,8 +26,8 @@ from \code{configuration} argument above.}
 
 \item{start_from_snapshot}{\code{logical} whether to use snapshot of the user code from to start application.
 User supplied code from \code{file} will be copied to the \code{dir}.
-Copy of the \code{file} will have a name \code{current_app_snapshot}.
-If \code{start_from_snapshot = TRUE} (default) then application will be started using \code{current_app_snapshot} file.
+Copy of the \code{file} will have a name \code{current_app_snapshot.R}.
+If \code{start_from_snapshot = TRUE} (default) then application will be started using \code{current_app_snapshot.R} file.
 If \code{start_from_snapshot = FALSE} then original \code{file} will be used.}
 }
 \value{

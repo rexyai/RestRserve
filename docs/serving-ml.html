@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+<meta name="author" content="Dmitriy Selivanov" />
+
+<meta name="date" content="2018-02-15" />
+
+<title>Serving machine learning models</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #0000ff; } /* Keyword */
+code > span.ch { color: #008080; } /* Char */
+code > span.st { color: #008080; } /* String */
+code > span.co { color: #008000; } /* Comment */
+code > span.ot { color: #ff4000; } /* Other */
+code > span.al { color: #ff0000; } /* Alert */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #008000; font-weight: bold; } /* Warning */
+code > span.cn { } /* Constant */
+code > span.sc { color: #008080; } /* SpecialChar */
+code > span.vs { color: #008080; } /* VerbatimString */
+code > span.ss { color: #008080; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { } /* Variable */
+code > span.cf { color: #0000ff; } /* ControlFlow */
+code > span.op { } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #ff4000; } /* Preprocessor */
+code > span.do { color: #008000; } /* Documentation */
+code > span.an { color: #008000; } /* Annotation */
+code > span.cv { color: #008000; } /* CommentVar */
+code > span.at { } /* Attribute */
+code > span.in { color: #008000; } /* Information */
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">RestRserve</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="serving-ml.html">Serving machine learning models</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/dselivanov/RestRserve">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Serving machine learning models</h1>
+<h4 class="author"><em>Dmitriy Selivanov</em></h4>
+<h4 class="date"><em>2018-02-15</em></h4>
+
+</div>
+
+
+<p>This example is a good starting point for all the developers who want to understand how RestRserve works. All the code can be found in the <a href="https://github.com/dselivanov/RestRserve/tree/master/examples/xgboost-mushrooms">example directory</a> of the RestRserve repository.</p>
+<p>In many cases the end goal of data scientists / data engineers is to create a <em>data product</em> which will be used by other people or services/applications. <code>RestRserve</code> focuses on the later.</p>
+<div id="pipeline" class="section level1">
+<h1>Pipeline</h1>
+<p>Here we show a simplified pipeline for creating a microservice which will serve a machine learning model.</p>
+<p>Assume we need to be able to predict something based on the data. First we need to build a model:</p>
+<ol style="list-style-type: decimal">
+<li>Get raw data</li>
+<li>Perform set of transforamtions - extract features, encode variables, etc.</li>
+<li>Train a model on a transformed data</li>
+</ol>
+<p>Than after several iterations of the steps above we may have a good enough model. Now we want it process new data. This could be decomposed into:</p>
+<ol style="list-style-type: decimal">
+<li>Get raw data</li>
+<li>Perform <strong>exactly the same transforamtions</strong> as we’ve done during the training</li>
+<li>Apply pre-trained model</li>
+</ol>
+<p>As we can see we have to think about reproducibility of the data transformations and about how to save/load the model. Fortunately almost all R objects can be serialized and stored to disk with <code>saveRDS()</code> function. After we can read them with <code>readRDS()</code> function. There are some important remarks here:</p>
+<ul>
+<li>need to pay attention to <strong>closures</strong> - need to make sure that all necessary data/code is captured during the serialization</li>
+<li><strong>not all the R objects are serializable</strong>! Good examples are connections and external pointers.</li>
+</ul>
+</div>
+<div id="example" class="section level1">
+<h1>Example</h1>
+<p>We will use <a href="https://github.com/dmlc/xgboost">xgboost</a> library here to demonstrate how to build RestRserve application. Also we will use <a href="https://archive.ics.uci.edu/ml/datasets/Mushroom">Mushroom Data Set</a> which is built-in into R’s <code>xgboost</code> package.</p>
+<p>Given the description of the mushrooms in terms of physical characteristics the task is to predict whether mushrom is poisonous or edible.</p>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Data in the package is stored as a CSC sparse matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(xgboost)
+<span class="kw">library</span>(Matrix)
+<span class="kw">data</span>(agaricus.train, <span class="dt">package =</span> <span class="st">&quot;xgboost&quot;</span>)
+<span class="kw">str</span>(agaricus.train<span class="op">$</span>data)</code></pre></div>
+<p>All the mushroom properties are “one-hot-encoded”:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">features =<span class="st"> </span><span class="kw">colnames</span>(agaricus.train<span class="op">$</span>data)
+<span class="kw">head</span>(features)</code></pre></div>
+</div>
+<div id="train-the-model" class="section level2">
+<h2>Train the model</h2>
+<p>Let’s train our model (for simplicity we omit hyper-parameter selection / cross-validation step):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bst =<span class="st"> </span><span class="kw">xgboost</span>(<span class="dt">data =</span> agaricus.train<span class="op">$</span>data, 
+              <span class="dt">label =</span> agaricus.train<span class="op">$</span>label, 
+              <span class="dt">max_depth =</span> <span class="dv">2</span>, <span class="dt">eta =</span> <span class="dv">1</span>,
+              <span class="dt">nrounds =</span> <span class="dv">5</span>, 
+              <span class="dt">objective =</span> <span class="st">&quot;binary:logistic&quot;</span>)</code></pre></div>
+<p>Now we need to save the model in order to be able to use it during inference time. <code>xgboost</code> models can’t be serialized with <code>saveRDS()</code>, but fortunately library provides its own save and load methods:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">xgb.save</span>(bst, <span class="st">&quot;model.xgb&quot;</span>)</code></pre></div>
+</div>
+<div id="query-the-service" class="section level2">
+<h2>Query the service</h2>
+<p>Now we want to wrap model a http-microservice. We want to send a http-request with the properties of the mushroom and service should respond with a probability of the mushroom being edible. Properties can be send to the server using different http methods (usually GET or POST). Here we will demonstrate</p>
+<ul>
+<li>POST method with the payload in JSON format.</li>
+<li>GET method with parameters encoded inside the query string</li>
+</ul>
+<p>POST request can look like:</p>
+<p><code>'[{&quot;featureName&quot;: &quot;stalk-color-below-ring&quot;, &quot;featureValue&quot;: &quot;red&quot;},{&quot;featureName&quot;: &quot;cap-shape&quot;,&quot;featureValue&quot;: &quot;conical&quot;}]'</code></p>
+<p>GET parameter can look like:</p>
+<p><code>stalk-color-below-ring=red;cap-shape=conical</code>.</p>
+<p>Note that in reality <code>;</code> and <code>=</code> symbols need to be url-encoded. So query parameter will look like:</p>
+<p><code>stalk-color-below-ring%3Dred%3Bcap-shape%3Dconical</code>.</p>
+<p>In order to be able to make prediction we need to transform input raw data to the format that our model can consume - CSC sparse matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># this function create a function which can be used to </span>
+<span class="co"># encode input json to a sparse matrix</span>
+model_matrix_constructor =<span class="st"> </span><span class="cf">function</span>(features) {
+  n_features =<span class="st"> </span><span class="kw">length</span>(features)
+  <span class="cf">function</span>(x) {
+    <span class="co"># read key-value pairs from json</span>
+    key_val =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">fromJSON</span>(x, <span class="dt">simplifyVector =</span> <span class="ot">FALSE</span>)
+    <span class="co"># make them  &quot;key=value&quot; string as it was in original feature space</span>
+    <span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">length</span>(key_val)) {
+      kv =<span class="st"> </span>key_val[[i]]
+      key_val[[i]] =<span class="st"> </span><span class="kw">paste</span>(kv<span class="op">$</span>key, kv<span class="op">$</span>val, <span class="dt">sep =</span> <span class="st">&quot;=&quot;</span>)
+    }
+    <span class="co"># find the column index for a given feature</span>
+    col_index =<span class="st"> </span><span class="kw">match</span>(key_val, features)
+    <span class="co"># if we&#39;ve received unseen priperties - ignore them </span>
+    col_index =<span class="st"> </span>col_index[<span class="op">!</span><span class="kw">is.na</span>(col_index)]
+    <span class="co"># since request contains information about single observation -</span>
+    <span class="co"># there should be 1 row in the matrix</span>
+    row_index =<span class="st"> </span><span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(col_index))
+    <span class="co"># cosntruct sparse matrix as it is required by xgboost</span>
+    <span class="kw">sparseMatrix</span>(<span class="dt">i =</span> row_index, 
+                 <span class="dt">j =</span> col_index, 
+                 <span class="dt">x =</span> <span class="dv">1</span>, 
+                 <span class="dt">dims =</span> <span class="kw">c</span>(<span class="dv">1</span>, n_features))
+
+  }
+}
+
+create_model_matrix =<span class="st"> </span><span class="kw">model_matrix_constructor</span>(features)</code></pre></div>
+<p>Save transformation function in order to use it during inference time:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">saveRDS</span>(create_model_matrix, <span class="st">&quot;create_model_matrix.rds&quot;</span>)</code></pre></div>
+</div>
+<div id="restrserve-application" class="section level2">
+<h2>RestRserve application</h2>
+<p>Now everything is ready to build and start our web service! Logically what we will do:</p>
+<ol style="list-style-type: decimal">
+<li>load necessary libraries</li>
+<li>load model and function which transforms raw data to the format which model can consume</li>
+<li>create functions which will handle incoming requests
+<ul>
+<li>add annotations in YAML format to generate OpenAPI specification (used for swagger-ui)</li>
+</ul></li>
+<li>register function to handle particular end points</li>
+<li>generate OpenAPI specification (RestRserve can automatically parse function annotations) and create swagger-ui</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RestRserve)
+<span class="kw">library</span>(xgboost)
+<span class="kw">library</span>(Matrix)
+
+create_model_matrix =<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;create_model_matrix.rds&quot;</span>)
+bst =<span class="st"> </span><span class="kw">xgb.load</span>(<span class="st">&quot;model.xgb&quot;</span>)
+
+pred_xgb_post =<span class="st"> </span><span class="cf">function</span>(request) {
+  <span class="co">#&#39; ---</span>
+  <span class="co">#&#39; description: predict whether mushroom edible or poisonous</span>
+  <span class="co">#&#39; operationId: postXgbPredict</span>
+  <span class="co">#&#39; requestBody:</span>
+  <span class="co">#&#39;   description: &quot;mushroom properties&quot;</span>
+  <span class="co">#&#39;   required: true</span>
+  <span class="co">#&#39;   content:</span>
+  <span class="co">#&#39;     application/json:</span>
+  <span class="co">#&#39;       schema:</span>
+  <span class="co">#&#39;         type: array</span>
+  <span class="co">#&#39;         items:</span>
+  <span class="co">#&#39;           required:</span>
+  <span class="co">#&#39;             - featureName</span>
+  <span class="co">#&#39;             - featureValue</span>
+  <span class="co">#&#39;           properties:</span>
+  <span class="co">#&#39;             featureName:</span>
+  <span class="co">#&#39;               type: string</span>
+  <span class="co">#&#39;               example: &quot;stalk-color-below-ring&quot;</span>
+  <span class="co">#&#39;             featureValue:</span>
+  <span class="co">#&#39;               type: string</span>
+  <span class="co">#&#39;               example: &quot;red&quot;</span>
+  <span class="co">#&#39; responses:</span>
+  <span class="co">#&#39;   200:</span>
+  <span class="co">#&#39;     description: API response</span>
+  <span class="co">#&#39;     content:</span>
+  <span class="co">#&#39;       text/plain:</span>
+  <span class="co">#&#39;         schema:</span>
+  <span class="co">#&#39;           type: numeric</span>
+  <span class="co">#&#39;           example: 0.5</span>
+  <span class="co">#&#39; ---</span>
+  x =<span class="st"> </span><span class="kw">rawToChar</span>(request<span class="op">$</span>body)
+  x =<span class="st"> </span><span class="kw">create_model_matrix</span>(x)
+  RestRserve<span class="op">::</span><span class="kw">create_response</span>(<span class="dt">body =</span> <span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x)),
+                              <span class="dt">content_type =</span> <span class="st">&quot;text/plain&quot;</span>,
+                              <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>),
+                              <span class="dt">status_code =</span> 200L)
+}
+pred_xgb_get =<span class="st"> </span><span class="cf">function</span>(request) {
+  <span class="co">#&#39; ---</span>
+  <span class="co">#&#39; description: predict whether mushroom edible or poisonous</span>
+  <span class="co">#&#39; operationId: getXgbPredict</span>
+  <span class="co">#&#39; parameters:</span>
+  <span class="co">#&#39;   - name: &quot;mushrom-properties&quot;</span>
+  <span class="co">#&#39;     description: &gt;</span>
+  <span class="co">#&#39;       String of the &#39;key=value&#39; pairs of mushroom properties.</span>
+  <span class="co">#&#39;       Several paramenters can be provided - use semicolon &#39;;&#39;</span>
+  <span class="co">#&#39;       to concatenate them</span>
+  <span class="co">#&#39;     in: query</span>
+  <span class="co">#&#39;     schema:</span>
+  <span class="co">#&#39;       type: string</span>
+  <span class="co">#&#39;     example: &quot;stalk-color-below-ring=red;cap-shape=conical&quot;</span>
+  <span class="co">#&#39; responses:</span>
+  <span class="co">#&#39;   200:</span>
+  <span class="co">#&#39;     description: API response</span>
+  <span class="co">#&#39;     content:</span>
+  <span class="co">#&#39;       text/plain:</span>
+  <span class="co">#&#39;         schema:</span>
+  <span class="co">#&#39;           type: numeric</span>
+  <span class="co">#&#39;           example: 0.5</span>
+  <span class="co">#&#39; ---</span>
+
+  <span class="co"># create json in order to be able to re-use create_model_matrix() function</span>
+  <span class="co"># just for demonstration - by far not ideal solution!</span>
+  x =<span class="st"> </span><span class="kw">strsplit</span>(request<span class="op">$</span>query[[<span class="st">&quot;mushrom-properties&quot;</span>]], <span class="st">&quot;;&quot;</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)[[<span class="dv">1</span>]]
+  x =<span class="st"> </span><span class="kw">strsplit</span>(x, <span class="st">&quot;=&quot;</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)
+  x =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">toJSON</span> (<span class="kw">lapply</span>(x, <span class="cf">function</span>(z) <span class="kw">list</span>(<span class="dt">featureName =</span> z[[<span class="dv">1</span>]], <span class="dt">featureValue =</span> z[[<span class="dv">2</span>]])), <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
+  <span class="co"># create feature matrix</span>
+  x =<span class="st"> </span><span class="kw">create_model_matrix</span>(x)
+  RestRserve<span class="op">::</span><span class="kw">create_response</span>(<span class="dt">body =</span> <span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x)),
+                              <span class="dt">content_type =</span> <span class="st">&quot;text/plain&quot;</span>,
+                              <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>),
+                              <span class="dt">status_code =</span> 200L)
+}
+<span class="co">#------------------------------------------------------------------------------------------</span>
+<span class="co"># create application</span>
+<span class="co">#------------------------------------------------------------------------------------------</span>
+RestRserveApp =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
+RestRserveApp<span class="op">$</span><span class="kw">add_post</span>(<span class="dt">path =</span> <span class="st">&quot;/predict&quot;</span>, <span class="dt">FUN =</span> pred_xgb_post)
+RestRserveApp<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/predict&quot;</span>, <span class="dt">FUN =</span> pred_xgb_get)
+RestRserveApp<span class="op">$</span><span class="kw">add_openapi</span>()
+RestRserveApp<span class="op">$</span><span class="kw">add_swagger_ui</span>(<span class="st">&quot;/&quot;</span>)
+RestRserveApp<span class="op">$</span><span class="kw">run</span>(<span class="dv">8001</span>)</code></pre></div>
+</div>
+</div>
+<div id="try-it-out" class="section level1">
+<h1>Try it out</h1>
+<p>Now we can visit <a href="http://localhost:8001/" class="uri">http://localhost:8001/</a> and try our application.</p>
+</div>
+<div id="stress-test" class="section level1">
+<h1>Stress test</h1>
+<p>Also we can test on how many requests per second it can handle (we use <a href="https://github.com/apigee/apib">apib</a>):</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="bu">echo</span> <span class="st">&#39;[{&quot;featureName&quot;: &quot;stalk-color-below-ring&quot;, &quot;featureValue&quot;: &quot;red&quot;},{&quot;featureName&quot;: &quot;cap-shape&quot;,&quot;featureValue&quot;: &quot;conical&quot;}]&#39;</span> <span class="op">&gt;</span> request.json
+
+<span class="ex">apib</span> --method POST --input-file request.json -c 16 -d 5 http://localhost:8001/predict
+
+<span class="fu">rm</span> request.json</code></pre></div>
+<p>And stress-test GET method:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="ex">apib</span> -c 16 -d 5 http://localhost:8001/predict?mushrom-properties=stalk-color-below-ring%3Dred%3Bcap-shape%3Dconical</code></pre></div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

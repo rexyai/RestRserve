@@ -305,6 +305,18 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="serving-ml.html">Serving machine learning models</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
@@ -326,20 +338,21 @@ div.tocify {
 </div>
 
 
-<div id="what-is-restrserve" class="section level1">
-<h1>What is RestRserve?</h1>
-<p>RestRserve is a R web API framework for building <strong>concurrent high-performance microservices and app backends</strong>.</p>
+<div id="rserve" class="section level1">
+<h1>Rserve</h1>
+<p>RestRserve is an R web API framework for building <strong>high-performance microservices and app backends</strong>. The main difference to other frameworks (<a href="https://github.com/trestletech/plumber">plumber</a>, <a href="https://github.com/Bart6114/jug">jug</a>) is that it is <strong>parallel by design</strong> (thanks to <a href="https://github.com/s-u/Rserve">Rserve</a>).</p>
+<p>YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.</p>
 <div id="features" class="section level3">
 <h3>Features</h3>
 <ul>
-<li>easily setting up a handler (R function) for a given http route - <a href="#create-application">Hello-world</a></li>
-<li><a href="#deploy-application">Deployment application and start it</a> with couple of line of the code. Easily <a href="#stop-application">stopping</a> it</li>
-<li><a href="#stress-test">Build <strong>high performance</strong> web API</a> - more than <strong>20000 requests per second on a laptop</strong> with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than <a href="https://github.com/trestletech/plumber">plumber</a></li>
-<li>generating <a href="https://www.openapis.org/">OpenAPI</a> specification by parsing annotations in R code</li>
-<li>exposing <a href="#swagger-ui-and-openapi">Swagger UI</a></li>
-<li>serving static files</li>
+<li>Create a http API by simply setting up a handler (R function) for a given route - <a href="#create-application">Hello-world</a></li>
+<li><a href="#deploy-application">Deploy applications</a> with a couple of lines of the code. Easily <a href="#stop-application">stop</a> them.</li>
+<li><a href="#stress-test">Build high performance web API</a> - more than <strong>20000 requests per second on a laptop</strong> with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than <a href="https://github.com/trestletech/plumber">plumber</a></li>
+<li>Generate <a href="https://www.openapis.org/">OpenAPI</a> specification by parsing annotations in R code</li>
+<li>Expose <a href="#swagger-ui-and-openapi">Swagger UI</a></li>
+<li>Serve static files</li>
 </ul>
-<p>RestRserve is a very thin layer on the top of <a href="https://github.com/s-u/Rserve">Rserve</a>) - most of the credits go to <a href="https://github.com/s-u">Simon Urbanek</a>.</p>
+<p>RestRserve is a very thin layer on the top of <a href="https://github.com/s-u/Rserve">Rserve</a> - most of the credits should go to <a href="https://github.com/s-u">Simon Urbanek</a>.</p>
 </div>
 <div id="create-application" class="section level2">
 <h2>Create application</h2>
@@ -366,7 +379,7 @@ fib =<span class="st"> </span><span class="cf">function</span>(request) {
 app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
 <span class="co"># register endpoints and corresponding R handlers</span>
 app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/fib&quot;</span>, <span class="dt">FUN =</span> fib)</code></pre></div>
-<p>Note that every user function which is registered as endpoint handler should <strong>ALWAYS return ‘RestRserveResponse’ object</strong> which is easy to construct with <code>RestRserve::create_response</code> (essentially a <code>list</code> with particular fields) .</p>
+<p>Note that every user function which is registered as endpoint handler should always return <code>RestRserveResponse</code> object which is easy to construct with <code>RestRserve::create_response</code> function call.</p>
 <div id="start-application-in-interactive-mode" class="section level3">
 <h3>Start application in interactive mode</h3>
 <p><strong>Start</strong> application from interactive session with following command:</p>
@@ -453,8 +466,8 @@ app_path =<span class="st"> </span><span class="kw">system.file</span>(<span cla
 RestRserve<span class="op">::</span><span class="kw">restrserve_deploy</span>(<span class="dt">file =</span> app_path, <span class="dt">dir =</span> dir, <span class="dt">configuration =</span> configuration)</code></pre></div>
 <p>This will generate Rserve configuration file (<code>Rserve.conf</code>) and put it along with a copy of the user application to the application directory <code>dir</code> (in our example <code>current_app_snapshot</code> is a copy of <code>/usr/local/lib/R/3.4/site-library/RestRserve/fib.R</code>):</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>(dir)
-<span class="co">#&quot;current_app_snapshot&quot; &quot;Rserve.conf&quot; </span></code></pre></div>
-<p>Note that by default <code>current_app_snapshot</code> will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see <code>start_from_snapshot</code> argument of the <code>restrserve_deploy()</code> function.</p>
+<span class="co">#&quot;current_app_snapshot.R&quot; &quot;Rserve.conf&quot; </span></code></pre></div>
+<p>Note that by default <code>current_app_snapshot.R</code> will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see <code>start_from_snapshot</code> argument of the <code>restrserve_deploy()</code> function.</p>
 </div>
 <div id="start-application" class="section level2">
 <h2>Start application</h2>
@@ -522,12 +535,21 @@ Receive bandwidth:     10.29 megabits / second</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">restrserve_stop</span>(dir)</code></pre></div>
 </div>
 </div>
+<div id="known-limitations" class="section level1">
+<h1>Known limitations</h1>
+<ul>
+<li>RestRserve is primarily tested on UNIX systems. While it works on Windows plase don’t expect it to be as performant as on UNIX-like systems.</li>
+<li>The main goal for RestRserve is to provide framework to create backend microservices with performance close to bare metall. So we haven’t had a focus on the useful but not absolutely necessary things like <a href="https://github.com/dselivanov/RestRserve/issues/10">uri templates</a>. Contributions are very welcome.</li>
+<li>Keep in mind that every request is handled in a separate process (forked from parent Rserve instance). While this is absolutely awesome feature which allows to handle requests in parallel it aslo put some limitations on reusing certain objects - notably database connections.</li>
+<li>While <code>Rserve</code> is matured and very well tested software, <code>RestRserve</code> is not - you can expect some minor bugs and minor API breaks</li>
+</ul>
+</div>
 <div id="acknowledgements" class="section level1">
 <h1>Acknowledgements</h1>
 <ul>
 <li><a href="https://github.com/s-u/">Simon Urbanek</a> (<span class="citation">@s-u</span>) for awesome <a href="https://github.com/s-u/Rserve">Rserve</a> and all the work on R itself and on his other packages</li>
 <li><a href="https://github.com/artemklevtsov">Artem Klevtsov</a> (<span class="citation">@artemklevtsov</span>) for useful suggestions and work on test coverage</li>
-<li><a href="https://github.com/trestletech">Jeff Allen</a> (<span class="citation">@trestletech</span>) for his work on <em>Swagger UI</em> in <a href="https://github.com/trestletech/plumber">plumber</a> (from where we took inspiration for our implementation)</li>
+<li><a href="https://github.com/trestletech">Jeff Allen</a> (<span class="citation">@trestletech</span>) for his work on Swagger UI in <a href="https://github.com/trestletech/plumber">plumber</a> (from where we took inspiration for our implementation)</li>
 <li><a href="https://github.com/brodieG">Brodie Gaslam</a> (<span class="citation">@brodieG</span>) for help with understanding on how to get traceback from try-catched function calls. Also thanks <a href="https://github.com/hadley">Hadley Wickham</a> (<span class="citation">@hadley</span>) for <a href="https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29">evaluate::try_capture_stack</a> function which we use for this purpose.</li>
 </ul>
 </div>

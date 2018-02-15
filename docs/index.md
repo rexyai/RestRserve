@@ -1,17 +1,19 @@
-# What is RestRserve?
+# Rserve
 
-RestRserve is a R web API framework for building **concurrent high-performance microservices and app backends**. 
+RestRserve is an R web API framework for building **high-performance microservices and app backends**. The main difference to other frameworks ([plumber](https://github.com/trestletech/plumber), [jug](https://github.com/Bart6114/jug)) is that it is **parallel by design** (thanks to [Rserve](https://github.com/s-u/Rserve)).
+
+YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.
 
 ### Features
 
-- easily setting up a handler (R function) for a given http route - [Hello-world](#create-application)
-- [Deployment application and start it](#deploy-application) with couple of line of the code. Easily [stopping](#stop-application) it
-- [Build **high performance** web API](#stress-test) - more than **20000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than [plumber](https://github.com/trestletech/plumber)
-- generating [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
-- exposing [Swagger UI](#swagger-ui-and-openapi)
-- serving static files
+- Create a http API by simply setting up a handler (R function) for a given route - [Hello-world](#create-application)
+- [Deploy applications](#deploy-application) with a couple of lines of the code. Easily [stop](#stop-application) them.
+- [Build high performance web API](#stress-test) - more than **20000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than [plumber](https://github.com/trestletech/plumber)
+- Generate [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
+- Expose [Swagger UI](#swagger-ui-and-openapi)
+- Serve static files
 
-RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rserve)) - most of the credits go to [Simon Urbanek](https://github.com/s-u).
+RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rserve) - most of the credits should go to [Simon Urbanek](https://github.com/s-u).
 
 ## Create application
 
@@ -41,7 +43,7 @@ app = RestRserve::RestRserveApplication$new()
 app$add_get(path = "/fib", FUN = fib)
 ```
 
-Note that every user function which is registered as endpoint handler should **ALWAYS return 'RestRserveResponse' object** which is easy to construct with `RestRserve::create_response` (essentially a `list` with particular fields) .
+Note that every user function which is registered as endpoint handler should always return `RestRserveResponse` object which is easy to construct with `RestRserve::create_response` function call.
 
 ### Start application in interactive mode
 
@@ -144,9 +146,9 @@ RestRserve::restrserve_deploy(file = app_path, dir = dir, configuration = config
 This will generate Rserve configuration file (`Rserve.conf`) and put it along with a copy of the user application to the application directory `dir` (in our example `current_app_snapshot` is a copy of `/usr/local/lib/R/3.4/site-library/RestRserve/fib.R`):
 ```r
 list.files(dir)
-#"current_app_snapshot" "Rserve.conf" 
+#"current_app_snapshot.R" "Rserve.conf" 
 ```
-Note that by default `current_app_snapshot` will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see `start_from_snapshot` argument of the `restrserve_deploy()` function.
+Note that by default `current_app_snapshot.R` will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see `start_from_snapshot` argument of the `restrserve_deploy()` function.
 
 ## Start application
 
@@ -239,9 +241,16 @@ Stop particular application (with all the childs):
 restrserve_stop(dir)
 ```
 
+# Known limitations
+
+- RestRserve is primarily tested on UNIX systems. While it works on Windows plase don't expect it to be as performant as on UNIX-like systems.
+- The main goal for RestRserve is to provide framework to create backend microservices with performance close to bare metall. So we haven't had a focus on the useful but not absolutely necessary things like [uri templates](https://github.com/dselivanov/RestRserve/issues/10). Contributions are very welcome.
+- Keep in mind that every request is handled in a separate process (forked from parent Rserve instance). While this is absolutely awesome feature which allows to handle requests in parallel it aslo put some limitations on reusing certain objects - notably database connections.
+- While `Rserve` is matured and very well tested software, `RestRserve` is not - you can expect some minor bugs and minor API breaks
+
 # Acknowledgements
 
 - [Simon Urbanek](https://github.com/s-u/) (@s-u) for awesome [Rserve](https://github.com/s-u/Rserve) and all the work on R itself and on his other packages
 - [Artem Klevtsov](https://github.com/artemklevtsov) (@artemklevtsov) for useful suggestions and work on test coverage
-- [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on *Swagger UI* in [plumber](https://github.com/trestletech/plumber) (from where we took inspiration for our implementation)
+- [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on Swagger UI in [plumber](https://github.com/trestletech/plumber) (from where we took inspiration for our implementation)
 - [Brodie Gaslam](https://github.com/brodieG) (@brodieG) for help with understanding on how to get traceback from try-catched function calls. Also thanks [Hadley Wickham](https://github.com/hadley) (@hadley) for [evaluate::try_capture_stack](https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29) function which we use for this purpose.
