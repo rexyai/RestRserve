@@ -112,7 +112,7 @@ app$add_swagger_ui(path = "/swagger",
 app$run(http_port = "8001")
 ```
 
-![swagger-ui](img/swagger-ui.png)
+![swagger-ui](https://github.com/dselivanov/RestRserve/blob/master/docs/img/swagger-ui.png?raw=true)
 
 ## Deploy application
 
