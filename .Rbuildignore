@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^_pkgdown\.yml$
 ^docs$
+^examples$

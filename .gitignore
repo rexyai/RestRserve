@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 *.DS_Store
+examples/xgboost-mushrooms/app-run
