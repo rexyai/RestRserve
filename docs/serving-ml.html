@@ -11,7 +11,7 @@
 
 <meta name="author" content="Dmitriy Selivanov" />
 
-<meta name="date" content="2018-02-15" />
+<meta name="date" content="2018-02-27" />
 
 <title>Serving machine learning models</title>
 
@@ -339,7 +339,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Serving machine learning models</h1>
 <h4 class="author"><em>Dmitriy Selivanov</em></h4>
-<h4 class="date"><em>2018-02-15</em></h4>
+<h4 class="date"><em>2018-02-27</em></h4>
 
 </div>
 
@@ -378,9 +378,20 @@ div.tocify {
 <span class="kw">library</span>(Matrix)
 <span class="kw">data</span>(agaricus.train, <span class="dt">package =</span> <span class="st">&quot;xgboost&quot;</span>)
 <span class="kw">str</span>(agaricus.train<span class="op">$</span>data)</code></pre></div>
+<pre><code>## Formal class &#39;dgCMatrix&#39; [package &quot;Matrix&quot;] with 6 slots
+##   ..@ i       : int [1:143286] 2 6 8 11 18 20 21 24 28 32 ...
+##   ..@ p       : int [1:127] 0 369 372 3306 5845 6489 6513 8380 8384 10991 ...
+##   ..@ Dim     : int [1:2] 6513 126
+##   ..@ Dimnames:List of 2
+##   .. ..$ : NULL
+##   .. ..$ : chr [1:126] &quot;cap-shape=bell&quot; &quot;cap-shape=conical&quot; &quot;cap-shape=convex&quot; &quot;cap-shape=flat&quot; ...
+##   ..@ x       : num [1:143286] 1 1 1 1 1 1 1 1 1 1 ...
+##   ..@ factors : list()</code></pre>
 <p>All the mushroom properties are “one-hot-encoded”:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">features =<span class="st"> </span><span class="kw">colnames</span>(agaricus.train<span class="op">$</span>data)
 <span class="kw">head</span>(features)</code></pre></div>
+<pre><code>## [1] &quot;cap-shape=bell&quot;    &quot;cap-shape=conical&quot; &quot;cap-shape=convex&quot; 
+## [4] &quot;cap-shape=flat&quot;    &quot;cap-shape=knobbed&quot; &quot;cap-shape=sunken&quot;</code></pre>
 </div>
 <div id="train-the-model" class="section level2">
 <h2>Train the model</h2>

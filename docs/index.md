@@ -1,6 +1,6 @@
-# Rserve
+# RestRserve
 
-RestRserve is an R web API framework for building **high-performance microservices and app backends**. The main difference to other frameworks ([plumber](https://github.com/trestletech/plumber), [jug](https://github.com/Bart6114/jug)) is that it is **parallel by design** (thanks to [Rserve](https://github.com/s-u/Rserve)).
+RestRserve is an R web API framework for building **high-performance microservices and app backends**. The main difference with other frameworks ([plumber](https://github.com/trestletech/plumber), [jug](https://github.com/Bart6114/jug)) is that it is **parallel by design** (thanks to [Rserve](https://github.com/s-u/Rserve)).
 
 YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.
 
@@ -8,7 +8,7 @@ YES - it means it will handle all the incomming requests in parallel - each requ
 
 - Create a http API by simply setting up a handler (R function) for a given route - [Hello-world](#create-application)
 - [Deploy applications](#deploy-application) with a couple of lines of the code. Easily [stop](#stop-application) them.
-- [Build high performance web API](#stress-test) - more than **20000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than [plumber](https://github.com/trestletech/plumber)
+- [Build high performance web API](#stress-test) - more than **20000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about **40x faster** than [plumber](https://github.com/trestletech/plumber) (but of course these numbers are for illustration only - everything depends on the user code!).
 - Generate [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
 - Expose [Swagger UI](#swagger-ui-and-openapi)
 - Serve static files
@@ -243,7 +243,7 @@ restrserve_stop(dir)
 
 # Known limitations
 
-- RestRserve is primarily tested on UNIX systems. While it works on Windows plase don't expect it to be as performant as on UNIX-like systems.
+- RestRserve is primarily tested on UNIX systems. While it works natively on Windows plase don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) and report to us.
 - The main goal for RestRserve is to provide framework to create backend microservices with performance close to bare metall. So we haven't had a focus on the useful but not absolutely necessary things like [uri templates](https://github.com/dselivanov/RestRserve/issues/10). Contributions are very welcome.
 - Keep in mind that every request is handled in a separate process (forked from parent Rserve instance). While this is absolutely awesome feature which allows to handle requests in parallel it aslo put some limitations on reusing certain objects - notably database connections.
 - While `Rserve` is matured and very well tested software, `RestRserve` is not - you can expect some minor bugs and minor API breaks

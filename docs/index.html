@@ -338,16 +338,16 @@ div.tocify {
 </div>
 
 
-<div id="rserve" class="section level1">
-<h1>Rserve</h1>
-<p>RestRserve is an R web API framework for building <strong>high-performance microservices and app backends</strong>. The main difference to other frameworks (<a href="https://github.com/trestletech/plumber">plumber</a>, <a href="https://github.com/Bart6114/jug">jug</a>) is that it is <strong>parallel by design</strong> (thanks to <a href="https://github.com/s-u/Rserve">Rserve</a>).</p>
+<div id="restrserve" class="section level1">
+<h1>RestRserve</h1>
+<p>RestRserve is an R web API framework for building <strong>high-performance microservices and app backends</strong>. The main difference with other frameworks (<a href="https://github.com/trestletech/plumber">plumber</a>, <a href="https://github.com/Bart6114/jug">jug</a>) is that it is <strong>parallel by design</strong> (thanks to <a href="https://github.com/s-u/Rserve">Rserve</a>).</p>
 <p>YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.</p>
 <div id="features" class="section level3">
 <h3>Features</h3>
 <ul>
 <li>Create a http API by simply setting up a handler (R function) for a given route - <a href="#create-application">Hello-world</a></li>
 <li><a href="#deploy-application">Deploy applications</a> with a couple of lines of the code. Easily <a href="#stop-application">stop</a> them.</li>
-<li><a href="#stress-test">Build high performance web API</a> - more than <strong>20000 requests per second on a laptop</strong> with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about 40x faster than <a href="https://github.com/trestletech/plumber">plumber</a></li>
+<li><a href="#stress-test">Build high performance web API</a> - more than <strong>20000 requests per second on a laptop</strong> with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about <strong>40x faster</strong> than <a href="https://github.com/trestletech/plumber">plumber</a> (but of course these numbers are for illustration only - everything depends on the user code!).</li>
 <li>Generate <a href="https://www.openapis.org/">OpenAPI</a> specification by parsing annotations in R code</li>
 <li>Expose <a href="#swagger-ui-and-openapi">Swagger UI</a></li>
 <li>Serve static files</li>
@@ -538,7 +538,7 @@ Receive bandwidth:     10.29 megabits / second</code></pre>
 <div id="known-limitations" class="section level1">
 <h1>Known limitations</h1>
 <ul>
-<li>RestRserve is primarily tested on UNIX systems. While it works on Windows plase don’t expect it to be as performant as on UNIX-like systems.</li>
+<li>RestRserve is primarily tested on UNIX systems. While it works natively on Windows plase don’t expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try <a href="https://docs.microsoft.com/en-us/windows/wsl/faq">Windows Subsystem for Linux</a> and report to us.</li>
 <li>The main goal for RestRserve is to provide framework to create backend microservices with performance close to bare metall. So we haven’t had a focus on the useful but not absolutely necessary things like <a href="https://github.com/dselivanov/RestRserve/issues/10">uri templates</a>. Contributions are very welcome.</li>
 <li>Keep in mind that every request is handled in a separate process (forked from parent Rserve instance). While this is absolutely awesome feature which allows to handle requests in parallel it aslo put some limitations on reusing certain objects - notably database connections.</li>
 <li>While <code>Rserve</code> is matured and very well tested software, <code>RestRserve</code> is not - you can expect some minor bugs and minor API breaks</li>

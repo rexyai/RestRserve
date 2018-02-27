@@ -43,7 +43,7 @@ Given the description of the mushrooms in terms of physical characteristics the 
 
 Data in the package is stored as a CSC sparse matrix:
 
-```{r}
+```{r, eval=T}
 library(xgboost)
 library(Matrix)
 data(agaricus.train, package = "xgboost")
@@ -51,7 +51,7 @@ str(agaricus.train$data)
 ```
 
 All the mushroom properties are "one-hot-encoded":
-```{r}
+```{r, eval=T}
 features = colnames(agaricus.train$data)
 head(features)
 ```

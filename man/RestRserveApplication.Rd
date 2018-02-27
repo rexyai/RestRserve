@@ -32,7 +32,9 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
   and register user-supplied R function as a handler.
   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-  which can be easily constructed with \link{create_response}}
+  which can be easily constructed with \link{create_response}. \code{path_as_prefix} at the moment used
+  mainly to help with serving static files. Probably in future it will be replaced with
+  other argument to perform URI template matching.}
   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
