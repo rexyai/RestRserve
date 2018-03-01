@@ -295,7 +295,20 @@ RestRserveApplication = R6::R6Class(
       .GlobalEnv[[".http.request"]] = RestRserve:::http_request
       .GlobalEnv[["RestRserveApp"]] = self
       self$print_endpoints_summary()
-      Rserve::run.Rserve("http.port" = http_port, ...)
+      if (.Platform$OS.type != "windows") {
+        pid = parallel::mcparallel(Rserve::run.Rserve("http.port" = http_port, ...), detached = TRUE)[["pid"]]
+        if(interactive()) {
+          message(sprintf("started RestRserve in a BACKGROUND process pid = %d", pid))
+          message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
+          message("NOTE that current master process also will be killed")
+        }
+        pid
+      } else {
+        message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
+        message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
+        message("NOTE that current master process also will be killed")
+        Rserve::run.Rserve("http.port" = http_port, ...)
+      }
     },
     print_endpoints_summary = function() {
       registered_endpoints = self$routes()

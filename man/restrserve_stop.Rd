@@ -14,7 +14,7 @@ invisibly returns the status of the attempt to kill process group
 }
 \description{
 Assuming that RserveApplication is deployed to a \code{dir},
-\code{restrserve_stop} stops Rserve by executing \code{kill -INT -- -$PGID}
+\code{restrserve_stop} stops Rserve by executing \code{kill -TERM -- -$PGID}
 where $PGID is Rserve PID read from configured pid file. PID obtained from
 information from \code{Rserve.conf} file inside \code{dir}.
 }
