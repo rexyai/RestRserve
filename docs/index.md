@@ -254,3 +254,9 @@ restrserve_stop(dir)
 - [Artem Klevtsov](https://github.com/artemklevtsov) (@artemklevtsov) for useful suggestions and work on test coverage
 - [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on Swagger UI in [plumber](https://github.com/trestletech/plumber) (from where we took inspiration for our implementation)
 - [Brodie Gaslam](https://github.com/brodieG) (@brodieG) for help with understanding on how to get traceback from try-catched function calls. Also thanks [Hadley Wickham](https://github.com/hadley) (@hadley) for [evaluate::try_capture_stack](https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29) function which we use for this purpose.
+
+# Related projects
+
+- [opencpu](https://www.opencpu.org/)
+- [plumber](https://www.rplumber.io/)
+- [jug](https://github.com/Bart6114/jug) (development discontinued)
