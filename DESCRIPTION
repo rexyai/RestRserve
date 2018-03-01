@@ -1,7 +1,7 @@
 Package: RestRserve
 Type: Package
 Title: Exposes R Code as a Http-Service
-Version: 0.1.0.6
+Version: 0.1.0.7
 Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
@@ -13,11 +13,13 @@ Imports:
   Rserve (>= 1.7.3),
   R6 (>= 2.2.2)
 Suggests:
-  swagger,
-  mime,
-  yaml,
+  yaml (>= 2.1.14),
+  swagger (>= 3.9.2),
+  mime (>= 0.5),
   curl (>= 2.7),
   testthat (>= 2.0.0)
+Remotes:
+  rstudio/swagger
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
