@@ -77,3 +77,12 @@ get_traceback_message = function(err, nchar_max = 1000L) {
           err_msg, call_msg, stack_msg)
   substr(res, 0L, nchar_max)
 }
+
+#https://stackoverflow.com/a/15139734/1069256
+kill_process_group = function(pid, signal = "TERM") {
+  pgid = system2("ps", sprintf("-o pgid= %d | grep -o '[0-9]*'", pid), stdout = T)
+  tools::pskill(pid)
+  cmd_args = sprintf("-s %s -- -%s", signal, pgid)
+  # message(sprintf("kill %s", cmd_args))
+  system2("kill", cmd_args)
+}

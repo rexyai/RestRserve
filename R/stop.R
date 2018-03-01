@@ -1,6 +1,6 @@
 #' @title stops RestRserve application
 #' @description Assuming that RserveApplication is deployed to a \code{dir},
-#' \code{restrserve_stop} stops Rserve by executing \code{kill -INT -- -$PGID}
+#' \code{restrserve_stop} stops Rserve by executing \code{kill -TERM -- -$PGID}
 #' where $PGID is Rserve PID read from configured pid file. PID obtained from
 #' information from \code{Rserve.conf} file inside \code{dir}.
 #' @param dir character, path to the directory where application was deployed
@@ -32,5 +32,5 @@ restrserve_stop = function(dir) {
   if(class(PID) == "try-error" || length(PID) != 1L)
     stop("first line from '%s' is '%s' - doens't look like PID", pid_path, PID)
 
-  invisible(system2("kill", sprintf("-s INT -- -%d", PID)))
+  invisible(kill_process_group(PID, "TERM"))
 }
