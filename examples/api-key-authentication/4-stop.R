@@ -2,4 +2,4 @@
 DIR = "run"
 RestRserve::restrserve_stop(DIR)
 
-rm -r $DIR
+unlink(DIR, recursive = TRUE)
