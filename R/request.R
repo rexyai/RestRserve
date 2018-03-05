@@ -39,6 +39,7 @@ parse_request = function(path, query, body, headers) {
       request$method = header_values[request_method_mask][[1]]
     # combine standart headers without "request-method"
     header_values = combine_headers_by_key(header_values[!request_method_mask])
+    request$headers = header_values
   }
   ## this is a bit convoluted - the HTTP already parses the body - disable it where you can
   if (!is.raw(body)) {
