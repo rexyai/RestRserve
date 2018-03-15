@@ -168,7 +168,7 @@ RestRserveApplication = R6::R6Class(
 
       mime_avalable = FALSE
       if(is.null(content_type)) {
-        mime_avalable = require(mime, quietly = TRUE)
+        mime_avalable = suppressWarnings(require(mime, quietly = TRUE))
         if(!mime_avalable) {
           warning(sprintf("'mime' package is not installed - content_type will is set to '%s'", "application/octet-stream"))
           mime_avalable = FALSE
@@ -205,8 +205,11 @@ RestRserveApplication = R6::R6Class(
             return(private$http_404_handler(request))
 
           if(is.null(content_type)) {
-            if(mime_avalable)
+            if(mime_avalable) {
               content_type = mime::guess_type(file_path)
+            } else {
+              content_type = "application/octet-stream"
+            }
           }
           create_response(body = c(file = file_path), content_type = content_type, status_code = 200L)
         }
