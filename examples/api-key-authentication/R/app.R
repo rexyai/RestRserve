@@ -64,10 +64,10 @@ fib = function(request) {
 
   if(class(X_API_KEY) == "try-error")
     return(RestRserve::create_response(body = "API key is missing", content_type = "text/plain",
-                                       headers = c("WWW_Authenticate" = "Basic"), status_code = 401L))
+                                       headers = c("WWW-Authenticate: Basic"), status_code = 401L))
   if(!validate_api_key(X_API_KEY))
     return(RestRserve::create_response(body = "API key is invalid", content_type = "text/plain",
-                                       headers = c("WWW_Authenticate" = "Basic"), status_code = 401L))
+                                       headers = c("WWW-Authenticate: Basic"), status_code = 401L))
 
   n = as.integer( request$query[["n"]] )
   RestRserve::create_response(body = as.character(calc_fib(n)),
