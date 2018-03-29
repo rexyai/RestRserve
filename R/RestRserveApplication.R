@@ -31,7 +31,8 @@
 #'   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
 #'      \code{http_port} - http port for application.
 #'      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-#'      \code{http_port} will be silently replaced with its value.}
+#'      \code{http_port} will be silently replaced with its value.
+#'      \code{background} - whether to try to launch in background process on UNIX systems. Ignored in windows.}
 #'   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
 #'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
@@ -280,7 +281,7 @@ RestRserveApplication = R6::R6Class(
       names(endpoints_methods) = endpoints
       endpoints_methods
     },
-    run = function(http_port = 8001L, ...) {
+    run = function(http_port = 8001L, ..., background = FALSE) {
       stopifnot(is.character(http_port) || is.numeric(http_port))
       stopifnot(length(http_port) == 1L)
       http_port = as.integer(http_port)
@@ -301,11 +302,13 @@ RestRserveApplication = R6::R6Class(
       .GlobalEnv[[".http.request"]] = RestRserve:::http_request
       .GlobalEnv[["RestRserveApp"]] = self
       self$print_endpoints_summary()
-      if (.Platform$OS.type != "windows") {
+      if (.Platform$OS.type != "windows" && background) {
+
         pid = parallel::mcparallel(
-          do.call(Rserve::run.Rserve, ARGS ),
-            detached = TRUE)
+            do.call(Rserve::run.Rserve, ARGS ),
+          detached = TRUE)
         pid = pid[["pid"]]
+
         if(interactive()) {
           message(sprintf("started RestRserve in a BACKGROUND process pid = %d", pid))
           message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))

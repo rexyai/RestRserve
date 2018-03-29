@@ -45,7 +45,8 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
      \code{http_port} - http port for application.
      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-     \code{http_port} will be silently replaced with its value.}
+     \code{http_port} will be silently replaced with its value.
+     \code{background} - whether to try to launch in background process on UNIX systems. Ignored in windows.}
   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
   Calls handler function for a given request.}
   \item{\code{$routes()}}{Lists all registered routes}
