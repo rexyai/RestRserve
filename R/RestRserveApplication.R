@@ -30,7 +30,8 @@
 #'   \code{"application/octet-stream"}}
 #'   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
 #'      \code{http_port} - http port for application.
-#'      \code{...} - key-value pairs of the Rserve configuration.}
+#'      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
+#'      \code{http_port} will be silently replaced with its value.}
 #'   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
 #'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
@@ -283,12 +284,9 @@ RestRserveApplication = R6::R6Class(
       stopifnot(is.character(http_port) || is.numeric(http_port))
       stopifnot(length(http_port) == 1L)
       http_port = as.integer(http_port)
-      ARGS = as.environment(list(...))
+      ARGS = list(...)
 
-      if( !is.null(ARGS[["http.port"]]) ) {
-        warning(sprintf("Replacing the value of 'http_port' argument (%d) with value of 'http.port'(%s)",
-                        http_port, as.character(ARGS[["http.port"]])))
-      } else {
+      if( is.null(ARGS[["http.port"]]) ) {
         ARGS[["http.port"]] = http_port
       }
 
@@ -303,7 +301,6 @@ RestRserveApplication = R6::R6Class(
       .GlobalEnv[[".http.request"]] = RestRserve:::http_request
       .GlobalEnv[["RestRserveApp"]] = self
       self$print_endpoints_summary()
-      ARGS = as.list(ARGS)
       if (.Platform$OS.type != "windows") {
         pid = parallel::mcparallel(
           do.call(Rserve::run.Rserve, ARGS ),
