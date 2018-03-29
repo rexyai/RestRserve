@@ -283,9 +283,14 @@ RestRserveApplication = R6::R6Class(
       stopifnot(is.character(http_port) || is.numeric(http_port))
       stopifnot(length(http_port) == 1L)
       http_port = as.integer(http_port)
+      ARGS = as.environment(list(...))
 
-      if( !is.null(list(...)[["http.port"]]) )
-        stop(sprintf("Parameter 'http.port'/'http_port' was specified twice"))
+      if( !is.null(ARGS[["http.port"]]) ) {
+        warning(sprintf("Replacing the value of 'http_port' argument (%d) with value of 'http.port'(%s)",
+                        http_port, as.character(ARGS[["http.port"]])))
+      } else {
+        ARGS[["http.port"]] = http_port
+      }
 
       keep_http_request = .GlobalEnv[[".http.request"]]
       keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]
@@ -298,8 +303,12 @@ RestRserveApplication = R6::R6Class(
       .GlobalEnv[[".http.request"]] = RestRserve:::http_request
       .GlobalEnv[["RestRserveApp"]] = self
       self$print_endpoints_summary()
+      ARGS = as.list(ARGS)
       if (.Platform$OS.type != "windows") {
-        pid = parallel::mcparallel(Rserve::run.Rserve("http.port" = http_port, ...), detached = TRUE)[["pid"]]
+        pid = parallel::mcparallel(
+          do.call(Rserve::run.Rserve, ARGS ),
+            detached = TRUE)
+        pid = pid[["pid"]]
         if(interactive()) {
           message(sprintf("started RestRserve in a BACKGROUND process pid = %d", pid))
           message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
@@ -310,7 +319,7 @@ RestRserveApplication = R6::R6Class(
         message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
         message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
         message("NOTE that current master process also will be killed")
-        Rserve::run.Rserve("http.port" = http_port, ...)
+        do.call(Rserve::run.Rserve, ARGS )
       }
     },
     print_endpoints_summary = function() {
