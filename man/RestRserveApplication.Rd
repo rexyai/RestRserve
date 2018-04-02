@@ -18,7 +18,7 @@ allowing to easily register R functions for handling http-requests.
 \itemize{
 \item \code{app = RestRserveApplication$new()}
 \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-  RestRserve::create_response(body = request$query[[1]], content_type = "text/plain")
+  RestRserve::RestRserveResponse(body = request$query[[1]], content_type = "text/plain")
   })}
 \item \code{app$routes()}
 }
@@ -32,7 +32,7 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
   and register user-supplied R function as a handler.
   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-  which can be easily constructed with \link{create_response}. \code{path_as_prefix} at the moment used
+  which can be easily constructed with \link{RestRserveResponse}. \code{path_as_prefix} at the moment used
   mainly to help with serving static files. Probably in future it will be replaced with
   other argument to perform URI template matching.}
   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
@@ -51,10 +51,6 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   Calls handler function for a given request.}
   \item{\code{$routes()}}{Lists all registered routes}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-  \item{\code{$set_404_handler(FUN)}}{Register custom 404 response handler. \code{FUN} should be a
-  function which takes exactly one argument - request and return \code{RestRserveResponse} object.
-  Default handler is \code{FUN = function(request) http_404_not_found()}. See \link{http_404_not_found} for
-  details}
   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
@@ -66,35 +62,29 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
 \section{Arguments}{
 
 \describe{
- \item{app}{A \code{RestRserveApplication.} object}
+ \item{app}{A \code{RestRserveApplication} object}
  \item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}}
- \item{method}{\code{character} of length 1. At the moment one of \code{"GET", "POST", "HEAD"} }
- \item{FUN}{\code{function} which takes exactly one argument - \code{request}.
-   \code{request} R object returned by \code{RestRserve:::parse_request()} function.
-   Object corresponds to http-request and essentially \code{request} is a \code{list} with a fixed set of fields.
-   Representation of the "GET" request to "http://localhost:8001/somemethod?a=1&b=2" will look like:
-   \describe{
-      \item{path}{ = \code{"/somepath"}, always character of length 1}
-      \item{method}{ = \code{"GET"}, always character of length 1}
-      \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Queiry parameters key-value pairs.}
-      \item{body}{ = \code{NULL}.
-         \itemize{
-            \item \code{NULL} if the http body is empty or zero length.
-            \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-            \item named \code{characeter vector} in the case of a URL encoded form.
-            It will have the same shape as the query string (named string vector).
-         }
-      }
-      \item{content_type}{ = \code{""}, always character of length 1}
-      \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
+ \item{method}{\code{character} of length 1. At the moment one of
+   \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
+ \item{FUN}{\code{function} which takes \strong{single argument - \code{request}}.
+   \code{request} essentially is a parsed http-request represented as R's \code{list} with following fields:
+   \itemize{
+     \item path
+     \item method
+     \item query
+     \item body
+     \item content_type
+     \item headers
    }
+   This object is returned by \link{parse_request} function.
+   See \strong{Value} section of the \link{parse_request} function for detailed description.
  }
 }
 }
 
 \examples{
 echo_handler = function(request) {
- RestRserve::create_response(body = request$query[[1]],
+ RestRserve::RestRserveResponse(body = request$query[[1]],
                              content_type = "text/plain",
                             headers = "Location: /echo",
                             status_code = 201L)

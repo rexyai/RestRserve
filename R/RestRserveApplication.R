@@ -7,7 +7,7 @@
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
 #' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-#'   RestRserve::create_response(body = request$query[[1]], content_type = "text/plain")
+#'   RestRserve::RestRserveResponse(body = request$query[[1]], content_type = "text/plain")
 #'   })}
 #' \item \code{app$routes()}
 #' }
@@ -18,7 +18,7 @@
 #'   \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
 #'   and register user-supplied R function as a handler.
 #'   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-#'   which can be easily constructed with \link{create_response}. \code{path_as_prefix} at the moment used
+#'   which can be easily constructed with \link{RestRserveResponse}. \code{path_as_prefix} at the moment used
 #'   mainly to help with serving static files. Probably in future it will be replaced with
 #'   other argument to perform URI template matching.}
 #'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
@@ -37,10 +37,6 @@
 #'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-#'   \item{\code{$set_404_handler(FUN)}}{Register custom 404 response handler. \code{FUN} should be a
-#'   function which takes exactly one argument - request and return \code{RestRserveResponse} object.
-#'   Default handler is \code{FUN = function(request) http_404_not_found()}. See \link{http_404_not_found} for
-#'   details}
 #'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
 #'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
 #'   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
@@ -49,34 +45,28 @@
 #' }
 #' @section Arguments:
 #' \describe{
-#'  \item{app}{A \code{RestRserveApplication.} object}
+#'  \item{app}{A \code{RestRserveApplication} object}
 #'  \item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}}
-#'  \item{method}{\code{character} of length 1. At the moment one of \code{"GET", "POST", "HEAD"} }
-#'  \item{FUN}{\code{function} which takes exactly one argument - \code{request}.
-#'    \code{request} R object returned by \code{RestRserve:::parse_request()} function.
-#'    Object corresponds to http-request and essentially \code{request} is a \code{list} with a fixed set of fields.
-#'    Representation of the "GET" request to "http://localhost:8001/somemethod?a=1&b=2" will look like:
-#'    \describe{
-#'       \item{path}{ = \code{"/somepath"}, always character of length 1}
-#'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Queiry parameters key-value pairs.}
-#'       \item{body}{ = \code{NULL}.
-#'          \itemize{
-#'             \item \code{NULL} if the http body is empty or zero length.
-#'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-#'             \item named \code{characeter vector} in the case of a URL encoded form.
-#'             It will have the same shape as the query string (named string vector).
-#'          }
-#'       }
-#'       \item{content_type}{ = \code{""}, always character of length 1}
-#'       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
+#'  \item{method}{\code{character} of length 1. At the moment one of
+#'    \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
+#'  \item{FUN}{\code{function} which takes \strong{single argument - \code{request}}.
+#'    \code{request} essentially is a parsed http-request represented as R's \code{list} with following fields:
+#'    \itemize{
+#'      \item path
+#'      \item method
+#'      \item query
+#'      \item body
+#'      \item content_type
+#'      \item headers
 #'    }
+#'    This object is returned by \link{parse_request} function.
+#'    See \strong{Value} section of the \link{parse_request} function for detailed description.
 #'  }
 #' }
 #' @format \code{\link{R6Class}} object.
 #' @examples
 #' echo_handler = function(request) {
-#'  RestRserve::create_response(body = request$query[[1]],
+#'  RestRserve::RestRserveResponse(body = request$query[[1]],
 #'                              content_type = "text/plain",
 #'                             headers = "Location: /echo",
 #'                             status_code = 201L)
@@ -99,9 +89,10 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     initialize = function(debug = FALSE) {
-      private$http_404_handler = self$set_404_handler(function(request) http_404_not_found())
       self$debug = debug
       private$handlers = new.env(parent = emptyenv())
+      private$response_callbacks = new.env(parent = emptyenv())
+      private$middleware = new.env(parent = emptyenv())
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, path_as_prefix = FALSE, ...) {
@@ -121,8 +112,8 @@ RestRserveApplication = R6::R6Class(
       if(path == "")
         path = "/"
 
-      if(length(formals(FUN)) != 1L)
-        stop("function should take exactly one argument - request")
+      if(length(formals(FUN)) != 2L)
+        stop("function should take exactly two arguments - request and response")
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
@@ -183,17 +174,17 @@ RestRserveApplication = R6::R6Class(
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            private$http_404_handler(request)
+            http_404_not_found()
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              private$http_404_handler(request)
+              http_404_not_found()
             }
             else {
-              create_response(body = c(file = fl), content_type = content_type, status_code = 200L)
+              RestRserveResponse$new(body = c(file = fl), content_type = content_type, status_code = 200L)
             }
           }
         }
@@ -204,7 +195,7 @@ RestRserveApplication = R6::R6Class(
         handler = function(request) {
 
           if(!file.exists(file_path))
-            return(private$http_404_handler(request))
+            return(http_404_not_found())
 
           if(is.null(content_type)) {
             if(mime_avalable) {
@@ -213,58 +204,85 @@ RestRserveApplication = R6::R6Class(
               content_type = "application/octet-stream"
             }
           }
-          create_response(body = c(file = file_path), content_type = content_type, status_code = 200L)
+          RestRserveResponse$new(body = c(file = file_path), content_type = content_type, status_code = 200L)
         }
         self$add_get(path, handler, ...)
       }
     },
     #------------------------------------------------------------------------
-    call_handler = function(request) {
-      path = request$path
-      if(!(is.character(path) && length(path) == 1L)) {
-        http_520_unknown_error("path should be character vector of length 1")
-      }
-      # placeholder for result - should be properly set below
-      result = http_520_unknown_error("should not happen - please report to https://github.com/dselivanov/RestRserve/issues")
+    call_handler = function(request, response) {
+      TRACEBACK_MAX_NCHAR = 1000L
+      PATH = request$path
+      # placeholder for bad result
+      result = RestRserveResponse$new(body = "call_handler(): should not happen - please report to https://github.com/dselivanov/RestRserve/issues",
+               content_type = "text/plain",
+               headers = character(0),
+               status_code = 520L)
 
-      # no registered endpoints -return 404
-      if(identical(names(private$handlers), character(0)))
-        return(private$http_404_handler(request))
+      if(identical(names(private$handlers), character(0))) {
+        # no registered endpoints - set 404 to response
+        http_404_not_found(response)
+        return(invisible(NULL))
+      }
+
 
       METHOD = request$method
-      FUN = private$handlers[[path]][[METHOD]]
+      FUN = private$handlers[[PATH]][[METHOD]]
 
       if(!is.null(FUN)) {
         # happy path
-        result = FUN(request)
-        if(class(result) != "RestRserveResponse")
-          result = http_500_internal_server_error("Error in handler function - it doesn't return 'RestRserveResponse' object created by RestRserve::create_response()")
+        # call handler function. 3 results possible:
+        # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
+        # 2) error - need to set corresponding response code and continue dowstream tasks
+        # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
+        result = try_capture_stack(FUN(request, response))
+        if(inherits(result, "RestRserveResponse")) {
+          return(result)
+        } else {
+          if(inherits(result, "simpleError")) {
+            http_500_internal_server_error(response, get_traceback_message(response, TRACEBACK_MAX_NCHAR))
+          }
+          return(invisible(NULL))
+        }
       } else {
         # may be path is a prefix
         registered_paths = names(private$handlers)
-        # self$debug_message("registered_paths: ", registered_paths)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
-        handlers_match_start = startsWith(x = path, prefix = paste(registered_paths, "/", sep = ""))
-        if(!any(handlers_match_start))
-          result = private$http_404_handler(request)
-        else {
+        handlers_match_start = startsWith(x = PATH, prefix = paste(registered_paths, "/", sep = ""))
+        if(!any(handlers_match_start)) {
+          http_404_not_found(response)
+          return(invisible(NULL))
+        } else {
           # find method which match the path - should be unique
           j = which(handlers_match_start)
-          # self$debug_message("index handlers_match_start ", j)
           if(length(j) != 1L) {
-            result = http_500_internal_server_error("more than one handler match to the request path")
+            http_500_internal_server_error(response, "requested path matches to more than one handler")
+            return(invisible(NULL))
           }
           else {
             FUN = private$handlers[[ registered_paths[[j]] ]][[METHOD]]
             # now FUN is NULL or some function
             # if it is a function then we need to check whther it was registered to handle patterned paths
             if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-              result = private$http_404_handler(request)
+              http_404_not_found(response)
+              return(invisible(NULL))
             } else {
-              result = FUN(request)
+              # call handler function. 3 results possible:
+              # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
+              # 2) error - need to set corresponding response code and continue dowstream tasks
+              # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
+              result = try_capture_stack(FUN(request, response))
+              if(inherits(result, "RestRserveResponse")) {
+                return(result)
+              } else {
+                # error in user function - return 500 error
+                if(inherits(result, "simpleError")) {
+                  http_500_internal_server_error(response, get_traceback_message(response, TRACEBACK_MAX_NCHAR))
+                }
+                return(invisible(NULL))
+              }
             }
-
           }
         }
       }
@@ -355,6 +373,7 @@ RestRserveApplication = R6::R6Class(
       # for now use  "application/x-yaml":
       # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
       self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml", ...)
+      invisible(file_path)
     },
     add_swagger_ui = function(path = "/swagger",
                               path_openapi = "/openapi.yaml",
@@ -371,26 +390,57 @@ RestRserveApplication = R6::R6Class(
       self$add_static(path_swagger_assets, system.file("dist", package = "swagger"))
       write_swagger_ui_index_html(file_path, path_swagger_assets = path_swagger_assets, path_openapi = path_openapi)
       self$add_static(path, file_path)
+      invisible(file_path)
     },
-    set_404_handler = function(FUN) {
-
-      if(length(formals(FUN)) != 1L)
-        stop("function should take exactly one argument - request")
-
-      FUN_WRAPPED = function(request) {
-        result = FUN(request)
-        if(!inherits(result, "RestRserveResponse"))
-          result = http_500_internal_server_error("Error in 404 error handler function - it doesn't return 'RestRserveResponse' object")
-        result
+    append_middleware = function(...) {
+      middleware_list = list(...)
+      # mw_names = names(middleware_list)
+      # stopifnot(is.null(mw_names))
+      # stopifnot(length(mw_names) != length(unique(mw_names)))
+      # stopifnot(all(vapply(middleware_list, inherits, FALSE, "RestRserveMiddleware")))
+      for(mw in middleware_list) {
+        n_already_registered = length(private$middleware)
+        id = as.character(n_already_registered + 1L)
+        private$middleware[[id]] = mw
       }
-
-      private$http_404_handler = compiler::cmpfun(FUN_WRAPPED)
+      invisible(length(private$middleware))
+    },
+    call_middleware_request = function(request, response) {
+      private$call_middleware(request, response, "process_request")
+    },
+    call_middleware_response = function(request, response) {
+      private$call_middleware(request, response, "process_response")
     }
+    # add_callback = function(FUN) {
+    #   if(length(formals(FUN)) != 2L)
+    #     stop("function should take exactly 2 arguments - request and response")
+    #   n_already_registered = length(private$response_callbacks)
+    #   id = as.character(n_already_registered + 1L)
+    #
+    #   if(self$debug) self$debug_message("adding response_callback ", id)
+    #
+    #   private$response_callbacks[[id]] = compiler::cmpfun(FUN)
+    #
+    #   invisible(length(private$response_callbacks))
+    # },
+    # execute_callbacks = function(request, response) {
+    #   for(i in seq_along(private$response_callbacks)) {
+    #     id = as.character(i)
+    #
+    #     if(self$debug)
+    #       self$debug_message("executing response_callback ", id)
+    #
+    #     FUN = private$response_callbacks[[id]]
+    #     response = FUN(request, response)
+    #   }
+    #   response
+    # }
   ),
   private = list(
-    http_404_handler = NULL,
     handlers = NULL,
     handlers_openapi_definitions = NULL,
+    response_callbacks = NULL,
+    middleware = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -423,6 +473,18 @@ RestRserveApplication = R6::R6Class(
         paths_descriptions[[p]] = methods_descriptions
       }
       paths_descriptions
+    },
+    call_middleware = function(request, response, fun = c("process_request", "process_response")) {
+      fun = match.arg(fun)
+      for(i in seq_along(private$middleware)) {
+        id = as.character(i)
+        self$debug_message("executing middleware '", id, "'-", fun)
+        FUN = private$middleware[[id]][[fun]]
+        mw_result = FUN(request, response)
+        if(inherits(mw_result, "RestRserveResponse"))
+          return(mw_result)
+      }
+      invisible(NULL)
     }
   )
 )

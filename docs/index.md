@@ -4,6 +4,8 @@
 
 YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.
 
+**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
+
 ### Features
 
 - Create a http API by simply setting up a handler (R function) for a given route - [Hello-world](#create-application)
@@ -31,7 +33,7 @@ calc_fib = function(n) {
 
 fib = function(request) {
   n = as.integer( request$query[["n"]] )
-  RestRserve::create_response(body = as.character(calc_fib(n)),
+  RestRserve::RestRserveResponse$new(body = as.character(calc_fib(n)),
                               content_type = "text/plain",
                               headers = character(0),
                               status_code = 200L)
@@ -43,7 +45,7 @@ app = RestRserve::RestRserveApplication$new()
 app$add_get(path = "/fib", FUN = fib)
 ```
 
-Note that every user function which is registered as endpoint handler should always return `RestRserveResponse` object which is easy to construct with `RestRserve::create_response` function call.
+Note that every user function which is registered as endpoint handler should always return `RestRserveResponse` object which is easy to construct with `RestRserve::RestRserveResponse$new()` function call.
 
 ### Start application in interactive mode
 
@@ -97,7 +99,7 @@ fib = function(request) {
   #' ---
   
   n = as.integer( request$query[["n"]] )
-  RestRserve::create_response(payload = as.character(calc_fib(n)),
+  RestRserve::RestRserveResponse$new(body = as.character(calc_fib(n)),
                               content_type = "text/plain",
                               headers = character(0),
                               status_code = 200L)

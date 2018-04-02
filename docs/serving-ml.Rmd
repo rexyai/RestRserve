@@ -184,7 +184,7 @@ pred_xgb_post = function(request) {
   #' ---
   x = rawToChar(request$body)
   x = create_model_matrix(x)
-  RestRserve::create_response(body = as.character(predict(bst, x)),
+  RestRserve::RestRserveResponse$new(body = as.character(predict(bst, x)),
                               content_type = "text/plain",
                               headers = character(0),
                               status_code = 200L)
@@ -220,7 +220,7 @@ pred_xgb_get = function(request) {
   x = jsonlite::toJSON (lapply(x, function(z) list(featureName = z[[1]], featureValue = z[[2]])), auto_unbox = TRUE)
   # create feature matrix
   x = create_model_matrix(x)
-  RestRserve::create_response(body = as.character(predict(bst, x)),
+  RestRserve::RestRserveResponse$new(body = as.character(predict(bst, x)),
                               content_type = "text/plain",
                               headers = character(0),
                               status_code = 200L)

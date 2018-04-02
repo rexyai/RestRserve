@@ -28,3 +28,4 @@ test_that("create RestRserveApp", {
   # should only work with functions
   expect_error(parse_docstring(1))
 })
+

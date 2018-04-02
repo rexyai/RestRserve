@@ -15,7 +15,7 @@ fib = function(request) {
     x[[n]]
   }
 
-  RestRserve::create_response(
+  RestRserve::RestRserveResponse(
     body = as.character(calc_fib(n)),
     content_type = "text/plain",
     headers = character(0),
@@ -23,7 +23,7 @@ fib = function(request) {
 }
 
 # create application
-app = RestRserve::RestRserveApplication$new(TRUE)
+app = RestRserve::RestRserveApplication$new(debug = TRUE)
 # register endpoints and corresponding R handlers
 app$add_route(path = "/fib", method = "GET", FUN = fib)
 

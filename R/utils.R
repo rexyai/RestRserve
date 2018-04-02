@@ -51,6 +51,9 @@ dict_is_empty = function(x) {
 is_string_or_null = function(x) {
   is.null(x) || (is.character(x) && length(x) == 1L)
 }
+is_string_len_one = function(x) {
+  is.character(x) && length(x) == 1L
+}
 #------------------------------------------------
 
 # borrowed from

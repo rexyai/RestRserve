@@ -66,3 +66,4 @@ test_that("openapi", {
   expect_null(openapi_def[["/f5"]])
 
 })
+
