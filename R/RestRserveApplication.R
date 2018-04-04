@@ -102,6 +102,7 @@ RestRserveApplication = R6::R6Class(
       private$http_404_handler = self$set_404_handler(function(request) http_404_not_found())
       self$debug = debug
       private$handlers = new.env(parent = emptyenv())
+      private$handlers_openapi_definitions = new.env(parent = emptyenv())
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, path_as_prefix = FALSE, ...) {
