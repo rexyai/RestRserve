@@ -82,11 +82,13 @@ RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
     debug = NULL,
-    debug_message = function(...) {
-      if(self$debug)
-        message(...)
-      invisible(TRUE)
-    },
+    debug_message = compiler::cmpfun(
+      function(...) {
+        if(self$debug)
+          message(...)
+        invisible(TRUE)
+      }
+    ) ,
     #------------------------------------------------------------------------
     initialize = function(debug = FALSE) {
       self$debug = debug
@@ -112,8 +114,13 @@ RestRserveApplication = R6::R6Class(
       if(path == "")
         path = "/"
 
-      if(length(formals(FUN)) != 2L)
-        stop("function should take exactly two arguments - request and response")
+      if( length(formals(FUN)) == 1L ) {
+        warning("Function provided takes only 1 argument which willbe considered as request.
+                Function should take two arguments: 1. request 2. response. This warning will be turned into ERROR next release!")
+        FUN_WRAP = function(request, response) FUN(request)
+      } else {
+        FUN_WRAP = FUN
+      }
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
@@ -121,7 +128,7 @@ RestRserveApplication = R6::R6Class(
       if(!is.null(private$handlers[[path]][[method]]))
         warning(sprintf("overwriting existing '%s' method for path '%s'", method, path))
 
-      CMPFUN = compiler::cmpfun(FUN)
+      CMPFUN = compiler::cmpfun(FUN_WRAP)
       attr(CMPFUN, "handle_path_as_prefix") = path_as_prefix
       private$handlers[[path]][[method]] = CMPFUN
 
@@ -214,13 +221,14 @@ RestRserveApplication = R6::R6Class(
       TRACEBACK_MAX_NCHAR = 1000L
       PATH = request$path
       # placeholder for bad result
+      self$debug_message("creating dummy response")
       result = RestRserveResponse$new(body = "call_handler(): should not happen - please report to https://github.com/dselivanov/RestRserve/issues",
                content_type = "text/plain",
                headers = character(0),
                status_code = 520L)
 
       if(identical(names(private$handlers), character(0))) {
-        # no registered endpoints - set 404 to response
+        self$debug_message("no registered endpoints - set 404 to response")
         http_404_not_found(response)
         return(invisible(NULL))
       }
@@ -230,6 +238,7 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[PATH]][[METHOD]]
 
       if(!is.null(FUN)) {
+        self$debug_message("happy path - found handler with exact match - executing")
         # happy path
         # call handler function. 3 results possible:
         # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
@@ -237,34 +246,42 @@ RestRserveApplication = R6::R6Class(
         # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
         result = try_capture_stack(FUN(request, response))
         if(inherits(result, "RestRserveResponse")) {
+          self$debug_message(sprintf("got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning resulte", PATH))
           return(result)
         } else {
           if(inherits(result, "simpleError")) {
-            http_500_internal_server_error(response, get_traceback_message(response, TRACEBACK_MAX_NCHAR))
+            self$debug_message(sprintf("got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
+            http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
           }
           return(invisible(NULL))
         }
       } else {
+        self$debug_message(sprintf("unhappy path - trying to match prefix path '%s'", PATH))
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
         handlers_match_start = startsWith(x = PATH, prefix = paste(registered_paths, "/", sep = ""))
         if(!any(handlers_match_start)) {
+          self$debug_message(sprintf("no path match prefix '%s'", PATH))
           http_404_not_found(response)
           return(invisible(NULL))
         } else {
           # find method which match the path - should be unique
           j = which(handlers_match_start)
           if(length(j) != 1L) {
+            self$debug_message(sprintf("more that 1 path match prefix '%s'", PATH))
             http_500_internal_server_error(response, "requested path matches to more than one handler")
             return(invisible(NULL))
           }
           else {
-            FUN = private$handlers[[ registered_paths[[j]] ]][[METHOD]]
+            matched_path = registered_paths[[j]]
+            self$debug_message(sprintf("found path '%s' matched to '%s'", matched_path, PATH))
+            FUN = private$handlers[[ matched_path ]][[METHOD]]
             # now FUN is NULL or some function
             # if it is a function then we need to check whther it was registered to handle patterned paths
             if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
+              self$debug_message(sprintf("handler doesn't accept prefix paths"))
               http_404_not_found(response)
               return(invisible(NULL))
             } else {
@@ -274,11 +291,12 @@ RestRserveApplication = R6::R6Class(
               # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
               result = try_capture_stack(FUN(request, response))
               if(inherits(result, "RestRserveResponse")) {
+                self$debug_message(sprintf("got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning resulte", PATH))
                 return(result)
               } else {
-                # error in user function - return 500 error
                 if(inherits(result, "simpleError")) {
-                  http_500_internal_server_error(response, get_traceback_message(response, TRACEBACK_MAX_NCHAR))
+                  self$debug_message(sprintf("got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
+                  http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
                 }
                 return(invisible(NULL))
               }
@@ -476,13 +494,27 @@ RestRserveApplication = R6::R6Class(
     },
     call_middleware = function(request, response, fun = c("process_request", "process_response")) {
       fun = match.arg(fun)
-      for(i in seq_along(private$middleware)) {
-        id = as.character(i)
-        self$debug_message("executing middleware '", id, "'-", fun)
-        FUN = private$middleware[[id]][[fun]]
-        mw_result = FUN(request, response)
-        if(inherits(mw_result, "RestRserveResponse"))
-          return(mw_result)
+
+      if(fun == "process_request") {
+        for(i in seq_along(private$middleware)) {
+          id = as.character(i)
+          self$debug_message("executing middleware '", id, "'-", fun)
+          FUN = private$middleware[[id]][[fun]]
+          mw_result = FUN(request, response)
+          if(inherits(mw_result, "RestRserveResponse"))
+            return(mw_result)
+        }
+      } else  {
+        # execute 'process_response' middleware in reverse order
+        # not sure yet what is the benefit, but it is done this way everywhere
+        for(i in rev(seq_along(private$middleware))) {
+          id = as.character(i)
+          self$debug_message("executing middleware '", id, "'-", fun)
+          FUN = private$middleware[[id]][[fun]]
+          mw_result = FUN(request, response)
+          if(inherits(mw_result, "RestRserveResponse"))
+            return(mw_result)
+        }
       }
       invisible(NULL)
     }
