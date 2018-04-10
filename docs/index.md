@@ -21,12 +21,14 @@ RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rs
 
 Creating application is as simple as:
 ```r
+library(RestRserve)
 # create application
 app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers
 app$add_get(path = "/hello", 
   FUN = function(request, response) {
     response$body = "Hello from RestRserve"
+    forward()
   })
 app$run(http_port = "8001")
 ```

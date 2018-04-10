@@ -361,12 +361,14 @@ div.tocify {
 <div id="quick-start" class="section level3">
 <h3>Quick start</h3>
 <p>Creating application is as simple as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># create application</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(RestRserve)
+<span class="co"># create application</span>
 app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
 <span class="co"># register endpoints and corresponding R handlers</span>
 app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/hello&quot;</span>, 
   <span class="dt">FUN =</span> <span class="cf">function</span>(request, response) {
     response<span class="op">$</span>body =<span class="st"> &quot;Hello from RestRserve&quot;</span>
+    <span class="kw">forward</span>()
   })
 app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_port =</span> <span class="st">&quot;8001&quot;</span>)</code></pre></div>
 <p>Please follow <a href="http://restrserve.org/quick-start.html">quick start article on http://restrserve.org/</a> for more details.</p>
