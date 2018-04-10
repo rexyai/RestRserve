@@ -5,6 +5,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Quick Start"
+      href: quick-start.html
     - text: "Examples"
       menu:
         - text: "Serving machine learning models"

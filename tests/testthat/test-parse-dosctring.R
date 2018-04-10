@@ -1,5 +1,5 @@
 test_that("create RestRserveApp", {
-  fn = function(x) {
+  fn = function(req, res) {
     #' ---
     #' description: Calculates Fibonacci number
     #' parameters:
@@ -19,7 +19,7 @@ test_that("create RestRserveApp", {
     #'           type: string
     #'           example: 5
     #' ---
-    x + 1 # A comment, kept as part of the source
+    forward()
   }
   docstring_args = RestRserve:::extract_docstrings_yaml(fn)
   expect_equal(length(docstring_args), 17)
@@ -28,3 +28,4 @@ test_that("create RestRserveApp", {
   # should only work with functions
   expect_error(parse_docstring(1))
 })
+

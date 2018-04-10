@@ -11,7 +11,7 @@ calc_fib = function(n) {
   x[[n]]
 }
 
-fib = function(request) {
+fib = function(request, response) {
 
   #' ---
   #' description: Calculates Fibonacci number
@@ -34,10 +34,9 @@ fib = function(request) {
   #' ---
 
   n = as.integer( request$query[["n"]] )
-  RestRserve::create_response(body = as.character(calc_fib(n)),
-                              content_type = "text/plain",
-                              headers = character(0),
-                              status_code = 200L)
+  response$body = as.character(calc_fib(n))
+  response$content_type = "text/plain"
+  NULL
 }
 #------------------------------------------------------------------------------------------
 # create application

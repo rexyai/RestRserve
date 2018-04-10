@@ -11,7 +11,7 @@
 
 <meta name="author" content="Dmitriy Selivanov" />
 
-<meta name="date" content="2018-02-27" />
+<meta name="date" content="2018-04-10" />
 
 <title>Serving machine learning models</title>
 
@@ -339,7 +339,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Serving machine learning models</h1>
 <h4 class="author"><em>Dmitriy Selivanov</em></h4>
-<h4 class="date"><em>2018-02-27</em></h4>
+<h4 class="date"><em>2018-04-10</em></h4>
 
 </div>
 
@@ -470,7 +470,7 @@ create_model_matrix =<span class="st"> </span><span class="kw">model_matrix_cons
 create_model_matrix =<span class="st"> </span><span class="kw">readRDS</span>(<span class="st">&quot;create_model_matrix.rds&quot;</span>)
 bst =<span class="st"> </span><span class="kw">xgb.load</span>(<span class="st">&quot;model.xgb&quot;</span>)
 
-pred_xgb_post =<span class="st"> </span><span class="cf">function</span>(request) {
+pred_xgb_post =<span class="st"> </span><span class="cf">function</span>(request, response) {
   <span class="co">#&#39; ---</span>
   <span class="co">#&#39; description: predict whether mushroom edible or poisonous</span>
   <span class="co">#&#39; operationId: postXgbPredict</span>
@@ -503,12 +503,13 @@ pred_xgb_post =<span class="st"> </span><span class="cf">function</span>(request
   <span class="co">#&#39; ---</span>
   x =<span class="st"> </span><span class="kw">rawToChar</span>(request<span class="op">$</span>body)
   x =<span class="st"> </span><span class="kw">create_model_matrix</span>(x)
-  RestRserve<span class="op">::</span><span class="kw">create_response</span>(<span class="dt">body =</span> <span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x)),
-                              <span class="dt">content_type =</span> <span class="st">&quot;text/plain&quot;</span>,
-                              <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>),
-                              <span class="dt">status_code =</span> 200L)
+  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x))
+  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span>
+  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)
+  response<span class="op">$</span>status_code =<span class="st"> </span>200L
+  <span class="kw">forward</span>()
 }
-pred_xgb_get =<span class="st"> </span><span class="cf">function</span>(request) {
+pred_xgb_get =<span class="st"> </span><span class="cf">function</span>(request, response) {
   <span class="co">#&#39; ---</span>
   <span class="co">#&#39; description: predict whether mushroom edible or poisonous</span>
   <span class="co">#&#39; operationId: getXgbPredict</span>
@@ -539,10 +540,11 @@ pred_xgb_get =<span class="st"> </span><span class="cf">function</span>(request)
   x =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw">toJSON</span> (<span class="kw">lapply</span>(x, <span class="cf">function</span>(z) <span class="kw">list</span>(<span class="dt">featureName =</span> z[[<span class="dv">1</span>]], <span class="dt">featureValue =</span> z[[<span class="dv">2</span>]])), <span class="dt">auto_unbox =</span> <span class="ot">TRUE</span>)
   <span class="co"># create feature matrix</span>
   x =<span class="st"> </span><span class="kw">create_model_matrix</span>(x)
-  RestRserve<span class="op">::</span><span class="kw">create_response</span>(<span class="dt">body =</span> <span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x)),
-                              <span class="dt">content_type =</span> <span class="st">&quot;text/plain&quot;</span>,
-                              <span class="dt">headers =</span> <span class="kw">character</span>(<span class="dv">0</span>),
-                              <span class="dt">status_code =</span> 200L)
+  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">predict</span>(bst, x))
+  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span>
+  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)
+  response<span class="op">$</span>status_code =<span class="st"> </span>200L
+  <span class="kw">forward</span>()
 }
 <span class="co">#------------------------------------------------------------------------------------------</span>
 <span class="co"># create application</span>

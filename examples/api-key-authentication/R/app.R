@@ -1,6 +1,6 @@
 # note that all paths should be relative the location of this file during application start
 # less error prone approach is to provide absolute paths
-
+library(RestRserve)
 KEYS_PATH = "api-keys.txt"
 
 read_allowed_keys = function(path) {
@@ -29,7 +29,7 @@ calc_fib = function(n) {
   x[[n]]
 }
 
-fib = function(request) {
+fib = function(request, response) {
 
   #' ---
   #' description: Calculates Fibonacci number
@@ -59,22 +59,29 @@ fib = function(request) {
   #'           type: string
   #'           example: API key is missing
   #' ---
-  # header keys are in lower case
-  X_API_KEY = try(request$headers[["x-api-key"]], silent = TRUE)
-
-  if(class(X_API_KEY) == "try-error")
-    return(RestRserve::create_response(body = "API key is missing", content_type = "text/plain",
-                                       headers = c("WWW-Authenticate: Basic"), status_code = 401L))
-  if(!validate_api_key(X_API_KEY))
-    return(RestRserve::create_response(body = "API key is invalid", content_type = "text/plain",
-                                       headers = c("WWW-Authenticate: Basic"), status_code = 401L))
 
   n = as.integer( request$query[["n"]] )
-  RestRserve::create_response(body = as.character(calc_fib(n)),
-                              content_type = "text/plain",
-                              status_code = 200L)
+  response$body = as.character(calc_fib(n))
+  response$content_type = "text/plain"
+  response$status_code = 200L
+  forward()
 }
-RestRserveApp = RestRserve::RestRserveApplication$new()
+mw = RestRserve::RestRserveMiddleware$new(
+  process_request = function(request, response) {
+    # header keys are in lower case
+    X_API_KEY = try(request$headers[["x-api-key"]], silent = TRUE)
+
+    if(class(X_API_KEY) == "try-error")
+      return(RestRserve::RestRserveResponse$new(body = "API key is missing", content_type = "text/plain",
+                                            headers = c("WWW-Authenticate: Basic"), status_code = 401L))
+    if(!validate_api_key(X_API_KEY))
+      return(RestRserve::RestRserveResponse$new(body = "API key is invalid", content_type = "text/plain",
+                                            headers = c("WWW-Authenticate: Basic"), status_code = 401L))
+    forward()
+  }
+)
+
+RestRserveApp = RestRserve::RestRserveApplication$new(middleware = list(mw))
 RestRserveApp$add_get(path = "/fib", FUN = fib)
 
 # https://swagger.io/docs/specification/authentication/api-keys/

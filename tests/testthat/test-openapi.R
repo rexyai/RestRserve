@@ -1,5 +1,5 @@
 test_that("openapi", {
-  f1 = function(x) {
+  f1 = function(req, res) {
     #' ----
     #' description: f1
     #'
@@ -11,7 +11,7 @@ test_that("openapi", {
     #' just comment
     NULL
   }
-  f2 = function(x) {
+  f2 = function(req, res) {
     #' --
     #' description: f1
     #' parameters:
@@ -19,7 +19,7 @@ test_that("openapi", {
     #' ---
     NULL
   }
-  f3 = function(x) {
+  f3 = function(req, res) {
     #' ---------
     #' description: f1
     #' parameters:
@@ -28,14 +28,14 @@ test_that("openapi", {
     NULL
   }
 
-  f4 = function(x) {
+  f4 = function(req, res) {
     #' description: f1
     #' parameters:
     #'   - name: "n"
     NULL
   }
 
-  f5 = function(x) {
+  f5 = function(req, res) {
     #' ---
     #' description: f1
     #' parameters:
@@ -66,3 +66,4 @@ test_that("openapi", {
   expect_null(openapi_def[["/f5"]])
 
 })
+
