@@ -6,8 +6,8 @@ RestRserveMiddleware = R6::R6Class(
     process_response = NULL,
     name = NULL,
     initialize = function(
-      process_request  = function(request, response) NULL,
-      process_response = function(request, response) NULL,
+      process_request  = function(request, response) forward(),
+      process_response = function(request, response) forward(),
       name = NULL
       ) {
       if(!is.function(process_request) || !is.function(process_response))
@@ -23,19 +23,3 @@ RestRserveMiddleware = R6::R6Class(
     }
   )
 )
-
-# tst = function(...) {
-#   list(...)
-# }
-#
-# temp = tst(mw1 = RestRserveMiddleware$new(process_request = function(x, y) NULL, process_response = function(x, y) NULL),
-#     mw2 = RestRserveMiddleware$new(process_request = function(x, y) NULL, process_response = function(x, y) NULL))
-#
-# temp = tst(mw1 = "a",
-#            mw2 = "b")
-#
-#
-# mw1 = RestRserveMiddleware$new(process_request = function(x, y) NULL, process_response = function(x, y) NULL)
-# mw2 = RestRserveMiddleware$new(process_request = function(x, y) NULL, process_response = function(x, y) NULL)
-# mw_list = list(mw1, mw2)
-# all(vapply(mw_list, inherits, FALSE, "RestRserveMiddleware"))

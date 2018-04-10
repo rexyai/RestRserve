@@ -6,7 +6,7 @@
 # the content of a file of that name is the body
 #
 # content-type: must be a character vector of length one
-# or NULL (if present, else default is "text/html")
+# or NULL (if present, else default is "text/plain")
 #
 # headers: must be a character vector - the elements will
 # have CRLF appended and neither Content-type nor
@@ -19,13 +19,13 @@
 #' @title Creates RestRserveResponse
 #' @description Creates RestRserveResponse object.
 #' \itemize{
-#' \item \code{response = RestRserveResponse(body = "", content_type = "text/html", headers = character(0), status_code = 200L)}
+#' \item \code{response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)}
 #' \describe{
 #'   \item{body}{must be a character vector of length one or a raw vector.
 #'   If it is a named character with a name \code{file} or \code{tmpfile}
 #'   then the value is considered as a path to a file and content oh this file is served as body.
 #'   The latter will be deleted once served.}
-#'   \item{content_type}{\code{"text/html"} must be a character vector of length one}
+#'   \item{content_type}{\code{"text/plain"} must be a character vector of length one}
 #'   \item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
 #'   Neither Content-type nor Content-length may be used.}
 #'   \item{status_code}{\code{200L} must be an integer}
@@ -33,7 +33,7 @@
 #' }
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(body = "", content_type = "text/html", headers = character(0), status_code = 200L)}}{Constructor for RestRserveResponse}
+#'   \item{\code{$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)}}{Constructor for RestRserveResponse}
 #' }
 #' @export
 RestRserveResponse = R6::R6Class(
@@ -83,8 +83,9 @@ RestRserveResponse = R6::R6Class(
   )
 )
 
-# restrserve_return = function() {
-#   res = TRUE
-#   class(res) = "RestRserveReturn"
-#   invisible(res)
-# }
+#' @export
+forward = function() {
+  x = TRUE
+  class(x) = "RestRserveForward"
+  invisible(x)
+}

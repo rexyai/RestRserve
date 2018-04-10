@@ -90,11 +90,13 @@ RestRserveApplication = R6::R6Class(
       }
     ) ,
     #------------------------------------------------------------------------
-    initialize = function(debug = FALSE) {
+    initialize = function(middleware = list(), debug = FALSE) {
+      stopifnot(is.list(middleware))
       self$debug = debug
       private$handlers = new.env(parent = emptyenv())
       private$response_callbacks = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
+      do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, path_as_prefix = FALSE, ...) {
@@ -111,12 +113,13 @@ RestRserveApplication = R6::R6Class(
       # remove trailing slashes
       path = gsub(pattern = "/+$", replacement = "", x = path)
       # if path was a root -> replace it back
-      if(path == "")
-        path = "/"
+      if(path == "") path = "/"
+
+      if( length(formals(FUN)) == 0L ) stop("function should take 2 arguments - 1. request 2. response")
 
       if( length(formals(FUN)) == 1L ) {
         warning("Function provided takes only 1 argument which willbe considered as request.
-                Function should take two arguments: 1. request 2. response. This warning will be turned into ERROR next release!")
+                Function should take two arguments - 1. request 2. response. This warning will be turned into ERROR next release!")
         FUN_WRAP = function(request, response) FUN(request)
       } else {
         FUN_WRAP = FUN
@@ -163,6 +166,7 @@ RestRserveApplication = R6::R6Class(
       if(is.na(is_dir)) {
         stop(sprintf("'%s' file or directory doesnt't exists", file_path))
       }
+      # response = RestRserveResponse$new()
       # now we know file exists
       file_path = normalizePath(file_path)
 
@@ -177,32 +181,35 @@ RestRserveApplication = R6::R6Class(
       # file_path is a DIRECTORY
       if(is_dir) {
         self$debug_message("adding DIR ", file_path)
-        handler = function(request) {
+        handler = function(request, response) {
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            http_404_not_found()
+            set_http_404_not_found(response)
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              http_404_not_found()
+              set_http_404_not_found(response)
             }
             else {
-              RestRserveResponse$new(body = c(file = fl), content_type = content_type, status_code = 200L)
+              response$body = c(file = fl)
+              response$content_type = content_type
+              response$status_code = 200L
             }
           }
+          forward()
         }
         self$add_get(path, handler, path_as_prefix = TRUE, ...)
       } else {
         self$debug_message("adding FILE ", file_path)
         # file_path is a FILE
-        handler = function(request) {
+        handler = function(request, response) {
 
           if(!file.exists(file_path))
-            return(http_404_not_found())
+            set_http_404_not_found(response)
 
           if(is.null(content_type)) {
             if(mime_avalable) {
@@ -211,7 +218,10 @@ RestRserveApplication = R6::R6Class(
               content_type = "application/octet-stream"
             }
           }
-          RestRserveResponse$new(body = c(file = file_path), content_type = content_type, status_code = 200L)
+          response$body = c(file = file_path)
+          response$content_type = content_type
+          response$status_code = 200L
+          forward()
         }
         self$add_get(path, handler, ...)
       }
@@ -220,17 +230,17 @@ RestRserveApplication = R6::R6Class(
     call_handler = function(request, response) {
       TRACEBACK_MAX_NCHAR = 1000L
       PATH = request$path
-      # placeholder for bad result
-      self$debug_message("creating dummy response")
-      result = RestRserveResponse$new(body = "call_handler(): should not happen - please report to https://github.com/dselivanov/RestRserve/issues",
+      # placeholder
+      self$debug_message("call_handler: creating dummy response")
+      result = RestRserveResponse$new(body = "call_handler: should not happen - please report to https://github.com/dselivanov/RestRserve/issues",
                content_type = "text/plain",
                headers = character(0),
                status_code = 520L)
 
       if(identical(names(private$handlers), character(0))) {
-        self$debug_message("no registered endpoints - set 404 to response")
-        http_404_not_found(response)
-        return(invisible(NULL))
+        self$debug_message("call_handler: no registered endpoints - set 404 to response")
+        set_http_404_not_found(response)
+        return(forward())
       }
 
 
@@ -238,72 +248,94 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[PATH]][[METHOD]]
 
       if(!is.null(FUN)) {
-        self$debug_message("happy path - found handler with exact match - executing")
-        # happy path
-        # call handler function. 3 results possible:
+        self$debug_message("call_handler: happy path - found handler with exact match - executing")
+        # call handler function. 4 results possible:
         # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
         # 2) error - need to set corresponding response code and continue dowstream tasks
-        # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
+        # 3) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
+        # 4) anything else = set 500 error
         result = try_capture_stack(FUN(request, response))
         if(inherits(result, "RestRserveResponse")) {
-          self$debug_message(sprintf("got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning resulte", PATH))
+          self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
           return(result)
         } else {
           if(inherits(result, "simpleError")) {
-            self$debug_message(sprintf("got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
-            http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+            self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
+            set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+          } else {
+            if(!inherits(result, "RestRserveForward")) {
+              self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
+              set_http_500_internal_server_error(
+                response,
+                body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
+              )
+            }
           }
-          return(invisible(NULL))
+          return(forward())
         }
       } else {
-        self$debug_message(sprintf("unhappy path - trying to match prefix path '%s'", PATH))
+        self$debug_message(sprintf("call_handler: unhappy path - trying to match prefix path '%s'", PATH))
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
         handlers_match_start = startsWith(x = PATH, prefix = paste(registered_paths, "/", sep = ""))
         if(!any(handlers_match_start)) {
-          self$debug_message(sprintf("no path match prefix '%s'", PATH))
-          http_404_not_found(response)
-          return(invisible(NULL))
+          self$debug_message(sprintf("call_handler: no path match prefix '%s'", PATH))
+          set_http_404_not_found(response)
+          return(forward())
         } else {
           # find method which match the path - should be unique
           j = which(handlers_match_start)
           if(length(j) != 1L) {
-            self$debug_message(sprintf("more that 1 path match prefix '%s'", PATH))
-            http_500_internal_server_error(response, "requested path matches to more than one handler")
-            return(invisible(NULL))
+            self$debug_message(sprintf("call_handler: more that 1 path match prefix '%s'", PATH))
+            set_http_500_internal_server_error(response, "requested path matches to more than one handler")
+            return(forward())
           }
           else {
             matched_path = registered_paths[[j]]
-            self$debug_message(sprintf("found path '%s' matched to '%s'", matched_path, PATH))
+            self$debug_message(sprintf("call_handler: found path '%s' matched to '%s'", matched_path, PATH))
             FUN = private$handlers[[ matched_path ]][[METHOD]]
             # now FUN is NULL or some function
             # if it is a function then we need to check whther it was registered to handle patterned paths
             if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-              self$debug_message(sprintf("handler doesn't accept prefix paths"))
-              http_404_not_found(response)
-              return(invisible(NULL))
+              self$debug_message(sprintf("call_handler: handler doesn't accept prefix paths"))
+              set_http_404_not_found(response)
+              return(forward())
             } else {
-              # call handler function. 3 results possible:
+              # FIXME repeat of the happy path above
+              # call handler function. 4 results possible:
               # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
               # 2) error - need to set corresponding response code and continue dowstream tasks
-              # 3) anything else. This is considered as following: fuction modified response and we need to continue dowstream tasks
+              # 3) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
+              # 4) anything else = set 500 error
               result = try_capture_stack(FUN(request, response))
               if(inherits(result, "RestRserveResponse")) {
-                self$debug_message(sprintf("got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning resulte", PATH))
+                self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
                 return(result)
               } else {
                 if(inherits(result, "simpleError")) {
-                  self$debug_message(sprintf("got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
-                  http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+                  self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
+                  set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+                } else {
+                  if(!inherits(result, "RestRserveForward")) {
+                    self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
+                    set_http_500_internal_server_error(
+                      response,
+                      body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
+                    )
+                  }
                 }
-                return(invisible(NULL))
+                return(forward())
               }
             }
           }
         }
       }
+      result = RestRserveResponse$new(body = "call_handler: should not happen 2 - please report to https://github.com/dselivanov/RestRserve/issues",
+                                      content_type = "text/plain",
+                                      headers = character(0),
+                                      status_code = 520L)
       return(result)
     },
     #------------------------------------------------------------------------
@@ -429,36 +461,30 @@ RestRserveApplication = R6::R6Class(
     call_middleware_response = function(request, response) {
       private$call_middleware(request, response, "process_response")
     }
-    # add_callback = function(FUN) {
-    #   if(length(formals(FUN)) != 2L)
-    #     stop("function should take exactly 2 arguments - request and response")
-    #   n_already_registered = length(private$response_callbacks)
-    #   id = as.character(n_already_registered + 1L)
-    #
-    #   if(self$debug) self$debug_message("adding response_callback ", id)
-    #
-    #   private$response_callbacks[[id]] = compiler::cmpfun(FUN)
-    #
-    #   invisible(length(private$response_callbacks))
-    # },
-    # execute_callbacks = function(request, response) {
-    #   for(i in seq_along(private$response_callbacks)) {
-    #     id = as.character(i)
-    #
-    #     if(self$debug)
-    #       self$debug_message("executing response_callback ", id)
-    #
-    #     FUN = private$response_callbacks[[id]]
-    #     response = FUN(request, response)
-    #   }
-    #   response
-    # }
   ),
   private = list(
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     response_callbacks = NULL,
     middleware = NULL,
+    process_request = function(request) {
+      response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)
+      intermediate_response = self$call_middleware_request(request, response)
+      # RestRserveResponse means we need to return result
+      if(inherits(intermediate_response, "RestRserveResponse"))
+        return(intermediate_response$as_rserve_response())
+
+      intermediate_response = self$call_handler(request, response)
+      if(inherits(intermediate_response, "RestRserveResponse"))
+        return(intermediate_response$as_rserve_response())
+
+      #call_middleware_response() can only retrun RestRserveForward or RestRserveResponse
+      intermediate_response = self$call_middleware_response(request, response)
+      if(inherits(intermediate_response, "RestRserveResponse"))
+        return(intermediate_response$as_rserve_response())
+
+      response$as_rserve_response()
+    },
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -501,8 +527,17 @@ RestRserveApplication = R6::R6Class(
           self$debug_message("executing middleware '", id, "'-", fun)
           FUN = private$middleware[[id]][[fun]]
           mw_result = FUN(request, response)
+
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
+
+          if(!inherits(mw_result, "RestRserveForward")) {
+            set_http_500_internal_server_error(
+              response,
+              body = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            )
+            return(response)
+          }
         }
       } else  {
         # execute 'process_response' middleware in reverse order
@@ -514,9 +549,16 @@ RestRserveApplication = R6::R6Class(
           mw_result = FUN(request, response)
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
+          if(!inherits(mw_result, "RestRserveForward")) {
+            set_http_500_internal_server_error(
+              response,
+              body = sprintf("process_response middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            )
+            return(response)
+          }
         }
       }
-      invisible(NULL)
+      forward()
     }
   )
 )
