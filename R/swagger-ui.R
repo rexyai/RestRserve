@@ -1,5 +1,5 @@
 write_swagger_ui_index_html = function(file_path = "index.html",
-                                       path_swagger_assets = "/__swagger/",
+                                       path_swagger_assets = "/__swagger__/",
                                        path_openapi = "/openapi.yaml") {
   index_html = sprintf(
     '

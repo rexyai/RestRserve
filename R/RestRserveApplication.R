@@ -288,7 +288,7 @@ RestRserveApplication = R6::R6Class(
           # find method which match the path - should be unique
           j = which(handlers_match_start)
           if(length(j) != 1L) {
-            self$debug_message(sprintf("call_handler: more that 1 path match prefix '%s'", PATH))
+            self$debug_message(sprintf("call_handler: more that 1 path match prefix '%s' : %s", PATH, paste(registered_paths[j], collapse = "|")))
             set_http_500_internal_server_error(response, "requested path matches to more than one handler")
             return(forward())
           }
