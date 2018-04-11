@@ -285,49 +285,45 @@ RestRserveApplication = R6::R6Class(
           set_http_404_not_found(response)
           return(forward())
         } else {
-          # find method which match the path - should be unique
-          j = which(handlers_match_start)
-          if(length(j) != 1L) {
-            self$debug_message(sprintf("call_handler: more that 1 path match prefix '%s' : %s", PATH, paste(registered_paths[j], collapse = "|")))
-            set_http_500_internal_server_error(response, "requested path matches to more than one handler")
+          paths_match = registered_paths[handlers_match_start]
+          self$debug_message(sprintf("call_handler: matched paths to '%s' : %s",
+                                     PATH, paste(paths_match, collapse = "|")))
+          # find method which match the path - take longest match
+          j = which.max(nchar(paths_match))
+          matched_path = paths_match[[j]]
+          self$debug_message(sprintf("call_handler: picking path '%s'", matched_path))
+          FUN = private$handlers[[ matched_path ]][[METHOD]]
+          # now FUN is NULL or some function
+          # if it is a function then we need to check whther it was registered to handle patterned paths
+          if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
+            self$debug_message(sprintf("call_handler: handler doesn't accept prefix paths"))
+            set_http_404_not_found(response)
             return(forward())
-          }
-          else {
-            matched_path = registered_paths[[j]]
-            self$debug_message(sprintf("call_handler: found path '%s' matched to '%s'", matched_path, PATH))
-            FUN = private$handlers[[ matched_path ]][[METHOD]]
-            # now FUN is NULL or some function
-            # if it is a function then we need to check whther it was registered to handle patterned paths
-            if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-              self$debug_message(sprintf("call_handler: handler doesn't accept prefix paths"))
-              set_http_404_not_found(response)
-              return(forward())
+          } else {
+            # FIXME repeat of the happy path above
+            # call handler function. 4 results possible:
+            # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
+            # 2) error - need to set corresponding response code and continue dowstream tasks
+            # 3) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
+            # 4) anything else = set 500 error
+            result = try_capture_stack(FUN(request, response))
+            if(inherits(result, "RestRserveResponse")) {
+              self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
+              return(result)
             } else {
-              # FIXME repeat of the happy path above
-              # call handler function. 4 results possible:
-              # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
-              # 2) error - need to set corresponding response code and continue dowstream tasks
-              # 3) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
-              # 4) anything else = set 500 error
-              result = try_capture_stack(FUN(request, response))
-              if(inherits(result, "RestRserveResponse")) {
-                self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
-                return(result)
+              if(inherits(result, "simpleError")) {
+                self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
+                set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
               } else {
-                if(inherits(result, "simpleError")) {
-                  self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
-                  set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
-                } else {
-                  if(!inherits(result, "RestRserveForward")) {
-                    self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
-                    set_http_500_internal_server_error(
-                      response,
-                      body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
-                    )
-                  }
+                if(!inherits(result, "RestRserveForward")) {
+                  self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
+                  set_http_500_internal_server_error(
+                    response,
+                    body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
+                  )
                 }
-                return(forward())
               }
+              return(forward())
             }
           }
         }
