@@ -59,24 +59,9 @@
 #'      \item content_type
 #'      \item headers
 #'    }
-#'    This object is returned by \link{parse_request} function.
-#'    See \strong{Value} section of the \link{parse_request} function for detailed description.
 #'  }
 #' }
 #' @format \code{\link{R6Class}} object.
-#' @examples
-#' echo_handler = function(request) {
-#'  RestRserve::RestRserveResponse(body = request$query[[1]],
-#'                              content_type = "text/plain",
-#'                             headers = "Location: /echo",
-#'                             status_code = 201L)
-#' }
-#' app = RestRserveApplication$new()
-#' app$add_route(path = "/echo", method = "GET", FUN = echo_handler)
-#' req = list(query = c("a" = "2"), method = "GET", path = "/echo")
-#' answer = app$call_handler(request = req)
-#' answer$body
-#' # "2"
 #' @export
 RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",

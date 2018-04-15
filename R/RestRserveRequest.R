@@ -1,5 +1,6 @@
 #' @name RestRserveRequest
-#' @title Creates request object (R6 class)
+#' @title Creates RestRserveRequest object (R6 class)
+#' @description Called internally for handling incoming requests from Rserve side. Also useful for testing.
 #' \itemize{
 #' \item \code{response = RestRserveResponse$new(body = "", content_type = "text/html", headers = character(0), status_code = 200L)}
 #' \describe{
@@ -87,33 +88,26 @@ RestRserveRequest = R6::R6Class(
 # https://github.com/s-u/FastRWeb/blob/aaf8847f11903675b1ec7eb9c0e1cc98b92512e5/R/run.R#L58
 # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L286-L288
 
-#' @title parses http request from Rserve
-#' @description internal (not part of public API) function for convenient parsing of
-#' http request objects from Rserve backend.
-#' @return
-#'    \describe{
-#'       \item{path}{ = \code{"/somepath"}, always character of length 1}
-#'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Query parameters key-value pairs.}
-#'       \item{body}{ = \code{NULL}.
-#'          \itemize{
-#'             \item \code{NULL} if the http body is empty or zero length.
-#'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-#'             \item named \code{characeter vector} in the case of a URL encoded form.
-#'             It will have the same shape as the query string (named string vector).
-#'          }
-#'       }
-#'       \item{content_type}{ = \code{""}, always character of length 1}
-#'       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
-#'    }
+# @title parses http request from Rserve
+# @description internal (not part of public API) function for convenient parsing of
+# http request objects from Rserve backend.
+# @return
+#    \describe{
+#       \item{path}{ = \code{"/somepath"}, always character of length 1}
+#       \item{method}{ = \code{"GET"}, always character of length 1}
+#       \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Query parameters key-value pairs.}
+#       \item{body}{ = \code{NULL}.
+#          \itemize{
+#             \item \code{NULL} if the http body is empty or zero length.
+#             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
+#             \item named \code{characeter vector} in the case of a URL encoded form.
+#             It will have the same shape as the query string (named string vector).
+#          }
+#       }
+#       \item{content_type}{ = \code{""}, always character of length 1}
+#       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
+#    }
 parse_request = function(path, query, body, headers) {
-  # request = RestRserveRequest(path = path, # should be chararacter vector
-  #                method = "GET", # should be chararacter vector
-  #                query = query, # character vector or NULL:
-  #                # - https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L340
-  #                body = raw(0L),
-  #                headers = character(0L))
-
   ## process headers
   if(is.null(query)) query = character(0)
   method = "GET"

@@ -13,7 +13,7 @@ pid = app$run(http_port = PORT, background = TRUE)
 Sys.sleep(1)
 
 # Will executed after test
-teardown(RestRserve:::kill_process_group(pid))
+teardown({tools::pskill(pid); TRUE})
 
 # Get HTTP status code
 get_status_code = function(url) {

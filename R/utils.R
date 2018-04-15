@@ -61,7 +61,7 @@ is_string_len_one = function(x) {
 try_capture_stack <- function(expr, env = environment()) {
   quoted_code = quote(expr)
   capture_calls <- function(e) {
-    e$calls <- head(sys.calls()[-seq_len(frame + 7)], -2)
+    e$calls <- utils::head(sys.calls()[-seq_len(frame + 7)], -2)
     signalCondition(e)
   }
   frame <- sys.nframe()
@@ -73,9 +73,9 @@ try_capture_stack <- function(expr, env = environment()) {
 
 get_traceback_message = function(err, nchar_max = 1000L) {
   err_msg = err$message
-  stack_msg = vapply(err$calls, function(x) paste(capture.output(print(x)), collapse = "\n") , "")
+  stack_msg = vapply(err$calls, function(x) paste(utils::capture.output(print(x)), collapse = "\n") , "")
   stack_msg = paste(stack_msg, collapse = "\n")
-  call_msg  = paste(capture.output(print(err$call)), collapse = "|")
+  call_msg  = paste(utils::capture.output(print(err$call)), collapse = "|")
   res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s",
           err_msg, call_msg, stack_msg)
   substr(res, 0L, nchar_max)

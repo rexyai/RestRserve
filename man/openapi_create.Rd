@@ -27,8 +27,44 @@ openapi_contact(name = NULL, url = NULL, email = NULL)
 
 openapi_license(name = NULL, url = NULL)
 }
+\arguments{
+\item{openapi}{string, version of open api. For example \code{"3.0.1"}}
+
+\item{info}{infoObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}.
+See \link{openapi_info}}
+
+\item{servers}{serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
+See \link{openapi_servers}}
+
+\item{...}{other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}}
+
+\item{openapi_version}{version on openapi}
+
+\item{title}{the title of the application}
+
+\item{version}{version of the application}
+
+\item{description}{description}
+
+\item{termsOfService}{termsOfService of the application}
+
+\item{contact}{contact of the maintainer - see \link{openapi_contact}}
+
+\item{license}{license of the api}
+
+\item{url}{url}
+
+\item{variables}{a map between a variable name and its value. The value is used for substitution in the server's URL template.}
+
+\item{name}{name}
+
+\item{email}{contact email}
+}
 \description{
 Facilitates in building \href{https://www.openapis.org/}{OpenAPI} description document by
 creating objects described in
  \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
+}
+\details{
+\url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}
 }

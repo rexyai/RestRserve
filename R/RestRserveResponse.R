@@ -16,8 +16,8 @@
 #-------------------------------------------------
 
 #' @name RestRserveResponse
-#' @title Creates RestRserveResponse
-#' @description Creates RestRserveResponse object.
+#' @title Creates RestRserveResponse object (R6 class)
+#' @description Creates RestRserveResponse object. Useful if handler of middleware wants to return some value immediately.
 #' \itemize{
 #' \item \code{response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)}
 #' \describe{
@@ -83,6 +83,8 @@ RestRserveResponse = R6::R6Class(
   )
 )
 
+#' @title continue request-response cycle
+#' @description forwards processing of the request to the downstream handlers/middleware
 #' @export
 forward = function() {
   x = TRUE

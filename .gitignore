@@ -4,3 +4,4 @@
 .Ruserdata
 *.DS_Store
 examples/xgboost-mushrooms/app-run
+examples/api-key-authentication/run/

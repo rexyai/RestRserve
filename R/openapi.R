@@ -32,6 +32,10 @@ extract_docstrings_yaml = function(FUN) {
 #' @description Facilitates in building \href{https://www.openapis.org/}{OpenAPI} description document by
 #' creating objects described in
 #'  \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
+#' @param openapi string, version of open api. For example \code{"3.0.1"}
+#' @param info infoObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}.
+#' See \link{openapi_info}
+#' @param ... other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}
 #' @export
 openapi_create = function(openapi = openapi_openapi_version(),
                    info = openapi_info(),
@@ -42,6 +46,7 @@ openapi_create = function(openapi = openapi_openapi_version(),
 
 # https://swagger.io/specification/#fixed-fields-18
 #' @export
+#' @param openapi_version version on openapi
 #' @rdname openapi_create
 openapi_openapi_version = function(openapi_version = "3.0.1") {
   stopifnot(is.character(openapi_version) && length(openapi_version) == 1L)
@@ -50,6 +55,13 @@ openapi_openapi_version = function(openapi_version = "3.0.1") {
 
 # https://swagger.io/specification/#info-object-19
 #' @export
+#' @details \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}
+#' @param title the title of the application
+#' @param version version of the application
+#' @param description description
+#' @param termsOfService termsOfService of the application
+#' @param contact contact of the maintainer - see \link{openapi_contact}
+#' @param license license of the api
 #' @rdname openapi_create
 openapi_info = function(title = "RestRserve OpenAPI",
                         version = "1.0",
@@ -80,6 +92,8 @@ openapi_info = function(title = "RestRserve OpenAPI",
 }
 
 #' @export
+#' @param servers serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
+#' See \link{openapi_servers}
 #' @rdname openapi_create
 openapi_servers = function(servers = list()) {
   stopifnot(is.list(servers))
@@ -93,6 +107,7 @@ openapi_servers = function(servers = list()) {
 }
 
 # https://swagger.io/specification/#serverObject
+#' @param variables  a map between a variable name and its value. The value is used for substitution in the server's URL template.
 #' @export
 #' @rdname openapi_create
 openapi_server = function(url = "/",
@@ -110,6 +125,9 @@ openapi_server = function(url = "/",
 }
 
 #' @export
+#' @param name name
+#' @param url url
+#' @param email contact email
 #' @rdname openapi_create
 openapi_contact = function(name = NULL, url = NULL, email = NULL) {
   stopifnot(is_string_or_null(name))

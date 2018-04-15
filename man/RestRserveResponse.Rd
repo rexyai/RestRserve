@@ -3,13 +3,13 @@
 \docType{data}
 \name{RestRserveResponse}
 \alias{RestRserveResponse}
-\title{Creates RestRserveResponse}
+\title{Creates RestRserveResponse object (R6 class)}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 RestRserveResponse
 }
 \description{
-Creates RestRserveResponse object.
+Creates RestRserveResponse object. Useful if handler of middleware wants to return some value immediately.
 \itemize{
 \item \code{response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)}
 \describe{
