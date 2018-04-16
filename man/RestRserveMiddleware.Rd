@@ -23,11 +23,10 @@ immediately interrupter and result of the function will be returned as response.
 
 \itemize{
 \item \code{app = RestRserveMiddleware$new(
-function(
 process_request  = function(request, response) forward(),
 process_response = function(request, response) forward(),
 name = NULL
-))}
+)}
 }
 For usage details see \bold{Methods, Arguments and Examples} sections.
 }

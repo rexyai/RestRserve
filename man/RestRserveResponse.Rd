@@ -9,7 +9,8 @@
 RestRserveResponse
 }
 \description{
-Creates RestRserveResponse object. Useful if handler of middleware wants to return some value immediately.
+Creates RestRserveResponse object.
+Useful if handler or middleware wants to return some value immediately and interrupt request-response cycle.
 \itemize{
 \item \code{response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)}
 \describe{
