@@ -36,7 +36,7 @@ fib = function(request, response) {
   n = as.integer( request$query[["n"]] )
   response$body = as.character(calc_fib(n))
   response$content_type = "text/plain"
-  NULL
+  RestRserve::forward()
 }
 #------------------------------------------------------------------------------------------
 # create application

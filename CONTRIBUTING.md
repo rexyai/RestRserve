@@ -12,7 +12,6 @@
     - `R6` (which has 0 zero dependencies)
     - `swagger` (swagger-ui assets for)
     - `yaml` (which is used for OpenAPI and actually not absolutely necessary)
-- we borrow some API ideas from [aiohttp](https://docs.aiohttp.org/en/stable/web.html)
 
 ### Programming style
 

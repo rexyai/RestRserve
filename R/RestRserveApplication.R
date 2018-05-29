@@ -67,13 +67,8 @@ RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
     debug = NULL,
-    debug_message = compiler::cmpfun(
-      function(...) {
-        if(self$debug)
-          message(...)
-        invisible(TRUE)
-      }
-    ) ,
+    #------------------------------------------------------------------------
+    debug_message = function(...) { if(self$debug) message(...); invisible(TRUE)},
     #------------------------------------------------------------------------
     initialize = function(middleware = list(), debug = FALSE) {
       stopifnot(is.list(middleware))
@@ -134,15 +129,15 @@ RestRserveApplication = R6::R6Class(
 
       invisible(TRUE)
     },
-    # shortcuts
+    #------------------------------------------------------------------------
     add_get = function(path, FUN, ...) {
       self$add_route(path, "GET", FUN, ...)
     },
-
+    #------------------------------------------------------------------------
     add_post = function(path, FUN, ...) {
       self$add_route(path, "POST", FUN, ...)
     },
-    # static files servers
+    #------------------------------------------------------------------------
     add_static = function(path, file_path, content_type = NULL, ...) {
       stopifnot(is_string_or_null(file_path))
       stopifnot(is_string_or_null(content_type))
@@ -330,6 +325,7 @@ RestRserveApplication = R6::R6Class(
       names(endpoints_methods) = endpoints
       endpoints_methods
     },
+    #------------------------------------------------------------------------
     run = function(http_port = 8001L, ..., background = FALSE) {
       stopifnot(is.character(http_port) || is.numeric(http_port))
       stopifnot(length(http_port) == 1L)
@@ -371,6 +367,7 @@ RestRserveApplication = R6::R6Class(
         do.call(Rserve::run.Rserve, ARGS )
       }
     },
+    #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       registered_endpoints = self$routes()
       if(length(registered_endpoints) == 0)
@@ -383,10 +380,9 @@ RestRserveApplication = R6::R6Class(
       message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
       message("-----------------------------------------------")
     },
-    add_openapi = function(path = "/openapi.yaml",
-                           openapi = openapi_create(),
-                           file_path = "openapi.yaml",
-                           ...) {
+    #------------------------------------------------------------------------
+    add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
+                           file_path = "openapi.yaml", ...) {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
       file_path = path.expand(file_path)
 
@@ -406,8 +402,8 @@ RestRserveApplication = R6::R6Class(
       self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml", ...)
       invisible(file_path)
     },
-    add_swagger_ui = function(path = "/swagger",
-                              path_openapi = "/openapi.yaml",
+    #------------------------------------------------------------------------
+    add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               path_swagger_assets = "/__swagger__/",
                               file_path = tempfile(fileext = ".html")) {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
@@ -423,6 +419,7 @@ RestRserveApplication = R6::R6Class(
       self$add_static(path, file_path)
       invisible(file_path)
     },
+    #------------------------------------------------------------------------
     append_middleware = function(...) {
       middleware_list = list(...)
       # mw_names = names(middleware_list)
@@ -436,9 +433,11 @@ RestRserveApplication = R6::R6Class(
       }
       invisible(length(private$middleware))
     },
+    #------------------------------------------------------------------------
     call_middleware_request = function(request, response) {
       private$call_middleware(request, response, "process_request")
     },
+    #------------------------------------------------------------------------
     call_middleware_response = function(request, response) {
       private$call_middleware(request, response, "process_response")
     }

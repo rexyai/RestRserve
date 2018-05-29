@@ -10,7 +10,7 @@ YES - it means it will handle all the incomming requests in parallel - each requ
 
 - Create a http API by simply setting up a handler (R function) for a given route - [Hello-world](#create-application)
 - [Deploy applications](#deploy-application) with a couple of lines of the code. Easily [stop](#stop-application) them.
-- [Build high performance web API](#stress-test) - more than **20000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about **40x faster** than [plumber](https://github.com/trestletech/plumber) (but of course these numbers are for illustration only - everything depends on the user code!).
+- [Build high performance web API](#stress-test) - more than **10000 requests per second on a laptop** with 4 cores / 8 threads (Intel i7-7820HQ CPU), which is about **20x faster** than [plumber](https://github.com/trestletech/plumber) (but of course these numbers are for illustration only - everything depends on the user code!).
 - Generate [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
 - Expose [Swagger UI](#swagger-ui-and-openapi)
 - Serve static files

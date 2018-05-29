@@ -9,25 +9,25 @@ URLenc = function(x) {
 # combine http-headers by key
 # cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
 #------------------------------------------------
-combine_headers_by_key = function(x) {
-  header_keys = names(x)
-  uk = unique(header_keys)
-  # fast path - if all keys are unique
-  if(length(uk) == length(x))
-    return(x)
+combine_headers_by_key_env = function(header_keys, header_values) {
+  res = new.env(parent = emptyenv())
 
-  ind = match(header_keys, uk)
-  res = character(length(uk))
-  # handle cookies separately - need to be collapsed with "; "
-  j = which(uk == "cookie")
-  for(i in seq_along(uk)) {
-    res[[i]] =
-      if(isTRUE(i == j))
-        paste(x[i == ind], collapse = "; ")
-      else
-        paste(x[i == ind], collapse = ", ")
+  for(i in seq_along(header_keys)) {
+    key = header_keys[[i]]
+    value = header_values[[i]]
+    # no such key yet
+    if(is.null(res[[key]])) {
+      res[[key]] = value
+    } else {
+      # key already exists and we need cobine values with existing values
+      if(key == "cookie") {
+        res[[key]] = paste(res[[key]], value, sep = "; ")
+      } else {
+        res[[key]] = paste(res[[key]], value, sep = ", ")
+      }
+    }
   }
-  names(res) = uk
+
   res
 }
 #------------------------------------------------
