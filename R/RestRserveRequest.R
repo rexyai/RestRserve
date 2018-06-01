@@ -52,6 +52,7 @@ RestRserveRequest = R6::R6Class(
     headers = NULL,
     content_type = NULL,
     body = NULL,
+    request_id = NULL,
     initialize = function(path,
                           method,
                           query = new.env(parent = emptyenv()),
@@ -83,6 +84,7 @@ RestRserveRequest = R6::R6Class(
         stop("content_type should be character of length 1")
       self$content_type = content_type
 
+      self$request_id = uuid::UUIDgenerate(TRUE)
     }
   )
 )

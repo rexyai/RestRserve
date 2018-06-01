@@ -22,6 +22,7 @@ RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rs
 Creating application is as simple as:
 ```r
 library(RestRserve)
+options('RestRserve_log_level' = RestRserve:::TRACE)
 # create application
 app = RestRserve::RestRserveApplication$new()
 # register endpoints and corresponding R handlers

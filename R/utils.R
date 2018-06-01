@@ -89,3 +89,8 @@ kill_process_group = function(pid, signal = "TERM") {
   # message(sprintf("kill %s", cmd_args))
   system2("kill", cmd_args)
 }
+
+#' @useDynLib RestRserve, .registration=TRUE
+deparse_vector = function(x) {
+  .Call("C_escape_chars", x)
+}

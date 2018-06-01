@@ -11,7 +11,8 @@ License: GPL (>= 2)
 ByteCompile: TRUE
 Imports: 
   Rserve (>= 1.7.3),
-  R6 (>= 2.2.2)
+  R6 (>= 2.2.2), 
+  uuid
 Suggests:
   yaml (>= 2.1.14),
   swagger (>= 3.9.2),

@@ -66,13 +66,9 @@
 RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
-    debug = NULL,
     #------------------------------------------------------------------------
-    debug_message = function(...) { if(self$debug) message(...); invisible(TRUE)},
-    #------------------------------------------------------------------------
-    initialize = function(middleware = list(), debug = FALSE) {
+    initialize = function(middleware = list()) {
       stopifnot(is.list(middleware))
-      self$debug = debug
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
@@ -160,7 +156,6 @@ RestRserveApplication = R6::R6Class(
       }
       # file_path is a DIRECTORY
       if(is_dir) {
-        self$debug_message("adding DIR ", file_path)
         handler = function(request, response) {
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
@@ -184,7 +179,6 @@ RestRserveApplication = R6::R6Class(
         }
         self$add_get(path, handler, path_as_prefix = TRUE, ...)
       } else {
-        self$debug_message("adding FILE ", file_path)
         # file_path is a FILE
         handler = function(request, response) {
 
@@ -211,14 +205,13 @@ RestRserveApplication = R6::R6Class(
       TRACEBACK_MAX_NCHAR = 1000L
       PATH = request$path
       # placeholder
-      self$debug_message("call_handler: creating dummy response")
-      result = RestRserveResponse$new(body = "call_handler: should not happen - please report to https://github.com/dselivanov/RestRserve/issues",
-               content_type = "text/plain",
-               headers = character(0),
-               status_code = 520L)
+      result = RestRserveResponse$new(
+        body = '{"error":"call_handler: should not happen 520-1 - please report to https://github.com/dselivanov/RestRserve/issues"}',
+        content_type = "application/json",
+        headers = character(0),
+        status_code = 520L)
 
       if(identical(names(private$handlers), character(0))) {
-        self$debug_message("call_handler: no registered endpoints - set 404 to response")
         set_http_404_not_found(response)
         return(forward())
       }
@@ -228,7 +221,9 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[PATH]][[METHOD]]
 
       if(!is.null(FUN)) {
-        self$debug_message("call_handler: happy path - found handler with exact match - executing")
+        log_trace(list(request_id = request$request_id, path = PATH,
+                       method = METHOD, message = 'exact endpoint match for the route'))
+        # log_trace("request_id = '%s': exact endpoint match for route = '%s' and method '%s'", request$request_id, PATH, METHOD)
         # call handler function. 4 results possible:
         # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
         # 2) error - need to set corresponding response code and continue dowstream tasks
@@ -236,50 +231,63 @@ RestRserveApplication = R6::R6Class(
         # 4) anything else = set 500 error
         result = try_capture_stack(FUN(request, response))
         if(inherits(result, "RestRserveResponse")) {
-          self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
+          log_trace(list(request_id = request$request_id, message = "got 'RestRserveResponse' from handler - returning response immediately."))
+          # log_trace("request_id = '%s': got 'RestRserveResponse' from handler - returning response immediately.", request$request_id)
           return(result)
         } else {
           if(inherits(result, "simpleError")) {
-            self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
-            set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+            msg = get_traceback_message(result, TRACEBACK_MAX_NCHAR)
+            log_error(list(request_id = request$request_id, code = 500, method = METHOD, path = PATH,
+                           message = sprintf("error in user code: %s", msg)))
+            # log_error("request_id = '%s': 500. Error in user code: '%s'.", request$request_id, msg)
+            set_http_500_internal_server_error(response, msg)
           } else {
             if(!inherits(result, "RestRserveForward")) {
-              self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
+              log_error(list(request_id = request$request_id, code = 500, method = METHOD, path = PATH,
+                             message = "Result from handler doesn't return RestRserveResponse/RestRserveForward."))
+              # log_error("request_id = '%s': 500. ",
+              #           PATH, request$request_id)
               set_http_500_internal_server_error(
                 response,
-                body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
+                body = '{"error":"handler for doesn\'t return RestRserveResponse/RestRserveForward object"}'
               )
             }
           }
           return(forward())
         }
       } else {
-        self$debug_message(sprintf("call_handler: unhappy path - trying to match prefix path '%s'", PATH))
+        log_trace(list(request_id = request$request_id, method = METHOD, path = PATH,
+                       message = sprintf("haven't found exact match for route")))
+        # log_trace("request_id = '%s': haven't found exact match for route = '%s' and method '%s'", request$request_id, PATH, METHOD)
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
         handlers_match_start = startsWith(x = PATH, prefix = paste(registered_paths, "/", sep = ""))
         if(!any(handlers_match_start)) {
-          self$debug_message(sprintf("call_handler: no path match prefix '%s'", PATH))
+          log_error(list(request_id = request$request_id, code = 404, method = METHOD, path = PATH,
+                         message = "Haven't found prefix which match the requested path"))
+          # log_error("request_id = '%s': 404. Haven't found prefix which match the requested path.", request$request_id)
           set_http_404_not_found(response)
           return(forward())
         } else {
           paths_match = registered_paths[handlers_match_start]
-          self$debug_message(sprintf("call_handler: matched paths to '%s' : %s",
-                                     PATH, paste(paths_match, collapse = "|")))
           # find method which match the path - take longest match
           j = which.max(nchar(paths_match))
           matched_path = paths_match[[j]]
-          self$debug_message(sprintf("call_handler: picking path '%s'", matched_path))
           FUN = private$handlers[[ matched_path ]][[METHOD]]
           # now FUN is NULL or some function
           # if it is a function then we need to check whther it was registered to handle patterned paths
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-            self$debug_message(sprintf("call_handler: handler doesn't accept prefix paths"))
-            set_http_404_not_found(response)
+            log_error(list(request_id = request$request_id, code = 404, method = METHOD, path = PATH,
+                           message = "Haven't found prefix which match the requested path"))
+            # log_error("request_id = '%s': 404. Haven't found prefix which match the requested path.", request$request_id)
+            set_http_404_not_fouxnd(response)
             return(forward())
           } else {
+            log_trace(list(request_id = request$request_id, method = METHOD, path = PATH,
+                           message = "found prefix which match the requested path"))
+            # log_trace("request_id = '%s': found prefix which match the requested path.", request$request_id)
             # FIXME repeat of the happy path above
             # call handler function. 4 results possible:
             # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
@@ -288,18 +296,25 @@ RestRserveApplication = R6::R6Class(
             # 4) anything else = set 500 error
             result = try_capture_stack(FUN(request, response))
             if(inherits(result, "RestRserveResponse")) {
-              self$debug_message(sprintf("call_handler: got 'RestRserveResponse' from '%s' - finishing request-reponse cycle and returning result", PATH))
+              log_trace(list(request_id = request$request_id, message = "got 'RestRserveResponse' from handler - returning response immediately."))
+              # log_trace("request_id = '%s': got 'RestRserveResponse' from handler - returning response immediately.", request$request_id)
               return(result)
             } else {
               if(inherits(result, "simpleError")) {
-                self$debug_message(sprintf("call_handler: got 'simpleError' from '%s' - creating 500 response with traceback", PATH))
-                set_http_500_internal_server_error(response, get_traceback_message(result, TRACEBACK_MAX_NCHAR))
+                msg = get_traceback_message(result, TRACEBACK_MAX_NCHAR)
+                log_error(list(request_id = request$request_id, code = 500, method = METHOD, path = PATH,
+                               message = sprintf("error in user code: %s", msg)))
+                # log_error("request_id = '%s': 500. Error in user code: '%s'.", request$request_id, msg)
+                set_http_500_internal_server_error(response, msg)
               } else {
                 if(!inherits(result, "RestRserveForward")) {
-                  self$debug_message(sprintf("call_handler: result from %s handler doesn't return RestRserveResponse/RestRserveForward", PATH))
+                  log_error(list(request_id = request$request_id, code = 500, method = METHOD, path = PATH,
+                                 message = "Result from handler doesn't return RestRserveResponse/RestRserveForward."))
+                  # log_error("request_id = '%s': 500. ",
+                  #           PATH, request$request_id)
                   set_http_500_internal_server_error(
                     response,
-                    body = sprintf("handler for %s doesn't return RestRserveResponse/RestRserveForward object", PATH)
+                    body = '{"error":"handler for doesn\'t return RestRserveResponse/RestRserveForward object"}'
                   )
                 }
               }
@@ -308,10 +323,14 @@ RestRserveApplication = R6::R6Class(
           }
         }
       }
-      result = RestRserveResponse$new(body = "call_handler: should not happen 2 - please report to https://github.com/dselivanov/RestRserve/issues",
-                                      content_type = "text/plain",
-                                      headers = character(0),
-                                      status_code = 520L)
+      result = RestRserveResponse$new(
+        body = '{"error":"call_handler: should not happen 520-2 - please report to https://github.com/dselivanov/RestRserve/issues"}',
+        content_type = "application/json",
+        headers = character(0),
+        status_code = 520L)
+      log_error(list(request_id = request$request_id, code = 520, method = METHOD, path = PATH,
+                     message = "SHOULD NOT HAPPEND - PLEASE REPORT"))
+      # log_error("request_id = '%s': 520. SHOULD NOT HAPPEND - PLEASE REPORT", request$request_id)
       return(result)
     },
     #------------------------------------------------------------------------
@@ -447,21 +466,52 @@ RestRserveApplication = R6::R6Class(
     handlers_openapi_definitions = NULL,
     middleware = NULL,
     process_request = function(request) {
-      response = RestRserveResponse$new(body = "", content_type = "text/plain", headers = character(0), status_code = 200L)
+      log_info(list(request_id = request$request_id, method = request$method, path = request$path))
+      # log_info("request_id = '%s': path - '%s', method - '%s' ", request$request_id, request$path, request$method)
+      # TRACE
+      if(isTRUE(.Internal(getOption("RestRserve_log_level")) >= TRACE)) {
+        # FIXME
+        for(nm in c("query", "headers")) {
+          msg = list(request[[nm]])
+          names(msg) = nm
+          log_trace(c(list(request_id = request$request_id), msg))
+        }
+        # log_trace("request_id = '%s': parsed headers = '%s'", request$request_id, headers_msg)
+        # log_trace("request_id = '%s': parsed query = '%s'", request$request_id, query_msg)
+      }
+      response = RestRserveResponse$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)
       intermediate_response = self$call_middleware_request(request, response)
       # RestRserveResponse means we need to return result
-      if(inherits(intermediate_response, "RestRserveResponse"))
+      if(inherits(intermediate_response, "RestRserveResponse")) {
+        log_info(list(request_id = request$request_id, method = request$method, path = request$path,
+                 message = "got 'RestRserveResponse' from request middleware - returning it"))
+        # log_info("request_id = '%s': got 'RestRserveResponse' from request middleware - returning it",
+        #          request$request_id)
         return(intermediate_response$as_rserve_response())
+      }
 
       intermediate_response = self$call_handler(request, response)
-      if(inherits(intermediate_response, "RestRserveResponse"))
+      if(inherits(intermediate_response, "RestRserveResponse")) {
+        log_info(list(request_id = request$request_id, method = request$method, path = request$path,
+                      message = "got 'RestRserveResponse' from handler - returning it"))
+        # log_info("request_id = '%s': got 'RestRserveResponse' from handler - returning it",
+        #          request$request_id)
         return(intermediate_response$as_rserve_response())
+      }
+
 
       #call_middleware_response() can only retrun RestRserveForward or RestRserveResponse
       intermediate_response = self$call_middleware_response(request, response)
-      if(inherits(intermediate_response, "RestRserveResponse"))
+      if(inherits(intermediate_response, "RestRserveResponse")) {
+        log_info(list(request_id = request$request_id, method = request$method, path = request$path,
+                      message = "got 'RestRserveResponse' from response - returning it"))
+        # log_info("request_id = '%s': got 'RestRserveResponse' from response middleware - returning it",
+        #          request$request_id)
         return(intermediate_response$as_rserve_response())
-
+      }
+      log_info(list(request_id = request$request_id, method = request$method, path = request$path,
+                    message = "returnung response"))
+      # log_info("request_id = '%s': returnung response", request$request_id)
       response$as_rserve_response()
     },
     # according to
@@ -503,17 +553,21 @@ RestRserveApplication = R6::R6Class(
       if(fun == "process_request") {
         for(i in seq_along(private$middleware)) {
           id = as.character(i)
-          self$debug_message("executing middleware '", id, "'-", fun)
           FUN = private$middleware[[id]][[fun]]
+
+          log_trace(list(request_id = request$request_id, middleware = id, message = "call request middleware"))
+          # log_trace("request_id = '%s': call request middleware %s", request$request_id, id)
           mw_result = FUN(request, response)
 
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
 
           if(!inherits(mw_result, "RestRserveForward")) {
+            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            err_msg = RestRserve:::deparse_vector(err_msg)
             set_http_500_internal_server_error(
               response,
-              body = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+              body = sprintf('{"error":%s}', err_msg)
             )
             return(response)
           }
@@ -523,15 +577,21 @@ RestRserveApplication = R6::R6Class(
         # not sure yet what is the benefit, but it is done this way everywhere
         for(i in rev(seq_along(private$middleware))) {
           id = as.character(i)
-          self$debug_message("executing middleware '", id, "'-", fun)
           FUN = private$middleware[[id]][[fun]]
+
+          log_trace(list(request_id = request$request_id, middleware = id, message = "call response middleware"))
+          # log_trace("request_id = '%s': call response middleware %s", request$request_id, id)
           mw_result = FUN(request, response)
+
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
+
           if(!inherits(mw_result, "RestRserveForward")) {
+            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            err_msg = RestRserve:::deparse_vector(err_msg)
             set_http_500_internal_server_error(
               response,
-              body = sprintf("process_response middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+              body = sprintf('{"error":%s}', err_msg)
             )
             return(response)
           }
