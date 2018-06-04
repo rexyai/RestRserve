@@ -45,13 +45,14 @@ test_that("Check status code", {
 
 test_that("Check headers", {
     expect_equal(get_headers(test_200)$`content-type`, "text/plain")
-    expect_equal(get_headers(test_404)$`content-type`, "text/plain")
+    expect_equal(get_headers(test_404)$`content-type`, "application/json")
+    # returns 'text/plain' because middleware overwrites in
     expect_equal(get_headers(test_500)$`content-type`, "text/plain")
 })
 
 test_that("Check answer", {
     expect_equal(get_text(test_200), "55")
-    expect_equal(get_text(test_404), "Resource not found")
+    expect_equal(get_text(test_404), '{"error":"Resource not found"}')
     err_500_text = 'Custom 500 from mw1'
     expect_equal(get_text(test_500), err_500_text)
 })
@@ -63,7 +64,7 @@ test_404   = sprintf("http://localhost:%d/html/does-not-exist", PORT)
 test_that("Check static files answer", {
   expect_equal(strsplit(get_text(test_200_1), "\n", TRUE)[[1]][[1]], "Package: RestRserve")
   expect_true(grepl("The R Language", get_text(test_200_2), fixed = TRUE))
-  expect_equal(get_text(test_404), "Resource not found")
+  expect_equal(get_text(test_404), '{"error":"Resource not found"}')
 })
 
 test_that("Check static files code", {
@@ -75,6 +76,6 @@ test_that("Check static files code", {
 test_that("Check headers", {
   expect_equal(get_headers(test_200_1)$`content-type`, "text/plain")
   expect_equal(get_headers(test_200_2)$`content-type`, "text/html")
-  expect_equal(get_headers(test_404)$`content-type`, "text/plain")
+  expect_equal(get_headers(test_404)$`content-type`, "application/json")
 })
 #------------------------------------------------------------------------

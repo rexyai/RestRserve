@@ -76,8 +76,7 @@ get_traceback_message = function(err, nchar_max = 1000L) {
   stack_msg = vapply(err$calls, function(x) paste(utils::capture.output(print(x)), collapse = "\n") , "")
   stack_msg = paste(stack_msg, collapse = "\n")
   call_msg  = paste(utils::capture.output(print(err$call)), collapse = "|")
-  res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s",
-          err_msg, call_msg, stack_msg)
+  res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s", err_msg, call_msg, stack_msg)
   substr(res, 0L, nchar_max)
 }
 

@@ -1,67 +1,70 @@
+#' @export
 IGNORE = 0L
+#' @export
 ERROR = 1L
+#' @export
 WARNING = 2L
+#' @export
 INFO = 3L
+#' @export
 DEBUG = 4L
+#' @export
 TRACE = 5L
 
-log_base = function(msg, ...,
-                    log_level_current = .Internal(getOption("RestRserve_log_level")),
-                    log_level_target = IGNORE,
-                    level_name = "",
-                    file = .Internal(getOption("RestRserve_log_destination"))) {
-  if(isTRUE(log_level_current >= log_level_target)) {
+#' @export
+Logger = R6::R6Class(
+  classname = "Logger",
+  public = list(
+    initialize = function(level, file = "") {
+      private$level = level
+      private$file = file
+    },
 
-    if(is.environment(msg))
-      msg = as.list(msg)
+    trace = function(msg, ...) {
+      private$log_base(msg, ..., log_level = TRACE, log_name = "TRACE")
+    },
 
-    if(is.list(msg)) {
-      msg = to_json(msg)
-    } else {
-      # got just message as character vector
-      msg = deparse_vector(sprintf(msg, ...))
+    debug = function(msg, ...) {
+      private$log_base(msg, ..., log_level = DEBUG, log_name = "DEBUG")
+    },
+
+    info = function(msg, ...) {
+      private$log_base(msg, ..., log_level = INFO, log_name = "INFO")
+    },
+
+    warning = function(msg, ...) {
+      private$log_base(msg, ..., log_level = WARNING, log_name = "WARNING")
+    },
+
+    error = function(msg, ...) {
+      private$log_base(msg, ..., log_level = ERROR, log_name = "ERROR")
     }
-    if(is.character(msg)) {
-      msg = sprintf('{"level":"%s","timestamp":"%s","message":%s}\n', level_name, as.character(Sys.time()), msg)
-      cat(msg, file = file, append = TRUE)
+
+  ),
+  private = list(
+    level = NULL,
+    file = NULL,
+    log_base = function(msg, ..., log_level, log_name) {
+      if(isTRUE(private$level >= log_level)) {
+
+        if(is.character(msg))
+          msg = sprintf(msg, ...)
+
+        if(is.environment(msg))
+          msg = as.list(msg)
+
+        msg = to_json(msg)
+
+        if(is.character(msg)) {
+          msg = sprintf('{"pid":%d,"level":"%s","timestamp":"%s","message":%s}\n',
+                        Sys.getpid(),
+                        log_name,
+                        format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),
+                        msg)
+          cat(msg, file = private$file, append = TRUE)
+        }
+      }
+      invisible(msg)
     }
-  }
-  invisible(msg)
-}
-
-log_trace = function(msg, ..., log_level_current = .Internal(getOption("RestRserve_log_level"))) {
-  log_base(msg, ..., log_level_current = log_level_current, log_level_target = TRACE, level_name = "TRACE")
-}
-
-log_debug = function(msg, ..., log_level_current = .Internal(getOption("RestRserve_log_level"))) {
-  log_base(msg, ..., log_level_current = log_level_current, log_level_target = DEBUG, level_name = "DEBUG")
-}
-
-log_info = function(msg, ..., log_level_current = .Internal(getOption("RestRserve_log_level"))) {
-  log_base(msg, ..., log_level_current = log_level_current, log_level_target = INFO, level_name = "INFO")
-}
-
-log_warning = function(msg, ..., log_level_current = .Internal(getOption("RestRserve_log_level"))) {
-  log_base(msg, ..., log_level_current = log_level_current, log_level_target = WARNING, level_name = "WARNING")
-}
-
-log_error = function(msg, ..., log_level_current = .Internal(getOption("RestRserve_log_level"))) {
-  log_base(msg, ..., log_level_current = log_level_current, log_level_target = ERROR, level_name = "ERROR")
-}
-
-
-
-to_json = function(x) {
-  if(is.list(x) || is.environment(x)) {
-    x = as.list(x)
-    keys = deparse_vector(names(x))
-    values = vapply(x, to_json, "", USE.NAMES = FALSE)
-    sprintf("{%s}", paste(keys, values, sep = ":", collapse = ","))
-  } else {
-    if(is.character(x)) {
-      deparse_vector(x)
-    } else {
-      as.character(x)
-    }
-  }
-}
+  )
+)

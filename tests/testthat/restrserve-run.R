@@ -70,8 +70,9 @@ mw2 = RestRserveMiddleware$new(
     forward()
   }
 )
+logger = Logger$new(level = ERROR)
 # create application
-app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2), debug = TRUE)
+app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2), logger = logger)
 # register endpoints and corresponding R handlers
 app$add_route(path = "/fib-return", method = "GET", FUN = fib_immediate_return)
 app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)

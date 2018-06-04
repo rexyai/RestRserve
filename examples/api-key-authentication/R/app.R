@@ -72,10 +72,10 @@ mw = RestRserve::RestRserveMiddleware$new(
     X_API_KEY = try(request$headers[["x-api-key"]], silent = TRUE)
 
     if(class(X_API_KEY) == "try-error")
-      return(RestRserve::RestRserveResponse$new(body = "API key is missing", content_type = "text/plain",
+      return(RestRserve::RestRserveResponse$new(body = '{"error":"API key is missing"}', content_type = "application/json",
                                             headers = c("WWW-Authenticate: Basic"), status_code = 401L))
     if(!validate_api_key(X_API_KEY))
-      return(RestRserve::RestRserveResponse$new(body = "API key is invalid", content_type = "text/plain",
+      return(RestRserve::RestRserveResponse$new(body = '{"error":"API key is invalid"}', content_type = "application/json",
                                             headers = c("WWW-Authenticate: Basic"), status_code = 401L))
     forward()
   }

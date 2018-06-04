@@ -14,6 +14,7 @@ YES - it means it will handle all the incomming requests in parallel - each requ
 - Generate [OpenAPI](https://www.openapis.org/) specification by parsing annotations in R code
 - Expose [Swagger UI](#swagger-ui-and-openapi)
 - Serve static files
+- Provides extensive logging in JSON format
 
 RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rserve) - most of the credits should go to [Simon Urbanek](https://github.com/s-u).
 
@@ -22,9 +23,8 @@ RestRserve is a very thin layer on the top of [Rserve](https://github.com/s-u/Rs
 Creating application is as simple as:
 ```r
 library(RestRserve)
-options('RestRserve_log_level' = RestRserve:::TRACE)
-# create application
-app = RestRserve::RestRserveApplication$new()
+logger = Logger$new(level = TRACE, file = "")
+app = RestRserve::RestRserveApplication$new(logger = logger)
 # register endpoints and corresponding R handlers
 app$add_get(path = "/hello", 
   FUN = function(request, response) {

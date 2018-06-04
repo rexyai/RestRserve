@@ -1,11 +1,9 @@
-.onLoad = function(libname, pkgname) {
+.onAttach = function(libname, pkgname) {
   # make it TRUE because only this way comments inside functions can be printed during
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
   # docstrings inside fucntions
-  options("RestRserve_log_level" = INFO)
-  options("RestRserve_log_destination" = "")
   options("keep.source" = TRUE)
-  recent_rserve = '1.8.5'
+  recent_rserve = '1.8.6'
   if (interactive()) {
     packageStartupMessage("RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.")
     if(utils::packageVersion("Rserve") < recent_rserve) {
