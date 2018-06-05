@@ -1,21 +1,26 @@
+#' @name Logger
+#' @title simple logging utility
+#' @description creates Logger object which can be used for logging with different level of verbosity
+#' @format \code{\link{R6Class}} object.
+#' @section Methods:
+#' \describe{
+#'   \item{\code{$new(level = INFO, file = "")}}{Logger with sink to a \code{file}. \code{file} can be character
+#'   or connection. Internally passed to \link{cat} - see corresponding docs for details.}
+#'   \item{\code{$trace(msg, ...)}}{ write trace message}
+#'   \item{\code{$debug(msg, ...)}}{ write debug message}
+#'   \item{\code{$info(msg, ...)}}{ write info message}
+#'   \item{\code{$warning(msg, ...)}}{ write warning message}
+#'   \item{\code{$error(msg, ...)}}{ write error message}
+#' }
 #' @export
-IGNORE = 0L
-#' @export
-ERROR = 1L
-#' @export
-WARNING = 2L
-#' @export
-INFO = 3L
-#' @export
-DEBUG = 4L
-#' @export
-TRACE = 5L
-
-#' @export
+#' @examples
+#' logger = Logger$new(INFO)
+#' logger$info("hello world")
+#' logger$info(list(message = "hello world", code = 0L))
 Logger = R6::R6Class(
   classname = "Logger",
   public = list(
-    initialize = function(level, file = "") {
+    initialize = function(level = INFO, file = "") {
       private$level = level
       private$file = file
     },
@@ -68,3 +73,32 @@ Logger = R6::R6Class(
     }
   )
 )
+
+#' @name constants
+#' @title log level constants
+#' @description log level constants
+NULL
+
+#' @rdname constants
+#' @export
+IGNORE = 0L
+
+#' @rdname constants
+#' @export
+ERROR = 1L
+
+#' @rdname constants
+#' @export
+WARNING = 2L
+
+#' @rdname constants
+#' @export
+INFO = 3L
+
+#' @rdname constants
+#' @export
+DEBUG = 4L
+
+#' @rdname constants
+#' @export
+TRACE = 5L

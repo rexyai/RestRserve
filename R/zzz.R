@@ -1,3 +1,6 @@
+#' @importFrom R6 R6Class
+#' @importFrom uuid UUIDgenerate
+
 .onAttach = function(libname, pkgname) {
   # make it TRUE because only this way comments inside functions can be printed during
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
