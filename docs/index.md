@@ -1,10 +1,10 @@
+**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
+
 # RestRserve
 
 [RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance microservices and app backends**. The main difference with other frameworks ([plumber](https://github.com/trestletech/plumber), [jug](https://github.com/Bart6114/jug)) is that it is **parallel by design** (thanks to [Rserve](https://github.com/s-u/Rserve)).
 
 YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.
-
-**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
 
 ### Features
 

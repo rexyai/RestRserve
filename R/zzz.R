@@ -6,7 +6,7 @@
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
   # docstrings inside fucntions
   options("keep.source" = TRUE)
-  recent_rserve = '1.8.6'
+  recent_rserve = "1.8.6"
   if (interactive()) {
     packageStartupMessage("RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.")
     if(utils::packageVersion("Rserve") < recent_rserve) {
