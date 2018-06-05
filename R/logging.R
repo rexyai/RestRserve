@@ -38,7 +38,7 @@ Logger = R6::R6Class(
     },
 
     warning = function(msg, ...) {
-      private$log_base(msg, ..., log_level = WARNING, log_name = "WARNING")
+      private$log_base(msg, ..., log_level = WARNING, log_name = "WARN")
     },
 
     error = function(msg, ...) {
@@ -74,31 +74,35 @@ Logger = R6::R6Class(
   )
 )
 
-#' @name constants
+#' @name logging_constants
 #' @title log level constants
 #' @description log level constants
 NULL
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-IGNORE = 0L
+OFF = 0L
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-ERROR = 1L
+FATAL = 1L
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-WARNING = 2L
+ERROR = 2L
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-INFO = 3L
+WARN = 4L
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-DEBUG = 4L
+INFO = 6L
 
-#' @rdname constants
+#' @rdname logging_constants
 #' @export
-TRACE = 5L
+DEBUG = 8L
+
+#' @rdname logging_constants
+#' @export
+TRACE = 9L

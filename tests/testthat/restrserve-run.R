@@ -70,7 +70,7 @@ mw2 = RestRserveMiddleware$new(
     forward()
   }
 )
-logger = Logger$new(level = ERROR)
+logger = Logger$new(level = OFF)
 # create application
 app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2), logger = logger)
 # register endpoints and corresponding R handlers

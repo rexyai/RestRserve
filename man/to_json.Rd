@@ -12,5 +12,6 @@ to_json(x, unbox = TRUE)
 \item{unbox}{whether to unbox (simplify) arrays consists of a single element}
 }
 \description{
-encode R objects as json
+encode R objects as json. \bold{WARNING} - function is not properly tested for all edge cases.
+Aims for speed and simplicity. For complex cases consider to use \code{jsonlite} or \code{rjson} packages.
 }

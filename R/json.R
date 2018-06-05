@@ -1,6 +1,7 @@
 #' @name to_json
 #' @title simple json encoder
-#' @description encode R objects as json
+#' @description encode R objects as json. \bold{WARNING} - function is not properly tested for all edge cases.
+#' Aims for speed and simplicity. For complex cases consider to use \code{jsonlite} or \code{rjson} packages.
 #' @param x an R object. Lists (possibly named and nested) and arrays are supported
 #' @param unbox whether to unbox (simplify) arrays consists of a single element
 #' @export
