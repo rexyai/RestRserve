@@ -1,12 +1,13 @@
 Package: RestRserve
 Type: Package
-Title: Exposes R Code as a Http-Service
-Version: 0.1.0.14
+Title: High-Performance Web Server for Building Microservices and App Backends 
+Version: 0.1.1.0
 Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
   Allows to easily create high-performance HTTP API from R functions. 
-  Facilitates in deployment and management.
+  Provides many small convenient tools like flexible logging, json encoding, 
+  utils for app deployment and management.
 License: GPL (>= 2)
 ByteCompile: TRUE
 Imports: 
