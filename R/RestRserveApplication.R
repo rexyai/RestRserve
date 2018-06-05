@@ -409,28 +409,27 @@ RestRserveApplication = R6::R6Class(
              query = request$query, headers = request$headers)
       )
       response = RestRserveResponse$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)
+      #------------------------------------------------------------------------------
       intermediate_response = self$call_middleware_request(request, response)
       # RestRserveResponse means we need to return result
       if(inherits(intermediate_response, "RestRserveResponse")) {
-        private$logger$info(list(request_id = request$request_id,
-                 message = "got 'RestRserveResponse' from request middleware - returning it"))
-        return(intermediate_response$as_rserve_response())
+        private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from request middleware"))
+        response = intermediate_response
+      } else {
+        #------------------------------------------------------------------------------
+        intermediate_response = self$call_handler(request, response)
+        if(inherits(intermediate_response, "RestRserveResponse")) {
+          private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from handler - returning it"))
+          response = intermediate_response
+        }
       }
-
-      intermediate_response = self$call_handler(request, response)
-      if(inherits(intermediate_response, "RestRserveResponse")) {
-        private$logger$info(list(request_id = request$request_id,
-                      message = "got 'RestRserveResponse' from handler - returning it"))
-        return(intermediate_response$as_rserve_response())
-      }
-
-      #call_middleware_response() can only retrun RestRserveForward or RestRserveResponse
+      #------------------------------------------------------------------------------
       intermediate_response = self$call_middleware_response(request, response)
       if(inherits(intermediate_response, "RestRserveResponse")) {
-        private$logger$info(list(request_id = request$request_id,
-                      message = "got 'RestRserveResponse' from response - returning it"))
-        return(intermediate_response$as_rserve_response())
+        private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from response middleware"))
+        response = intermediate_response
       }
+      #------------------------------------------------------------------------------
       private$logger$info(list(request_id = request$request_id, message = "returnung response"))
       response$as_rserve_response()
     },
@@ -494,7 +493,6 @@ RestRserveApplication = R6::R6Class(
           FUN = private$middleware[[id]][[fun]]
 
           private$logger$trace(list(request_id = request$request_id, middleware = id, message = "call response middleware"))
-          # private$logger$trace("request_id = '%s': call response middleware %s", request$request_id, id)
           mw_result = FUN(request, response)
 
           if(inherits(mw_result, "RestRserveResponse"))
