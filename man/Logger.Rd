@@ -14,7 +14,7 @@ creates Logger object which can be used for logging with different level of verb
 \section{Methods}{
 
 \describe{
-  \item{\code{$new(level = INFO, file = "")}}{Logger with sink to a \code{file}. \code{file} can be character
+  \item{\code{$new(level = INFO, file = "", name = "ROOT")}}{Logger with sink to a \code{file}. \code{file} can be character
   or connection. Internally passed to \link{cat} - see corresponding docs for details.}
   \item{\code{$trace(msg, ...)}}{ write trace message}
   \item{\code{$debug(msg, ...)}}{ write debug message}

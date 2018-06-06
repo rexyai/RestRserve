@@ -4,7 +4,7 @@
 #' @format \code{\link{R6Class}} object.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(level = INFO, file = "")}}{Logger with sink to a \code{file}. \code{file} can be character
+#'   \item{\code{$new(level = INFO, file = "", name = "ROOT")}}{Logger with sink to a \code{file}. \code{file} can be character
 #'   or connection. Internally passed to \link{cat} - see corresponding docs for details.}
 #'   \item{\code{$trace(msg, ...)}}{ write trace message}
 #'   \item{\code{$debug(msg, ...)}}{ write debug message}
@@ -20,9 +20,10 @@
 Logger = R6::R6Class(
   classname = "Logger",
   public = list(
-    initialize = function(level = INFO, file = "") {
+    initialize = function(level = INFO, file = "", name = "ROOT") {
       private$level = level
       private$file = file
+      private$name = name
     },
 
     trace = function(msg, ...) {
@@ -38,17 +39,22 @@ Logger = R6::R6Class(
     },
 
     warning = function(msg, ...) {
-      private$log_base(msg, ..., log_level = WARNING, log_name = "WARN")
+      private$log_base(msg, ..., log_level = WARN, log_name = "WARN")
     },
 
     error = function(msg, ...) {
       private$log_base(msg, ..., log_level = ERROR, log_name = "ERROR")
+    },
+
+    fatal = function(msg, ...) {
+      private$log_base(msg, ..., log_level = FATAL, log_name = "FATAL")
     }
 
   ),
   private = list(
     level = NULL,
     file = NULL,
+    name = NULL,
     log_base = function(msg, ..., log_level, log_name) {
       if(isTRUE(private$level >= log_level)) {
 
@@ -61,7 +67,8 @@ Logger = R6::R6Class(
         msg = to_json(msg)
 
         if(is.character(msg)) {
-          msg = sprintf('{"pid":%d,"level":"%s","timestamp":"%s","message":%s}\n',
+          msg = sprintf('{"name":"%s","pid":%d,"level":"%s","timestamp":"%s","message":%s}\n',
+                        private$name,
                         Sys.getpid(),
                         log_name,
                         format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),

@@ -67,7 +67,7 @@ RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(), logger = Logger$new(INFO)) {
+    initialize = function(middleware = list(), logger = Logger$new(INFO, name = "RestRserveApplication")) {
       stopifnot(is.list(middleware))
       stopifnot(inherits(logger, "Logger"))
       private$logger = logger
