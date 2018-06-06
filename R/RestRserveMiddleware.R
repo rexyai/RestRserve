@@ -40,7 +40,7 @@ RestRserveMiddleware = R6::R6Class(
     initialize = function(
       process_request  = function(request, response) forward(),
       process_response = function(request, response) forward(),
-      name = NULL
+      name = "Middleware"
       ) {
       if(!is.function(process_request) || !is.function(process_response))
         stop("`process_request` and `process_response` should be functions with signature FUN(request, response)")

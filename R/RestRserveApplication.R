@@ -473,15 +473,16 @@ RestRserveApplication = R6::R6Class(
         for(i in seq_along(private$middleware)) {
           id = as.character(i)
           FUN = private$middleware[[id]][[fun]]
+          mw_name = private$middleware[[id]][["name"]]
 
-          private$logger$trace(list(request_id = request$request_id, middleware = id, message = "call request middleware"))
+          private$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = "call request middleware"))
           mw_result = FUN(request, response)
 
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
 
           if(!inherits(mw_result, "RestRserveForward")) {
-            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", mw_name)
             set_http_500_internal_server_error(
               response,
               body = sprintf('{"error":%s}', deparse_vector(err_msg))
@@ -495,15 +496,16 @@ RestRserveApplication = R6::R6Class(
         for(i in rev(seq_along(private$middleware))) {
           id = as.character(i)
           FUN = private$middleware[[id]][[fun]]
+          mw_name = private$middleware[[id]][["name"]]
 
-          private$logger$trace(list(request_id = request$request_id, middleware = id, message = "call response middleware"))
+          private$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = "call response middleware"))
           mw_result = FUN(request, response)
 
           if(inherits(mw_result, "RestRserveResponse"))
             return(mw_result)
 
           if(!inherits(mw_result, "RestRserveForward")) {
-            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", id)
+            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", mw_name)
             set_http_500_internal_server_error(
               response,
               body = sprintf('{"error":%s}', deparse_vector(err_msg))
