@@ -7,7 +7,7 @@ read_allowed_keys = function(path) {
   keys = readLines(path, warn = FALSE)
   dict = new.env(parent = emptyenv())
   for(k in keys)
-    dict[[k]] = 1
+    dict[[k]] = TRUE
   dict
 }
 
@@ -17,6 +17,8 @@ validate_api_key = function(key) {
   !is.null(valid_keys[[as.character(key)]])
 }
 
+auth_backend = BearerAuthBackend$new(FUN = validate_api_key, auth_header_prefix = "Bearer")
+auth_mw = RestRserveAuthMiddleware$new(auth_backend, name = "bearer_auth_middleware")
 
 
 calc_fib = function(n) {
@@ -42,7 +44,7 @@ fib = function(request, response) {
   #'     example: 10
   #'     required: true
   #' security:
-  #'   - ApiKeyAuth: []
+  #'   - bearerAuth: []
   #' responses:
   #'   200:
   #'     description: API response
@@ -66,28 +68,16 @@ fib = function(request, response) {
   response$status_code = 200L
   forward()
 }
-mw = RestRserve::RestRserveMiddleware$new(
-  process_request = function(request, response) {
-    # header keys are in lower case
-    X_API_KEY = try(request$headers[["x-api-key"]], silent = TRUE)
 
-    if(class(X_API_KEY) == "try-error")
-      return(RestRserve::RestRserveResponse$new(body = '{"error":"API key is missing"}', content_type = "application/json",
-                                            headers = c("WWW-Authenticate: Basic"), status_code = 401L))
-    if(!validate_api_key(X_API_KEY))
-      return(RestRserve::RestRserveResponse$new(body = '{"error":"API key is invalid"}', content_type = "application/json",
-                                            headers = c("WWW-Authenticate: Basic"), status_code = 401L))
-    forward()
-  }
-)
-
-RestRserveApp = RestRserve::RestRserveApplication$new(middleware = list(mw))
+RestRserveApp = RestRserveApplication$new(middleware = list(auth_mw))
 RestRserveApp$add_get(path = "/fib", FUN = fib)
 
-# https://swagger.io/docs/specification/authentication/api-keys/
-oapi_spec = RestRserve::openapi_create(info = RestRserve::openapi_info(title = "Basic authentification with API Keys"),
-                                       components = list(securitySchemes =
-                                                           list(ApiKeyAuth = list("type" = "apiKey", "in" = "header", "name" = "X-API-KEY"))))
+# security_components =list(securitySchemes = list(ApiKeyAuth = list("type" = "apiKey", "in" = "header", "name" = "X-API-KEY")))
+security_components = list(securitySchemes = list(bearerAuth = list(type = "http", scheme = "bearer", bearerFormat = "UUID")))
+
+oapi_spec = openapi_create(info = openapi_info(title = "Basic authentification with Bearer Keys"),
+                           components = security_components)
 RestRserveApp$add_openapi(openapi = oapi_spec)
 
 RestRserveApp$add_swagger_ui()
+RestRserveApp$run("8001")

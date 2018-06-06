@@ -1,9 +1,10 @@
+# https://github.com/loanzen/falcon-auth/blob/master/falcon_auth/backends.py
 # https://github.com/loanzen/falcon-auth
 AuthBackend = R6::R6Class(
   "AuthBackend",
   public = list(
-    initialize = function(auth, auth_header_prefix) {
-      private$auth = auth
+    initialize = function(FUN, auth_header_prefix) {
+      private$auth_fun = auth
       private$auth_header_prefix = tolower(auth_header_prefix)
     },
     # get_auth_token = function(auth_header) {
@@ -17,7 +18,7 @@ AuthBackend = R6::R6Class(
     }
   ),
   private = list(
-    auth = NULL,
+    auth_fun = NULL,
     auth_header_prefix = NULL,
     parse_auth_token_from_request = function(auth_header) {
       #--------------------------------------------------------
@@ -66,7 +67,7 @@ BasicAuthBackend = R6::R6Class(
   "BasicAuthBackend",
   inherit = AuthBackend,
   public = list(
-    initialize = function(auth) {
+    initialize = function(FUN) {
       super$initialize(auth, "Basic")
     },
     authenticate = function(request, response) {
@@ -74,7 +75,7 @@ BasicAuthBackend = R6::R6Class(
 
       if(inherits(user_password, "RestRserveResponse"))
         return(user_password)
-      res = private$auth(user_password[[1]], user_password[[2]])
+      res = private$auth_fun(user_password[[1]], user_password[[2]])
       if(isTRUE(res)) {
         forward()
       } else {
@@ -88,8 +89,7 @@ BasicAuthBackend = R6::R6Class(
   ),
   private = list(
     extract_credentials = function(request) {
-      auth_header = request$headers[["authentification"]]
-      token = super$parse_auth_token_from_request(auth_header)
+      token = super$parse_auth_token_from_request(request$headers[["authorization"]])
       #-------------------------------------------------------
       if(inherits(token, "RestRserveResponse"))
         return(token)
@@ -125,11 +125,47 @@ BasicAuthBackend = R6::R6Class(
 )
 
 #' @export
+BearerAuthBackend = R6::R6Class(
+  "BearerAuthBackend",
+  inherit = AuthBackend,
+  public = list(
+    initialize = function(FUN, auth_header_prefix = "Bearer") {
+      private$auth_fun = FUN
+      private$auth_header_prefix = tolower(auth_header_prefix)
+    },
+    authenticate = function(request, response) {
+      token = private$extract_credentials(request)
+      #-------------------------------------------------------
+      if(inherits(token, "RestRserveResponse"))
+        return(token)
+      #-------------------------------------------------------
+      res = private$auth_fun(token)
+      if(isTRUE(res)) {
+        forward()
+      } else {
+        resp = RestRserveResponse$new(body = '{"error":"Invalid Token"}',
+                                      content_type = "application/json",
+                                      headers = c('WWW-Authenticate: error="invalid_token", error_description="Invalid or expired access token"'),
+                                      status_code = 401L)
+        return(resp)
+      }
+    }
+  ),
+  private = list(
+    extract_credentials = function(request) {
+      super$parse_auth_token_from_request(request$headers[["authorization"]])
+    }
+  )
+)
+#-------------------------------------------------------
+#' @export
 RestRserveAuthMiddleware = R6::R6Class(
   "RestRserveAuthMiddleware",
   inherit = RestRserveMiddleware,
   public = list(
-    initialize = function(auth_backend, name = "AuthMiddleware") {
+    initialize = function(auth_backend,
+                          routes = character(),
+                          name = "AuthMiddleware") {
 
       stopifnot(inherits(auth_backend, "AuthBackend"))
       stopifnot(is_string_len_one(name))
@@ -138,7 +174,17 @@ RestRserveAuthMiddleware = R6::R6Class(
       self$name = name
 
       self$process_request = function(request, response) {
-        private$auth_backend$authenticate(request)
+
+        prefixes_mask = names(routes) == "prefix"
+
+        if(request$path %in% routes[!prefixes_mask])
+          return(private$auth_backend$authenticate(request))
+
+        for( p in routes[prefixes_mask]) {
+          if(startsWith(request$path, p))
+            return(private$auth_backend$authenticate(request))
+        }
+        forward()
       }
 
       self$process_response = function(request, response) {
