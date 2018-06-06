@@ -28,7 +28,7 @@ app = RestRserve::RestRserveApplication$new(logger = logger)
 # register endpoints and corresponding R handlers
 app$add_get(path = "/hello", 
   FUN = function(request, response) {
-    response$body = "Hello from RestRserve"
+    response$body = '{"msg":"Hello from RestRserve"}'
     forward()
   })
 app$run(http_port = "8001")

@@ -67,7 +67,9 @@ RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(), logger = Logger$new(INFO, name = "RestRserveApplication")) {
+    initialize = function(middleware = list(),
+                          logger = Logger$new(INFO, name = "RestRserveApplication"),
+                          content_type = "application/json") {
       stopifnot(is.list(middleware))
       stopifnot(inherits(logger, "Logger"))
       private$logger = logger
@@ -75,6 +77,7 @@ RestRserveApplication = R6::R6Class(
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
+      private$content_type_default = content_type
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, path_as_prefix = FALSE, ...) {
@@ -403,12 +406,13 @@ RestRserveApplication = R6::R6Class(
     logger = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
+    content_type_default = NULL,
     process_request = function(request) {
       private$logger$info(
         list(request_id = request$request_id, method = request$method, path = request$path,
              query = request$query, headers = request$headers)
       )
-      response = RestRserveResponse$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)
+      response = RestRserveResponse$new(body = "{}", content_type = private$content_type_default)
       #------------------------------------------------------------------------------
       intermediate_response = self$call_middleware_request(request, response)
       # RestRserveResponse means we need to return result
