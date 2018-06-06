@@ -5,6 +5,16 @@
 # @param content_type body content type
 # @param ... other parameters to \link{RestRserveResponse}
 
+
+set_http_401_not_found = function(response,
+                                  body = '{"error":"Resource not found"}',
+                                  content_type = "application/json", ...) {
+  response$body = body
+  response$content_type = content_type
+  response$status_code = 401L
+  invisible(NULL)
+}
+
 set_http_404_not_found = function(response,
                                   body = '{"error":"Resource not found"}',
                                   content_type = "application/json", ...) {
