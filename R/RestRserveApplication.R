@@ -290,9 +290,10 @@ RestRserveApplication = R6::R6Class(
       stopifnot(length(http_port) == 1L)
       http_port = as.integer(http_port)
       ARGS = list(...)
-
-      if( is.null(ARGS[["http.port"]]) ) {
-        ARGS[["http.port"]] = http_port
+      if(http_port > 0) {
+        if( is.null(ARGS[["http.port"]]) ) {
+          ARGS[["http.port"]] = http_port
+        }
       }
 
       keep_http_request = .GlobalEnv[[".http.request"]]
