@@ -62,6 +62,9 @@ AuthBackend = R6::R6Class(
   )
 )
 
+#' @name BasicAuthBackend
+#' @title Basic authorization backend
+#' @description \url{https://en.wikipedia.org/wiki/Basic_access_authentication}
 #' @export
 BasicAuthBackend = R6::R6Class(
   "BasicAuthBackend",
@@ -124,6 +127,9 @@ BasicAuthBackend = R6::R6Class(
 
 )
 
+#' @name BearerAuthBackend
+#' @title Bearer token authorization backend
+#' @description \url{https://swagger.io/docs/specification/authentication/bearer-authentication/}
 #' @export
 BearerAuthBackend = R6::R6Class(
   "BearerAuthBackend",
@@ -158,6 +164,9 @@ BearerAuthBackend = R6::R6Class(
   )
 )
 #-------------------------------------------------------
+#' @name RestRserveAuthMiddleware
+#' @title Authorization middleware
+#' @description adds verious authorizations to \link{RestRserveApplication}
 #' @export
 RestRserveAuthMiddleware = R6::R6Class(
   "RestRserveAuthMiddleware",
