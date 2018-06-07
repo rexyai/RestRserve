@@ -1,6 +1,8 @@
 # this is fib.R file available in the source package at the `inst/fib.R`
 # after intallation available at
 # `system.file("fib.R", package = "RestRserve")`
+library(RestRserve)
+
 calc_fib = function(n) {
   if(n < 0L) stop("n should be >= 0")
   if(n == 0L) return(0L)
@@ -31,18 +33,28 @@ fib = function(request, response) {
   #'         schema:
   #'           type: string
   #'           example: 5
+  #'   401:
+  #'     description: Not authorized
+  #'     content:
+  #'       text/plain:
+  #'         schema:
+  #'           type: string
+  #'           example: API key is missing
   #' ---
 
   n = as.integer( request$query[["n"]] )
   response$body = as.character(calc_fib(n))
   response$content_type = "text/plain"
-  RestRserve::forward()
+  forward()
 }
 #------------------------------------------------------------------------------------------
 # create application
 #------------------------------------------------------------------------------------------
-RestRserveApp = RestRserve::RestRserveApplication$new()
+app = RestRserveApplication$new()
 #------------------------------------------------------------------------------------------
 # register endpoints and corresponding R handlers
 #------------------------------------------------------------------------------------------
-RestRserveApp$add_get(path = "/fib", FUN = fib)
+app$add_get(path = "/fib", FUN = fib)
+app$add_openapi()
+app$add_swagger_ui("/")
+RestRserveApp$run(8001)
