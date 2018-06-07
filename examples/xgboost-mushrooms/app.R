@@ -2,8 +2,10 @@ library(RestRserve)
 library(xgboost)
 library(Matrix)
 
-create_model_matrix = readRDS("create_model_matrix.rds")
-bst = xgb.load("model.xgb")
+DIR = commandArgs(trailingOnly = TRUE)[[1]]
+
+create_model_matrix = readRDS(file.path(DIR, "create_model_matrix.rds"))
+bst = xgb.load(file.path(DIR, "model.xgb"))
 
 pred_xgb_post = function(request, response) {
   #' ---
@@ -84,8 +86,9 @@ pred_xgb_get = function(request, response) {
 #------------------------------------------------------------------------------------------
 # create application
 #------------------------------------------------------------------------------------------
-RestRserveApp = RestRserve::RestRserveApplication$new()
-RestRserveApp$add_post(path = "/predict", FUN = pred_xgb_post)
-RestRserveApp$add_get(path = "/predict", FUN = pred_xgb_get)
-RestRserveApp$add_openapi()
-RestRserveApp$add_swagger_ui("/")
+app = RestRserve::RestRserveApplication$new()
+app$add_post(path = "/predict", FUN = pred_xgb_post)
+app$add_get(path = "/predict", FUN = pred_xgb_get)
+app$add_openapi()
+app$add_swagger_ui("/")
+app$run(8001)

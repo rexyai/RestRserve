@@ -15,7 +15,7 @@ bst = xgboost(data = agaricus.train$data,
               label = agaricus.train$label,
               max_depth = 2, eta = 1,
               nrounds = 5,
-              save_name = file.path(DIR, "model.xgb"),
+              save_name = normalizePath(file.path(DIR, "model.xgb")),
               objective = "binary:logistic")
 #----------------------------------------
 # create function which transforms

@@ -3,8 +3,9 @@
 .RData
 .Ruserdata
 *.DS_Store
-examples/xgboost-mushrooms/app-run
+examples/xgboost-mushrooms/run
 examples/api-key-authentication/run/
 *.o
 *.so
 examples/api-key-authentication/cert/*
+openapi.yaml
