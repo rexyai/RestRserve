@@ -4,15 +4,9 @@ AuthBackend = R6::R6Class(
   "AuthBackend",
   public = list(
     initialize = function(FUN, auth_header_prefix) {
-      private$auth_fun = auth
+      private$auth_fun = FUN
       private$auth_header_prefix = tolower(auth_header_prefix)
     },
-    # get_auth_token = function(auth_header) {
-    #   stop("not implemented - must be overridden")
-    # },
-    # get_auth_header = function() {
-    #   stop("not implemented - must be overridden")
-    # },
     authenticate = function() {
       stop("not implemented")
     }
@@ -71,7 +65,7 @@ BasicAuthBackend = R6::R6Class(
   inherit = AuthBackend,
   public = list(
     initialize = function(FUN) {
-      super$initialize(auth, "Basic")
+      super$initialize(FUN, "Basic")
     },
     authenticate = function(request, response) {
       user_password = private$extract_credentials(request)
@@ -184,7 +178,9 @@ RestRserveAuthMiddleware = R6::R6Class(
 
       self$process_request = function(request, response) {
 
-        prefixes_mask = names(routes) == "prefix"
+        prefixes_mask = rep_len(FALSE, length(routes))
+        if(!is.null(names(routes)))
+          prefixes_mask = (names(routes) == "prefix")
 
         if(request$path %in% routes[!prefixes_mask])
           return(private$auth_backend$authenticate(request))
@@ -193,6 +189,7 @@ RestRserveAuthMiddleware = R6::R6Class(
           if(startsWith(request$path, p))
             return(private$auth_backend$authenticate(request))
         }
+
         forward()
       }
 

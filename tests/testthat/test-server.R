@@ -1,14 +1,11 @@
-PORT = 6666L
+PORT = 6667L
 
-context("Rserve test")
-
+context("basic tests")
 skip_on_cran()
 skip_if_not_installed("curl")
 
-# source("tests/testthat/restrserve-run.R")
 source("restrserve-run.R")
-pid = app$run(http_port = PORT, background = TRUE)
-
+pid = app$run(http_port = PORT, background = T)
 # Wait to Rserve up
 Sys.sleep(1)
 
@@ -32,7 +29,7 @@ get_text = function(url) {
 
 #------------------------------------------------------------------------
 # URLs for the tests
-endpoint = "fib-return"
+endpoint = "fib-forward"
 test_200 = sprintf("http://localhost:%d/%s?n=10", PORT, endpoint)
 test_404 = sprintf("http://localhost:%d/some-path", PORT)
 test_500 = sprintf("http://localhost:%d/%s", PORT, endpoint)
@@ -79,3 +76,4 @@ test_that("Check headers", {
   expect_equal(get_headers(test_404)$`content-type`, "application/json")
 })
 #------------------------------------------------------------------------
+tools::pskill(pid)
