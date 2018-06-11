@@ -43,11 +43,11 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
   If it will be impossible to guess about file type then \code{content_type} will be set to
   \code{"application/octet-stream"}}
   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
-     \code{http_port} - http port for application.
+     \code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
      \code{http_port} will be silently replaced with its value.
-     \code{background} - whether to try to launch in background process on UNIX systems. Ignored in windows.}
-  \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
+     \code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
+  \item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
   Calls handler function for a given request.}
   \item{\code{$routes()}}{Lists all registered routes}
   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}

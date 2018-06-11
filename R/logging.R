@@ -67,10 +67,10 @@ Logger = R6::R6Class(
         msg = to_json(msg)
 
         if(is.character(msg)) {
-          msg = sprintf('{"name":"%s","pid":%d,"level":"%s","timestamp":"%s","message":%s}\n',
+          msg = sprintf('{"level":"%s","name":"%s","pid":%d,"timestamp":"%s","message":%s}\n',
+                        log_name,
                         private$name,
                         Sys.getpid(),
-                        log_name,
                         format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),
                         msg)
           cat(msg, file = private$file, append = TRUE)

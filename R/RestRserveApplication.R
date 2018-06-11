@@ -29,11 +29,11 @@
 #'   If it will be impossible to guess about file type then \code{content_type} will be set to
 #'   \code{"application/octet-stream"}}
 #'   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
-#'      \code{http_port} - http port for application.
+#'      \code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
 #'      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
 #'      \code{http_port} will be silently replaced with its value.
-#'      \code{background} - whether to try to launch in background process on UNIX systems. Ignored in windows.}
-#'   \item{\code{$call_handler(request)}}{Used internally, \bold{usually users} don't need to call it.
+#'      \code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
+#'   \item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
 #'   Calls handler function for a given request.}
 #'   \item{\code{$routes()}}{Lists all registered routes}
 #'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
@@ -321,24 +321,21 @@ RestRserveApplication = R6::R6Class(
         }
         pid
       } else {
-        message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
-        message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
-        message("NOTE that current master process also will be killed")
+        if(interactive()) {
+          message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
+          message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
+          message("NOTE that current master process also will be killed")
+
+        }
         do.call(Rserve::run.Rserve, ARGS )
       }
     },
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
-      registered_endpoints = self$routes()
-      if(length(registered_endpoints) == 0)
-        warning("'RestRserveApp' doesn't contain any endpoints")
-      #------------------------------------------------------------
-      # print registered methods
-      #------------------------------------------------------------
-      endpoints_summary = paste(names(registered_endpoints),  registered_endpoints, sep = ": ", collapse = "\n")
-      message("------------------------------------------------")
-      message(sprintf("starting service with endpoints:\n%s", endpoints_summary))
-      message("-----------------------------------------------")
+      if(length(self$routes()) == 0) {
+        private$logger$warning("'RestRserveApp' doesn't have any endpoints")
+      }
+      private$logger$info(list(endpoints = as.list(self$routes())))
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),

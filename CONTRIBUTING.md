@@ -2,6 +2,7 @@
 
 - develop high-performance **http interface** which will allow to use R code as a **backend** for web-services
 - make creation and deployment of applications simple and robust
+- work nice with docker
 
 # Development
 
@@ -10,14 +11,14 @@
 - minimal number of dependencies
     - `Rserve`
     - `R6` (which has 0 zero dependencies)
-    - `swagger` (swagger-ui assets for)
-    - `yaml` (which is used for OpenAPI and actually not absolutely necessary)
+    - `swagger` (swagger-ui assets)
+    - `yaml` (used for OpenAPI and actually not absolutely necessary)
 
 ### Programming style
 
 - we use ` = ` for assignement
 - for `R6` classes we use CamelCase
-- for the rest we_use_underscore
+- for the rest we use snake_case
 - we don't use `.` inside names
 - stick to base R style (except point above)
 - fail fast - catch errors at the early stages
