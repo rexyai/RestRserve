@@ -29,12 +29,10 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
 
 \describe{
   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
-  \item{\code{$add_route(path, method, FUN, path_as_prefix = FALSE, ...)}}{ Adds endpoint
+  \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
   and register user-supplied R function as a handler.
   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-  which can be easily constructed with \link{RestRserveResponse}. \code{path_as_prefix} at the moment used
-  mainly to help with serving static files. Probably in future it will be replaced with
-  other argument to perform URI template matching.}
+  which can be easily constructed with \link{RestRserveResponse}.}
   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
@@ -63,7 +61,9 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
 
 \describe{
  \item{app}{A \code{RestRserveApplication} object}
- \item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}}
+ \item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}.
+ If it is named character vector with name equal to \code{"prefix"} then all the endopoints which
+ begin with the path will call corresponding handler.}
  \item{method}{\code{character} of length 1. At the moment one of
    \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
  \item{FUN}{\code{function} which takes \strong{single argument - \code{request}}.
