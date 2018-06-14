@@ -67,9 +67,24 @@ mw2 = RestRserveMiddleware$new(
     forward()
   }
 )
+
+mw3 = RestRserveMiddleware$new(
+  process_request = function(req, res) {
+    if(req$path == "/err-mw-req")
+      stop("should be caught by middleware handler and wrapped to json error")
+    forward()
+  },
+  process_response = function(req, res) {
+    if(req$path == "/err-mw-resp")
+      stop("should be caught by middleware handler and wrapped to json error")
+    forward()
+  },
+  name = "mw3"
+)
+
 logger = Logger$new(level = OFF)
 # create application
-app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2), logger = logger)
+app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2, mw3), logger = logger)
 # register endpoints and corresponding R handlers
 app$add_route(path = "/fib-return", method = "GET", FUN = fib_immediate_return)
 app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)

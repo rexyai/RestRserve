@@ -75,5 +75,19 @@ test_that("Check headers", {
   expect_equal(get_headers(test_200_2)$`content-type`, "text/html")
   expect_equal(get_headers(test_404)$`content-type`, "application/json")
 })
+
+test_that("Check errors in middleware wrapped into json", {
+  mw_name = "mw3"
+  test_500_2 = sprintf("http://localhost:%d/%s", PORT, "err-mw-req")
+  err_msg = sprintf("%s middlware '%s' doesn't return RestRserveResponse/RestRserveForward object", "process_request", mw_name)
+  expect_equal(get_text(test_500_2), to_json(list(error = err_msg)))
+  expect_equal(get_status_code(test_500_2), 500L)
+
+  test_500_2 = sprintf("http://localhost:%d/%s", PORT, "err-mw-resp")
+  err_msg = sprintf("%s middlware '%s' doesn't return RestRserveResponse/RestRserveForward object", "process_response", mw_name)
+  expect_equal(get_text(test_500_2), to_json(list(error = err_msg)))
+  expect_equal(get_status_code(test_500_2), 500L)
+})
+
 #------------------------------------------------------------------------
 tools::pskill(pid)

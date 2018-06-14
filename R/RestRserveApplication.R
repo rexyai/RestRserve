@@ -467,49 +467,40 @@ RestRserveApplication = R6::R6Class(
     call_middleware = function(request, response, fun = c("process_request", "process_response")) {
       fun = match.arg(fun)
 
-      if(fun == "process_request") {
-        for(i in seq_along(private$middleware)) {
-          id = as.character(i)
-          FUN = private$middleware[[id]][[fun]]
-          mw_name = private$middleware[[id]][["name"]]
+      mw_iteration_order = seq_along(private$middleware)
+      if(fun == "process_response")
+        mw_iteration_order = rev(mw_iteration_order)
 
-          private$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = "call request middleware"))
-          mw_result = FUN(request, response)
+      for(i in mw_iteration_order ) {
+        id = as.character(i)
+        FUN = private$middleware[[id]][[fun]]
+        mw_name = private$middleware[[id]][["name"]]
 
-          if(inherits(mw_result, "RestRserveResponse"))
-            return(mw_result)
+        private$logger$trace(list(
+          request_id = request$request_id,
+          middleware = mw_name,
+          message = sprintf("call %s middleware", fun)
+          ))
 
-          if(!inherits(mw_result, "RestRserveForward")) {
-            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", mw_name)
-            set_http_500_internal_server_error(
-              response,
-              body = sprintf('{"error":%s}', deparse_vector(err_msg))
-            )
-            return(response)
+        mw_result = try_capture_stack(FUN(request, response))
+
+        if(inherits(mw_result, "RestRserveResponse"))
+          return(mw_result)
+
+        if(!inherits(mw_result, "RestRserveForward")) {
+          err_msg = sprintf("%s middlware '%s' doesn't return RestRserveResponse/RestRserveForward object", fun, mw_name)
+
+          if(inherits(mw_result, "simpleError")) {
+            private$logger$error(list(error = err_msg, traceback = get_traceback_message(mw_result)))
+          } else {
+            private$logger$error(list(error = err_msg))
           }
-        }
-      } else  {
-        # execute 'process_response' middleware in reverse order
-        # not sure yet what is the benefit, but it is done this way everywhere
-        for(i in rev(seq_along(private$middleware))) {
-          id = as.character(i)
-          FUN = private$middleware[[id]][[fun]]
-          mw_name = private$middleware[[id]][["name"]]
 
-          private$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = "call response middleware"))
-          mw_result = FUN(request, response)
-
-          if(inherits(mw_result, "RestRserveResponse"))
-            return(mw_result)
-
-          if(!inherits(mw_result, "RestRserveForward")) {
-            err_msg = sprintf("process_request middlware %s doesn't return RestRserveResponse/RestRserveForward object", mw_name)
-            set_http_500_internal_server_error(
-              response,
-              body = sprintf('{"error":%s}', deparse_vector(err_msg))
-            )
-            return(response)
-          }
+          set_http_500_internal_server_error(
+            response,
+            body = to_json(list(error = err_msg))
+          )
+          return(response)
         }
       }
       forward()
