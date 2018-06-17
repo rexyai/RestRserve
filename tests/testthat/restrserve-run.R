@@ -92,7 +92,7 @@ app$add_route(path = "/fib-err", method = "GET", FUN = fib_err)
 # serve static file
 app$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
 # serve static dir
-app$add_static(path = "/html", file_path = file.path(R.home(), "doc/html"))
+app$add_static(path = "/html", file_path = file.path(R.home("doc"), "html"))
 
 #------------------------------------------------------------------------------------------
 # check authentification
