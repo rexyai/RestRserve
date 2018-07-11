@@ -18,7 +18,7 @@ to_json = function(x, unbox = TRUE) {
       sprintf("{%s}", paste(values, collapse = ","))
     }
   } else {
-    x = if(is.character(x)) deparse_vector(x) else as.character(x)
+    x = make_json_string(x)
     if(length(x) == 1L && unbox) {
       x
     } else {
@@ -26,3 +26,32 @@ to_json = function(x, unbox = TRUE) {
     }
   }
 }
+
+make_json_string = function(x) {
+  res = print_json_string(x)
+  res[is.na(res)] = "null"
+  res
+}
+
+print_json_string = function(x) {
+  res = UseMethod("print_json_string")
+}
+
+print_json_string.default = function(x) {
+  if(is.null(x)) "null" else as.character(x)
+}
+
+print_json_string.character = function(x) {
+  deparse_vector(x)
+}
+
+print_json_string.logical = function(x) {
+  tolower(as.character(x))
+}
+
+print_json_string.numeric = function(x) {
+  scipen_old = options(scipen = 999)
+  on.exit({options(scipen = scipen_old$scipen)})
+  as.character(x)
+}
+
