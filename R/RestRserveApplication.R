@@ -242,7 +242,7 @@ RestRserveApplication = R6::R6Class(
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
             msg = "Haven't found prefix which match the requested path"
             private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            set_http_404_not_fouxnd(response)
+            set_http_404_not_found(response)
             return(forward())
           } else {
             msg = "found prefix which match the requested path"
