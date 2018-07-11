@@ -363,7 +363,7 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               path_swagger_assets = "/__swagger__/",
-                              file_path = tempfile(fileext = ".html")) {
+                              file_path = "swagger-ui.html") {
       stopifnot(is.character(file_path) && length(file_path) == 1L)
       file_path = path.expand(file_path)
 
