@@ -27,27 +27,27 @@ Logger = R6::R6Class(
     },
 
     trace = function(msg, ...) {
-      private$log_base(msg, ..., log_level = TRACE, log_name = "TRACE")
+      private$log_base(msg, ..., log_level = TRACE, log_level_tag = "TRACE")
     },
 
     debug = function(msg, ...) {
-      private$log_base(msg, ..., log_level = DEBUG, log_name = "DEBUG")
+      private$log_base(msg, ..., log_level = DEBUG, log_level_tag = "DEBUG")
     },
 
     info = function(msg, ...) {
-      private$log_base(msg, ..., log_level = INFO, log_name = "INFO")
+      private$log_base(msg, ..., log_level = INFO, log_level_tag = "INFO")
     },
 
     warning = function(msg, ...) {
-      private$log_base(msg, ..., log_level = WARN, log_name = "WARN")
+      private$log_base(msg, ..., log_level = WARN, log_level_tag = "WARN")
     },
 
     error = function(msg, ...) {
-      private$log_base(msg, ..., log_level = ERROR, log_name = "ERROR")
+      private$log_base(msg, ..., log_level = ERROR, log_level_tag = "ERROR")
     },
 
     fatal = function(msg, ...) {
-      private$log_base(msg, ..., log_level = FATAL, log_name = "FATAL")
+      private$log_base(msg, ..., log_level = FATAL, log_level_tag = "FATAL")
     }
 
   ),
@@ -55,7 +55,7 @@ Logger = R6::R6Class(
     level = NULL,
     file = NULL,
     name = NULL,
-    log_base = function(msg, ..., log_level, log_name) {
+    log_base = function(msg, ..., log_level, log_level_tag) {
       if(isTRUE(private$level >= log_level)) {
 
         if(is.character(msg))
@@ -67,11 +67,11 @@ Logger = R6::R6Class(
         msg = to_json(msg)
 
         if(is.character(msg)) {
-          msg = sprintf('{"level":"%s","name":"%s","pid":%d,"timestamp":"%s","message":%s}\n',
-                        log_name,
+          msg = sprintf('{"timestamp":"%s","level":"%s","name":"%s","pid":%d,"message":%s}\n',
+                        format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),
+                        log_level_tag,
                         private$name,
                         Sys.getpid(),
-                        format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),
                         msg)
           cat(msg, file = private$file, append = TRUE)
         }
