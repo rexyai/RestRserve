@@ -36,6 +36,11 @@ app$run(http_port = "8001")
 
 Please follow [quick start article on http://restrserve.org/](http://restrserve.org/quick-start.html) for more details.
 
+# Installation
+
+- docker image available on docker-hub - [https://hub.docker.com/r/dselivanov/restrserve/](https://hub.docker.com/r/dselivanov/restrserve/)
+- from github `remotes::install_github("dselivanov/RestRserve")`
+
 # Known limitations
 
 - RestRserve is primarily tested on UNIX systems. While it works natively on Windows plase don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) and report to us.
