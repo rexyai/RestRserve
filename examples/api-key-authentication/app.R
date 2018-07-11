@@ -20,7 +20,9 @@ validate_api_key = function(key) {
 }
 #------------------------------------------------------------------------
 auth_backend = BearerAuthBackend$new(FUN = validate_api_key, auth_header_prefix = "Bearer")
-auth_mw = RestRserveAuthMiddleware$new(auth_backend, name = "bearer_auth_middleware")
+auth_mw = RestRserveAuthMiddleware$new(auth_backend = auth_backend,
+                                       routes = c(prefix = "/fib"),
+                                       name = "bearer_auth_middleware")
 #------------------------------------------------------------------------
 
 #------------------------------------------------------------------------
