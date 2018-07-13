@@ -51,6 +51,7 @@ print_json_string.logical = function(x) {
 
 print_json_string.numeric = function(x) {
   scipen_old = options(scipen = 999)
+  x[!is.finite(x)] = NA
   on.exit({options(scipen = scipen_old$scipen)})
   as.character(x)
 }
