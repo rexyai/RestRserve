@@ -49,6 +49,33 @@ Please follow [quick start article on http://restrserve.org/](http://restrserve.
 - as already mentioned `Rserve` and `RestRserve` process each request in a separate fork. In certain edge cases (usually badly designed user code) it is possible that `Rserve` won't be able to create a fork (for example lack of RAM). In these cases `Rserve` will return 500 error. Keep in mind that `Rserve` and `RestRserve` can't control on how much resources will be needed to handle incoming request - everything depends on the user code. In order to limit number of connections/requests it is recommended to use specialized software such as [HAproxy](http://www.haproxy.org/).
 - While `Rserve` is matured and very well tested software, `RestRserve` is not - you can expect some minor bugs and minor API breaks
 
+# RestRserve in "cooperative" mode
+
+If Rserve is installed in "cooperative" mode (compiled with `-DCOOPERATIVE` flag) than RestRserve will hadle incoming requests in a single parent process without forking. This means it can maintain state (hence maintain DB connections, etc):
+
+```r
+# assuming Rserve is configured to work in "cooperative" mode
+library(RestRserve) 
+
+app = RestRserveApplication$new()
+
+counter = 0L
+
+app$add_get("/add", function(req, res) {
+  counter <<- counter + 1L
+  res$body = as.character(counter)
+  forward()
+})
+
+app$add_get("/sub", function(req, res) {
+  counter <<- counter - 1L
+  res$body = as.character(counter)
+  forward()
+})
+
+app$run(8001)
+```
+
 # Acknowledgements
 
 - [Simon Urbanek](https://github.com/s-u/) (@s-u) for awesome [Rserve](https://github.com/s-u/Rserve) and all the work on R itself and on his other packages
