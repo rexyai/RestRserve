@@ -1,13 +1,15 @@
 #' @name RestRserveApplication
 #' @title Creates RestRserveApplication.
 #' @description Creates RestRserveApplication object.
-#' RestRserveApplication facilitates in turning user-supplied R code into high-performance REST API by
+#' RestRserveApplication converts user-supplied R code into high-performance REST API by
 #' allowing to easily register R functions for handling http-requests.
 #' @section Usage:
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
-#' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-#'   RestRserve::RestRserveResponse(body = request$query[[1]], content_type = "text/plain")
+#' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
+#'   response$body = request$query[[1]]
+#'   response$content_type = "text/plain"
+#'   forward()
 #'   })}
 #' \item \code{app$routes()}
 #' }
@@ -17,8 +19,11 @@
 #'   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
 #'   \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
 #'   and register user-supplied R function as a handler.
-#'   User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-#'   which can be easily constructed with \link{RestRserveResponse}.}
+#'   User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
+#'   The goal of the user function is to \bold{modify} \code{response} and call \code{RestRserve::forward()} at the end.
+#'   (which means return \code{RestRserveForward} object).
+#'   Both \code{response} and \code{request} objects modified in-place and internally passed further to
+#'   RestRserve execution pipeline.
 #'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
 #'   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
 #'   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
@@ -26,10 +31,10 @@
 #'   then MIME code \code{content_type}  will be inferred automatically (from file extension).
 #'   If it will be impossible to guess about file type then \code{content_type} will be set to
 #'   \code{"application/octet-stream"}}
-#'   \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
+#'   \item{\code{$run(http_port = 8001L, ..., background = FALSE)}}{starts RestRserve application from current R session.
 #'      \code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
 #'      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-#'      \code{http_port} will be silently replaced with its value.
+#'        \code{http_port} will be silently replaced with its value.
 #'      \code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
 #'   \item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
 #'   Calls handler function for a given request.}
@@ -49,16 +54,8 @@
 #'  begin with the path will call corresponding handler.}
 #'  \item{method}{\code{character} of length 1. At the moment one of
 #'    \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
-#'  \item{FUN}{\code{function} which takes \strong{single argument - \code{request}}.
-#'    \code{request} essentially is a parsed http-request represented as R's \code{list} with following fields:
-#'    \itemize{
-#'      \item path
-#'      \item method
-#'      \item query
-#'      \item body
-#'      \item content_type
-#'      \item headers
-#'    }
+#'  \item{FUN}{\code{function} which \strong{must take 2 arguments - \code{request}, \code{response} objects}.
+#'    See \link{RestRserveRequest} and \link{RestRserveResponse} for details.
 #'  }
 #' }
 #' @format \code{\link{R6Class}} object.
@@ -251,25 +248,19 @@ RestRserveApplication = R6::R6Class(
         }
       }
       # call handler function. 4 results possible:
-      # 1) object of RestRserveResponse - than we need to return it immediately - dowstream tasks will not touch it
-      # 2) error - need to set corresponding response code and continue dowstream tasks
-      # 3) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
-      # 4) anything else = set 500 error
+      # 1) error - need to set corresponding response code and continue dowstream tasks
+      # 2) RestRserveForward - considered as following: fuction modified response and we need to continue dowstream tasks
+      # 3) anything else = set 500 error
       result = try_capture_stack(FUN(request, response))
-      if(inherits(result, "RestRserveResponse")) {
-        private$logger$trace(list(request_id = request$request_id, message = "got 'RestRserveResponse' from handler - returning response immediately"))
-        return(result)
+      if(inherits(result, "simpleError")) {
+        msg = get_traceback_message(result, TRACEBACK_MAX_NCHAR)
+        private$logger$error(list(request_id = request$request_id, code = 500, message = msg))
+        set_http_500_internal_server_error(response, body = '{"error":"error in handler code"}')
       } else {
-        if(inherits(result, "simpleError")) {
-          msg = get_traceback_message(result, TRACEBACK_MAX_NCHAR)
+        if(!inherits(result, "RestRserveForward")) {
+          msg = deparse_vector("result from handler doesn't return 'RestRserveForward'")
           private$logger$error(list(request_id = request$request_id, code = 500, message = msg))
-          set_http_500_internal_server_error(response, body = '{"error":"error in handler code"}')
-        } else {
-          if(!inherits(result, "RestRserveForward")) {
-            msg = deparse_vector("result from handler doesn't return 'RestRserveResponse'/'RestRserveForward'")
-            private$logger$error(list(request_id = request$request_id, code = 500, message = msg))
-            set_http_500_internal_server_error(response, body = sprintf('{"error":%s}', msg))
-          }
+          set_http_500_internal_server_error(response, body = sprintf('{"error":%s}', msg))
         }
       }
       forward()

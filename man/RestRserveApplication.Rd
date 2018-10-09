@@ -10,51 +10,21 @@ RestRserveApplication
 }
 \description{
 Creates RestRserveApplication object.
-RestRserveApplication facilitates in turning user-supplied R code into high-performance REST API by
+RestRserveApplication converts user-supplied R code into high-performance REST API by
 allowing to easily register R functions for handling http-requests.
 }
 \section{Usage}{
 
 \itemize{
 \item \code{app = RestRserveApplication$new()}
-\item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request) {
-  RestRserve::RestRserveResponse(body = request$query[[1]], content_type = "text/plain")
+\item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
+  response$body = request$query[[1]]
+  response$content_type = "text/plain"
+  forward()
   })}
 \item \code{app$routes()}
 }
 For usage details see \bold{Methods, Arguments and Examples} sections.
-}
-
-\section{Methods}{
-
-\describe{
-  \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
-  \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
-  and register user-supplied R function as a handler.
-  User function \code{FUN} \bold{must} return object of the class \bold{"RestRserveResponse"}
-  which can be easily constructed with \link{RestRserveResponse}.}
-  \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
-  \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
-  \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
-  file or directory at \code{file_path}. If \code{content_type = NULL}
-  then MIME code \code{content_type}  will be inferred automatically (from file extension).
-  If it will be impossible to guess about file type then \code{content_type} will be set to
-  \code{"application/octet-stream"}}
-  \item{\code{$run(http_port = 8001L, ...)}}{starts RestRserve application from current R session.
-     \code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
-     \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-     \code{http_port} will be silently replaced with its value.
-     \code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
-  \item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
-  Calls handler function for a given request.}
-  \item{\code{$routes()}}{Lists all registered routes}
-  \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-  \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
-  to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
-  \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
-                              path_swagger_assets = "/__swagger__/",
-                              file_path = tempfile(fileext = ".html"))}}{Adds endpoint to show swagger-ui.}
-}
 }
 
 \section{Arguments}{
@@ -66,16 +36,8 @@ For usage details see \bold{Methods, Arguments and Examples} sections.
  begin with the path will call corresponding handler.}
  \item{method}{\code{character} of length 1. At the moment one of
    \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
- \item{FUN}{\code{function} which takes \strong{single argument - \code{request}}.
-   \code{request} essentially is a parsed http-request represented as R's \code{list} with following fields:
-   \itemize{
-     \item path
-     \item method
-     \item query
-     \item body
-     \item content_type
-     \item headers
-   }
+ \item{FUN}{\code{function} which \strong{must take 2 arguments - \code{request}, \code{response} objects}.
+   See \link{RestRserveRequest} and \link{RestRserveResponse} for details.
  }
 }
 }

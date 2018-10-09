@@ -28,7 +28,9 @@ app = RestRserve::RestRserveApplication$new()
 app$add_get(path = "/fib", FUN = fib)
 ```
 
-Note that every user function which is registered as endpoint handler should always return `RestRserveResponse` object which is easy to construct with `RestRserve::RestRserveResponse$new()` function call.
+The goal of user function is to **modify** `response` object and call `RestRserve::forward()` at the end. `response` and `request` objects are **modified in-place** and passed to downstream RestRserve execution pipeline.
+
+Every user function which is registered as endpoint handler **must return `RestRserveForward` object** by calling `RestRserve::forward()` at the end.
 
 ### Start application in interactive mode
 

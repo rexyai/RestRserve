@@ -11,7 +11,7 @@
 
 
 
-<title></title>
+<title>quick-start.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,36 +27,64 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #0000ff; } /* Keyword */
-code > span.ch { color: #008080; } /* Char */
-code > span.st { color: #008080; } /* String */
-code > span.co { color: #008000; } /* Comment */
-code > span.ot { color: #ff4000; } /* Other */
-code > span.al { color: #ff0000; } /* Alert */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #008000; font-weight: bold; } /* Warning */
-code > span.cn { } /* Constant */
-code > span.sc { color: #008080; } /* SpecialChar */
-code > span.vs { color: #008080; } /* VerbatimString */
-code > span.ss { color: #008080; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { } /* Variable */
-code > span.cf { color: #0000ff; } /* ControlFlow */
-code > span.op { } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #ff4000; } /* Preprocessor */
-code > span.do { color: #008000; } /* Documentation */
-code > span.an { color: #008000; } /* Annotation */
-code > span.cv { color: #008000; } /* CommentVar */
-code > span.at { } /* Attribute */
-code > span.in { color: #008000; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; position: absolute; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; }
+pre.numberSource a.sourceLine:empty
+  { position: absolute; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; } /* Alert */
+code span.an { color: #008000; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #0000ff; } /* ControlFlow */
+code span.ch { color: #008080; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #008000; } /* Comment */
+code span.cv { color: #008000; } /* CommentVar */
+code span.do { color: #008000; } /* Documentation */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.im { } /* Import */
+code span.in { color: #008000; } /* Information */
+code span.kw { color: #0000ff; } /* Keyword */
+code span.op { } /* Operator */
+code span.ot { color: #ff4000; } /* Other */
+code span.pp { color: #ff4000; } /* Preprocessor */
+code span.sc { color: #008080; } /* SpecialChar */
+code span.ss { color: #008080; } /* SpecialString */
+code span.st { color: #008080; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #008080; } /* VerbatimString */
+code span.wa { color: #008000; font-weight: bold; } /* Warning */
 </style>
 <style type="text/css">
   pre:not([class]) {
@@ -113,6 +141,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -344,39 +375,41 @@ div.tocify {
 <div id="create-application" class="section level2">
 <h2>Create application</h2>
 <p>Creating application is very simple. For example let’s create endpoint which will caclulate <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Fibonacci number</a> for us:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">calc_fib =<span class="st"> </span><span class="cf">function</span>(n) {
-  <span class="cf">if</span>(n <span class="op">&lt;</span><span class="st"> </span>0L) <span class="kw">stop</span>(<span class="st">&quot;n should be &gt;= 0&quot;</span>)
-  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>0L) <span class="kw">return</span>(0L)
-  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>1L <span class="op">||</span><span class="st"> </span>n <span class="op">==</span><span class="st"> </span>2L) <span class="kw">return</span>(1L)
-  x =<span class="st"> </span><span class="kw">rep</span>(1L, n)
-  <span class="cf">for</span>(i <span class="cf">in</span> 3L<span class="op">:</span>n)
-    x[[i]] =<span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]] <span class="op">+</span><span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">2</span>]]
-  x[[n]]
-}
-
-fib =<span class="st"> </span><span class="cf">function</span>(request, response) {
-  n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">&quot;n&quot;</span>]] )
-  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n))
-  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span>
-  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)
-  response<span class="op">$</span>status_code =<span class="st"> </span>200L
-  <span class="kw">forward</span>()
-}
-
-<span class="co"># create application</span>
-app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
-<span class="co"># register endpoints and corresponding R handlers</span>
-app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/fib&quot;</span>, <span class="dt">FUN =</span> fib)</code></pre></div>
-<p>Note that every user function which is registered as endpoint handler should always return <code>RestRserveResponse</code> object which is easy to construct with <code>RestRserve::RestRserveResponse$new()</code> function call.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(RestRserve)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">calc_fib =<span class="st"> </span><span class="cf">function</span>(n) {</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">  <span class="cf">if</span>(n <span class="op">&lt;</span><span class="st"> </span>0L) <span class="kw">stop</span>(<span class="st">&quot;n should be &gt;= 0&quot;</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>0L) <span class="kw">return</span>(0L)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">  <span class="cf">if</span>(n <span class="op">==</span><span class="st"> </span>1L <span class="op">||</span><span class="st"> </span>n <span class="op">==</span><span class="st"> </span>2L) <span class="kw">return</span>(1L)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">  x =<span class="st"> </span><span class="kw">rep</span>(1L, n)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">  <span class="cf">for</span>(i <span class="cf">in</span> 3L<span class="op">:</span>n)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">    x[[i]] =<span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]] <span class="op">+</span><span class="st"> </span>x[[i <span class="op">-</span><span class="st"> </span><span class="dv">2</span>]]</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">  x[[n]]</a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">}</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">fib =<span class="st"> </span><span class="cf">function</span>(request, response) {</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">  n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">&quot;n&quot;</span>]] )</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n))</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">  response<span class="op">$</span>status_code =<span class="st"> </span>200L</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="kw">forward</span>()</a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">}</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="co"># create application</span></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co"># register endpoints and corresponding R handlers</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24">app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/fib&quot;</span>, <span class="dt">FUN =</span> fib)</a></code></pre></div>
+<p>The goal of user function is to <strong>modify</strong> <code>response</code> object and call <code>RestRserve::forward()</code> at the end. <code>response</code> and <code>request</code> objects are <strong>modified in-place</strong> and passed to downstream RestRserve execution pipeline.</p>
+<p>Every user function which is registered as endpoint handler <strong>must return <code>RestRserveForward</code> object</strong> by calling <code>RestRserve::forward()</code> at the end.</p>
 <div id="start-application-in-interactive-mode" class="section level3">
 <h3>Start application in interactive mode</h3>
 <p><strong>Start</strong> application from interactive session with following command:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_port =</span> <span class="st">&quot;8001&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_port =</span> <span class="st">&quot;8001&quot;</span>)</a></code></pre></div>
 <p>This turns the current R session into Rserve session. Rserve takes over until it is shut down or receives a user interrupt signal.</p>
 <p>Please note that if you launch it from Rstudio, then your Rstudio session will be blocked (<code>Ctrl+C</code> will not work). So to exit you will need to kill Rserve manually - just type <code>kill PID</code> from terminal. PID of the Rserve will be printed to the console after application start.</p>
 <p><strong>Test it works</strong>:</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> http://localhost:8001/fib?n=10
-<span class="co"># 55</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="ex">curl</span> http://localhost:8001/fib?n=10</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># 55</span></a></code></pre></div>
 </div>
 </div>
 <div id="swagger-ui-and-openapi" class="section level2">
@@ -388,43 +421,43 @@ app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">pat
 <li>Each line in YAML starts with <code>#'</code> - mind whitespace after roxygen2-style comment start <code>#'</code></li>
 <li>For customization see <code>app$add_openapi()</code> method arguments and <code>openapi_*()</code> family of functions (not all constructors for OpenAPI objects are fully implemented - contributions are very welcome).</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fib =<span class="st"> </span><span class="cf">function</span>(request, response) {
-
-  <span class="co">#&#39; ---</span>
-  <span class="co">#&#39; description: Calculates Fibonacci number</span>
-  <span class="co">#&#39; parameters:</span>
-  <span class="co">#&#39;   - name: &quot;n&quot;</span>
-  <span class="co">#&#39;     description: &quot;x for Fibonnacci number&quot;</span>
-  <span class="co">#&#39;     in: query</span>
-  <span class="co">#&#39;     schema:</span>
-  <span class="co">#&#39;       type: integer</span>
-  <span class="co">#&#39;     example: 10</span>
-  <span class="co">#&#39;     required: true</span>
-  <span class="co">#&#39; responses:</span>
-  <span class="co">#&#39;   200:</span>
-  <span class="co">#&#39;     description: API response</span>
-  <span class="co">#&#39;     content:</span>
-  <span class="co">#&#39;       text/plain:</span>
-  <span class="co">#&#39;         schema:</span>
-  <span class="co">#&#39;           type: string</span>
-  <span class="co">#&#39;           example: 5</span>
-  <span class="co">#&#39; ---</span>
-  
-  n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">&quot;n&quot;</span>]] )
-  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n))
-  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span>
-  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)
-  response<span class="op">$</span>status_code =<span class="st"> </span>200L
-  <span class="kw">forward</span>()
-}
-
-app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()
-app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/fib&quot;</span>, <span class="dt">FUN =</span> fib)
-app<span class="op">$</span><span class="kw">add_openapi</span>(<span class="dt">path =</span> <span class="st">&quot;/openapi.yaml&quot;</span>, <span class="dt">file_path =</span> <span class="st">&quot;openapi.yaml&quot;</span>)
-app<span class="op">$</span><span class="kw">add_swagger_ui</span>(<span class="dt">path =</span> <span class="st">&quot;/swagger&quot;</span>, 
-                   <span class="dt">path_openapi =</span> <span class="st">&quot;/openapi.yaml&quot;</span>, 
-                   <span class="dt">path_swagger_assets =</span> <span class="st">&quot;/__swagger__&quot;</span>)
-app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_port =</span> <span class="st">&quot;8001&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">fib =<span class="st"> </span><span class="cf">function</span>(request, response) {</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="co">#&#39; ---</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="co">#&#39; description: Calculates Fibonacci number</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">  <span class="co">#&#39; parameters:</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">  <span class="co">#&#39;   - name: &quot;n&quot;</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7">  <span class="co">#&#39;     description: &quot;x for Fibonnacci number&quot;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="co">#&#39;     in: query</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9">  <span class="co">#&#39;     schema:</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10">  <span class="co">#&#39;       type: integer</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11">  <span class="co">#&#39;     example: 10</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12">  <span class="co">#&#39;     required: true</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">  <span class="co">#&#39; responses:</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">  <span class="co">#&#39;   200:</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15">  <span class="co">#&#39;     description: API response</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16">  <span class="co">#&#39;     content:</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17">  <span class="co">#&#39;       text/plain:</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18">  <span class="co">#&#39;         schema:</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19">  <span class="co">#&#39;           type: string</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20">  <span class="co">#&#39;           example: 5</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21">  <span class="co">#&#39; ---</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22">  </a>
+<a class="sourceLine" id="cb4-23" data-line-number="23">  n =<span class="st"> </span><span class="kw">as.integer</span>( request<span class="op">$</span>query[[<span class="st">&quot;n&quot;</span>]] )</a>
+<a class="sourceLine" id="cb4-24" data-line-number="24">  response<span class="op">$</span>body =<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">calc_fib</span>(n))</a>
+<a class="sourceLine" id="cb4-25" data-line-number="25">  response<span class="op">$</span>content_type =<span class="st"> &quot;text/plain&quot;</span></a>
+<a class="sourceLine" id="cb4-26" data-line-number="26">  response<span class="op">$</span>headers =<span class="st"> </span><span class="kw">character</span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb4-27" data-line-number="27">  response<span class="op">$</span>status_code =<span class="st"> </span>200L</a>
+<a class="sourceLine" id="cb4-28" data-line-number="28">  <span class="kw">forward</span>()</a>
+<a class="sourceLine" id="cb4-29" data-line-number="29">}</a>
+<a class="sourceLine" id="cb4-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb4-31" data-line-number="31">app =<span class="st"> </span>RestRserve<span class="op">::</span>RestRserveApplication<span class="op">$</span><span class="kw">new</span>()</a>
+<a class="sourceLine" id="cb4-32" data-line-number="32">app<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">&quot;/fib&quot;</span>, <span class="dt">FUN =</span> fib)</a>
+<a class="sourceLine" id="cb4-33" data-line-number="33">app<span class="op">$</span><span class="kw">add_openapi</span>(<span class="dt">path =</span> <span class="st">&quot;/openapi.yaml&quot;</span>, <span class="dt">file_path =</span> <span class="st">&quot;openapi.yaml&quot;</span>)</a>
+<a class="sourceLine" id="cb4-34" data-line-number="34">app<span class="op">$</span><span class="kw">add_swagger_ui</span>(<span class="dt">path =</span> <span class="st">&quot;/swagger&quot;</span>, </a>
+<a class="sourceLine" id="cb4-35" data-line-number="35">                   <span class="dt">path_openapi =</span> <span class="st">&quot;/openapi.yaml&quot;</span>, </a>
+<a class="sourceLine" id="cb4-36" data-line-number="36">                   <span class="dt">path_swagger_assets =</span> <span class="st">&quot;/__swagger__&quot;</span>)</a>
+<a class="sourceLine" id="cb4-37" data-line-number="37">app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_port =</span> <span class="st">&quot;8001&quot;</span>)</a></code></pre></div>
 <div class="figure">
 <img src="https://github.com/dselivanov/RestRserve/blob/master/docs/img/swagger-ui.png?raw=true" alt="swagger-ui" />
 <p class="caption">swagger-ui</p>
@@ -435,27 +468,27 @@ app<span class="op">$</span><span class="kw">run</span>(<span class="dt">http_po
 <p><strong>Recommended way</strong> to serve application (file with R code) is to deploy it to some directory and start service in daemon mode.</p>
 <p>There is only one simple <strong>RULE</strong> for application - it should have a <strong>‘RestRserveApp’ object in global environment</strong> and it should inherit from <code>RestRserve::RestRserveApplication</code>.</p>
 <p>Deploying is as simple as:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># fib.R</span>
-configuration =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;http.port&quot;</span> =<span class="st"> &quot;8001&quot;</span>,
-                  <span class="st">&quot;encoding&quot;</span> =<span class="st"> &quot;utf8&quot;</span>,
-                  <span class="st">&quot;port&quot;</span> =<span class="st"> &quot;6311&quot;</span>)
-
-<span class="co"># specify directory where to depliy application </span>
-dir =<span class="st"> </span><span class="kw">tempdir</span>()
-
-<span class="co"># specify path to user application</span>
-app_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;fib.R&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;RestRserve&quot;</span>)
-
-<span class="co"># Here it is a path to &quot;fib.R&quot; demo application built in into the package</span>
-<span class="co"># For example on my machine it is here:</span>
-<span class="co"># &quot;/usr/local/lib/R/3.4/site-library/RestRserve/fib.R&quot;</span>
-<span class="co"># also you can check it online:</span>
-<span class="co"># https://github.com/dselivanov/RestRserve/blob/master/inst/fib.R</span>
-
-RestRserve<span class="op">::</span><span class="kw">restrserve_deploy</span>(<span class="dt">file =</span> app_path, <span class="dt">dir =</span> dir, <span class="dt">configuration =</span> configuration)</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># fib.R</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">configuration =<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;http.port&quot;</span> =<span class="st"> &quot;8001&quot;</span>,</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">                  <span class="st">&quot;encoding&quot;</span> =<span class="st"> &quot;utf8&quot;</span>,</a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">                  <span class="st">&quot;port&quot;</span> =<span class="st"> &quot;6311&quot;</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co"># specify directory where to depliy application </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">dir =<span class="st"> </span><span class="kw">tempdir</span>()</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># specify path to user application</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">app_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;fib.R&quot;</span>, <span class="dt">package =</span> <span class="st">&quot;RestRserve&quot;</span>)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co"># Here it is a path to &quot;fib.R&quot; demo application built in into the package</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co"># For example on my machine it is here:</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co"># &quot;/usr/local/lib/R/3.4/site-library/RestRserve/fib.R&quot;</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># also you can check it online:</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co"># https://github.com/dselivanov/RestRserve/blob/master/inst/fib.R</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb5-18" data-line-number="18">RestRserve<span class="op">::</span><span class="kw">restrserve_deploy</span>(<span class="dt">file =</span> app_path, <span class="dt">dir =</span> dir, <span class="dt">configuration =</span> configuration)</a></code></pre></div>
 <p>This will generate Rserve configuration file (<code>Rserve.conf</code>) and put it along with a copy of the user application to the application directory <code>dir</code> (in our example <code>current_app_snapshot</code> is a copy of <code>/usr/local/lib/R/3.4/site-library/RestRserve/fib.R</code>):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list.files</span>(dir)
-<span class="co">#&quot;current_app_snapshot.R&quot; &quot;Rserve.conf&quot; </span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">list.files</span>(dir)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&quot;current_app_snapshot.R&quot; &quot;Rserve.conf&quot; </span></a></code></pre></div>
 <p>Note that by default <code>current_app_snapshot.R</code> will be used when service is starting. Keep in mind this when you specify filepaths in your code. It is possible to force to use original file - see <code>start_from_snapshot</code> argument of the <code>restrserve_deploy()</code> function.</p>
 </div>
 <div id="start-application" class="section level2">
@@ -465,13 +498,13 @@ RestRserve<span class="op">::</span><span class="kw">restrserve_deploy</span>(<s
 <li>path to the file where this pid is stored as a name</li>
 <li>pid of the application as a value</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">PID =<span class="st"> </span>RestRserve<span class="op">::</span><span class="kw">restrserve_start</span>(dir)
-PID
-<span class="co">#/Users/dmitry/RestRserveFib/Rserve.pid </span>
-<span class="co">#                                  67439</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">PID =<span class="st"> </span>RestRserve<span class="op">::</span><span class="kw">restrserve_start</span>(dir)</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">PID</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#/Users/dmitry/RestRserveFib/Rserve.pid </span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#                                  67439</span></a></code></pre></div>
 <p><strong>Test it works</strong></p>
 <p>Send request to existing <code>/fib</code> endpoint :</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> -sD - localhost:8001/fib?n=10</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="ex">curl</span> -sD - localhost:8001/fib?n=10</a></code></pre></div>
 <pre class="text"><code>HTTP/1.1 200 OK
 Content-type: text/plain
 Content-length: 16
@@ -479,7 +512,7 @@ Content-length: 16
 n=5</code></pre>
 <p><strong>Test it handles requests to non-existing endpoints</strong></p>
 <p>Send request to non-existing <code>/incorrectmethod</code> endpoint:</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">curl</span> -sD - localhost:8001/incorrectmethod?n=10</code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">curl</span> -sD - localhost:8001/incorrectmethod?n=10</a></code></pre></div>
 <pre class="text"><code>HTTP/1.1 404 Code 404
 Content-type: text/plain
 Content-length: 41
@@ -489,7 +522,7 @@ Resource &#39;/incorrectmethod&#39; doesn&#39;t exist</code></pre>
 <div id="stress-test" class="section level2">
 <h2>Stress test</h2>
 <p>Load testing with <a href="https://github.com/apigee/apib">apib: API Bench</a>:</p>
-<div class="sourceCode"><pre class="sourceCode sh"><code class="sourceCode bash"><span class="ex">apib</span> -c 16 -d 10 http://127.0.0.1:8001/fib?n=5</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="ex">apib</span> -c 16 -d 10 http://127.0.0.1:8001/fib?n=5</a></code></pre></div>
 <pre class="txt"><code>(5 / 10) 20439.224 0% cpu
 (10 / 10) 21077.496 0% cpu
 Duration:             10.001 seconds
@@ -521,7 +554,7 @@ Receive bandwidth:     10.29 megabits / second</code></pre>
 <div id="stop-application" class="section level2">
 <h2>Stop application</h2>
 <p>Stop particular application (with all the childs):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">restrserve_stop</span>(dir)</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">restrserve_stop</span>(dir)</a></code></pre></div>
 </div>
 
 
