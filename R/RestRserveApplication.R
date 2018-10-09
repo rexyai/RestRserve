@@ -129,7 +129,9 @@ RestRserveApplication = R6::R6Class(
       invisible(TRUE)
     },
     #------------------------------------------------------------------------
-    add_get = function(path, FUN, ...) {
+    add_get = function(path, FUN, ..., add_head = TRUE) {
+      if (isTRUE(add_head))
+        self$add_route(path, "HEAD", FUN, ...)
       self$add_route(path, "GET", FUN, ...)
     },
     #------------------------------------------------------------------------
