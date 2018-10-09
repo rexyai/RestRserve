@@ -1,52 +1,52 @@
-# @name set_http_statuses
-# @title Create standart responses/exceptions
-# @description internal functions for convenient creation of standard http answers/exceptions
-# @param body reponse body
-# @param content_type body content type
-# @param ... other parameters to \link{RestRserveResponse}
+#' @title HTTP Errors helper
+#' @description This function helps to generate error respoonse.
+#' @param response \link{RestRserveResponse} object.
+#' @param code Valid HTTP code.
+#' @param format Output format.
+#' @param ... Error exmplanations.
+#' @export
+#' @examples
+#' resp = RestRserveResponse$new()
+#' @include status_codes.R
+http_error = function(response, code, format = c("json", "xml", "text"), ...) {
+  # Check args
+  stopifnot(inherits(response, "RestRserveResponse"))
+  stopifnot(code %in% names(status_codes))
+  format = match.arg(format)
+  dots = list(...)
+  if (length(dots) > 0L) {
+    stopifnot(all(lengths(dots) == 1L))
+    stopifnot(all(vapply(dots, is.character, FUN.VALUE = logical(1L))))
+  }
 
+  desc <- status_codes[[code]]
+  code <- as.integer(code)
 
-set_http_401_not_found = function(response,
-                                  body = '{"error":"Resource not found"}',
-                                  content_type = "application/json", ...) {
+  body = switch(
+    format,
+    json = {
+      to_json(list(error = list(code = code, description = desc, ...)))
+    },
+    text = {
+      paste(paste("HTTP code", code), desc, unlist(dots), sep = ". ")
+    },
+    xml = {
+      head = '<?xml version="1.0" encoding="UTF-8"?>'
+      res = list(code = code, description = desc, ...)
+      res = sprintf("<%s>%s</%s>", names(res), unlist(res), names(res))
+      paste0(head, "<error>", paste(res, collapse = ""), "</error>")
+    }
+  )
+
+  content_type = switch(
+    format,
+    json = "application/json",
+    text = "text/plain",
+    xml = "text/xml"
+  )
+
   response$body = body
   response$content_type = content_type
-  response$status_code = 401L
-  invisible(NULL)
-}
-
-set_http_404_not_found = function(response,
-                                  body = '{"error":"Resource not found"}',
-                                  content_type = "application/json", ...) {
-  response$body = body
-  response$content_type = content_type
-  response$status_code = 404L
-  invisible(NULL)
-}
-
-set_http_405_method_not_allowed = function(response,
-                                           body = '{"error":"Method Not Allowed"}',
-                                           content_type = "application/json", ...) {
-  response$body = body
-  response$content_type = content_type
-  response$status_code = 405L
-  invisible(NULL)
-}
-
-set_http_500_internal_server_error = function(response,
-                                              body = '{"error":"Internal Server Error"}',
-                                              content_type = "application/json", ...) {
-  response$body = body
-  response$content_type = content_type
-  response$status_code = 500L
-  invisible(NULL)
-}
-
-set_http_520_unknown_error  = function(response,
-                                       body = '{"error":"Unknown Error"}',
-                                       content_type = "application/json", ...) {
-  response$body = body
-  response$content_type = content_type
-  response$status_code = 520L
+  response$status_code = code
   invisible(NULL)
 }

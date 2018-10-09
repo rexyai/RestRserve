@@ -163,14 +163,14 @@ RestRserveApplication = R6::R6Class(
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            set_http_404_not_found(response)
+            http_error(response, "404", "json")
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              set_http_404_not_found(response)
+              http_error(response, "404", "json")
             }
             else {
               response$body = c(file = fl)
@@ -186,7 +186,7 @@ RestRserveApplication = R6::R6Class(
         handler = function(request, response) {
 
           if(!file.exists(file_path))
-            set_http_404_not_found(response)
+            http_error(response, "404", "json")
 
           if(is.null(content_type)) {
             if(mime_avalable) {
@@ -208,7 +208,7 @@ RestRserveApplication = R6::R6Class(
       TRACEBACK_MAX_NCHAR = 1000L
 
       if(identical(names(private$handlers), character(0))) {
-        set_http_404_not_found(response)
+        http_error(response, "404", "json")
         forward()
       }
 
@@ -226,7 +226,7 @@ RestRserveApplication = R6::R6Class(
         if(!any(handlers_match_start)) {
           msg = "Haven't found prefix which match the requested path"
           private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-          set_http_404_not_found(response)
+          http_error(response, "404", "json")
           return(forward())
         } else {
           paths_match = registered_paths[handlers_match_start]
@@ -239,7 +239,7 @@ RestRserveApplication = R6::R6Class(
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
             msg = "Haven't found prefix which match the requested path"
             private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            set_http_404_not_found(response)
+            http_error(response, "404", "json")
             return(forward())
           } else {
             msg = "found prefix which match the requested path"
@@ -255,12 +255,13 @@ RestRserveApplication = R6::R6Class(
       if(inherits(result, "simpleError")) {
         msg = get_traceback_message(result, TRACEBACK_MAX_NCHAR)
         private$logger$error(list(request_id = request$request_id, code = 500, message = msg))
-        set_http_500_internal_server_error(response, body = '{"error":"error in handler code"}')
+        http_error(response, "500", "json", message = "error in handler code")
       } else {
         if(!inherits(result, "RestRserveForward")) {
           msg = deparse_vector("result from handler doesn't return 'RestRserveForward'")
           private$logger$error(list(request_id = request$request_id, code = 500, message = msg))
-          set_http_500_internal_server_error(response, body = sprintf('{"error":%s}', msg))
+          http_error(response, "500", "json", message = "Error in handler code")
+          http_error(response, "500", "json", message = msg)
         }
       }
       forward()
@@ -488,10 +489,7 @@ RestRserveApplication = R6::R6Class(
             private$logger$error(list(error = err_msg))
           }
 
-          set_http_500_internal_server_error(
-            response,
-            body = to_json(list(error = err_msg))
-          )
+          http_error(response, "500", "json", message = err_msg)
           return(response)
         }
       }
