@@ -94,15 +94,7 @@ RestRserveApplication = R6::R6Class(
       # if path was a root -> replace it back
       if(path == "") path = "/"
 
-      if( length(formals(FUN)) == 0L ) stop("function should take 2 arguments - 1. request 2. response")
-
-      if( length(formals(FUN)) == 1L ) {
-        warning("Function provided takes only 1 argument which willbe considered as request.
-                Function should take two arguments - 1. request 2. response. This warning will be turned into ERROR next release!")
-        FUN_WRAP = function(request, response) FUN(request)
-      } else {
-        FUN_WRAP = FUN
-      }
+      if( length(formals(FUN)) != 2L ) stop("function should take 2 arguments - 1. request 2. response")
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
@@ -110,7 +102,7 @@ RestRserveApplication = R6::R6Class(
       if(!is.null(private$handlers[[path]][[method]]))
         warning(sprintf("overwriting existing '%s' method for path '%s'", method, path))
 
-      CMPFUN = compiler::cmpfun(FUN_WRAP)
+      CMPFUN = compiler::cmpfun(FUN)
       attr(CMPFUN, "handle_path_as_prefix") = path_as_prefix
       private$handlers[[path]][[method]] = CMPFUN
 
@@ -398,7 +390,7 @@ RestRserveApplication = R6::R6Class(
     middleware = NULL,
     content_type_default = NULL,
     process_request = function(request) {
-      private$logger$info(
+      private$logger$trace(
         list(request_id = request$request_id, method = request$method, path = request$path,
              query = request$query, headers = request$headers)
       )
@@ -407,24 +399,24 @@ RestRserveApplication = R6::R6Class(
       intermediate_response = self$call_middleware_request(request, response)
       # RestRserveResponse means we need to return result
       if(inherits(intermediate_response, "RestRserveResponse")) {
-        private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from request middleware"))
+        private$logger$trace(list(request_id = request$request_id, message = "received 'RestRserveResponse' from request middleware"))
         response = intermediate_response
       } else {
         #------------------------------------------------------------------------------
         intermediate_response = self$call_handler(request, response)
         if(inherits(intermediate_response, "RestRserveResponse")) {
-          private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from handler - returning it"))
+          private$logger$trace(list(request_id = request$request_id, message = "received 'RestRserveResponse' from handler - returning it"))
           response = intermediate_response
         }
       }
       #------------------------------------------------------------------------------
       intermediate_response = self$call_middleware_response(request, response)
       if(inherits(intermediate_response, "RestRserveResponse")) {
-        private$logger$info(list(request_id = request$request_id, message = "received 'RestRserveResponse' from response middleware"))
+        private$logger$trace(list(request_id = request$request_id, message = "received 'RestRserveResponse' from response middleware"))
         response = intermediate_response
       }
       #------------------------------------------------------------------------------
-      private$logger$info(list(request_id = request$request_id, message = "returnung response"))
+      private$logger$trace(list(request_id = request$request_id, message = "returnung response"))
       response$as_rserve_response()
     },
     # according to
