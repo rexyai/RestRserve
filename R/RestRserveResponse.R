@@ -30,6 +30,9 @@
 #'   \item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
 #'   Neither Content-type nor Content-length may be used.}
 #'   \item{status_code}{\code{200L} must be an integer}
+#'   \item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
+#'   RestRserve itself will not interact with this field. For exampole this can be useful
+#'   if you want to pass some data to response middleware.}
 #' }
 #' }
 #' @section Methods:
@@ -44,6 +47,7 @@ RestRserveResponse = R6::R6Class(
     content_type = NULL,
     headers = NULL,
     status_code = NULL,
+    context = NULL,
     #------------------------------------------------
     initialize = function(body = "{}",
                           content_type = "application/json",
@@ -72,6 +76,7 @@ RestRserveResponse = R6::R6Class(
       self$content_type = content_type
       self$headers = headers
       self$status_code = status_code
+      self$context = new.env(parent = emptyenv())
     },
     as_rserve_response = function() {
       if(isTRUE(names(self$body) == "file"))

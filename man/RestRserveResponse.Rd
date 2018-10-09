@@ -22,6 +22,9 @@ Useful if handler or middleware wants to return some value immediately and inter
   \item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
   Neither Content-type nor Content-length may be used.}
   \item{status_code}{\code{200L} must be an integer}
+  \item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
+  RestRserve itself will not interact with this field. For exampole this can be useful
+  if you want to pass some data to response middleware.}
 }
 }
 }
