@@ -2,7 +2,9 @@ FROM r-base:latest
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    libssl-dev
+    libssl-dev libjemalloc1
+
+ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so.1
 
 RUN Rscript -e "install.packages( c( \
     'Rserve', \
