@@ -9,13 +9,15 @@
 Logger
 }
 \description{
-creates Logger object which can be used for logging with different level of verbosity
+creates Logger object which can be used for logging with different level of verbosity.
+Log messages are in JSON format
 }
 \section{Methods}{
 
 \describe{
-  \item{\code{$new(level = INFO, file = "", name = "ROOT")}}{Logger with sink to a \code{file}. \code{file} can be character
-  or connection. Internally passed to \link{cat} - see corresponding docs for details.}
+  \item{\code{$new(level = INFO, name = "ROOT", printer = NULL)}}{Logger with sink defined by \code{printer}
+  function. It should have signature \code{function(timestamp, level, logger_name, pid, message)}.
+  By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}}
   \item{\code{$trace(msg, ...)}}{ write trace message}
   \item{\code{$debug(msg, ...)}}{ write debug message}
   \item{\code{$info(msg, ...)}}{ write info message}

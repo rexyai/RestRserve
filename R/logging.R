@@ -1,11 +1,13 @@
 #' @name Logger
 #' @title simple logging utility
-#' @description creates Logger object which can be used for logging with different level of verbosity
+#' @description creates Logger object which can be used for logging with different level of verbosity.
+#' Log messages are in JSON format
 #' @format \code{\link{R6Class}} object.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(level = INFO, file = "", name = "ROOT")}}{Logger with sink to a \code{file}. \code{file} can be character
-#'   or connection. Internally passed to \link{cat} - see corresponding docs for details.}
+#'   \item{\code{$new(level = INFO, name = "ROOT", printer = NULL)}}{Logger with sink defined by \code{printer}
+#'   function. It should have signature \code{function(timestamp, level, logger_name, pid, message)}.
+#'   By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}}
 #'   \item{\code{$trace(msg, ...)}}{ write trace message}
 #'   \item{\code{$debug(msg, ...)}}{ write debug message}
 #'   \item{\code{$info(msg, ...)}}{ write info message}
@@ -20,9 +22,31 @@
 Logger = R6::R6Class(
   classname = "Logger",
   public = list(
-    initialize = function(level = INFO, file = "", name = "ROOT") {
+    printer = NULL,
+    initialize = function(level = INFO, name = "ROOT", printer = NULL) {
+      # default printer
+      if(is.null(printer)) {
+        printer = function(timestamp, level, logger_name, pid, message) {
+          x = to_json(
+            list(
+              timestamp = format(timestamp, "%Y-%m-%d %H:%M:%OS6"),
+              level = as.character(level),
+              name = as.character(logger_name),
+              pid = as.integer(pid),
+              message = message
+            )
+          )
+          cat(x, file = "", append = TRUE, sep = "\n")
+        }
+      }
+
+      if(!is.function(printer))
+        stop("'printer' should function or NULL")
+      if( length(formals(printer)) != 5L )
+        stop("printer should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)")
+
       private$level = level
-      private$file = file
+      self$printer = printer
       private$name = name
     },
 
@@ -53,28 +77,10 @@ Logger = R6::R6Class(
   ),
   private = list(
     level = NULL,
-    file = NULL,
     name = NULL,
     log_base = function(msg, ..., log_level, log_level_tag) {
       if(isTRUE(private$level >= log_level)) {
-
-        if(is.character(msg))
-          msg = sprintf(msg, ...)
-
-        if(is.environment(msg))
-          msg = as.list(msg)
-
-        msg = to_json(msg)
-
-        if(is.character(msg)) {
-          msg = sprintf('{"timestamp":"%s","level":"%s","name":"%s","pid":%d,"message":%s}\n',
-                        format(Sys.time(), "%Y-%m-%d %H:%M:%OS6"),
-                        log_level_tag,
-                        private$name,
-                        Sys.getpid(),
-                        msg)
-          cat(msg, file = private$file, append = TRUE)
-        }
+        self$printer(Sys.time(), log_level_tag, private$name, Sys.getpid(), msg)
       }
       invisible(msg)
     }
