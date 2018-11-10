@@ -23,7 +23,7 @@
 #'   The goal of the user function is to \bold{modify} \code{response} and call \code{RestRserve::forward()} at the end.
 #'   (which means return \code{RestRserveForward} object).
 #'   Both \code{response} and \code{request} objects modified in-place and internally passed further to
-#'   RestRserve execution pipeline.
+#'   RestRserve execution pipeline.}
 #'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
 #'   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
 #'   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
