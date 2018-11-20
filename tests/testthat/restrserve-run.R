@@ -52,7 +52,8 @@ mw1 = RestRserveMiddleware$new(
       res$content_type = "text/plain"
     }
     forward()
-  }
+  },
+  name = "mw1"
 )
 
 mw2 = RestRserveMiddleware$new(
@@ -65,7 +66,8 @@ mw2 = RestRserveMiddleware$new(
       res$content_type = "text/plain"
     }
     forward()
-  }
+  },
+  name = "mw2"
 )
 
 mw3 = RestRserveMiddleware$new(

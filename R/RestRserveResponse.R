@@ -48,6 +48,7 @@ RestRserveResponse = R6::R6Class(
     headers = NULL,
     status_code = NULL,
     context = NULL,
+    exception = NULL,
     #------------------------------------------------
     initialize = function(body = "{}",
                           content_type = "application/json",
@@ -93,7 +94,16 @@ RestRserveResponse = R6::R6Class(
 #' @description forwards processing of the request to the downstream handlers/middleware
 #' @export
 forward = function() {
-  x = TRUE
-  class(x) = "RestRserveForward"
-  invisible(x)
+  res = TRUE
+  class(res) = "RestRserveForward"
+  invisible(res)
+}
+
+#' @title interrupt request-response cycle
+#' @description interrupts processing
+#' @export
+interrupt = function() {
+  res = TRUE
+  class(res) = "RestRserveInterrupt"
+  invisible(res)
 }
