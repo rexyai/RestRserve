@@ -376,14 +376,25 @@ RestRserveApplication = R6::R6Class(
       )
       response = RestRserveResponse$new(body = "{}", content_type = private$content_type_default)
       #------------------------------------------------------------------------------
-      status = private$call_middleware(request, response, "process_request")
+
+      # call all middleares in natural order
+      middleware_ids = as.character(seq_along(private$middleware))
+      # middleware_result contains
+      # - status = RestRserveForward or RestRserveInterrupt
+      # - middleware_ids = ids of launched middleware in reverse order (stack)
+      middleware_result = private$call_middleware(request, response, "process_request", middleware_ids)
+
+      status = middleware_result$status
+      middleware_ids = middleware_result$middleware_ids
+
       private$logger$trace(list(request_id = request$request_id, message = list(middlewares_request_status = class(status)[[1]])))
       # RestRserveForward means we need to pass (request, response) to handler
       if(inherits(status, "RestRserveForward")) {
         status = self$call_handler(request, response)
       }
       #------------------------------------------------------------------------------
-      status = private$call_middleware(request, response, "process_response")
+      middleware_result = private$call_middleware(request, response, "process_response", middleware_ids)
+      status = middleware_result$status
       private$logger$trace(list(request_id = request$request_id, message = list(middlewares_response_status = class(status)[[1]])))
       #------------------------------------------------------------------------------
       response$as_rserve_response()
@@ -420,17 +431,16 @@ RestRserveApplication = R6::R6Class(
     # can return
     # - RestRserveInterrupt
     # - RestRserveForward
-    call_middleware = function(request, response, flag = c("process_request", "process_response")) {
+    call_middleware = function(request, response, flag = c("process_request", "process_response"), middleware_ids) {
       flag = match.arg(flag)
       # return RestRserveForward by default
       status = forward()
+      middleware_ids_succeed = character(0)
 
-      mw_iteration_order = seq_along(private$middleware)
-      if(flag == "process_response")
-        mw_iteration_order = rev(mw_iteration_order)
+      for(id in middleware_ids) {
+        # put to the stack launched middlware
+        middleware_ids_succeed = c(id, middleware_ids_succeed)
 
-      for(i in mw_iteration_order ) {
-        id = as.character(i)
         FUN = private$middleware[[id]][[flag]]
         mw_name = private$middleware[[id]][["name"]]
 
@@ -447,7 +457,7 @@ RestRserveApplication = R6::R6Class(
         if(inherits(status, "RestRserveInterrupt"))
           break()
       }
-      status
+      list(status = status, middleware_ids = middleware_ids_succeed)
     }
   )
 )
