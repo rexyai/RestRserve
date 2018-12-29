@@ -84,9 +84,9 @@ mw3 = RestRserveMiddleware$new(
   name = "mw3"
 )
 
-logger = Logger$new(level = OFF)
 # create application
-app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2, mw3), logger = logger)
+app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2, mw3))
+app$logger$set_log_level(OFF)
 # register endpoints and corresponding R handlers
 app$add_route(path = "/fib-return", method = "GET", FUN = fib_immediate_return)
 app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)
@@ -120,8 +120,9 @@ mw_auth_basic = RestRserveAuthMiddleware$new(basic_auth, routes = "/fib-basic-au
 #---------------------------------------------
 # create application
 app_auth = RestRserve::RestRserveApplication$new(
-  middleware = list(mw_auth_token, mw_auth_basic, mw_auth_token_prefix),
-  logger = logger)
+  middleware = list(mw_auth_token, mw_auth_basic, mw_auth_token_prefix)
+)
+app_auth$logger$set_log_level(OFF)
 # register endpoints and corresponding R handlers
 app_auth$add_get(path = "/fib-bearer-auth", FUN = fib_forward)
 app_auth$add_get(path = "/fib-basic-auth", FUN = fib_forward)

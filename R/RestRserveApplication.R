@@ -4,6 +4,9 @@
 #' RestRserveApplication converts user-supplied R code into high-performance REST API by
 #' allowing to easily register R functions for handling http-requests.
 #' @section Usage:
+#'
+#' \bold{For usage details see Methods, Arguments and Examples sections.}
+#'
 #' \itemize{
 #' \item \code{app = RestRserveApplication$new()}
 #' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
@@ -13,10 +16,14 @@
 #'   })}
 #' \item \code{app$routes()}
 #' }
-#' For usage details see \bold{Methods, Arguments and Examples} sections.
+#'
+#' @field logger \link{Logger} instance. Can be replaced/manipulated with corresponding
+#'   \link{Logger} methods.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
+#'   \item{\code{$new(middleware = list(),content_type = "application/json", ...)}}{
+#'     Constructor for RestRserveApplication. Sets \code{middleware} ( list of \link{RestRserveMiddleware})
+#'     and \code{content_type} - default response format.}
 #'   \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
 #'   and register user-supplied R function as a handler.
 #'   User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
@@ -64,12 +71,22 @@ RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
     #------------------------------------------------------------------------
+    logger = NULL,
+    #------------------------------------------------------------------------
     initialize = function(middleware = list(),
-                          logger = Logger$new(INFO, name = "RestRserveApplication"),
-                          content_type = "application/json") {
+                          content_type = "application/json", ...) {
+      dots = list(...)
+      if("logger" %in% names(dots)) {
+        msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
+                    "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
+                    sep = "\n")
+        warning(msg)
+        self$logger = dots$logger
+      } else {
+        self$logger = Logger$new(INFO, name = "RestRserveApplication")
+      }
+
       stopifnot(is.list(middleware))
-      stopifnot(inherits(logger, "Logger"))
-      private$logger = logger
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
@@ -209,9 +226,9 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[request$path]][[request$method]]
 
       if(!is.null(FUN)) {
-        private$logger$trace(list(request_id = request$request_id, message = 'exact endpoint match for the route'))
+        self$logger$trace(list(request_id = request$request_id, message = 'exact endpoint match for the route'))
       } else {
-        private$logger$trace(list(request_id = request$request_id, message = "haven't found exact endpoint match for requested route"))
+        self$logger$trace(list(request_id = request$request_id, message = "haven't found exact endpoint match for requested route"))
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
@@ -219,7 +236,7 @@ RestRserveApplication = R6::R6Class(
         handlers_match_start = startsWith(x = request$path, prefix = paste(registered_paths, "/", sep = ""))
         if(!any(handlers_match_start)) {
           msg = "Haven't found prefix which match the requested path"
-          private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
+          self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
           set_http_404_not_found(response)
           return(forward())
         } else {
@@ -232,17 +249,17 @@ RestRserveApplication = R6::R6Class(
           # if it is a function then we need to check whther it was registered to handle patterned paths
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
             msg = "Haven't found prefix which match the requested path"
-            private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
+            self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
             set_http_404_not_found(response)
             return(forward())
           } else {
             msg = "found prefix which match the requested path"
-            private$logger$trace(list(request_id = request$request_id, message = msg))
+            self$logger$trace(list(request_id = request$request_id, message = msg))
           }
         }
       }
 
-      apply_handler(request, response, FUN, private$logger)
+      apply_handler(request, response, FUN, self$logger)
       forward()
     },
     #------------------------------------------------------------------------
@@ -305,9 +322,9 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if(length(self$routes()) == 0) {
-        private$logger$warning("'RestRserveApp' doesn't have any endpoints")
+        self$logger$warning("'RestRserveApp' doesn't have any endpoints")
       }
-      private$logger$info(list(endpoints = as.list(self$routes())))
+      self$logger$info(list(endpoints = as.list(self$routes())))
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
@@ -365,12 +382,11 @@ RestRserveApplication = R6::R6Class(
   ),
   private = list(
     handlers = NULL,
-    logger = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
     content_type_default = NULL,
     process_request = function(request) {
-      private$logger$trace(
+      self$logger$trace(
         list(request_id = request$request_id, method = request$method, path = request$path,
              query = request$query, headers = request$headers)
       )
@@ -387,7 +403,7 @@ RestRserveApplication = R6::R6Class(
       status = middleware_result$status
       middleware_ids = middleware_result$middleware_ids
 
-      private$logger$trace(list(request_id = request$request_id, message = list(middlewares_request_status = class(status)[[1]])))
+      self$logger$trace(list(request_id = request$request_id, message = list(middlewares_request_status = class(status)[[1]])))
       # RestRserveForward means we need to pass (request, response) to handler
       if(inherits(status, "RestRserveForward")) {
         status = self$call_handler(request, response)
@@ -395,7 +411,7 @@ RestRserveApplication = R6::R6Class(
       #------------------------------------------------------------------------------
       middleware_result = private$call_middleware(request, response, "process_response", middleware_ids)
       status = middleware_result$status
-      private$logger$trace(list(request_id = request$request_id, message = list(middlewares_response_status = class(status)[[1]])))
+      self$logger$trace(list(request_id = request$request_id, message = list(middlewares_response_status = class(status)[[1]])))
       #------------------------------------------------------------------------------
       response$as_rserve_response()
     },
@@ -444,7 +460,7 @@ RestRserveApplication = R6::R6Class(
         FUN = private$middleware[[id]][[flag]]
         mw_name = private$middleware[[id]][["name"]]
 
-        private$logger$trace(list(
+        self$logger$trace(list(
           request_id = request$request_id,
           middleware = mw_name,
           message = sprintf("call %s middleware", flag)
@@ -453,7 +469,7 @@ RestRserveApplication = R6::R6Class(
         # apply_middleware() can only return
         # - RestRserveInterrupt
         # - RestRserveForward
-        status = apply_middleware(request, response, FUN, private$logger)
+        status = apply_middleware(request, response, FUN, self$logger)
         if(inherits(status, "RestRserveInterrupt"))
           break()
       }

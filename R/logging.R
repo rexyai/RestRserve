@@ -8,6 +8,9 @@
 #'   \item{\code{$new(level = INFO, name = "ROOT", printer = NULL)}}{Logger with sink defined by \code{printer}
 #'   function. It should have signature \code{function(timestamp, level, logger_name, pid, message)}.
 #'   By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}}
+#'   \item{\code{$set_name(name = "ROOT")}}{ sets logger name}
+#'   \item{\code{$set_log_level(level = INFO)}}{ sets log level}
+#'   \item{\code{$set_printer(FUN = NULL)}}{ sets function which defines how to print logs}
 #'   \item{\code{$trace(msg, ...)}}{ write trace message}
 #'   \item{\code{$debug(msg, ...)}}{ write debug message}
 #'   \item{\code{$info(msg, ...)}}{ write info message}
@@ -23,10 +26,18 @@ Logger = R6::R6Class(
   classname = "Logger",
   public = list(
     printer = NULL,
-    initialize = function(level = INFO, name = "ROOT", printer = NULL) {
-      # default printer
-      if(is.null(printer)) {
-        printer = function(timestamp, level, logger_name, pid, message) {
+    #----------------------------------------
+    set_name = function(name = "ROOT") {
+      private$name = as.character(name)
+    },
+    #----------------------------------------
+    set_log_level = function(level = INFO) {
+      private$level = level
+    },
+    #----------------------------------------
+    set_printer = function(FUN = NULL) {
+      if(is.null(FUN)) {
+        FUN = function(timestamp, level, logger_name, pid, message) {
           x = to_json(
             list(
               timestamp = format(timestamp, "%Y-%m-%d %H:%M:%OS6"),
@@ -39,21 +50,23 @@ Logger = R6::R6Class(
           cat(x, file = "", append = TRUE, sep = "\n")
         }
       }
-
-      if(!is.function(printer))
-        stop("'printer' should function or NULL")
-      if( length(formals(printer)) != 5L )
-        stop("printer should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)")
-
-      private$level = level
-      self$printer = printer
-      private$name = name
+      if(!is.function(FUN))
+        stop("'FUN' should function or NULL")
+      if( length(formals(FUN)) != 5L )
+        stop("FUN should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)")
+      self$printer = FUN
     },
-
+    #----------------------------------------
+    initialize = function(level = INFO, name = "ROOT", FUN = NULL) {
+      self$set_log_level(level)
+      self$set_name(name)
+      self$set_printer(FUN)
+    },
+    #----------------------------------------
     trace = function(msg, ...) {
       private$log_base(msg, ..., log_level = TRACE, log_level_tag = "TRACE")
     },
-
+    #----------------------------------------
     debug = function(msg, ...) {
       private$log_base(msg, ..., log_level = DEBUG, log_level_tag = "DEBUG")
     },
@@ -61,19 +74,18 @@ Logger = R6::R6Class(
     info = function(msg, ...) {
       private$log_base(msg, ..., log_level = INFO, log_level_tag = "INFO")
     },
-
+    #----------------------------------------
     warning = function(msg, ...) {
       private$log_base(msg, ..., log_level = WARN, log_level_tag = "WARN")
     },
-
+    #----------------------------------------
     error = function(msg, ...) {
       private$log_base(msg, ..., log_level = ERROR, log_level_tag = "ERROR")
     },
-
+    #----------------------------------------
     fatal = function(msg, ...) {
       private$log_base(msg, ..., log_level = FATAL, log_level_tag = "FATAL")
     }
-
   ),
   private = list(
     level = NULL,

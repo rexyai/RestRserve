@@ -10,14 +10,14 @@
 \alias{openapi_license}
 \title{creates OpenAPI objects}
 \usage{
-openapi_create(openapi = openapi_openapi_version(), info = openapi_info(),
-  servers = openapi_servers(), ...)
+openapi_create(openapi = openapi_openapi_version(),
+  info = openapi_info(), servers = openapi_servers(), ...)
 
 openapi_openapi_version(openapi_version = "3.0.1")
 
 openapi_info(title = "RestRserve OpenAPI", version = "1.0",
-  description = NULL, termsOfService = NULL, contact = openapi_contact(),
-  license = openapi_license())
+  description = NULL, termsOfService = NULL,
+  contact = openapi_contact(), license = openapi_license())
 
 openapi_servers(servers = list())
 

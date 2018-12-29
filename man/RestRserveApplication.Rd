@@ -13,7 +13,17 @@ Creates RestRserveApplication object.
 RestRserveApplication converts user-supplied R code into high-performance REST API by
 allowing to easily register R functions for handling http-requests.
 }
+\section{Fields}{
+
+\describe{
+\item{\code{logger}}{\link{Logger} instance. Can be replaced/manipulated with corresponding
+\link{Logger} methods.}
+}}
+
 \section{Usage}{
+
+
+\bold{For usage details see Methods, Arguments and Examples sections.}
 
 \itemize{
 \item \code{app = RestRserveApplication$new()}
@@ -24,13 +34,14 @@ allowing to easily register R functions for handling http-requests.
   })}
 \item \code{app$routes()}
 }
-For usage details see \bold{Methods, Arguments and Examples} sections.
 }
 
 \section{Methods}{
 
 \describe{
-  \item{\code{$new()}}{Constructor for RestRserveApplication. For the moment doesn't take any parameters.}
+  \item{\code{$new(middleware = list(),content_type = "application/json", ...)}}{
+    Constructor for RestRserveApplication. Sets \code{middleware} ( list of \link{RestRserveMiddleware})
+    and \code{content_type} - default response format.}
   \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
   and register user-supplied R function as a handler.
   User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
