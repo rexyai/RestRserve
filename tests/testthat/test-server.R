@@ -34,10 +34,14 @@ test_200 = sprintf("http://localhost:%d/%s?n=10", PORT, endpoint)
 test_404 = sprintf("http://localhost:%d/some-path", PORT)
 test_500 = sprintf("http://localhost:%d/%s", PORT, endpoint)
 
+# https://github.com/dselivanov/RestRserve/issues/24
+test_200_1 = sprintf("http://localhost:%d/%s?n=10&dummy", PORT, endpoint)
+
 test_that("Check status code", {
-    expect_equal(get_status_code(test_200), 200L)
-    expect_equal(get_status_code(test_404), 404L)
-    expect_equal(get_status_code(test_500), 500L)
+  expect_equal(get_status_code(test_200), 200L)
+  expect_equal(get_status_code(test_404), 404L)
+  expect_equal(get_status_code(test_500), 500L)
+  expect_equal(get_status_code(test_200_1), 200L)
 })
 
 test_that("Check headers", {
