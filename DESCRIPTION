@@ -1,7 +1,7 @@
 Package: RestRserve
 Type: Package
 Title: High-Performance Web Server for Building Microservices and App Backends 
-Version: 0.1.4.2
+Version: 0.1.5
 Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
