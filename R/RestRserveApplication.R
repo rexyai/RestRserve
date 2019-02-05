@@ -174,14 +174,14 @@ RestRserveApplication = R6::R6Class(
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            set_http_404_not_found(response)
+            response$set_response(404)
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              set_http_404_not_found(response)
+              response$set_response(404)
             }
             else {
               response$body = c(file = fl)
@@ -197,7 +197,7 @@ RestRserveApplication = R6::R6Class(
         handler = function(request, response) {
 
           if(!file.exists(file_path))
-            set_http_404_not_found(response)
+            response$set_response(404)
 
           if(is.null(content_type)) {
             if(mime_avalable) {
@@ -219,7 +219,7 @@ RestRserveApplication = R6::R6Class(
       TRACEBACK_MAX_NCHAR = 1000L
 
       if(identical(names(private$handlers), character(0))) {
-        set_http_404_not_found(response)
+        response$set_response(404)
         forward()
       }
 
@@ -237,7 +237,7 @@ RestRserveApplication = R6::R6Class(
         if(!any(handlers_match_start)) {
           msg = "Haven't found prefix which match the requested path"
           self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-          set_http_404_not_found(response)
+          response$set_response(404)
           return(forward())
         } else {
           paths_match = registered_paths[handlers_match_start]
@@ -250,7 +250,7 @@ RestRserveApplication = R6::R6Class(
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
             msg = "Haven't found prefix which match the requested path"
             self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            set_http_404_not_found(response)
+            response$set_response(404)
             return(forward())
           } else {
             msg = "found prefix which match the requested path"
@@ -511,7 +511,7 @@ apply_handler = function(request, response, FUN, logger) {
     )
   )
   response$exception = err
-  set_http_500_internal_server_error(response, body = '{"error":"Internal Server Error"}')
+  response$set_response(500)
   forward()
 }
 
@@ -541,6 +541,6 @@ apply_middleware = function(request, response, FUN, logger) {
     )
   )
   response$exception = err
-  set_http_500_internal_server_error(response, body = '{"error":"Internal Server Error"}')
+  response$set_response(500)
   interrupt()
 }

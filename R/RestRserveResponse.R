@@ -86,6 +86,26 @@ RestRserveResponse = R6::R6Class(
       if(isTRUE(names(self$body) == "tmpfile"))
         return(list("tmpfile" = self$body, self$content_type, self$headers, self$status_code))
       return(list(self$body, self$content_type, self$headers, self$status_code))
+    },
+
+    set_response = function(status_code, body = NULL, content_type = self$content_type) {
+
+      if(!is.numeric(status_code))
+        stop("'status_code' should be numeric http status code")
+
+      status_code_int = as.integer(status_code)
+      status_code_char = as.character(status_code)
+
+      # default standard body message
+      if(is.null(body))
+        body = status_codes[[status_code_char]]
+
+      self$body = encode_response_body(body, content_type)
+
+      if(is.null(self$body)) stop("unknown status code '%s'", status_code_char)
+
+      self$status_code = status_code_int
+      invisible(NULL)
     }
   )
 )
@@ -107,3 +127,14 @@ interrupt = function() {
   class(res) = "RestRserveInterrupt"
   invisible(res)
 }
+
+encode_response_body = function(x, content_type) {
+  switch (
+    content_type,
+    `application/json` = RestRserve:::to_json(list("message" = x)),
+    `text/plain` = as.character(x),
+    x
+  )
+}
+
+
