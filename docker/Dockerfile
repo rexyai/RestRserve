@@ -15,10 +15,9 @@ RUN Rscript -e "install.packages( c( \
     'swagger', 'mime', 'remotes'), \
   repos = c('https://cran.rstudio.com/', 'http://www.rforge.net/'))"
 
-COPY . /RestRserve/
-WORKDIR /RestRserve
+COPY . /RestRserve
 
-RUN R CMD build .
-RUN R CMD INSTALL RestRserve*.tar.gz
+RUN R CMD build /RestRserve
+RUN R CMD INSTALL RestRserve*.tar.gz && rm -rf RestRserve*
 
 CMD ["Rscript", "-e", "source(system.file('fib.R', package = 'RestRserve'), keep.source = TRUE)"]
