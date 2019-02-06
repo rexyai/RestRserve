@@ -31,13 +31,19 @@
 #'   Neither Content-type nor Content-length may be used.}
 #'   \item{status_code}{\code{200L} must be an integer}
 #'   \item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
-#'   RestRserve itself will not interact with this field. For exampole this can be useful
+#'   RestRserve itself will not interact with this field. This can be useful
 #'   if you want to pass some data to response middleware.}
 #' }
 #' }
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)}}{Constructor for RestRserveResponse}
+#'   \item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{
+#'     facilitate in setting response. If \code{body} is not specified (\code{NULL}),
+#'     provides standard default values for all standard status codes.
+#'     Automatically encodes body for common \code{content_type} values:
+#'     \code{application/json}, \code{text/plain}
+#'   }
 #' }
 #' @export
 RestRserveResponse = R6::R6Class(
