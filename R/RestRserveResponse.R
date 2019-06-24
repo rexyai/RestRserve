@@ -55,19 +55,35 @@ RestRserveResponse = R6::R6Class(
     status_code = NULL,
     context = NULL,
     exception = NULL,
+    serializer = NULL,
     #------------------------------------------------
-    initialize = function(body = "{}",
-                          content_type = "application/json",
+    initialize = function(body = "",
+                          content_type = 'text/plain',
                           headers = character(0),
-                          status_code = 200L) {
-      if(!is.integer(status_code))
+                          status_code = 200L,
+                          serializer = NULL) {
+      #------------------------------------------
+      if( is.null(serializer)) {
+        switch (content_type,
+                'application/json' = to_json,
+                'text/plain' = as.character,
+                identity
+        )
+      }
+      if( !is.function(serializer)) {
+        stop('`serializer` can only be a function or NULL')
+      } else {
+        self$serializer = serializer
+      }
+      #------------------------------------------
+      if(!is.numeric(status_code))
         stop("status_code should be a integer")
       #------------------------------------------------
       if(!is_string_len_one(content_type))
         stop("content_type must be a character vector of length one")
       #------------------------------------------------
-      if(!(is_string_len_one(body) || is.raw(body)))
-        stop("body can be a character vector of length one or a raw vector")
+      # if(!(is_string_len_one(body) || is.raw(body)))
+      #   stop("body can be a character vector of length one or a raw vector")
       #------------------------------------------------
       if(!is.character(headers))
         stop("headers must be a character vector - the elements will have CRLF appended.
@@ -82,16 +98,8 @@ RestRserveResponse = R6::R6Class(
       self$body = body
       self$content_type = content_type
       self$headers = headers
-      self$status_code = status_code
+      self$status_code = as.integer(status_code)
       self$context = new.env(parent = emptyenv())
-    },
-    as_rserve_response = function() {
-      if(isTRUE(names(self$body) == "file"))
-        return(list("file" = self$body, self$content_type, self$headers, self$status_code))
-
-      if(isTRUE(names(self$body) == "tmpfile"))
-        return(list("tmpfile" = self$body, self$content_type, self$headers, self$status_code))
-      return(list(self$body, self$content_type, self$headers, self$status_code))
     },
 
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
@@ -143,4 +151,13 @@ encode_response_body = function(x, content_type) {
   )
 }
 
+as_rserve_response = function(x) {
+  if(isTRUE(names(x$body) == "file"))
+    return(list("file" = x$body, x$content_type, x$headers, x$status_code))
 
+  if(isTRUE(names(x$body) == "tmpfile"))
+    return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
+
+  body = x$serializer(body)
+  return(list(body, x$content_type, x$headers, x$status_code))
+}

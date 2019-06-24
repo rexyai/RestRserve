@@ -74,7 +74,8 @@ RestRserveApplication = R6::R6Class(
     logger = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(),
-                          content_type = "application/json", ...) {
+                          content_type = "application/json",
+                          ...) {
       dots = list(...)
       if("logger" %in% names(dots)) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
@@ -85,7 +86,7 @@ RestRserveApplication = R6::R6Class(
       } else {
         self$logger = Logger$new(INFO, name = "RestRserveApplication")
       }
-
+      #------------------------------------------
       stopifnot(is.list(middleware))
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
@@ -156,7 +157,6 @@ RestRserveApplication = R6::R6Class(
       if(is.na(is_dir)) {
         stop(sprintf("'%s' file or directory doesnt't exists", file_path))
       }
-      # response = RestRserveResponse$new()
       # now we know file exists
       file_path = normalizePath(file_path)
 
@@ -390,7 +390,8 @@ RestRserveApplication = R6::R6Class(
         list(request_id = request$request_id, method = request$method, path = request$path,
              query = request$query, headers = request$headers)
       )
-      response = RestRserveResponse$new(body = "{}", content_type = private$content_type_default)
+      # dummy response
+      response = RestRserveResponse$new(body = "", content_type = private$content_type_default)
       #------------------------------------------------------------------------------
 
       # call all middleares in natural order
@@ -413,7 +414,7 @@ RestRserveApplication = R6::R6Class(
       status = middleware_result$status
       self$logger$trace(list(request_id = request$request_id, message = list(middlewares_response_status = class(status)[[1]])))
       #------------------------------------------------------------------------------
-      response$as_rserve_response()
+      as_rserve_response(response)
     },
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
