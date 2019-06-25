@@ -63,7 +63,7 @@ See \link{openapi_servers}}
 \description{
 Facilitates in building \href{https://www.openapis.org/}{OpenAPI} description document by
 creating objects described in
- \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
+\url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
 }
 \details{
 \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}

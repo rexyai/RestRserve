@@ -12,7 +12,6 @@
 #' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
 #'   response$body = request$query[[1]]
 #'   response$content_type = "text/plain"
-#'   forward()
 #'   })}
 #' \item \code{app$routes()}
 #' }
@@ -21,14 +20,13 @@
 #'   \link{Logger} methods.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(middleware = list(),content_type = "application/json", ...)}}{
+#'   \item{\code{$new(middleware = list(),content_type = "text/plain", ...)}}{
 #'     Constructor for RestRserveApplication. Sets \code{middleware} ( list of \link{RestRserveMiddleware})
 #'     and \code{content_type} - default response format.}
 #'   \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
 #'   and register user-supplied R function as a handler.
 #'   User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
-#'   The goal of the user function is to \bold{modify} \code{response} and call \code{RestRserve::forward()} at the end.
-#'   (which means return \code{RestRserveForward} object).
+#'   The goal of the user function is to \bold{modify} \code{response} or throw exception (call `stop()`)).
 #'   Both \code{response} and \code{request} objects modified in-place and internally passed further to
 #'   RestRserve execution pipeline.}
 #'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
@@ -72,10 +70,14 @@ RestRserveApplication = R6::R6Class(
   public = list(
     #------------------------------------------------------------------------
     logger = NULL,
+    content_type = NULL,
+    HTTPError = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(),
-                          content_type = "application/json",
+                          content_type = "text/plain",
+                          serializer = NULL,
                           ...) {
+      self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
       dots = list(...)
       if("logger" %in% names(dots)) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
@@ -92,7 +94,7 @@ RestRserveApplication = R6::R6Class(
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
-      private$content_type_default = content_type
+      self$content_type = content_type
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, ...) {
@@ -174,14 +176,14 @@ RestRserveApplication = R6::R6Class(
           fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
 
           if(!file.exists(fl)) {
-            response$set_response(404)
+            raise(self$HTTPError$not_found())
           } else {
             content_type = "application/octet-stream"
             if(mime_avalable) content_type = mime::guess_type(fl)
 
             fl_is_dir = file.info(fl)[["isdir"]][[1]]
             if(isTRUE(fl_is_dir)) {
-              response$set_response(404)
+              raise(self$HTTPError$not_found())
             }
             else {
               response$body = c(file = fl)
@@ -189,7 +191,6 @@ RestRserveApplication = R6::R6Class(
               response$status_code = 200L
             }
           }
-          forward()
         }
         self$add_get(c(prefix = path), handler, ...)
       } else {
@@ -197,7 +198,7 @@ RestRserveApplication = R6::R6Class(
         handler = function(request, response) {
 
           if(!file.exists(file_path))
-            response$set_response(404)
+            raise(self$HTTPError$not_found())
 
           if(is.null(content_type)) {
             if(mime_avalable) {
@@ -209,18 +210,16 @@ RestRserveApplication = R6::R6Class(
           response$body = c(file = file_path)
           response$content_type = content_type
           response$status_code = 200L
-          forward()
         }
         self$add_get(path, handler, ...)
       }
     },
     #------------------------------------------------------------------------
     call_handler = function(request, response) {
-      TRACEBACK_MAX_NCHAR = 1000L
+      TRACEBACK_MAX_NCHAR = 10000L
 
       if(identical(names(private$handlers), character(0))) {
-        response$set_response(404)
-        forward()
+        raise(self$HTTPError$not_found())
       }
 
       FUN = private$handlers[[request$path]][[request$method]]
@@ -237,8 +236,7 @@ RestRserveApplication = R6::R6Class(
         if(!any(handlers_match_start)) {
           msg = "Haven't found prefix which match the requested path"
           self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-          response$set_response(404)
-          return(forward())
+          raise(self$HTTPError$not_found())
         } else {
           paths_match = registered_paths[handlers_match_start]
           # find method which match the path - take longest match
@@ -250,17 +248,14 @@ RestRserveApplication = R6::R6Class(
           if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
             msg = "Haven't found prefix which match the requested path"
             self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            response$set_response(404)
-            return(forward())
+            raise(self$HTTPError$not_found())
           } else {
             msg = "found prefix which match the requested path"
             self$logger$trace(list(request_id = request$request_id, message = msg))
           }
         }
       }
-
-      apply_handler(request, response, FUN, self$logger)
-      forward()
+      FUN(request, response)
     },
     #------------------------------------------------------------------------
     routes = function() {
@@ -384,36 +379,86 @@ RestRserveApplication = R6::R6Class(
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
-    content_type_default = NULL,
     process_request = function(request) {
       self$logger$trace(
         list(request_id = request$request_id, method = request$method, path = request$path,
              query = request$query, headers = request$headers)
       )
       # dummy response
-      response = RestRserveResponse$new(body = "", content_type = private$content_type_default)
+      response = RestRserveResponse$new(content_type = self$content_type)
       #------------------------------------------------------------------------------
 
       # call all middleares in natural order
-      middleware_ids = as.character(seq_along(private$middleware))
-      # middleware_result contains
-      # - status = RestRserveForward or RestRserveInterrupt
-      # - middleware_ids = ids of launched middleware in reverse order (stack)
-      middleware_result = private$call_middleware(request, response, "process_request", middleware_ids)
+      middleware_ids_to_call = as.character(seq_along(private$middleware))
+      midlleware_ids_called = new.env(parent = emptyenv())
+      midlleware_ids_called[['ids']] = character(0)
 
-      status = middleware_result$status
-      middleware_ids = middleware_result$middleware_ids
+      status = try_capture_stack(private$call_middleware(
+        request,
+        response,
+        middleware_ids_to_call,
+        midlleware_ids_called,
+        "process_request")
+      )
+      # set 'process_response' middleware
+      middleware_ids_to_call = midlleware_ids_called[['ids']]
+      # reset midlleware_ids_called
+      midlleware_ids_called[['ids']] = character(0)
 
-      self$logger$trace(list(request_id = request$request_id, message = list(middlewares_request_status = class(status)[[1]])))
-      # RestRserveForward means we need to pass (request, response) to handler
-      if(inherits(status, "RestRserveForward")) {
-        status = self$call_handler(request, response)
+      # FIXME
+      # This is quite convoluted - may need to simplily
+
+      # means HANDLED exception in middleware
+      if(inherits(status, 'HTTPError')) {
+        # throws error - this means we need to stop request-response pipeline and
+        # unwind called middleware stack
+        response = status$response
+      } else {
+        if(inherits(status, 'simpleError')) {
+          # means UNHANDLED exception in middleware
+          self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
+          response = self$HTTPError$internal_server_error()
+        } else {
+          # means normal execution - middelwares have finished successully
+          # now call handler
+          status = try_capture_stack(self$call_handler(request, response))
+          # means HANDLED exception
+          if(inherits(status, 'HTTPError')) {
+            # means HANDLED exception in handler
+            response = status$response
+          } else {
+            if(inherits(status, 'simpleError')) {
+              # means UNHANDLED exception
+              self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
+              response = self$HTTPError$internal_server_error()
+            } else {
+              # just pass - happy path
+              TRUE
+            }
+          }
+        }
       }
       #------------------------------------------------------------------------------
-      middleware_result = private$call_middleware(request, response, "process_response", middleware_ids)
-      status = middleware_result$status
-      self$logger$trace(list(request_id = request$request_id, message = list(middlewares_response_status = class(status)[[1]])))
-      #------------------------------------------------------------------------------
+      status = try_capture_stack(private$call_middleware(
+        request,
+        response,
+        middleware_ids_to_call,
+        midlleware_ids_called,
+        "process_response")
+      )
+      if(inherits(status, 'HTTPError')) {
+        # throws HTTPError - mean catched internally
+        response = status$response
+      } else {
+        if(inherits(status, 'simpleError')) {
+          # means UNHANDLED exception in middleware
+          self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
+          response = self$HTTPError$internal_server_error()
+        } else {
+          # just pass - happy path
+          TRUE
+        }
+      }
       as_rserve_response(response)
     },
     # according to
@@ -445,103 +490,34 @@ RestRserveApplication = R6::R6Class(
       }
       paths_descriptions
     },
-    # can return
-    # - RestRserveInterrupt
-    # - RestRserveForward
-    call_middleware = function(request, response, flag = c("process_request", "process_response"), middleware_ids) {
+    call_middleware = function(request,
+                               response,
+                               middleware_ids_to_call,
+                               # should be environment in order to be modified in place by reference
+                               middleware_ids_called,
+                               flag = c("process_request", "process_response")) {
+      if(!is.environment(middleware_ids_called))
+        stop("`middleware_called` argument should be environment")
+
       flag = match.arg(flag)
-      # return RestRserveForward by default
-      status = forward()
-      middleware_ids_succeed = character(0)
 
-      for(id in middleware_ids) {
-        # put to the stack launched middlware
-        middleware_ids_succeed = c(id, middleware_ids_succeed)
-
-        FUN = private$middleware[[id]][[flag]]
-        mw_name = private$middleware[[id]][["name"]]
-
+      for(id in middleware_ids_to_call) {
+        middleware_name = private$middleware[[id]][["name"]]
         self$logger$trace(list(
-          request_id = request$request_id,
-          middleware = mw_name,
-          message = sprintf("call %s middleware", flag)
-          ))
+            request_id = request$request_id,
+            middleware = middleware_name,
+            message = sprintf("call %s middleware", flag)
+          )
+        )
+        # put to the stack launched middlware.
+        # It is modified in place!
+        # So in case of exception in FUN() call
+        # `middleware_ids_called` in parent frame will contain all launched the middleware ids
 
-        # apply_middleware() can only return
-        # - RestRserveInterrupt
-        # - RestRserveForward
-        status = apply_middleware(request, response, FUN, self$logger)
-        if(inherits(status, "RestRserveInterrupt"))
-          break()
+        middleware_ids_called[['ids']] = c(id, middleware_ids_called[['ids']])
+        FUN = private$middleware[[id]][[flag]]
+        FUN(request, response)
       }
-      list(status = status, middleware_ids = middleware_ids_succeed)
     }
   )
 )
-
-
-# call handler function. 3 results are possible:
-# 1) error - need to set corresponding response code
-# 2) RestRserveForward - considering function processes request
-# 3) anything else = set 500 error
-apply_handler = function(request, response, FUN, logger) {
-  # FUN should modify request/response and return RestRserveForward
-  result = try_capture_stack(FUN(request, response))
-  #--------------------------------------------
-  # happy path
-  if(inherits(result, "RestRserveForward")) {
-    return(forward())
-  }
-  #--------------------------------------------
-  # unhappy path
-  # set up error and forward it
-  err =
-    if(inherits(result, "simpleError")) {
-      # error in user code
-      get_traceback(result)
-    } else {
-      # user function return something weird
-      list(error = "handler doesn't return 'RestRserveForward'")
-    }
-
-  logger$error(
-    list(
-      request_id = request$request_id,
-      code = 500,
-      message = list(error = err)
-    )
-  )
-  response$exception = err
-  response$set_response(500)
-  forward()
-}
-
-apply_middleware = function(request, response, FUN, logger) {
-  # FUN should modify request/response and return RestRserveForward
-  result = try_capture_stack(FUN(request, response))
-
-  # means success - function modified request/response and returned forward()/interrupt()
-  if(inherits(result, "RestRserveInterrupt") || inherits(result, "RestRserveForward")) {
-    return(result)
-  }
-
-  # set up error and forward it
-  err =
-    if(inherits(result, "simpleError")) {
-      # error in user code
-      get_traceback(result)
-    } else {
-      # user function return something weird
-      list(error = "middleware doesn't return 'RestRserveForward'/'RestRserveInterrupt'")
-    }
-  logger$error(
-    list(
-      request_id = request$request_id,
-      code = 500,
-      message = list(error = err)
-    )
-  )
-  response$exception = err
-  response$set_response(500)
-  interrupt()
-}

@@ -19,7 +19,6 @@ test_that("create RestRserveApp", {
     #'           type: string
     #'           example: 5
     #' ---
-    forward()
   }
   docstring_args = RestRserve:::extract_docstrings_yaml(fn)
   expect_equal(length(docstring_args), 17)

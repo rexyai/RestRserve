@@ -10,24 +10,24 @@ RestRserveRequest
 }
 \value{
 \code{RestRserveRequest} object - R6 class:
-   \describe{
-      \item{path}{ = \code{"/somepath"}, always character of length 1}
-      \item{method}{ = \code{"GET"}, always character of length 1}
-      \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-      \item{body}{ = \code{raw(0)}.
-         \itemize{
-            \item \code{NULL} if the http body is empty or zero length.
-            \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-            \item named \code{characeter vector} in the case of a URL encoded form.
-            It will have the same shape as the query string (named string vector).
-         }
-      }
-      \item{content_type}{ = \code{""}, always character of length 1}
-      \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
-        According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
-        are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
-      }
-   }
+\describe{
+\item{path}{ = \code{"/somepath"}, always character of length 1}
+\item{method}{ = \code{"GET"}, always character of length 1}
+\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+\item{body}{ = \code{raw(0)}.
+\itemize{
+\item \code{NULL} if the http body is empty or zero length.
+\item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
+\item named \code{characeter vector} in the case of a URL encoded form.
+It will have the same shape as the query string (named string vector).
+}
+}
+\item{content_type}{ = \code{""}, always character of length 1}
+\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
+According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
+are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
+}
+}
 }
 \description{
 Called internally for handling incoming requests from Rserve side. Also useful for testing.
@@ -40,17 +40,17 @@ Called internally for handling incoming requests from Rserve side. Also useful f
   body = raw(),
   content_type = "application/octet-stream")}
 \describe{
-  \item{path}{\code{"/somepath"}, always character of length 1}
-  \item{method}{\code{"GET"}, always character of length 1}
-  \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-  \item{body}{
-    \itemize{
-      \item \code{NULL} if the http body is empty or zero length.
-      \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-      \item named \code{characeter vector} in the case of a URL encoded form.
-         It will have the same shape as the query string (named string vector)}
-    }
-  \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
+\item{path}{\code{"/somepath"}, always character of length 1}
+\item{method}{\code{"GET"}, always character of length 1}
+\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+\item{body}{
+\itemize{
+\item \code{NULL} if the http body is empty or zero length.
+\item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
+\item named \code{characeter vector} in the case of a URL encoded form.
+It will have the same shape as the query string (named string vector)}
+}
+\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
 }
 }
 }
