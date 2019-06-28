@@ -170,8 +170,8 @@ RestRserveAuthMiddleware = R6::R6Class(
                           routes = character(),
                           name = "AuthMiddleware") {
 
-      stopifnot(inherits(auth_backend, "AuthBackend"))
-      stopifnot(is_string_len_one(name))
+      checkmate::assert_class(auth_backend, "AuthBackend")
+      checkmate::assert_string(name, min.chars = 1L)
 
       private$auth_backend = auth_backend
       self$name = name

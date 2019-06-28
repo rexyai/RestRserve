@@ -42,12 +42,8 @@ RestRserveMiddleware = R6::R6Class(
       process_response = function(request, response) forward(),
       name = "Middleware"
       ) {
-      if(!is.function(process_request) || !is.function(process_response))
-        stop("`process_request` and `process_response` should be functions with signature FUN(request, response)")
-      if(length(formals(process_request)) != 2L)
-        stop("`process_request` function should take exactly 2 arguments - request and response")
-      if(length(formals(process_response)) != 2L)
-        stop("`process_response` function should take exactly 2 arguments - request and response")
+      checkmate::assert_function(process_request, nargs = 2L)
+      checkmate::assert_function(process_response, nargs = 2L)
 
       self$process_request  = process_request
       self$process_response = process_response

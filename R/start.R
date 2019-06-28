@@ -11,10 +11,13 @@
 #' This could be specified in \link{restrserve_deploy} during application deployment.
 #' @export
 restrserve_start = function(dir, debug = FALSE, ...) {
-  stopifnot(is.character(dir) && length(dir) == 1L)
-  stopifnot(is.logical(debug) && length(debug) == 1L)
+  checkmate::assert_string(dir)
+  checkmate::assert_flag(debug)
+  checkmate::assert_directory_exists(dir, access = "r")
   dir = normalizePath(dir, mustWork = TRUE)
-  stopifnot(dir.exists(dir))
+  configuraion_path = file.path(dir, "Rserve.conf")
+  checkmate::assert_file_exists(configuraion_path)
+
   #------------------
   # we want all file paths for static files like openapi.yaml, swagger-ui index.html to
   # be relative to deployment directory
@@ -24,10 +27,6 @@ restrserve_start = function(dir, debug = FALSE, ...) {
   on.exit(setwd(wd))
   setwd(dir)
   #------------------
-
-  configuraion_path = file.path(dir, "Rserve.conf")
-  if(!file.exists(configuraion_path))
-    stop(sprintf("Configuration file '%s' doesn't exist", configuraion_path))
 
 
   configuraion_lines = readLines(configuraion_path)

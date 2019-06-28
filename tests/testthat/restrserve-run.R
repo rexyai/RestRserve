@@ -126,3 +126,4 @@ app_auth$add_get(path = "/fib-basic-auth", FUN = fib_forward)
 app_auth$add_get(path = "/fib-secure/v1", FUN = fib_forward)
 app_auth$add_get(path = "/fib", FUN = fib_forward)
 app_auth$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
+
