@@ -34,10 +34,14 @@ test_200 = sprintf("http://localhost:%d/%s?n=10", PORT, endpoint)
 test_404 = sprintf("http://localhost:%d/some-path", PORT)
 test_500 = sprintf("http://localhost:%d/%s", PORT, endpoint)
 
+# https://github.com/dselivanov/RestRserve/issues/24
+test_200_1 = sprintf("http://localhost:%d/%s?n=10&dummy", PORT, endpoint)
+
 test_that("Check status code", {
-    expect_equal(get_status_code(test_200), 200L)
-    expect_equal(get_status_code(test_404), 404L)
-    expect_equal(get_status_code(test_500), 500L)
+  expect_equal(get_status_code(test_200), 200L)
+  expect_equal(get_status_code(test_404), 404L)
+  expect_equal(get_status_code(test_500), 500L)
+  expect_equal(get_status_code(test_200_1), 200L)
 })
 
 test_that("Check headers", {
@@ -49,7 +53,7 @@ test_that("Check headers", {
 
 test_that("Check answer", {
     expect_equal(get_text(test_200), "55")
-    expect_equal(get_text(test_404), '{"error":"Resource not found"}')
+    expect_equal(get_text(test_404), '{"message":"Not Found"}')
     err_500_text = 'Custom 500 from mw1'
     expect_equal(get_text(test_500), err_500_text)
 })
@@ -61,7 +65,7 @@ test_404   = sprintf("http://localhost:%d/html/does-not-exist", PORT)
 test_that("Check static files answer", {
   expect_equal(strsplit(get_text(test_200_1), "\n", TRUE)[[1]][[1]], "Package: RestRserve")
   expect_true(grepl("The R Language", get_text(test_200_2), fixed = TRUE))
-  expect_equal(get_text(test_404), '{"error":"Resource not found"}')
+  expect_equal(get_text(test_404), '{"message":"Not Found"}')
 })
 
 test_that("Check static files code", {
@@ -79,13 +83,13 @@ test_that("Check headers", {
 test_that("Check errors in middleware wrapped into json", {
   mw_name = "mw3"
   test_500_2 = sprintf("http://localhost:%d/%s", PORT, "err-mw-req")
-  err_msg = sprintf("%s middlware '%s' doesn't return RestRserveResponse/RestRserveForward object", "process_request", mw_name)
-  expect_equal(get_text(test_500_2), to_json(list(error = err_msg)))
+  err_msg = "Internal Server Error"
+  expect_equal(get_text(test_500_2), to_json(list(message = err_msg)))
   expect_equal(get_status_code(test_500_2), 500L)
 
   test_500_2 = sprintf("http://localhost:%d/%s", PORT, "err-mw-resp")
-  err_msg = sprintf("%s middlware '%s' doesn't return RestRserveResponse/RestRserveForward object", "process_response", mw_name)
-  expect_equal(get_text(test_500_2), to_json(list(error = err_msg)))
+  err_msg = "Internal Server Error"
+  expect_equal(get_text(test_500_2), to_json(list(message = err_msg)))
   expect_equal(get_status_code(test_500_2), 500L)
 })
 

@@ -51,26 +51,24 @@ dict_is_empty = function(x) {
 
 # borrowed from
 # https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
-try_capture_stack <- function(expr, env = environment()) {
+try_capture_stack = function(expr, env = environment()) {
   quoted_code = quote(expr)
-  capture_calls <- function(e) {
-    e$calls <- utils::head(sys.calls()[-seq_len(frame + 7)], -2)
+  capture_calls = function(e) {
+    e$calls = utils::head(sys.calls()[-seq_len(frame + 7)], -2)
     signalCondition(e)
   }
-  frame <- sys.nframe()
+  frame = sys.nframe()
   tryCatch(
     withCallingHandlers(eval(quoted_code, env), error = capture_calls),
     error = identity
   )
 }
 
-get_traceback_message = function(err, nchar_max = 1000L) {
+get_traceback = function(err) {
   err_msg = err$message
-  stack_msg = vapply(err$calls, function(x) paste(utils::capture.output(print(x)), collapse = "\n") , "")
-  stack_msg = paste(stack_msg, collapse = "\n")
-  call_msg  = paste(utils::capture.output(print(err$call)), collapse = "|")
-  res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s", err_msg, call_msg, stack_msg)
-  substr(res, 0L, nchar_max)
+  stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
+  call_msg  = utils::capture.output(print(err$call))
+  list(error = err_msg, call = call_msg, traceback = stack_msg)
 }
 
 #https://stackoverflow.com/a/15139734/1069256

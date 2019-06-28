@@ -31,13 +31,19 @@
 #'   Neither Content-type nor Content-length may be used.}
 #'   \item{status_code}{\code{200L} must be an integer}
 #'   \item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
-#'   RestRserve itself will not interact with this field. For exampole this can be useful
+#'   RestRserve itself will not interact with this field. This can be useful
 #'   if you want to pass some data to response middleware.}
 #' }
 #' }
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)}}{Constructor for RestRserveResponse}
+#'   \item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{
+#'     facilitate in setting response. If \code{body} is not specified (\code{NULL}),
+#'     provides standard default values for all standard status codes.
+#'     Automatically encodes body for common \code{content_type} values:
+#'     \code{application/json}, \code{text/plain}
+#'   }
 #' }
 #' @export
 RestRserveResponse = R6::R6Class(
@@ -48,6 +54,7 @@ RestRserveResponse = R6::R6Class(
     headers = NULL,
     status_code = NULL,
     context = NULL,
+    exception = NULL,
     #------------------------------------------------
     initialize = function(body = "{}",
                           content_type = "application/json",
@@ -81,6 +88,26 @@ RestRserveResponse = R6::R6Class(
       if(isTRUE(names(self$body) == "tmpfile"))
         return(list("tmpfile" = self$body, self$content_type, self$headers, self$status_code))
       return(list(self$body, self$content_type, self$headers, self$status_code))
+    },
+
+    set_response = function(status_code, body = NULL, content_type = self$content_type) {
+
+      if(!is.numeric(status_code))
+        stop("'status_code' should be numeric http status code")
+
+      status_code_int = as.integer(status_code)
+      status_code_char = as.character(status_code)
+
+      # default standard body message
+      if(is.null(body))
+        body = status_codes[[status_code_char]]
+
+      self$body = encode_response_body(body, content_type)
+
+      if(is.null(self$body)) stop("unknown status code '%s'", status_code_char)
+
+      self$status_code = status_code_int
+      invisible(NULL)
     }
   )
 )
@@ -89,7 +116,27 @@ RestRserveResponse = R6::R6Class(
 #' @description forwards processing of the request to the downstream handlers/middleware
 #' @export
 forward = function() {
-  x = TRUE
-  class(x) = "RestRserveForward"
-  invisible(x)
+  res = TRUE
+  class(res) = "RestRserveForward"
+  invisible(res)
 }
+
+#' @title interrupt request-response cycle
+#' @description interrupts processing
+#' @export
+interrupt = function() {
+  res = TRUE
+  class(res) = "RestRserveInterrupt"
+  invisible(res)
+}
+
+encode_response_body = function(x, content_type) {
+  switch (
+    content_type,
+    `application/json` = RestRserve:::to_json(list("message" = x)),
+    `text/plain` = as.character(x),
+    x
+  )
+}
+
+

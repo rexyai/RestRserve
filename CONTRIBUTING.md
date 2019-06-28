@@ -35,3 +35,10 @@
 1. Some discissions at issue tracker
     * [RServe for real-time](https://github.com/s-u/Rserve/issues/64)
 1. [Rserve tag](https://stackoverflow.com/questions/tagged/rserve) on StackOverflow
+
+# Drafting a release
+
+```sh
+git tag -a v0.1.5 -m "version 0.1.5"
+git push origin master --tags
+```

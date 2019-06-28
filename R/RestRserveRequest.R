@@ -53,8 +53,8 @@ RestRserveRequest = R6::R6Class(
     content_type = NULL,
     body = NULL,
     request_id = NULL,
-    initialize = function(path,
-                          method,
+    initialize = function(path = "/",
+                          method = "GET",
                           query = new.env(parent = emptyenv()),
                           headers = new.env(parent = emptyenv()),
                           body = raw(),
@@ -102,10 +102,22 @@ RestRserveRequest = R6::R6Class(
 #       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
 #    }
 parse_request = function(path, query, body, headers) {
+  keys = names(query)
+  values = as.vector(query)
+
   # process query
   query_dict = new.env(parent = emptyenv())
-  for(key in names(query))
-    query_dict[[key]] = query[[key]]
+  for(i in seq_along(keys)) {
+    key = keys[[i]]
+    value = values[[i]]
+    # see https://github.com/dselivanov/RestRserve/issues/24
+    # for explanation of this weird logic
+    if(key == "") {
+      key = value
+      value = NA_character_
+    }
+    query_dict[[key]] = value
+  }
 
   # process headers
   if (is.raw(headers))
