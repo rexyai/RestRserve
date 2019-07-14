@@ -39,19 +39,19 @@ test_that("Check bearer auth", {
 
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token2", prefix = "bearer"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Token")))
+  expect_equal(rawToChar(res$content), "401 Invalid Token")
 
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token", prefix = "bearer2"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Authorization Header. Must start with 'bearer'")))
+  expect_equal(rawToChar(res$content), "401 Invalid Authorization Header. Must start with 'bearer'")
 
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token", prefix = ""))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Authorization Header. Must start with 'bearer'")))
+  expect_equal(rawToChar(res$content), "401 Invalid Authorization Header. Must start with 'bearer'")
 
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token some-garbage", prefix = "bearer"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Authorization Header: Contains extra content")))
+  expect_equal(rawToChar(res$content), "401 Invalid Authorization Header: Contains extra content")
 })
 #------------------------------------------------------------------------
 
@@ -75,21 +75,21 @@ test_that("Check authorization works with prefixes", {
 
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token2", prefix = "bearer"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Token")))
+  expect_equal(rawToChar(res$content), "401 Invalid Token")
   #------------------------------------------------------------------------
   endpoint = "fib-secure/v4"
   URL = sprintf("http://localhost:%d/%s?n=%d", PORT, endpoint, n)
   # part of /fib-secure prefix - should produce 401
   res = curl::curl_fetch_memory(URL)
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Missing Authorization Header")))
+  expect_equal(rawToChar(res$content), "401 Missing Authorization Header")
   #------------------------------------------------------------------------
   endpoint = "fib-secure/v4"
   URL = sprintf("http://localhost:%d/%s?n=%d", PORT, endpoint, n)
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token", prefix = "bearer"))
   # successful authrization, but resource is missing
   expect_equal(res$status_code, 404L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( message = "Not Found")))
+  expect_equal(rawToChar(res$content), "404 Not Found")
 })
 
 #------------------------------------------------------------------------
@@ -98,7 +98,7 @@ test_that("Check basic authorization", {
   URL = sprintf("http://localhost:%d/%s?n=%d", PORT, endpoint, n)
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token", prefix = "bearer"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Authorization Header. Must start with 'basic'")))
+  expect_equal(rawToChar(res$content), "401 Invalid Authorization Header. Must start with 'basic'")
   #------------------------------------------------------------------------
   res = curl::curl_fetch_memory(URL, create_basic_auth_handle(x = "user-1:password-1", prefix = "basic"))
   expect_equal(res$status_code, 200L)
@@ -106,7 +106,7 @@ test_that("Check basic authorization", {
   #------------------------------------------------------------------------
   res = curl::curl_fetch_memory(URL, create_basic_auth_handle(x = "user-1:password-2", prefix = "basic"))
   expect_equal(res$status_code, 401L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Invalid Username/Password")))
+  expect_equal(rawToChar(res$content), "401 Invalid Username/Password")
 })
 
 

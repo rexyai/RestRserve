@@ -29,7 +29,6 @@ app = RestRserve::RestRserveApplication$new(logger = logger)
 app$add_get(path = "/hello", 
   FUN = function(request, response) {
     response$body = '{"msg":"Hello from RestRserve"}'
-    forward()
   })
 app$run(http_port = "8001")
 ```
@@ -64,13 +63,11 @@ counter = 0L
 app$add_get("/add", function(req, res) {
   counter <<- counter + 1L
   res$body = as.character(counter)
-  forward()
 })
 
 app$add_get("/sub", function(req, res) {
   counter <<- counter - 1L
   res$body = as.character(counter)
-  forward()
 })
 
 app$run(8001)

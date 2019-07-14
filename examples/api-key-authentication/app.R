@@ -73,7 +73,6 @@ fib = function(request, response) {
   response$body = as.character(calc_fib(n))
   response$content_type = "text/plain"
   response$status_code = 200L
-  forward()
 }
 
 logger = Logger$new(level = INFO, name = "app")

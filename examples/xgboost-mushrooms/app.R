@@ -44,7 +44,6 @@ pred_xgb_post = function(request, response) {
   response$content_type = "text/plain"
   response$headers = character(0)
   response$status_code = 200L
-  forward()
 }
 pred_xgb_get = function(request, response) {
   #' ---
@@ -81,7 +80,6 @@ pred_xgb_get = function(request, response) {
   response$content_type = "text/plain"
   response$headers = character(0)
   response$status_code = 200L
-  forward()
 }
 #------------------------------------------------------------------------------------------
 # create application

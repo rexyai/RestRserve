@@ -10,34 +10,36 @@ RestRserveResponse
 }
 \description{
 Creates RestRserveResponse object.
-Useful if handler or middleware wants to return some value immediately and interrupt request-response cycle.
 \itemize{
-\item \code{response = RestRserveResponse$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)}
+\item \code{response = RestRserveResponse$new(body = "{}", content_type = "text/plain", headers = character(0), status_code = 200L)}
 \describe{
-  \item{body}{must be a character vector of length one or a raw vector.
-  If it is a named character with a name \code{file} or \code{tmpfile}
-  then the value is considered as a path to a file and content oh this file is served as body.
-  The latter will be deleted once served.}
-  \item{content_type}{\code{"application/json"} must be a character vector of length one}
-  \item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
-  Neither Content-type nor Content-length may be used.}
-  \item{status_code}{\code{200L} must be an integer}
-  \item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
-  RestRserve itself will not interact with this field. This can be useful
-  if you want to pass some data to response middleware.}
+\item{body}{must be a character vector of length one or a raw vector.
+If it is a named character with a name \code{file} or \code{tmpfile}
+then the value is considered as a path to a file and content oh this file is served as body.
+The latter will be deleted once served.}
+\item{content_type}{\code{"text/plain"} must be a character vector of length one. RestRserve will automatically
+encode body for common \code{content_type} values such as \code{application/json} or \code{text/plain}.
+If it is not desired to do any automatic encoding set \code{serializer = `identity`}}
+\item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
+then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+\item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
+Neither Content-type nor Content-length may be used.}
+\item{status_code}{\code{200L} must be an integer}
+\item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
+RestRserve itself will not interact with this field. This can be useful
+if you want to pass some data to response middleware.}
 }
 }
 }
 \section{Methods}{
 
 \describe{
-  \item{\code{$new(body = "{}", content_type = "application/json", headers = character(0), status_code = 200L)}}{Constructor for RestRserveResponse}
-  \item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{
-    facilitate in setting response. If \code{body} is not specified (\code{NULL}),
-    provides standard default values for all standard status codes.
-    Automatically encodes body for common \code{content_type} values:
-    \code{application/json}, \code{text/plain}
-  }
+\item{\code{$new(body = "", content_type = "text/plain", headers = character(0),
+  status_code = 200L, serializer = NULL)}}{Constructor for RestRserveResponse}
+\item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{ facilitate
+in setting response. If \code{body} is not specified (\code{NULL}),
+provides standard default values for all standard status codes.}
+\item{\code{$set_content_type(content_type = 'text/plain', serializer = NULL)}}{Sets content type and corresponding serializer}
 }
 }
 

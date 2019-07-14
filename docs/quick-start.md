@@ -19,7 +19,6 @@ fib = function(request, response) {
   response$content_type = "text/plain"
   response$headers = character(0)
   response$status_code = 200L
-  forward()
 }
 
 # create application
@@ -28,9 +27,8 @@ app = RestRserve::RestRserveApplication$new()
 app$add_get(path = "/fib", FUN = fib)
 ```
 
-The goal of user function is to **modify** `response` object and call `RestRserve::forward()` at the end. `response` and `request` objects are **modified in-place** and passed to downstream RestRserve execution pipeline.
+The goal of user function is to **modify** `response` object. `response` and `request` objects are **modified in-place** and passed to downstream RestRserve execution pipeline.
 
-Every user function which is registered as endpoint handler **must return `RestRserveForward` object** by calling `RestRserve::forward()` at the end.
 
 ### Start application in interactive mode
 
@@ -88,7 +86,6 @@ fib = function(request, response) {
   response$content_type = "text/plain"
   response$headers = character(0)
   response$status_code = 200L
-  forward()
 }
 
 app = RestRserve::RestRserveApplication$new()
