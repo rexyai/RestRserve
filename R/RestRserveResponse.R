@@ -62,18 +62,17 @@ RestRserveResponse = R6::R6Class(
     initialize = function(body = "",
                           content_type = 'text/plain',
                           headers = character(0),
-                          status_code = 200L) {
+                          status_code = 200L,
                           serializer = NULL) {
-      self$set_content_type(content_type, serializer)
       checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-      checkmate::assert_string(content_type)
+      checkmate::assert_string(content_type)      
       checkmate::assert_character(headers)
       checkmate::assert(
         checkmate::check_string(body),
         checkmate::check_raw(body),
         combine = "or"
       )
-
+      self$set_content_type(content_type, serializer)
       body_name = names(body)
       if(!is.null(body_name)) {
         if(!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
