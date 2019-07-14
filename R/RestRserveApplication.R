@@ -198,10 +198,10 @@ RestRserveApplication = R6::R6Class(
 
       if(!is.null(FUN)) {
         msg = "exact endpoint match for the route"
-        private$logger$trace(list(request_id = request$request_id, message = msg))
+        self$logger$trace(list(request_id = request$request_id, message = msg))
       } else {
         msg = "haven't found exact endpoint match for requested route"
-        private$logger$trace(list(request_id = request$request_id, message = msg))
+        self$logger$trace(list(request_id = request$request_id, message = msg))
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
@@ -229,12 +229,12 @@ RestRserveApplication = R6::R6Class(
         # if it is a function then we need to check whther it was registered to handle patterned paths
         if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
           msg = "Haven't found prefix which match the requested path"
-          private$logger$error(list(request_id = request$request_id, code = 404, message = msg))
+          self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
           set_http_404_not_found(response)
           return(forward())
         } else {
           msg = "found prefix which match the requested path"
-          private$logger$trace(list(request_id = request$request_id, message = msg))
+          self$logger$trace(list(request_id = request$request_id, message = msg))
         }
       }
 
