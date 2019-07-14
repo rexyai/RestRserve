@@ -84,7 +84,7 @@ RestRserveApplication = R6::R6Class(
                     "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
                     sep = "\n")
         warning(msg)
-        self$logger = logger
+        self$logger = list(...)$logger
       } else {
         self$logger = Logger$new(INFO, name = "RestRserveApplication")
       }
