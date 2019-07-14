@@ -77,19 +77,17 @@ RestRserveApplication = R6::R6Class(
                           content_type = "text/plain",
                           serializer = NULL,
                           ...) {
+      checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      dots = list(...)
-      if("logger" %in% names(dots)) {
+      if(hasArg("logger")) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
                     "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
                     sep = "\n")
         warning(msg)
-        self$logger = dots$logger
+        self$logger = list(...)$logger
       } else {
         self$logger = Logger$new(INFO, name = "RestRserveApplication")
       }
-      #------------------------------------------
-      stopifnot(is.list(middleware))
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
@@ -98,23 +96,17 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     add_route = function(path, method, FUN, ...) {
-
-      stopifnot(is.character(path) && length(path) == 1L)
-      stopifnot(startsWith(path, "/"))
+      checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
+      checkmate::assert_choice(method, private$supported_methods)
+      checkmate::assert_function(FUN, nargs = 2L)
 
       path_as_prefix = FALSE
       if(identical(names(path), "prefix")) path_as_prefix = TRUE
-
-      method = private$check_method_supported(method)
-
-      stopifnot(is.function(FUN))
 
       # remove trailing slashes
       path = gsub(pattern = "/+$", replacement = "", x = path)
       # if path was a root -> replace it back
       if(path == "") path = "/"
-
-      if( length(formals(FUN)) != 2L ) stop("function should take 2 arguments - 1. request 2. response")
 
       if(is.null(private$handlers[[path]]))
         private$handlers[[path]] = new.env(parent = emptyenv())
@@ -152,64 +144,41 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     add_static = function(path, file_path, content_type = NULL, ...) {
-      stopifnot(is_string_or_null(file_path))
-      stopifnot(is_string_or_null(content_type))
+      checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
+      checkmate::assert_string(file_path)
+      checkmate::assert_string(content_type, null.ok = TRUE)
+      checkmate::assert(
+        checkmate::check_file_exists(file_path, access = "r"),
+        checkmate::check_directory_exists(file_path, access = "r"),
+        combine = "or"
+      )
 
-      is_dir = file.info(file_path)[["isdir"]]
-      if(is.na(is_dir)) {
-        stop(sprintf("'%s' file or directory doesnt't exists", file_path))
-      }
-      # now we know file exists
+
       file_path = normalizePath(file_path)
-
-      mime_avalable = FALSE
-      if(is.null(content_type)) {
-        mime_avalable = suppressWarnings(require(mime, quietly = TRUE))
-        if(!mime_avalable) {
-          warning(sprintf("'mime' package is not installed - content_type will is set to '%s'", "application/octet-stream"))
-          mime_avalable = FALSE
-        }
-      }
       # file_path is a DIRECTORY
-      if(is_dir) {
+      if(dir.exists(file_path)) {
         handler = function(request, response) {
-          fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
-
-          if(!file.exists(fl)) {
+          fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path)))
+          if(!file.exists(fl) || dir.exists(fl)) {
             raise(self$HTTPError$not_found())
           } else {
-            content_type = "application/octet-stream"
-            if(mime_avalable) content_type = mime::guess_type(fl)
+            response$body = c(file = fl)
+            response$content_type = private$guess_mime(fl, content_type)
+            response$status_code = 200L
 
-            fl_is_dir = file.info(fl)[["isdir"]][[1]]
-            if(isTRUE(fl_is_dir)) {
-              raise(self$HTTPError$not_found())
-            }
-            else {
-              response$body = c(file = fl)
-              response$content_type = content_type
-              response$status_code = 200L
-            }
           }
         }
         self$add_get(c(prefix = path), handler, ...)
       } else {
         # file_path is a FILE
         handler = function(request, response) {
-
-          if(!file.exists(file_path))
+          if(!file.exists(file_path)) {
             raise(self$HTTPError$not_found())
-
-          if(is.null(content_type)) {
-            if(mime_avalable) {
-              content_type = mime::guess_type(file_path)
-            } else {
-              content_type = "application/octet-stream"
-            }
+          } else {
+            response$body = c(file = file_path)
+            response$content_type = private$guess_mime(file_path, content_type)
+            response$status_code = 200L
           }
-          response$body = c(file = file_path)
-          response$content_type = content_type
-          response$status_code = 200L
         }
         self$add_get(path, handler, ...)
       }
@@ -225,34 +194,42 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[request$path]][[request$method]]
 
       if(!is.null(FUN)) {
-        self$logger$trace(list(request_id = request$request_id, message = 'exact endpoint match for the route'))
+        msg = "exact endpoint match for the route"
+        self$logger$trace(list(request_id = request$request_id, message = msg))
       } else {
-        self$logger$trace(list(request_id = request$request_id, message = "haven't found exact endpoint match for requested route"))
+        msg = "haven't found exact endpoint match for requested route"
+        self$logger$trace(list(request_id = request$request_id, message = msg))
         # may be path is a prefix
         registered_paths = names(private$handlers)
         # add "/" to the end in order to not match not-complete pass.
         # for example registered_paths = c("/a/abc") and path = "/a/ab"
-        handlers_match_start = startsWith(x = request$path, prefix = paste(registered_paths, "/", sep = ""))
-        if(!any(handlers_match_start)) {
+        handlers_match_start = which(startsWith(request$path, paste0(registered_paths, "/")))
+
+        # No matches
+        if (length(handlers_match_start) == 0L) {
+          msg = "Haven't found prefix which match the requested path"
+          self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
+          raise(self$HTTPError$not_found())
+        }
+
+        matched_path = registered_paths[handlers_match_start]
+
+        if (length(handlers_match_start) > 1L) {
+          # find method which match the path - take longest match
+          j = which.max(nchar(matched_path))
+          matched_path = matched_path[[j]]
+        }
+
+        FUN = private$handlers[[matched_path]][[request$method]]
+        # now FUN is NULL or some function
+        # if it is a function then we need to check whther it was registered to handle patterned paths
+        if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
           msg = "Haven't found prefix which match the requested path"
           self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
           raise(self$HTTPError$not_found())
         } else {
-          paths_match = registered_paths[handlers_match_start]
-          # find method which match the path - take longest match
-          j = which.max(nchar(paths_match))
-          matched_path = paths_match[[j]]
-          FUN = private$handlers[[matched_path]][[request$method]]
-          # now FUN is NULL or some function
-          # if it is a function then we need to check whther it was registered to handle patterned paths
-          if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-            msg = "Haven't found prefix which match the requested path"
-            self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            raise(self$HTTPError$not_found())
-          } else {
-            msg = "found prefix which match the requested path"
-            self$logger$trace(list(request_id = request$request_id, message = msg))
-          }
+          msg = "found prefix which match the requested path"
+          self$logger$trace(list(request_id = request$request_id, message = msg))
         }
       }
       FUN(request, response)
@@ -270,12 +247,10 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     run = function(http_port = 8001L, ..., background = FALSE) {
-      stopifnot(is.character(http_port) || is.numeric(http_port))
-      stopifnot(length(http_port) == 1L)
-      http_port = as.integer(http_port)
+      checkmate::assert_int(http_port)
       ARGS = list(...)
-      if(http_port > 0) {
-        if( is.null(ARGS[["http.port"]]) ) {
+      if(http_port > 0L) {
+        if(is.null(ARGS[["http.port"]])) {
           ARGS[["http.port"]] = http_port
         }
       }
@@ -293,25 +268,23 @@ RestRserveApplication = R6::R6Class(
       self$print_endpoints_summary()
       if (.Platform$OS.type != "windows" && background) {
 
-        pid = parallel::mcparallel(
-            do.call(Rserve::run.Rserve, ARGS ),
-          detached = TRUE)
+        pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)
         pid = pid[["pid"]]
 
         if(interactive()) {
-          message(sprintf("started RestRserve in a BACKGROUND process pid = %d", pid))
+          message(sprintf("Started RestRserve in a BACKGROUND process pid = %d", pid))
           message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
           message("NOTE that current master process also will be killed")
         }
         pid
       } else {
         if(interactive()) {
-          message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
+          message(sprintf("Started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
           message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
           message("NOTE that current master process also will be killed")
 
         }
-        do.call(Rserve::run.Rserve, ARGS )
+        do.call(Rserve::run.Rserve, ARGS)
       }
     },
     #------------------------------------------------------------------------
@@ -324,10 +297,10 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
                            file_path = "openapi.yaml", ...) {
-      stopifnot(is.character(file_path) && length(file_path) == 1L)
+      checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!require(yaml, quietly = TRUE))
+      if(!requireNamespace("yaml", quietly = TRUE))
         stop("please install 'yaml' package first")
 
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
@@ -347,10 +320,10 @@ RestRserveApplication = R6::R6Class(
     add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
-      stopifnot(is.character(file_path) && length(file_path) == 1L)
+      checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!require(swagger, quietly = TRUE))
+      if(!requireNamespace("swagger", quietly = TRUE))
         stop("please install 'swagger' package first")
 
       path_openapi = gsub("^/*", "", path_openapi)
@@ -362,12 +335,9 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     append_middleware = function(...) {
-      middleware_list = list(...)
-      # mw_names = names(middleware_list)
-      # stopifnot(is.null(mw_names))
-      # stopifnot(length(mw_names) != length(unique(mw_names)))
-      # stopifnot(all(vapply(middleware_list, inherits, FALSE, "RestRserveMiddleware")))
-      for(mw in middleware_list) {
+      mw_list = list(...)
+      checkmate::assert_list(mw_list, types = "RestRserveMiddleware", unique = TRUE)
+      for(mw in mw_list) {
         n_already_registered = length(private$middleware)
         id = as.character(n_already_registered + 1L)
         private$middleware[[id]] = mw
@@ -465,10 +435,20 @@ RestRserveApplication = R6::R6Class(
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
     supported_methods = c("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"),
-    check_method_supported = function(method) {
-      if(!is.character(method) || !(length(method) == 1L) || !(method %in% private$supported_methods))
-        stop(sprintf("method should be on of the [%s]", paste(private$supported_methods, collapse = ", ")))
-      method
+    guess_mime = function(file_path, content_type) {
+      mime_avalable = requireNamespace("mime", quietly = TRUE)
+      if(is.null(content_type)) {
+        if(!(mime_avalable)) {
+          warning("'mime' package is not installed - content_type will is set to 'application/octet-stream'")
+        }
+      }
+      if(is.null(content_type)) {
+        if(mime_avalable) {
+          content_type = mime::guess_type(file_path)
+        } else {
+          content_type = "application/octet-stream"
+        }
+      }
     },
     get_openapi_paths = function() {
       paths = names(private$handlers_openapi_definitions)

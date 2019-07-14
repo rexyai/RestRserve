@@ -60,30 +60,19 @@ RestRserveRequest = R6::R6Class(
                           body = raw(),
                           content_type = "application/octet-stream"
                           ) {
-      #------------------------------------------------
-      if(!is_string_len_one(path))
-        stop("path should be character of length 1")
-      self$path = path
-      #------------------------------------------------
-      if(!is_string_len_one(method))
-        stop("method should be character of length 1")
-      self$method = method
-      #------------------------------------------------
-      if(!is.environment(query))
-        stop("'query' should be environment (used as a dict of key-value pairs)")
-      self$query = query
-      #------------------------------------------------
-      if(!is.environment(headers))
-        stop("'headers' should be environment (used as a dict of key-value pairs)")
-      self$headers = headers
-      #------------------------------------------------
-      if(!is.raw(body))
-        stop("body should be raw vector (possibly of length 0)")
-      self$body = body
-      if(!is_string_len_one(content_type))
-        stop("content_type should be character of length 1")
-      self$content_type = content_type
+      checkmate::assert_string(path)
+      checkmate::assert_string(method)
+      checkmate::assert_string(content_type)
+      checkmate::assert_environment(query)
+      checkmate::assert_environment(headers)
+      checkmate::assert_raw(body)
 
+      self$path = path
+      self$method = method
+      self$query = query
+      self$headers = headers
+      self$body = body
+      self$content_type = content_type
       self$request_id = uuid::UUIDgenerate(TRUE)
     }
   )
@@ -156,7 +145,7 @@ parse_request = function(path, query, body, headers) {
 
   ## this is a bit convoluted - the HTTP already parses the body - disable it where you can
   if (!is.raw(body)) {
-    if (length(body)) {
+    if (length(body) > 0L) {
       body_keys = URLenc(names(body))
       body_vals = URLenc(body)
       body = charToRaw(paste(body_keys, body_vals, sep = "=", collapse = "&"))

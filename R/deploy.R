@@ -35,10 +35,9 @@ restrserve_deploy = function(file,
                              configuration_file = NULL,
                              pid_file = file.path(dir, "Rserve.pid"),
                              start_from_snapshot = TRUE) {
-  stopifnot(is.logical(start_from_snapshot) && length(start_from_snapshot) == 1L)
-
-  file = normalizePath(file, mustWork = TRUE)
-  stopifnot(file.exists(file))
+  checkmate::assert_file_exists(file, access = "r")
+  checkmate::assert_path_for_output(dir, overwrite = TRUE)
+  checkmate::assert_flag(start_from_snapshot)
 
   if(!dir.exists(dir))
     dir.create(dir, recursive = TRUE)
@@ -69,12 +68,13 @@ restrserve_deploy = function(file,
     configuration_file_lines = readLines(configuration_file)
   }
   # `configuration_file_lines` comes after `configuration_lines` so can override them
-  configuration_lines =  c(source_user_code,
-                           source_http_request,
-                           configuration_lines,
-                           configuration_file_lines,
-                           paste("pid.file", pid_file)
-                           )
+  configuration_lines =  c(
+    source_user_code,
+    source_http_request,
+    configuration_lines,
+    configuration_file_lines,
+    paste("pid.file", pid_file)
+  )
 
   configuraion_path = file.path(dir, "Rserve.conf")
   writeLines(configuration_lines, configuraion_path)
@@ -82,18 +82,10 @@ restrserve_deploy = function(file,
 }
 
 create_rserve_configuration_lines = function(configuration = c("encoding" = "utf8")) {
-
-  if(!is.character(configuration))
-    stop("configuration should be named character vector")
+  checkmate::assert_character(configuration)
+  checkmate::assert_names(names(configuration), type = "unique")
 
   if(length(configuration) > 0) {
-    if(is.null(names(configuration)))
-      stop("configuration should be named character vector:
-           names = configuration keys, values = configuration values")
-
-    if(any(names(configuration) == ""))
-      stop("configuration names should be valid config entries (found empty names)")
-
     paste(names(configuration), configuration, sep = " ")
   } else
     character(0)
