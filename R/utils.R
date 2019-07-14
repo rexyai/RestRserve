@@ -64,13 +64,11 @@ try_capture_stack = function(expr, env = environment()) {
   )
 }
 
-get_traceback_message = function(err, nchar_max = 1000L) {
+get_traceback = function(err) {
   err_msg = err$message
-  stack_msg = vapply(err$calls, function(x) paste(utils::capture.output(print(x)), collapse = "\n") , "")
-  stack_msg = paste(stack_msg, collapse = "\n")
-  call_msg  = paste(utils::capture.output(print(err$call)), collapse = "|")
-  res = sprintf("Error in user code: %s\nCall: %s\nTracebeck:\n%s", err_msg, call_msg, stack_msg)
-  substr(res, 0L, nchar_max)
+  stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
+  call_msg  = utils::capture.output(print(err$call))
+  list(error = err_msg, call = call_msg, traceback = stack_msg)
 }
 
 #https://stackoverflow.com/a/15139734/1069256

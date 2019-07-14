@@ -89,7 +89,7 @@ test_that("Check authorization works with prefixes", {
   res = curl::curl_fetch_memory(URL, create_bearer_auth_handle(x = "secure-token", prefix = "bearer"))
   # successful authrization, but resource is missing
   expect_equal(res$status_code, 404L)
-  expect_equal(rawToChar(res$content), RestRserve::to_json(list( error = "Resource not found")))
+  expect_equal(rawToChar(res$content), RestRserve::to_json(list( message = "Not Found")))
 })
 
 #------------------------------------------------------------------------
