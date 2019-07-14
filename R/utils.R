@@ -51,13 +51,13 @@ dict_is_empty = function(x) {
 
 # borrowed from
 # https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
-try_capture_stack <- function(expr, env = environment()) {
+try_capture_stack = function(expr, env = environment()) {
   quoted_code = quote(expr)
-  capture_calls <- function(e) {
-    e$calls <- utils::head(sys.calls()[-seq_len(frame + 7)], -2)
+  capture_calls = function(e) {
+    e$calls = utils::head(sys.calls()[-seq_len(frame + 7)], -2)
     signalCondition(e)
   }
-  frame <- sys.nframe()
+  frame = sys.nframe()
   tryCatch(
     withCallingHandlers(eval(quoted_code, env), error = capture_calls),
     error = identity

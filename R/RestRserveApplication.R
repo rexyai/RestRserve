@@ -86,7 +86,7 @@ RestRserveApplication = R6::R6Class(
       if(identical(names(path), "prefix")) path_as_prefix = TRUE
 
       # remove trailing slashes
-      path = gsub("/+$", "", path)
+      path = gsub(pattern = "/+$", replacement = "", x = path)
       # if path was a root -> replace it back
       if(path == "") path = "/"
 
@@ -178,10 +178,10 @@ RestRserveApplication = R6::R6Class(
       FUN = private$handlers[[request$path]][[request$method]]
 
       if(!is.null(FUN)) {
-        msg <- "exact endpoint match for the route"
+        msg = "exact endpoint match for the route"
         private$logger$trace(list(request_id = request$request_id, message = msg))
       } else {
-        msg <- "haven't found exact endpoint match for requested route"
+        msg = "haven't found exact endpoint match for requested route"
         private$logger$trace(list(request_id = request$request_id, message = msg))
         # may be path is a prefix
         registered_paths = names(private$handlers)
