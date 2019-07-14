@@ -65,7 +65,7 @@ RestRserveResponse = R6::R6Class(
                           status_code = 200L,
                           serializer = NULL) {
       checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-      checkmate::assert_string(content_type)      
+      checkmate::assert_string(content_type)
       checkmate::assert_character(headers)
       checkmate::assert(
         checkmate::check_string(body),

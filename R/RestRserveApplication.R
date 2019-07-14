@@ -79,13 +79,12 @@ RestRserveApplication = R6::R6Class(
                           ...) {
       checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      dots = list(...)
-      if("logger" %in% names(dots)) {
+      if(hasArg("logger")) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
                     "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
                     sep = "\n")
         warning(msg)
-        self$logger = dots$logger
+        self$logger = logger
       } else {
         self$logger = Logger$new(INFO, name = "RestRserveApplication")
       }
