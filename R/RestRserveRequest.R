@@ -133,7 +133,7 @@ parse_request = function(path, query, body, headers) {
 
   ## this is a bit convoluted - the HTTP already parses the body - disable it where you can
   if (!is.raw(body)) {
-    if (length(body > 0L)) {
+    if (length(body) > 0L) {
       body_keys = URLenc(names(body))
       body_vals = URLenc(body)
       body = charToRaw(paste(body_keys, body_vals, sep = "=", collapse = "&"))
