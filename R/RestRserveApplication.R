@@ -301,7 +301,7 @@ RestRserveApplication = R6::R6Class(
       file_path = path.expand(file_path)
 
       if(!requireNamespace("yaml", quietly = TRUE))
-        stop("please install 'yaml' package first")
+        stop("please install 'yaml' package")
 
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
 
@@ -436,19 +436,9 @@ RestRserveApplication = R6::R6Class(
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
     supported_methods = c("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"),
     guess_mime = function(file_path, content_type) {
-      mime_avalable = requireNamespace("mime", quietly = TRUE)
-      if(is.null(content_type)) {
-        if(!(mime_avalable)) {
-          warning("'mime' package is not installed - content_type will is set to 'application/octet-stream'")
-        }
-      }
-      if(is.null(content_type)) {
-        if(mime_avalable) {
-          content_type = mime::guess_type(file_path)
-        } else {
-          content_type = "application/octet-stream"
-        }
-      }
+      if(is.null(content_type))
+        content_type = mime::guess_type(file_path)
+      content_type
     },
     get_openapi_paths = function() {
       paths = names(private$handlers_openapi_definitions)
