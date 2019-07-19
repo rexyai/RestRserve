@@ -257,13 +257,6 @@ RestRserveApplication = R6::R6Class(
       # dummy response
       response = RestRserveResponse$new(content_type = self$content_type)
       #------------------------------------------------------------------------------
-      # match handler first
-      handler_id = private$match_handler(request, response)
-      # early stop
-      if (is.null(handler_id)) {
-        response = self$HTTPError$not_found()
-        return(as_rserve_response(response))
-      }
 
       # Call middleware for the request
       mw_ids = as.character(seq_along(private$middleware))
@@ -279,7 +272,7 @@ RestRserveApplication = R6::R6Class(
         # FIXME: move after break if last no need
         mw_called[[id]] = TRUE
         # break loop on error
-        if(inherits(mw_status, 'HTTPError')) {
+        if(!isTRUE(mw_status)) {
           need_call_handler = FALSE
           break
         }
@@ -287,9 +280,16 @@ RestRserveApplication = R6::R6Class(
 
       # call handler
       if (isTRUE(need_call_handler)) {
-        handler_fun = private$handlers[[handler_id]]
-        self$logger$trace(list(request_id = request$request_id, message = sprintf("call handler '%s'", handler_id)))
-        handler_status = private$call_handler(handler_fun, request, response)
+        # match handler
+        handler_id = private$match_handler(request, response)
+        # early stop
+        if (is.null(handler_id)) {
+          response = self$HTTPError$not_found()
+        } else {
+          handler_fun = private$handlers[[handler_id]]
+          self$logger$trace(list(request_id = request$request_id, message = sprintf("call handler '%s'", handler_id)))
+          handler_status = private$call_handler(handler_fun, request, response)
+        }
       }
 
       # call middleware for the response
@@ -302,7 +302,7 @@ RestRserveApplication = R6::R6Class(
         mw_status = private$call_handler(FUN, request, response)
         # FIXME: should we break loop
         # break loop on error
-        if(inherits(mw_status, 'HTTPError')) {
+        if(!isTRUE(mw_status)) {
           break
         }
       }
@@ -332,7 +332,7 @@ RestRserveApplication = R6::R6Class(
       if(dir.exists(file_path)) {
         # file_path is a DIRECTORY
         handler = function(request, response) {
-          fl = file.path(file_path, substr(request$path, url_nchars + 1L, nchar(request$path)))
+          fl = file.path(file_path, substr(request$path, url_nchars + 2L, nchar(request$path)))
           if(!file.exists(fl) || dir.exists(fl)) {
             raise(self$HTTPError$not_found())
           } else {
@@ -389,6 +389,10 @@ RestRserveApplication = R6::R6Class(
         success = FALSE
       }
       if(inherits(status, 'HTTPError')) {
+        # raise result
+        if (is.list(status) && !is.null(status$response)) {
+          status = status$response
+        }
         # Copy fields to response
         response$body = status$body
         response$headers = status$headers
