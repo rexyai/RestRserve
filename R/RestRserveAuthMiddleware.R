@@ -177,27 +177,28 @@ RestRserveAuthMiddleware = R6::R6Class(
   "RestRserveAuthMiddleware",
   inherit = RestRserveMiddleware,
   public = list(
-    initialize = function(auth_backend, routes = character(), name = "AuthMiddleware") {
-
+    initialize = function(auth_backend, routes, match = "exact", name = "AuthMiddleware") {
       checkmate::assert_class(auth_backend, "AuthBackend")
+      checkmate::assert_character(routes, pattern = "^/")
+      checkmate::assert_subset(match, c("exact", "partial"))
       checkmate::assert_string(name, min.chars = 1L)
+
+      if (length(match) == 1L) {
+        match = rep(match, length(routes))
+      }
+      if (length(routes) != length(match)) {
+        stop("length 'match' must be 1 or equal length 'routes'")
+      }
 
       private$auth_backend = auth_backend
       self$name = name
 
       self$process_request = function(request, response) {
-
-        prefixes_mask = rep_len(FALSE, length(routes))
-        if(!is.null(names(routes)))
-          prefixes_mask = (names(routes) == "prefix")
-
-        if(request$path %in% routes[!prefixes_mask])
+        prefixes_mask = match == "partial"
+        if(any(!prefixes_mask) && request$path %in% routes[!prefixes_mask])
           return(private$auth_backend$authenticate(request, response))
-
-        for( p in routes[prefixes_mask]) {
-          if(startsWith(request$path, p))
-            return(private$auth_backend$authenticate(request, response))
-        }
+        if(any(prefixes_mask) && startsWith(request$path, routes[prefixes_mask]))
+          return(private$auth_backend$authenticate(request, response))
       }
 
       self$process_response = function(request, response) {
