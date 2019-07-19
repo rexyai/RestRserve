@@ -1,0 +1,18 @@
+context("text response class")
+
+test_that("empty object", {
+  r = RestRserveResponse$new()
+  expect_is(r, "RestRserveResponse")
+  expect_is(r$body, "character")
+  expect_length(r$body, 1)
+  expect_equal(r$body, "")
+  expect_equal(r$content_type, "text/plain")
+  expect_is(r$context, "environment")
+  expect_is(r$headers, "character")
+  expect_length(r$headers, 0L)
+  expect_is(r$serializer, "function")
+  expect_equal(r$serializer, as.character)
+  expect_is(r$status_code, "integer")
+  expect_length(r$status_code, 1L)
+  expect_equal(r$status_code, 200L)
+})
