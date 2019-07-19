@@ -117,10 +117,10 @@ RestRserveApplication = R6::R6Class(
       # openapi_definition_lines = character(0) means
       # - there are no openapi definitions
       if(length(openapi_definition_lines) > 0) {
-        if (is.null(private$handlers_openapi_definitions[[method]])) {
-          private$handlers_openapi_definitions[[method]] = new.env(parent = emptyenv())
+        if (is.null(private$handlers_openapi_definitions[[path]])) {
+          private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
         }
-        private$handlers_openapi_definitions[[method]][[path]] = openapi_definition_lines
+        private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
       }
 
       invisible(TRUE)
@@ -401,7 +401,14 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     get_openapi_paths = function() {
-      lapply(private$handlers_openapi_definitions, function(x) names(x))
-    }
-  )
+      if(!requireNamespace("yaml", quietly = TRUE)) {
+        stop("please install 'yaml' package first")
+      }
+      eapply(private$handlers_openapi_definitions, function(p) {
+        eapply(p, function(m) {
+          m <- enc2utf8(paste(m, collapse = "\n"))
+          yaml::read_yaml(text = m)
+        })
+      })
+    })
 )
