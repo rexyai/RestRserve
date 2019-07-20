@@ -1,9 +1,9 @@
-#' @name RestRserveMethodHandler
-#' @title Creates RestRserveMethodHandler.
-#' @description Creates RestRserveMethodHandler object.
+#' @name RestRserveRouter
+#' @title Creates RestRserveRouter.
+#' @description Creates RestRserveRouter object.
 #' @format \code{\link{R6Class}} object.
-RestRserveMethodHandler = R6::R6Class(
-  classname = "RestRserveMethodHandler",
+RestRserveRouter = R6::R6Class(
+  classname = "RestRserveRouter",
   public = list(
     paths = NULL,
     initialize = function() {
@@ -135,7 +135,7 @@ RestRserveMethodHandler = R6::R6Class(
     print = function() {
       paths = self$paths
       methods = names(self$paths)
-      cat("<RestRserveMethodHandler>", "\n")
+      cat("<RestRserveRouter>", "\n")
       cat("  Endpoints:", "\n")
       if (any(methods == "exact")) {
         cat("    Exact match:", "\n")

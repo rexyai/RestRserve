@@ -102,7 +102,7 @@ RestRserveApplication = R6::R6Class(
       checkmate::assert_function(FUN, nargs = 2L)
 
       if (is.null(private$routes[[method]])) {
-        private$routes[[method]] = RestRserveMethodHandler$new()
+        private$routes[[method]] = RestRserveRouter$new()
       }
 
       # Generate UID
