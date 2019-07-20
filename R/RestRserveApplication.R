@@ -410,7 +410,7 @@ RestRserveApplication = R6::R6Class(
       }
       eapply(private$handlers_openapi_definitions, function(p) {
         eapply(p, function(m) {
-          m <- enc2utf8(paste(m, collapse = "\n"))
+          m = enc2utf8(paste(m, collapse = "\n"))
           yaml::read_yaml(text = m)
         })
       })

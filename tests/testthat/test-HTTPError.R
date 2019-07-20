@@ -1,7 +1,7 @@
 context("Test http error class")
 
 test_that("test empty object", {
-  e <- HTTPErrorFactory$new()
+  e = HTTPErrorFactory$new()
   expect_is(e, "HTTPErrorFactory")
   expect_null(e$body)
   expect_null(e$headers)
@@ -15,7 +15,7 @@ test_that("test empty object", {
 
 
 test_that("test not found", {
-  e <- HTTPErrorFactory$new()$not_found()
+  e = HTTPErrorFactory$new()$not_found()
   expect_is(e$body, "character")
   expect_length(e$body, 1L)
   expect_equal(e$body, "404 Not Found")

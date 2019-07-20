@@ -1,7 +1,7 @@
 context("test path handler class")
 
 test_that("empty object", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   expect_s3_class(h, "RestRserveRouter")
   expect_equal(h$size(), 0L)
   expect_null(h$paths)
@@ -9,7 +9,7 @@ test_that("empty object", {
 
 
 test_that("add exact path", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "exact", id = "1")
   h$add_path(path = "/test2", match = "exact", id = "1")
   h$add_path(path = "/test3/", match = "exact", id = "1")
@@ -24,7 +24,7 @@ test_that("add exact path", {
 
 
 test_that("add partial path", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "partial", id = "1")
   h$add_path(path = "/test2", match = "partial", id = "1")
   h$add_path(path = "/test3/", match = "partial", id = "1")
@@ -39,7 +39,7 @@ test_that("add partial path", {
 
 
 test_that("add regex path", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   h$add_path(path = "/test1/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test1/{var1}/{var2}", match = "regex", id = "1")
   h$add_path(path = "/test2/{var1}/{var2}", match = "regex", id = "1")
@@ -60,7 +60,7 @@ test_that("add regex path", {
 
 
 test_that("match path", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "exact", id = "1")
   h$add_path(path = "/test2/", match = "partial", id = "2")
   h$add_path(path = "/test2/{var1}", match = "regex", id = "3")
@@ -78,7 +78,7 @@ test_that("match path", {
 
 
 test_that("get path variables", {
-  h <- RestRserveRouter$new()
+  h = RestRserveRouter$new()
   h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
   expect_null(h$get_vars(path = "/test1/1", "/"))
