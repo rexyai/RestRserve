@@ -149,7 +149,7 @@ parse_headers = function(headers) {
     headers = rawToChar(headers)
   }
   res = new.env(parent = emptyenv())
-  if (is.character(headers)) {
+  if (is.character(headers) && length(headers) > 0L) {
     ## parse the headers into key/value pairs, collapsing multi-line values
     lines = strsplit(gsub("[\r\n]+[ \t]+", " ", headers), "[\r\n]+")[[1]]
     keys = tolower(gsub(":.*", "", lines))
@@ -184,5 +184,5 @@ parse_query = function(query) {
   } else {
     res = list()
   }
-  return(list2env(res))
+  return(list2env(res, hash = TRUE))
 }
