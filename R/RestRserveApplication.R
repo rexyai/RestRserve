@@ -196,7 +196,7 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
-                           file_path = "openapi.yaml", ...) {
+                           file_path = "openapi.yaml") {
       checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
@@ -204,18 +204,18 @@ RestRserveApplication = R6::R6Class(
         stop("please install 'yaml' package")
       }
 
-      openapi = c(openapi, list(paths = private$get_openapi_paths()))
-
       file_dir = dirname(file_path)
       if(!dir.exists(file_dir)) {
         dir.create(file_dir, recursive = TRUE)
       }
 
-      yaml::write_yaml(openapi, file = file_path, ...)
+      openapi = c(openapi, list(paths = private$get_openapi_paths()))
+
+      yaml::write_yaml(openapi, file = file_path)
       # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
       # for now use  "application/x-yaml":
       # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
-      self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml", ...)
+      self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml")
       invisible(file_path)
     },
     #------------------------------------------------------------------------
@@ -225,13 +225,18 @@ RestRserveApplication = R6::R6Class(
       checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!requireNamespace("swagger", quietly = TRUE))
-        stop("please install 'swagger' package first")
+      file_dir = dirname(file_path)
+      if(!dir.exists(file_dir)) {
+        dir.create(file_dir, recursive = TRUE)
+      }
 
-      path_openapi = gsub("^/*", "", path_openapi)
+      path_swagger_assets = gsub("/$", "", path_swagger_assets) # remove / from the end
+      index_html = readLines(system.file("swagger", "index.html", package = packageName()))
+      index_html = gsub("{path_swagger_assets}", path_swagger_assets, index_html, fixed = TRUE)
+      index_html = gsub("{path_openapi}", path_openapi, index_html, fixed = TRUE)
+      writeLines(index_html, file_path)
 
-      self$add_static(path_swagger_assets, system.file("dist", package = "swagger"))
-      write_swagger_ui_index_html(file_path, path_swagger_assets = path_swagger_assets, path_openapi = path_openapi)
+      self$add_static(path_swagger_assets, system.file("swagger", package = packageName()))
       self$add_static(path, file_path)
       invisible(file_path)
     },
