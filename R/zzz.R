@@ -1,5 +1,7 @@
 #' @importFrom R6 R6Class
 #' @importFrom uuid UUIDgenerate
+#' @importFrom mime guess_type
+#' @importFrom checkmate assert_string test_string check_string
 
 .onAttach = function(libname, pkgname) {
   # make it TRUE because only this way comments inside functions can be printed during

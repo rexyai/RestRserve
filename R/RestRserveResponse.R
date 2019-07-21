@@ -94,7 +94,7 @@ RestRserveResponse = R6::R6Class(
           'text/plain' = as.character,
           identity)
       }
-      checkmate::assert_function(serializer)
+      checkmate::assert_function(serializer, null.ok = TRUE)
       self$serializer = serializer
       self$content_type = content_type
     },
@@ -126,11 +126,15 @@ forward = function() {
 }
 
 as_rserve_response = function(x) {
-  if(checkmate::test_string(x$body) && isTRUE(names(x$body) == "file"))
-    return(list("file" = x$body, x$content_type, x$headers, x$status_code))
 
-  if(checkmate::test_string(x$body) && isTRUE(names(x$body) == "tmpfile"))
-    return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
+  if(checkmate::test_string(x$body)) {
+    if(isTRUE(names(x$body) == "file")) {
+      return(list("file" = x$body, x$content_type, x$headers, x$status_code))
+    }
+    if(isTRUE(names(x$body) == "tmpfile")) {
+      return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
+    }
+  }
 
   body = x$serializer(x$body)
   return(list(body, x$content_type, x$headers, x$status_code))

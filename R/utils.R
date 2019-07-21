@@ -86,14 +86,7 @@ deparse_vector = function(x) {
 }
 
 guess_mime = function(file_path, content_type) {
-  if(is.null(content_type)) {
-    mime_avalable = requireNamespace("mime", quietly = TRUE)
-    if(!(mime_avalable)) {
-      warning("'mime' package is not installed - content_type will is set to 'application/octet-stream'")
-      content_type = "application/octet-stream"
-    } else {
-      content_type = mime::guess_type(file_path)
-    }
-  }
-  return(content_type)
+  if(is.null(content_type))
+    content_type = mime::guess_type(file_path)
+  content_type
 }

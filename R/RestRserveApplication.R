@@ -201,7 +201,7 @@ RestRserveApplication = R6::R6Class(
       file_path = path.expand(file_path)
 
       if(!requireNamespace("yaml", quietly = TRUE)) {
-        stop("please install 'yaml' package first")
+        stop("please install 'yaml' package")
       }
 
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
