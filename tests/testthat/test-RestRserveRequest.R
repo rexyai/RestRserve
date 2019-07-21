@@ -1,0 +1,15 @@
+context("test request class")
+
+test_that("empty object", {
+  r = RestRserveRequest$new()
+  expect_is(r, "RestRserveRequest")
+  expect_is(r$body, "raw")
+  expect_length(r$body, 0)
+  expect_equal(r$content_type, "application/octet-stream")
+  expect_equal(r$method, "GET")
+  expect_equal(r$path, "/")
+  expect_is(r$headers, "environment")
+  expect_length(r$headers, 0)
+  expect_is(r$query, "environment")
+  expect_length(r$query, 0)
+})

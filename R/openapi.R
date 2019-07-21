@@ -1,6 +1,7 @@
 # parses user function and extracts openapi docstrings
 extract_docstrings_yaml = function(FUN) {
-  stopifnot(is.function(FUN))
+  checkmate::assert_function(FUN)
+
   lines = utils::capture.output(print(FUN))
   docstrings = character()
 
@@ -49,7 +50,7 @@ openapi_create = function(openapi = openapi_openapi_version(),
 #' @param openapi_version version on openapi
 #' @rdname openapi_create
 openapi_openapi_version = function(openapi_version = "3.0.1") {
-  stopifnot(is.character(openapi_version) && length(openapi_version) == 1L)
+  checkmate::assert_string(openapi_version, pattern = "[0-9.]+")
   openapi_version
 }
 
@@ -69,14 +70,12 @@ openapi_info = function(title = "RestRserve OpenAPI",
                         termsOfService = NULL,
                         contact = openapi_contact(),
                         license = openapi_license()) {
-  stopifnot(is.character(title) && length(title) == 1L)
-  stopifnot(is.character(version) && length(version) == 1L)
-  stopifnot(inherits(contact, "openapi_contact"))
-  stopifnot(inherits(license, "openapi_license"))
-
-  is_string_or_null(description)
-  is_string_or_null(termsOfService)
-
+  checkmate::assert_string(title)
+  checkmate::assert_string(version)
+  checkmate::assert_class(contact, "openapi_contact")
+  checkmate::assert_class(license, "openapi_license")
+  checkmate::assert_string(description, null.ok = TRUE)
+  checkmate::assert_string(termsOfService, null.ok = TRUE)
 
   dict = dict_create()
   dict_insert_not_empty(dict, "title", title)
@@ -95,12 +94,8 @@ openapi_info = function(title = "RestRserve OpenAPI",
 #' @param servers serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
 #' See \link{openapi_servers}
 #' @rdname openapi_create
-openapi_servers = function(servers = list()) {
-  stopifnot(is.list(servers))
-  if(length(servers) == 0L)
-    servers = list(openapi_server())
-  else
-    stopifnot(vapply(servers, FUN = inherits, FUN.VALUE = FALSE, "openapi_server"))
+openapi_servers = function(servers = list(openapi_server())) {
+  checkmate::assert_list(servers, types = "openapi_server")
 
   class(servers) = "openapi_servers"
   servers
@@ -114,7 +109,10 @@ openapi_server = function(url = "/",
                           description = NULL,
                           variables = NULL) {
 
-  stopifnot(is.character(url) && length(url) == 1L)
+  checkmate::assert_string(url)
+  checkmate::assert_string(description, null.ok = TRUE)
+  checkmate::assert_string(variables, null.ok = TRUE)
+
   dict = dict_create()
   dict_insert_not_empty(dict, "url", url)
   dict_insert_not_empty(dict, "description", description)
@@ -130,9 +128,9 @@ openapi_server = function(url = "/",
 #' @param email contact email
 #' @rdname openapi_create
 openapi_contact = function(name = NULL, url = NULL, email = NULL) {
-  stopifnot(is_string_or_null(name))
-  stopifnot(is_string_or_null(url))
-  stopifnot(is_string_or_null(email))
+  checkmate::assert_string(name, null.ok = TRUE)
+  checkmate::assert_string(url, null.ok = TRUE)
+  checkmate::assert_string(email, null.ok = TRUE)
 
   dict = dict_create()
   dict_insert_not_empty(dict, "name", name)
@@ -147,8 +145,8 @@ openapi_contact = function(name = NULL, url = NULL, email = NULL) {
 #' @export
 #' @rdname openapi_create
 openapi_license = function(name = NULL, url = NULL) {
-  stopifnot(is_string_or_null(name))
-  stopifnot(is_string_or_null(url))
+  checkmate::assert_string(name, null.ok = TRUE)
+  checkmate::assert_string(url, null.ok = TRUE)
 
   dict = dict_create()
 

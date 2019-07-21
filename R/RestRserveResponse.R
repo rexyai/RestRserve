@@ -64,19 +64,21 @@ RestRserveResponse = R6::R6Class(
                           headers = character(0),
                           status_code = 200L,
                           serializer = NULL) {
+      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+      checkmate::assert_string(content_type)
+      checkmate::assert_character(headers)
+      checkmate::assert(
+        checkmate::check_string(body),
+        checkmate::check_raw(body),
+        combine = "or"
+      )
       self$set_content_type(content_type, serializer)
-      #------------------------------------------
-      if(!is.numeric(status_code))
-        stop("status_code should be a integer")
-      #------------------------------------------------
-      # if(!(is_string_len_one(body) || is.raw(body)))
-      #   stop("body can be a character vector of length one or a raw vector")
-      #------------------------------------------------
-      if(!is.character(headers))
-        stop("headers must be a character vector - the elements will have CRLF appended.
-             Neither Content-type nor Content-length may be used.")
-      #------------------------------------------------
-
+      body_name = names(body)
+      if(!is.null(body_name)) {
+        if(!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
+          body = unname(body)
+        }
+      }
       self$body = body
       self$headers = headers
       self$status_code = as.integer(status_code)
@@ -84,21 +86,16 @@ RestRserveResponse = R6::R6Class(
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
-      if(!is_string_len_one(content_type))
-        stop("content_type must be a character vector of length one")
-
-      if( is.null(serializer)) {
-        serializer = switch (content_type,
-                'application/json' = to_json,
-                'text/plain' = as.character,
-                identity
-        )
+      checkmate::assert_string(content_type, pattern = ".*/.*")
+      if(is.null(serializer)) {
+        serializer = switch(
+          content_type,
+          'application/json' = to_json,
+          'text/plain' = as.character,
+          identity)
       }
-      if( !is.function(serializer)) {
-        stop('`serializer` can only be a function or NULL')
-      } else {
-        self$serializer = serializer
-      }
+      checkmate::assert_function(serializer)
+      self$serializer = serializer
       self$content_type = content_type
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
@@ -129,10 +126,10 @@ forward = function() {
 }
 
 as_rserve_response = function(x) {
-  if(is_string_len_one(x$body) && isTRUE(names(x$body) == "file"))
+  if(checkmate::test_string(x$body) && isTRUE(names(x$body) == "file"))
     return(list("file" = x$body, x$content_type, x$headers, x$status_code))
 
-  if(is_string_len_one(x$body) && isTRUE(names(x$body) == "tmpfile"))
+  if(checkmate::test_string(x$body) && isTRUE(names(x$body) == "tmpfile"))
     return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
 
   body = x$serializer(x$body)

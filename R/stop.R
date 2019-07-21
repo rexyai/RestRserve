@@ -7,13 +7,10 @@
 #' @return invisibly returns the status of the attempt to kill process group
 #' @export
 restrserve_stop = function(dir) {
-  stopifnot(is.character(dir) && length(dir) == 1L)
+  checkmate::assert_directory_exists(dir, access = "r")
   dir = normalizePath(dir, mustWork = TRUE)
-  stopifnot(dir.exists(dir))
-
   configuraion_path = file.path(dir, "Rserve.conf")
-  if(!file.exists(configuraion_path))
-    stop(sprintf("Configuration file '%s' doesn't exist", configuraion_path))
+  checkmate::assert_file_exists(configuraion_path)
 
   configuraion_lines = readLines(configuraion_path)
   # we know that "pid.file" entry is at the last row

@@ -1,3 +1,5 @@
+context("Test openapi in application")
+
 test_that("openapi", {
   f1 = function(req, res) {
     #' ----
@@ -64,6 +66,4 @@ test_that("openapi", {
   expect_identical(names(openapi_def[["/f3"]]), "get")
   expect_null(openapi_def[["/f4"]])
   expect_null(openapi_def[["/f5"]])
-
 })
-

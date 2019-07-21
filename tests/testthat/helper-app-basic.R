@@ -1,5 +1,4 @@
 library(RestRserve)
-PORT = 6666L
 
 calc_fib = function(n) {
   if(n < 0L) stop("n should be >= 0")
@@ -13,7 +12,6 @@ calc_fib = function(n) {
 
   x[[n]]
 }
-
 
 fib_forward = function(request, response) {
   n = as.integer( request$query[["n"]] )
@@ -63,9 +61,9 @@ mw3 = RestRserveMiddleware$new(
 )
 
 # create application
-app = RestRserve::RestRserveApplication$new(middleware = list(mw1, mw2, mw3))
+app = RestRserveApplication$new(middleware = list(mw1, mw2, mw3))
 # app = RestRserve::RestRserveApplication$new()
-app$logger$set_log_level(ERROR)
+app$logger$set_log_level(TRACE)
 # register endpoints and corresponding R handlers
 # app$add_route(path = "/fib-return", method = "GET", FUN = fib_immediate_return)
 app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)
@@ -75,36 +73,7 @@ app$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = 
 # serve static dir
 app$add_static(path = "/html", file_path = file.path(R.home("doc"), "html"))
 
-#------------------------------------------------------------------------------------------
-# check authentification
-#------------------------------------------------------------------------------------------
+app_port = 6667L
 
-#---------------------------------------------
-# bearer authentification
-#---------------------------------------------
-authorize_token = function(token) {
-  identical(token, "secure-token")
-}
-bearer_auth = BearerAuthBackend$new(FUN = authorize_token)
-mw_auth_token = RestRserveAuthMiddleware$new(bearer_auth, routes = "/fib-bearer-auth", name = "bearer_auth")
-mw_auth_token_prefix = RestRserveAuthMiddleware$new(bearer_auth, c(prefix = "/fib-secure"), name = "bearer_auth2")
-#---------------------------------------------
-# basic authentification
-#---------------------------------------------
-authorize_basic = function(user, password) {
-  identical(user, "user-1") && identical(password, "password-1")
-}
-basic_auth = BasicAuthBackend$new(FUN = authorize_basic)
-mw_auth_basic = RestRserveAuthMiddleware$new(basic_auth, routes = "/fib-basic-auth", name = "basic_auth")
-#---------------------------------------------
-# create application
-app_auth = RestRserve::RestRserveApplication$new(
-  middleware = list(mw_auth_token, mw_auth_basic, mw_auth_token_prefix)
-)
-app_auth$logger$set_log_level(ERROR)
-# register endpoints and corresponding R handlers
-app_auth$add_get(path = "/fib-bearer-auth", FUN = fib_forward)
-app_auth$add_get(path = "/fib-basic-auth", FUN = fib_forward)
-app_auth$add_get(path = "/fib-secure/v1", FUN = fib_forward)
-app_auth$add_get(path = "/fib", FUN = fib_forward)
-app_auth$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
+
+# app$run(http.port = app_port, background = FALSE)

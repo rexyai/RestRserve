@@ -77,205 +77,76 @@ RestRserveApplication = R6::R6Class(
                           content_type = "text/plain",
                           serializer = NULL,
                           ...) {
+      checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      dots = list(...)
-      if("logger" %in% names(dots)) {
+      if(hasArg("logger")) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
                     "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
                     sep = "\n")
-        warning(msg)
-        self$logger = dots$logger
+        warning(msg, call. = FALSE)
+        self$logger = list(...)$logger
       } else {
         self$logger = Logger$new(INFO, name = "RestRserveApplication")
       }
-      #------------------------------------------
-      stopifnot(is.list(middleware))
+      private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
-      do.call(self$append_middleware, middleware)
       self$content_type = content_type
+      do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
-    add_route = function(path, method, FUN, ...) {
+    add_route = function(path, method, FUN, match = c("exact", "partial", "regex"), ...) {
+      checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
+      checkmate::assert_choice(method, private$supported_methods)
+      checkmate::assert_function(FUN, nargs = 2L)
 
-      stopifnot(is.character(path) && length(path) == 1L)
-      stopifnot(startsWith(path, "/"))
+      if (is.null(private$routes[[method]])) {
+        private$routes[[method]] = RestRserveRouter$new()
+      }
 
-      path_as_prefix = FALSE
-      if(identical(names(path), "prefix")) path_as_prefix = TRUE
-
-      method = private$check_method_supported(method)
-
-      stopifnot(is.function(FUN))
-
-      # remove trailing slashes
-      path = gsub(pattern = "/+$", replacement = "", x = path)
-      # if path was a root -> replace it back
-      if(path == "") path = "/"
-
-      if( length(formals(FUN)) != 2L ) stop("function should take 2 arguments - 1. request 2. response")
-
-      if(is.null(private$handlers[[path]]))
-        private$handlers[[path]] = new.env(parent = emptyenv())
-
-      if(!is.null(private$handlers[[path]][[method]]))
-        warning(sprintf("overwriting existing '%s' method for path '%s'", method, path))
-
-      CMPFUN = compiler::cmpfun(FUN)
-      attr(CMPFUN, "handle_path_as_prefix") = path_as_prefix
-      private$handlers[[path]][[method]] = CMPFUN
+      # Generate UID
+      id = digest::digest(FUN)
+      # Add path
+      private$routes[[method]]$add_path(path, match, id)
+      # Add handler
+      private$handlers[[id]] = compiler::cmpfun(FUN)
 
       # try to parse functions and find openapi definitions
       openapi_definition_lines = extract_docstrings_yaml(FUN)
       # openapi_definition_lines = character(0) means
       # - there are no openapi definitions
       if(length(openapi_definition_lines) > 0) {
-
-        if(is.null(private$handlers_openapi_definitions[[path]]))
+        if (is.null(private$handlers_openapi_definitions[[path]])) {
           private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
-
-        private$handlers_openapi_definitions[[path]][[method]] = openapi_definition_lines
+        }
+        private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
       }
 
       invisible(TRUE)
     },
     #------------------------------------------------------------------------
-    add_get = function(path, FUN, ..., add_head = TRUE) {
-      if (isTRUE(add_head))
-        self$add_route(path, "HEAD", FUN, ...)
-      self$add_route(path, "GET", FUN, ...)
+    add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {
+      if (isTRUE(add_head)) {
+        self$add_route(path, "HEAD", FUN, match, ...)
+      }
+      self$add_route(path, "GET", FUN, match, ...)
     },
     #------------------------------------------------------------------------
-    add_post = function(path, FUN, ...) {
-      self$add_route(path, "POST", FUN, ...)
+    add_post = function(path, FUN, match = c("exact", "partial", "regex"), ...) {
+      self$add_route(path, "POST", FUN, match, ...)
     },
     #------------------------------------------------------------------------
     add_static = function(path, file_path, content_type = NULL, ...) {
-      stopifnot(is_string_or_null(file_path))
-      stopifnot(is_string_or_null(content_type))
-
-      is_dir = file.info(file_path)[["isdir"]]
-      if(is.na(is_dir)) {
-        stop(sprintf("'%s' file or directory doesnt't exists", file_path))
-      }
-      # now we know file exists
-      file_path = normalizePath(file_path)
-
-      mime_avalable = FALSE
-      if(is.null(content_type)) {
-        mime_avalable = suppressWarnings(require(mime, quietly = TRUE))
-        if(!mime_avalable) {
-          warning(sprintf("'mime' package is not installed - content_type will is set to '%s'", "application/octet-stream"))
-          mime_avalable = FALSE
-        }
-      }
-      # file_path is a DIRECTORY
-      if(is_dir) {
-        handler = function(request, response) {
-          fl = file.path(file_path, substr(request$path,  nchar(path) + 1L, nchar(request$path) ))
-
-          if(!file.exists(fl)) {
-            raise(self$HTTPError$not_found())
-          } else {
-            content_type = "application/octet-stream"
-            if(mime_avalable) content_type = mime::guess_type(fl)
-
-            fl_is_dir = file.info(fl)[["isdir"]][[1]]
-            if(isTRUE(fl_is_dir)) {
-              raise(self$HTTPError$not_found())
-            }
-            else {
-              response$body = c(file = fl)
-              response$content_type = content_type
-              response$status_code = 200L
-            }
-          }
-        }
-        self$add_get(c(prefix = path), handler, ...)
-      } else {
-        # file_path is a FILE
-        handler = function(request, response) {
-
-          if(!file.exists(file_path))
-            raise(self$HTTPError$not_found())
-
-          if(is.null(content_type)) {
-            if(mime_avalable) {
-              content_type = mime::guess_type(file_path)
-            } else {
-              content_type = "application/octet-stream"
-            }
-          }
-          response$body = c(file = file_path)
-          response$content_type = content_type
-          response$status_code = 200L
-        }
-        self$add_get(path, handler, ...)
-      }
-    },
-    #------------------------------------------------------------------------
-    call_handler = function(request, response) {
-      TRACEBACK_MAX_NCHAR = 10000L
-
-      if(identical(names(private$handlers), character(0))) {
-        raise(self$HTTPError$not_found())
-      }
-
-      FUN = private$handlers[[request$path]][[request$method]]
-
-      if(!is.null(FUN)) {
-        self$logger$trace(list(request_id = request$request_id, message = 'exact endpoint match for the route'))
-      } else {
-        self$logger$trace(list(request_id = request$request_id, message = "haven't found exact endpoint match for requested route"))
-        # may be path is a prefix
-        registered_paths = names(private$handlers)
-        # add "/" to the end in order to not match not-complete pass.
-        # for example registered_paths = c("/a/abc") and path = "/a/ab"
-        handlers_match_start = startsWith(x = request$path, prefix = paste(registered_paths, "/", sep = ""))
-        if(!any(handlers_match_start)) {
-          msg = "Haven't found prefix which match the requested path"
-          self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-          raise(self$HTTPError$not_found())
-        } else {
-          paths_match = registered_paths[handlers_match_start]
-          # find method which match the path - take longest match
-          j = which.max(nchar(paths_match))
-          matched_path = paths_match[[j]]
-          FUN = private$handlers[[matched_path]][[request$method]]
-          # now FUN is NULL or some function
-          # if it is a function then we need to check whther it was registered to handle patterned paths
-          if(!isTRUE(attr(FUN, "handle_path_as_prefix"))) {
-            msg = "Haven't found prefix which match the requested path"
-            self$logger$error(list(request_id = request$request_id, code = 404, message = msg))
-            raise(self$HTTPError$not_found())
-          } else {
-            msg = "found prefix which match the requested path"
-            self$logger$trace(list(request_id = request$request_id, message = msg))
-          }
-        }
-      }
-      FUN(request, response)
-    },
-    #------------------------------------------------------------------------
-    routes = function() {
-      endpoints = names(private$handlers)
-      endpoints_methods = vector("character", length(endpoints))
-      for(i in seq_along(endpoints)) {
-        e = endpoints[[i]]
-        endpoints_methods[[i]] = paste(names(private$handlers[[e]]), collapse = "; ")
-      }
-      names(endpoints_methods) = endpoints
-      endpoints_methods
+      handler = private$static_handler(url_path = path, file_path = file_path, content_type = content_type)
+      self$add_route(path, "GET", handler, attr(handler, "match"), ...)
     },
     #------------------------------------------------------------------------
     run = function(http_port = 8001L, ..., background = FALSE) {
-      stopifnot(is.character(http_port) || is.numeric(http_port))
-      stopifnot(length(http_port) == 1L)
-      http_port = as.integer(http_port)
+      checkmate::assert_int(http_port)
       ARGS = list(...)
-      if(http_port > 0) {
-        if( is.null(ARGS[["http.port"]]) ) {
+      if(http_port > 0L) {
+        if(is.null(ARGS[["http.port"]])) {
           ARGS[["http.port"]] = http_port
         }
       }
@@ -293,48 +164,52 @@ RestRserveApplication = R6::R6Class(
       self$print_endpoints_summary()
       if (.Platform$OS.type != "windows" && background) {
 
-        pid = parallel::mcparallel(
-            do.call(Rserve::run.Rserve, ARGS ),
-          detached = TRUE)
+        pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)
         pid = pid[["pid"]]
 
         if(interactive()) {
-          message(sprintf("started RestRserve in a BACKGROUND process pid = %d", pid))
+          message(sprintf("Started RestRserve in a BACKGROUND process pid = %d", pid))
           message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
           message("NOTE that current master process also will be killed")
         }
         pid
       } else {
         if(interactive()) {
-          message(sprintf("started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
+          message(sprintf("Started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
           message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
           message("NOTE that current master process also will be killed")
 
         }
-        do.call(Rserve::run.Rserve, ARGS )
+        do.call(Rserve::run.Rserve, ARGS)
       }
     },
     #------------------------------------------------------------------------
+    endpoints = function() {
+      lapply(private$routes, function(r) r$paths)
+    },
+    #------------------------------------------------------------------------
     print_endpoints_summary = function() {
-      if(length(self$routes()) == 0) {
+      if(length(self$endpoints()) == 0) {
         self$logger$warning("'RestRserveApp' doesn't have any endpoints")
       }
-      self$logger$info(list(endpoints = as.list(self$routes())))
+      self$logger$info(list(endpoints = self$endpoints()))
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
                            file_path = "openapi.yaml", ...) {
-      stopifnot(is.character(file_path) && length(file_path) == 1L)
+      checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!require(yaml, quietly = TRUE))
+      if(!requireNamespace("yaml", quietly = TRUE)) {
         stop("please install 'yaml' package first")
+      }
 
       openapi = c(openapi, list(paths = private$get_openapi_paths()))
 
       file_dir = dirname(file_path)
-      if(!dir.exists(file_dir))
-        dir.create(file_dir, recursive = TRUE, ...)
+      if(!dir.exists(file_dir)) {
+        dir.create(file_dir, recursive = TRUE)
+      }
 
       yaml::write_yaml(openapi, file = file_path, ...)
       # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
@@ -347,10 +222,10 @@ RestRserveApplication = R6::R6Class(
     add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
-      stopifnot(is.character(file_path) && length(file_path) == 1L)
+      checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!require(swagger, quietly = TRUE))
+      if(!requireNamespace("swagger", quietly = TRUE))
         stop("please install 'swagger' package first")
 
       path_openapi = gsub("^/*", "", path_openapi)
@@ -362,162 +237,182 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     append_middleware = function(...) {
-      middleware_list = list(...)
-      # mw_names = names(middleware_list)
-      # stopifnot(is.null(mw_names))
-      # stopifnot(length(mw_names) != length(unique(mw_names)))
-      # stopifnot(all(vapply(middleware_list, inherits, FALSE, "RestRserveMiddleware")))
-      for(mw in middleware_list) {
-        n_already_registered = length(private$middleware)
-        id = as.character(n_already_registered + 1L)
+      mw_list = list(...)
+      checkmate::assert_list(mw_list, types = "RestRserveMiddleware", unique = TRUE)
+      for(mw in mw_list) {
+        id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw
       }
       invisible(length(private$middleware))
     }
   ),
   private = list(
+    routes = NULL,
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
+    #------------------------------------------------------------------------
     process_request = function(request) {
-      self$logger$trace(
-        list(request_id = request$request_id, method = request$method, path = request$path,
-             query = request$query, headers = request$headers)
-      )
+      self$logger$trace(list(request_id = request$request_id, method = request$method, path = request$path, query = request$query, headers = request$headers))
       # dummy response
       response = RestRserveResponse$new(content_type = self$content_type)
       #------------------------------------------------------------------------------
 
-      # call all middleares in natural order
-      middleware_ids_to_call = as.character(seq_along(private$middleware))
-      midlleware_ids_called = new.env(parent = emptyenv())
-      midlleware_ids_called[['ids']] = character(0)
+      # Call middleware for the request
+      mw_ids = as.character(seq_along(private$middleware))
+      mw_called = new.env(parent = emptyenv())
+      mw_flag = "process_request"
+      need_call_handler = TRUE
 
-      status = try_capture_stack(private$call_middleware(
-        request,
-        response,
-        middleware_ids_to_call,
-        midlleware_ids_called,
-        "process_request")
-      )
-      # set 'process_response' middleware
-      middleware_ids_to_call = midlleware_ids_called[['ids']]
-      # reset midlleware_ids_called
-      midlleware_ids_called[['ids']] = character(0)
-
-      # FIXME
-      # This is quite convoluted - may need to simplily
-
-      # means HANDLED exception in middleware
-      if(inherits(status, 'HTTPError')) {
-        # throws error - this means we need to stop request-response pipeline and
-        # unwind called middleware stack
-        response = status$response
-      } else {
-        if(inherits(status, 'simpleError')) {
-          # means UNHANDLED exception in middleware
-          self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
-          response = self$HTTPError$internal_server_error()
-        } else {
-          # means normal execution - middelwares have finished successully
-          # now call handler
-          status = try_capture_stack(self$call_handler(request, response))
-          # means HANDLED exception
-          if(inherits(status, 'HTTPError')) {
-            # means HANDLED exception in handler
-            response = status$response
-          } else {
-            if(inherits(status, 'simpleError')) {
-              # means UNHANDLED exception
-              self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
-              response = self$HTTPError$internal_server_error()
-            } else {
-              # just pass - happy path
-              TRUE
-            }
-          }
+      for(id in mw_ids) {
+        mw_name = private$middleware[[id]][["name"]]
+        self$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = sprintf("call %s middleware", mw_flag)))
+        FUN = private$middleware[[id]][[mw_flag]]
+        mw_status = private$call_handler(FUN, request, response)
+        # FIXME: move after break if last no need
+        mw_called[[id]] = TRUE
+        # break loop on error
+        if(!isTRUE(mw_status)) {
+          need_call_handler = FALSE
+          break
         }
       }
-      #------------------------------------------------------------------------------
-      status = try_capture_stack(private$call_middleware(
-        request,
-        response,
-        middleware_ids_to_call,
-        midlleware_ids_called,
-        "process_response")
-      )
-      if(inherits(status, 'HTTPError')) {
-        # throws HTTPError - mean catched internally
-        response = status$response
-      } else {
-        if(inherits(status, 'simpleError')) {
-          # means UNHANDLED exception in middleware
-          self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
-          response = self$HTTPError$internal_server_error()
+
+      # call handler
+      if (isTRUE(need_call_handler)) {
+        # match handler
+        handler_id = private$match_handler(request, response)
+        # early stop
+        if (is.null(handler_id)) {
+          response = self$HTTPError$not_found()
         } else {
-          # just pass - happy path
-          TRUE
+          handler_fun = private$handlers[[handler_id]]
+          self$logger$trace(list(request_id = request$request_id, message = sprintf("call handler '%s'", handler_id)))
+          handler_status = private$call_handler(handler_fun, request, response)
         }
       }
-      as_rserve_response(response)
+
+      # call middleware for the response
+      mw_flag = "process_response"
+      # call in reverse order
+      for(id in rev(names(mw_called))) {
+        mw_name = private$middleware[[id]][["name"]]
+        self$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = sprintf("call %s middleware", mw_flag)))
+        FUN = private$middleware[[id]][[mw_flag]]
+        mw_status = private$call_handler(FUN, request, response)
+        # FIXME: should we break loop
+        # break loop on error
+        if(!isTRUE(mw_status)) {
+          break
+        }
+      }
+
+      return(as_rserve_response(response))
     },
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
+    #------------------------------------------------------------------------
     supported_methods = c("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"),
-    check_method_supported = function(method) {
-      if(!is.character(method) || !(length(method) == 1L) || !(method %in% private$supported_methods))
-        stop(sprintf("method should be on of the [%s]", paste(private$supported_methods, collapse = ", ")))
-      method
-    },
-    get_openapi_paths = function() {
-      paths = names(private$handlers_openapi_definitions)
-      paths_descriptions = list()
-      for(p in paths) {
-        methods = names(private$handlers_openapi_definitions[[p]])
-        methods_descriptions = list()
-        for(m in methods) {
-
-          yaml_string = enc2utf8(paste(private$handlers_openapi_definitions[[p]][[m]], collapse = "\n"))
-          openapi_definitions_yaml = yaml::yaml.load(yaml_string,
-                                                     handlers = list("float#fix" = function(x) as.numeric(x)))
-          if(is.null(openapi_definitions_yaml))
-            warning(sprintf("can't properly parse YAML for '%s - %s'", p, m))
-          else
-            methods_descriptions[[tolower(m)]] = openapi_definitions_yaml
+    #------------------------------------------------------------------------
+    static_handler = function(url_path, file_path, content_type = NULL) {
+      checkmate::assert_string(url_path, min.chars = 1L, pattern = "^/")
+      checkmate::assert_string(file_path)
+      checkmate::assert_string(content_type, null.ok = TRUE)
+      # FIXME: seems not required in contructor
+      checkmate::assert(
+        checkmate::check_file_exists(file_path, access = "r"),
+        checkmate::check_directory_exists(file_path, access = "r"),
+        combine = "or"
+      )
+      # FIXME: need to expand?
+      # file_path = path.expand(file_path)
+      file_path = normalizePath(file_path) # absolute path
+      url_nchars = nchar(url_path) # prevent calc every time
+      if(dir.exists(file_path)) {
+        # file_path is a DIRECTORY
+        handler = function(request, response) {
+          fl = file.path(file_path, substr(request$path, url_nchars + 2L, nchar(request$path)))
+          if(!file.exists(fl) || dir.exists(fl)) {
+            raise(self$HTTPError$not_found())
+          } else {
+            response$body = c(file = fl)
+            response$content_type = guess_mime(fl, content_type)
+            response$status_code = 200L
+          }
         }
-        paths_descriptions[[p]] = methods_descriptions
+        attr(handler, "match") = "partial"
+      } else {
+        # file_path is a FILE
+        handler = function(request, response) {
+          if(!file.exists(file_path)) {
+            raise(self$HTTPError$not_found())
+          } else {
+            response$body = c(file = file_path)
+            response$content_type = guess_mime(file_path, content_type)
+            response$status_code = 200L
+          }
+        }
+        attr(handler, "match") = "exact"
       }
-      paths_descriptions
+      return(handler)
     },
-    call_middleware = function(request,
-                               response,
-                               middleware_ids_to_call,
-                               # should be environment in order to be modified in place by reference
-                               middleware_ids_called,
-                               flag = c("process_request", "process_response")) {
-      if(!is.environment(middleware_ids_called))
-        stop("`middleware_called` argument should be environment")
-
-      flag = match.arg(flag)
-
-      for(id in middleware_ids_to_call) {
-        middleware_name = private$middleware[[id]][["name"]]
-        self$logger$trace(list(
-            request_id = request$request_id,
-            middleware = middleware_name,
-            message = sprintf("call %s middleware", flag)
-          )
-        )
-        # put to the stack launched middlware.
-        # It is modified in place!
-        # So in case of exception in FUN() call
-        # `middleware_ids_called` in parent frame will contain all launched the middleware ids
-
-        middleware_ids_called[['ids']] = c(id, middleware_ids_called[['ids']])
-        FUN = private$middleware[[id]][[flag]]
-        FUN(request, response)
+    #------------------------------------------------------------------------
+    match_handler = function(request, response) {
+      # Early stop if no routes for this method
+      if (is.null(private$routes[[request$method]])) {
+        self$logger$trace(list(request_id = request$request_id, message = sprintf("no handlers registered for the method '%s'", request$method)))
+        return(NULL)
       }
-    }
-  )
+      if (private$routes[[request$method]]$size() == 0L) {
+        self$logger$trace(list(request_id = request$request_id, message = sprintf("no handlers registered for the method '%s'", request$method)))
+        return(NULL)
+      }
+      # Get handler UID
+      self$logger$trace(list(request_id = request$request_id, message = sprintf("try to match requested path '%s'", request$path)))
+      id = private$routes[[request$method]]$match_path(request$path)
+      if(is.null(id)) {
+        self$logger$trace(list(request_id = request$request_id, message = "requested path not matched"))
+        return(NULL)
+      }
+      self$logger$trace(list(request_id = request$request_id, message = "requested path matched"))
+      return(id)
+    },
+    #------------------------------------------------------------------------
+    call_handler = function(FUN, request, response) {
+      status = try_capture_stack(FUN(request, response))
+      success = TRUE
+      if(inherits(status, 'simpleError')) {
+        # means UNHANDLED exception in middleware
+        self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
+        status = self$HTTPError$internal_server_error()
+        success = FALSE
+      }
+      if(inherits(status, 'HTTPError')) {
+        # raise result
+        if (is.list(status) && !is.null(status$response)) {
+          status = status$response
+        }
+        # Copy fields to response
+        response$body = status$body
+        response$headers = status$headers
+        response$status_code = status$status_code
+        response$context = status$context
+        success = FALSE
+      }
+
+      return(success)
+    },
+    #------------------------------------------------------------------------
+    get_openapi_paths = function() {
+      if(!requireNamespace("yaml", quietly = TRUE)) {
+        stop("please install 'yaml' package first")
+      }
+      eapply(private$handlers_openapi_definitions, function(p) {
+        eapply(p, function(m) {
+          m = enc2utf8(paste(m, collapse = "\n"))
+          yaml::read_yaml(text = m)
+        })
+      })
+    })
 )

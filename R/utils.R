@@ -48,13 +48,6 @@ dict_is_empty = function(x) {
   length(x) == 0L
 }
 #------------------------------------------------
-is_string_or_null = function(x) {
-  is.null(x) || (is.character(x) && length(x) == 1L)
-}
-is_string_len_one = function(x) {
-  is.character(x) && length(x) == 1L
-}
-#------------------------------------------------
 
 # borrowed from
 # https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
@@ -90,4 +83,17 @@ kill_process_group = function(pid, signal = "TERM") {
 #' @useDynLib RestRserve, .registration=TRUE
 deparse_vector = function(x) {
   .Call("C_escape_chars", x)
+}
+
+guess_mime = function(file_path, content_type) {
+  if(is.null(content_type)) {
+    mime_avalable = requireNamespace("mime", quietly = TRUE)
+    if(!(mime_avalable)) {
+      warning("'mime' package is not installed - content_type will is set to 'application/octet-stream'")
+      content_type = "application/octet-stream"
+    } else {
+      content_type = mime::guess_type(file_path)
+    }
+  }
+  return(content_type)
 }

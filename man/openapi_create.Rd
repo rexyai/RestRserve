@@ -19,7 +19,7 @@ openapi_info(title = "RestRserve OpenAPI", version = "1.0",
   description = NULL, termsOfService = NULL,
   contact = openapi_contact(), license = openapi_license())
 
-openapi_servers(servers = list())
+openapi_servers(servers = list(openapi_server()))
 
 openapi_server(url = "/", description = NULL, variables = NULL)
 

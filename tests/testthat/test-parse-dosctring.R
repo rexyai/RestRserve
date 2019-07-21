@@ -1,4 +1,6 @@
-test_that("create RestRserveApp", {
+context("Test openapi parser")
+
+test_that("test extract_docstrings_yaml function", {
   fn = function(req, res) {
     #' ---
     #' description: Calculates Fibonacci number
@@ -20,7 +22,7 @@ test_that("create RestRserveApp", {
     #'           example: 5
     #' ---
   }
-  docstring_args = RestRserve:::extract_docstrings_yaml(fn)
+  docstring_args = extract_docstrings_yaml(fn)
   expect_equal(length(docstring_args), 17)
   expect_equal(docstring_args[[1]], "description: Calculates Fibonacci number")
   expect_equal(docstring_args[[17]], "          example: 5")
