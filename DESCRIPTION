@@ -26,8 +26,8 @@ Imports:
   mime (>= 0.7)
 Suggests:
   yaml (>= 2.1.14),
-  swagger (>= 3.9.2),
   curl (>= 2.7),
+  jsonlite (>= 1.6),
   testthat (>= 2.0.0)
 KeepSource: true
 Encoding: UTF-8
