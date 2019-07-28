@@ -55,9 +55,12 @@ test_that("openapi", {
   app$add_route(path = "/f4", method = "GET", FUN = f4)
   app$add_route(path = "/f5", method = "GET", FUN = f5)
 
-  app$add_openapi(file_path = tempfile(fileext = ".yaml"))
+  openapi_file = tempfile(fileext = ".yaml")
+  app$add_openapi(file_path = openapi_file)
   # use internal api for testing
   openapi_def = app$.__enclos_env__$private$get_openapi_paths()
+
+  expect_true(file.exists(openapi_file))
 
   # order doesn't matter
   expect_identical(sort(names(openapi_def[["/f1"]])), sort(c("post", "get")))
