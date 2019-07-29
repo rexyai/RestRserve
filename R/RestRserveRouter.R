@@ -40,7 +40,7 @@ RestRserveRouter = R6::R6Class(
           private$partial[[path]]$prefix = TRUE
         },
         "regex" = {
-          vars = private$parse_vars(path)
+          vars = private$parse_template(path)
           pattern = attr(vars, "regex")
           prefix = attr(vars, "prefix")
           # FIXME: should we stop?
@@ -56,6 +56,7 @@ RestRserveRouter = R6::R6Class(
             private$partial[[prefix]]$patterns = new.env()
           }
           private$partial[[prefix]]$patterns[[pattern]]$id = id
+          private$partial[[prefix]]$patterns[[pattern]]$template = path
           private$vars[[path]] = vars
         }
       )
@@ -95,8 +96,8 @@ RestRserveRouter = R6::R6Class(
         }
       )
     },
-    match_path = function(path) {
-      private$assert_path(path)
+    match_path = function(path, extract_vars = TRUE) {
+      # private$assert_path(path)
       if (!is.null(private$exact[[path]])) {
         return(private$exact[[path]]$id)
       }
@@ -109,7 +110,12 @@ RestRserveRouter = R6::R6Class(
             # FIXME: optimize me!
             for (pattern in names(private$partial[[matched]]$patterns)) {
               if (grepl(pattern, path)) {
-                return(private$partial[[matched]]$patterns[[pattern]]$id)
+                res = private$partial[[matched]]$patterns[[pattern]]$id
+                if (isTRUE(extract_vars)) {
+                  vars = private$parse_vars(path, private$partial[[matched]]$patterns[[pattern]]$template)
+                  attr(res, "path_variables") = vars
+                }
+                return(res)
               }
             }
           }
@@ -119,18 +125,6 @@ RestRserveRouter = R6::R6Class(
         }
       }
       return(NULL)
-    },
-    get_vars = function(path, template) {
-      checkmate::assert_string(template, pattern = "^/")
-      if (is.null(private$vars[[template]])) {
-        return(NULL)
-      }
-      splitted = strsplit(path, "/", fixed = TRUE)[[1L]][-1]
-      res = structure(
-        as.list(splitted[private$vars[[template]]$pos]),
-        names = private$vars[[template]]$name
-      )
-      return(res)
     },
     print = function() {
       paths = self$paths
@@ -160,7 +154,6 @@ RestRserveRouter = R6::R6Class(
       checkmate::assert_string(path, min.chars = 1, pattern = "/")
     },
     prepare_path = function(path, match) {
-
       # Remove '/' from the end if path is not prefix and not empty
       if (match %in% c("exact", "regex") && nchar(path) > 1 && endsWith(path, "/")) {
         path = substr(path, 1, nchar(path) - 1)
@@ -184,7 +177,7 @@ RestRserveRouter = R6::R6Class(
       prefix = paste0("/", paste(splitted[seq_len(pos[1] - 1)], collapse = "/"), "/")
       return(prefix)
     },
-    parse_vars = function(path, start = "{", end = "}") {
+    parse_template = function(path, start = "{", end = "}") {
       # Split path
       splitted = strsplit(path, "/", fixed = TRUE)[[1L]][-1L]
       # Detect variables positions
@@ -214,6 +207,19 @@ RestRserveRouter = R6::R6Class(
       attr(vars, "prefix") = prefix
       attr(vars, "regex") = regex
       return(vars)
+    },
+    parse_vars = function(path, template) {
+      # checkmate::assert_string(template, pattern = "^/")
+      # Check vars exists
+      if (is.null(private$vars[[template]])) {
+        return(NULL)
+      }
+      splitted = strsplit(path, "/", fixed = TRUE)[[1L]][-1]
+      res = structure(
+        as.list(splitted[private$vars[[template]]$pos]),
+        names = private$vars[[template]]$name
+      )
+      return(res)
     }
   )
 )
