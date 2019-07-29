@@ -16,17 +16,17 @@ restrserve_stop = function(dir) {
   # we know that "pid.file" entry is at the last row
   pid_line = configuraion_lines[[length(configuraion_lines)]]
   pid_key_value = strsplit(pid_line, " ", TRUE)[[1]]
-  if(pid_key_value[[1]] != "pid.file") {
+  if (pid_key_value[[1]] != "pid.file") {
     stop(sprintf("last line in config file '%s' is not 'pid.file'", configuraion_path))
   } else {
     pid_path = pid_key_value[[2]]
   }
-  if(!file.exists(pid_path))
+  if (!file.exists(pid_path))
     stop(sprintf("pid file '%s' doesn't exist - probably applicaion already not running", pid_path))
 
   PID = readLines(pid_path, n = 1L)
   PID = try(as.integer(PID), silent = TRUE)
-  if(class(PID) == "try-error" || length(PID) != 1L)
+  if (class(PID) == "try-error" || length(PID) != 1L)
     stop("first line from '%s' is '%s' - doens't look like PID", pid_path, PID)
 
   invisible(kill_process_group(PID, "TERM"))

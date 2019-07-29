@@ -33,14 +33,14 @@ restrserve_start = function(dir, debug = FALSE, ...) {
   # we know that "pid.file" entry is at the last row
   pid_line = configuraion_lines[[length(configuraion_lines)]]
   pid_key_value = strsplit(pid_line, " ", TRUE)[[1]]
-  if(pid_key_value[[1]] != "pid.file") {
+  if (pid_key_value[[1]] != "pid.file") {
     stop(sprintf("last line in config file '%s' is not 'pid.file'", configuraion_path))
   } else {
     pid_path = pid_key_value[[2]]
   }
 
   status = Rserve::Rserve(debug = debug, args = sprintf("--silent --vanilla --RS-conf %s", configuraion_path), ...)
-  if(status == 0L) {
+  if (status == 0L) {
     # now try to read pid from pidfile
     read_pid(pid_path)
   } else {
@@ -55,21 +55,21 @@ read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
   Sys.sleep(wait_retry)
   pid = -1L
 
-  for(n_attempts in seq_len(n_retry)) {
+  for (n_attempts in seq_len(n_retry)) {
     pidline = readLines(pid_path, n = 1L)
-    if(length(pidline) != 1) {
+    if (length(pidline) != 1) {
       message(sprintf("wait for %.3f sec and retry (#%d) to read pid from %s", wait_retry, n_attempts, pid_path))
       Sys.sleep(wait_retry)
     } else {
       pid = as.integer(pidline)
       # report success only if we had issues
-      if(n_attempts > 1L)
+      if (n_attempts > 1L)
         message(sprintf("successfully read pid=%d", pid))
       break
     }
   }
   names(pid) = pid_path
-  if(pid == -1L)
+  if (pid == -1L)
     warning(sprintf("can't read pid from %s - returning dummy -1 value", pid_path))
   pid
 }

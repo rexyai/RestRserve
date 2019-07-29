@@ -39,7 +39,7 @@ restrserve_deploy = function(file,
   checkmate::assert_path_for_output(dir, overwrite = TRUE)
   checkmate::assert_flag(start_from_snapshot)
 
-  if(!dir.exists(dir))
+  if (!dir.exists(dir))
     dir.create(dir, recursive = TRUE)
 
   dir = normalizePath(dir, mustWork = TRUE)
@@ -52,7 +52,7 @@ restrserve_deploy = function(file,
   configuration_lines = create_rserve_configuration_lines(configuration)
   # add configuration
   #------------------------
-  if(start_from_snapshot)
+  if (start_from_snapshot)
     source_user_code = paste("source", file_snap, collapse = " ")
   else
     source_user_code = paste("source", file, collapse = " ")
@@ -62,7 +62,7 @@ restrserve_deploy = function(file,
   # load config configuration_file if it was provided
   configuration_file_lines = character(0)
 
-  if(!is.null(configuration_file)) {
+  if (!is.null(configuration_file)) {
     configuration_file = normalizePath(configuration_file, mustWork = TRUE)
     stopifnot(file.exists(configuration_file))
     configuration_file_lines = readLines(configuration_file)
@@ -85,7 +85,7 @@ create_rserve_configuration_lines = function(configuration = c("encoding" = "utf
   checkmate::assert_character(configuration)
   checkmate::assert_names(names(configuration), type = "unique")
 
-  if(length(configuration) > 0) {
+  if (length(configuration) > 0) {
     paste(names(configuration), configuration, sep = " ")
   } else
     character(0)

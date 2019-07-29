@@ -79,7 +79,7 @@ RestRserveApplication = R6::R6Class(
                           ...) {
       checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      if(hasArg("logger")) {
+      if (hasArg("logger")) {
         msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
                     "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
                     sep = "\n")
@@ -116,7 +116,7 @@ RestRserveApplication = R6::R6Class(
       openapi_definition_lines = extract_docstrings_yaml(FUN)
       # openapi_definition_lines = character(0) means
       # - there are no openapi definitions
-      if(length(openapi_definition_lines) > 0) {
+      if (length(openapi_definition_lines) > 0) {
         if (is.null(private$handlers_openapi_definitions[[path]])) {
           private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
         }
@@ -145,8 +145,8 @@ RestRserveApplication = R6::R6Class(
     run = function(http_port = 8001L, ..., background = FALSE) {
       checkmate::assert_int(http_port)
       ARGS = list(...)
-      if(http_port > 0L) {
-        if(is.null(ARGS[["http.port"]])) {
+      if (http_port > 0L) {
+        if (is.null(ARGS[["http.port"]])) {
           ARGS[["http.port"]] = http_port
         }
       }
@@ -167,16 +167,17 @@ RestRserveApplication = R6::R6Class(
         pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)
         pid = pid[["pid"]]
 
-        if(interactive()) {
+        if (interactive()) {
           message(sprintf("Started RestRserve in a BACKGROUND process pid = %d", pid))
           message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
           message("NOTE that current master process also will be killed")
         }
         pid
       } else {
-        if(interactive()) {
+        if (interactive()) {
           message(sprintf("Started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
-          message(sprintf("You can kill process GROUP with `kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid()))
+          cmd = sprintf("`kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid())
+          message(paste("You can kill process GROUP with", cmd))
           message("NOTE that current master process also will be killed")
 
         }
@@ -189,7 +190,7 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
-      if(length(self$endpoints()) == 0) {
+      if (length(self$endpoints()) == 0) {
         self$logger$warning("'RestRserveApp' doesn't have any endpoints")
       }
       self$logger$info(list(endpoints = self$endpoints()))
@@ -200,12 +201,12 @@ RestRserveApplication = R6::R6Class(
       checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
 
-      if(!requireNamespace("yaml", quietly = TRUE)) {
+      if (!requireNamespace("yaml", quietly = TRUE)) {
         stop("please install 'yaml' package")
       }
 
       file_dir = dirname(file_path)
-      if(!dir.exists(file_dir)) {
+      if (!dir.exists(file_dir)) {
         dir.create(file_dir, recursive = TRUE)
       }
 
@@ -226,7 +227,7 @@ RestRserveApplication = R6::R6Class(
       file_path = path.expand(file_path)
 
       file_dir = dirname(file_path)
-      if(!dir.exists(file_dir)) {
+      if (!dir.exists(file_dir)) {
         dir.create(file_dir, recursive = TRUE)
       }
 
@@ -244,7 +245,7 @@ RestRserveApplication = R6::R6Class(
     append_middleware = function(...) {
       mw_list = list(...)
       checkmate::assert_list(mw_list, types = "RestRserveMiddleware", unique = TRUE)
-      for(mw in mw_list) {
+      for (mw in mw_list) {
         id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw
       }
@@ -258,7 +259,13 @@ RestRserveApplication = R6::R6Class(
     middleware = NULL,
     #------------------------------------------------------------------------
     process_request = function(request) {
-      self$logger$trace(list(request_id = request$request_id, method = request$method, path = request$path, query = request$query, headers = request$headers))
+      self$logger$trace(
+        list(request_id = request$request_id,
+             method = request$method,
+             path = request$path,
+             query = request$query,
+             headers = request$headers)
+        )
       # dummy response
       response = RestRserveResponse$new(content_type = self$content_type)
       #------------------------------------------------------------------------------
@@ -269,15 +276,19 @@ RestRserveApplication = R6::R6Class(
       mw_flag = "process_request"
       need_call_handler = TRUE
 
-      for(id in mw_ids) {
+      for (id in mw_ids) {
         mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = sprintf("call %s middleware", mw_flag)))
+        self$logger$trace(
+          list(request_id = request$request_id,
+               middleware = mw_name,
+               message = sprintf("call %s middleware", mw_flag))
+        )
         FUN = private$middleware[[id]][[mw_flag]]
         mw_status = private$call_handler(FUN, request, response)
         # FIXME: move after break if last no need
         mw_called[[id]] = TRUE
         # break loop on error
-        if(!isTRUE(mw_status)) {
+        if (!isTRUE(mw_status)) {
           need_call_handler = FALSE
           break
         }
@@ -300,14 +311,18 @@ RestRserveApplication = R6::R6Class(
       # call middleware for the response
       mw_flag = "process_response"
       # call in reverse order
-      for(id in rev(names(mw_called))) {
+      for (id in rev(names(mw_called))) {
         mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace(list(request_id = request$request_id, middleware = mw_name, message = sprintf("call %s middleware", mw_flag)))
+        self$logger$trace(
+          list(request_id = request$request_id,
+               middleware = mw_name,
+               message = sprintf("call %s middleware", mw_flag))
+        )
         FUN = private$middleware[[id]][[mw_flag]]
         mw_status = private$call_handler(FUN, request, response)
         # FIXME: should we break loop
         # break loop on error
-        if(!isTRUE(mw_status)) {
+        if (!isTRUE(mw_status)) {
           break
         }
       }
@@ -334,11 +349,11 @@ RestRserveApplication = R6::R6Class(
       # file_path = path.expand(file_path)
       file_path = normalizePath(file_path) # absolute path
       url_nchars = nchar(url_path) # prevent calc every time
-      if(dir.exists(file_path)) {
+      if (dir.exists(file_path)) {
         # file_path is a DIRECTORY
         handler = function(request, response) {
           fl = file.path(file_path, substr(request$path, url_nchars + 2L, nchar(request$path)))
-          if(!file.exists(fl) || dir.exists(fl)) {
+          if (!file.exists(fl) || dir.exists(fl)) {
             raise(self$HTTPError$not_found())
           } else {
             response$body = c(file = fl)
@@ -350,7 +365,7 @@ RestRserveApplication = R6::R6Class(
       } else {
         # file_path is a FILE
         handler = function(request, response) {
-          if(!file.exists(file_path)) {
+          if (!file.exists(file_path)) {
             raise(self$HTTPError$not_found())
           } else {
             response$body = c(file = file_path)
@@ -366,17 +381,26 @@ RestRserveApplication = R6::R6Class(
     match_handler = function(request, response) {
       # Early stop if no routes for this method
       if (is.null(private$routes[[request$method]])) {
-        self$logger$trace(list(request_id = request$request_id, message = sprintf("no handlers registered for the method '%s'", request$method)))
+        self$logger$trace(
+          list(request_id = request$request_id,
+               message = sprintf("no handlers registered for the method '%s'", request$method))
+        )
         return(NULL)
       }
       if (private$routes[[request$method]]$size() == 0L) {
-        self$logger$trace(list(request_id = request$request_id, message = sprintf("no handlers registered for the method '%s'", request$method)))
+        self$logger$trace(
+          list(request_id = request$request_id,
+               message = sprintf("no handlers registered for the method '%s'", request$method))
+        )
         return(NULL)
       }
       # Get handler UID
-      self$logger$trace(list(request_id = request$request_id, message = sprintf("try to match requested path '%s'", request$path)))
+      self$logger$trace(
+        list(request_id = request$request_id,
+             message = sprintf("try to match requested path '%s'", request$path))
+      )
       id = private$routes[[request$method]]$match_path(request$path)
-      if(is.null(id)) {
+      if (is.null(id)) {
         self$logger$trace(list(request_id = request$request_id, message = "requested path not matched"))
         return(NULL)
       }
@@ -387,13 +411,13 @@ RestRserveApplication = R6::R6Class(
     call_handler = function(FUN, request, response) {
       status = try_capture_stack(FUN(request, response))
       success = TRUE
-      if(inherits(status, 'simpleError')) {
+      if (inherits(status, 'simpleError')) {
         # means UNHANDLED exception in middleware
         self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
         status = self$HTTPError$internal_server_error()
         success = FALSE
       }
-      if(inherits(status, 'HTTPError')) {
+      if (inherits(status, 'HTTPError')) {
         # raise result
         if (is.list(status) && !is.null(status$response)) {
           status = status$response
@@ -410,7 +434,7 @@ RestRserveApplication = R6::R6Class(
     },
     #------------------------------------------------------------------------
     get_openapi_paths = function() {
-      if(!requireNamespace("yaml", quietly = TRUE)) {
+      if (!requireNamespace("yaml", quietly = TRUE)) {
         stop("please install 'yaml' package first")
       }
       eapply(private$handlers_openapi_definitions, function(p) {

@@ -19,7 +19,7 @@ AuthBackend = R6::R6Class(
     parse_auth_token_from_request = function(request, response) {
       auth_header = request$headers[["authorization"]]
       #--------------------------------------------------------
-      if(is.null(auth_header)) {
+      if (is.null(auth_header)) {
         err = private$HTTPError$unauthorized(
           body = "401 Missing Authorization Header",
           headers = "WWW-Authenticate: Basic"
@@ -38,13 +38,13 @@ AuthBackend = R6::R6Class(
         raise(err)
       }
       #--------------------------------------------------------
-      if(length(parts) == 1L) {
+      if (length(parts) == 1L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Token Missing",
           headers = "WWW-Authenticate: Basic")
         )
       }
-      if(length(parts) > 2L) {
+      if (length(parts) > 2L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Contains extra content",
           headers = "WWW-Authenticate: Basic")
@@ -70,7 +70,7 @@ AuthBackendBasic = R6::R6Class(
       user_password = private$extract_credentials(request, response)
 
       res = private$auth_fun(user_password[[1]], user_password[[2]])
-      if(!isTRUE(res)) {
+      if (!isTRUE(res)) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Username/Password",
           headers = "WWW-Authenticate: Basic")
@@ -83,7 +83,7 @@ AuthBackendBasic = R6::R6Class(
       token = super$parse_auth_token_from_request(request, response)
       #-------------------------------------------------------
       token = try(rawToChar(base64enc::base64decode(token)), silent = TRUE)
-      if(inherits(token, "try-error")) {
+      if (inherits(token, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Unable to decode credentials",
           headers = "WWW-Authenticate: Basic")
@@ -92,12 +92,12 @@ AuthBackendBasic = R6::R6Class(
       #-------------------------------------------------------
       result = try({
         result = strsplit(token, ":", TRUE)[[1]]
-        if(length(result) != 2)
+        if (length(result) != 2)
           raise("user-password should be vector of 2")
          list(user = result[[1]], password = result[[2]])
       }, silent = TRUE)
       #-------------------------------------------------------
-      if(inherits(result, "try-error")) {
+      if (inherits(result, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization: Unable to decode credentials",
           headers = "WWW-Authenticate: Basic")
@@ -137,7 +137,7 @@ AuthBackendBearer = R6::R6Class(
       token = private$extract_credentials(request, response)
 
       res = private$auth_fun(token)
-      if(isTRUE(res)) {
+      if (isTRUE(res)) {
         return(TRUE)
       } else {
         raise(private$HTTPError$unauthorized(
@@ -195,9 +195,9 @@ RestRserveAuthMiddleware = R6::R6Class(
 
       self$process_request = function(request, response) {
         prefixes_mask = match == "partial"
-        if(any(!prefixes_mask) && request$path %in% routes[!prefixes_mask])
+        if (any(!prefixes_mask) && request$path %in% routes[!prefixes_mask])
           return(private$auth_backend$authenticate(request, response))
-        if(any(prefixes_mask) && startsWith(request$path, routes[prefixes_mask]))
+        if (any(prefixes_mask) && startsWith(request$path, routes[prefixes_mask]))
           return(private$auth_backend$authenticate(request, response))
       }
 

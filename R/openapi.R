@@ -9,12 +9,12 @@ extract_docstrings_yaml = function(FUN) {
   PATTERN_BOUNDS = "^[[:space:]]*#\'[[:space:]]*(---)"
   docstrings_lines_start_end = which(grepl(PATTERN_BOUNDS, lines))
 
-  if(length(docstrings_lines_start_end) >= 2L) {
+  if (length(docstrings_lines_start_end) >= 2L) {
     # skip docstring block start and end
     docstrings_lines_start = docstrings_lines_start_end[[1]] + 1L
     docstrings_lines_end = docstrings_lines_start_end[[2]] - 1L
 
-    if(docstrings_lines_end >= docstrings_lines_start) {
+    if (docstrings_lines_end >= docstrings_lines_start) {
       lines = lines[docstrings_lines_start : docstrings_lines_end]
       # docstring start pattern
       PATTERN = "^[[:space:]]*#\' " # mind space at the end!
@@ -150,7 +150,7 @@ openapi_license = function(name = NULL, url = NULL) {
 
   dict = dict_create()
 
-  if(!is.null(name)) {
+  if (!is.null(name)) {
     dict[["name"]] = name
     dict_insert_not_empty(dict, "url", url)
   }

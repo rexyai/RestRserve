@@ -23,4 +23,3 @@ test_that("Check errors in middleware", {
   expect_equal(get_text(test_500_2), err_msg_2)
   expect_equal(get_status_code(test_500_2), 500L)
 })
-

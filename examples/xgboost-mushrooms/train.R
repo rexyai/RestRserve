@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 DIR = commandArgs(trailingOnly = TRUE)[[1]]
-if(!dir.exists(DIR)) dir.create(DIR, recursive = TRUE)
+if (!dir.exists(DIR)) dir.create(DIR, recursive = TRUE)
 
 library(Matrix)
 library(xgboost)
@@ -28,7 +28,7 @@ model_matrix_constructor = function(features) {
     key_val = jsonlite::fromJSON(x, simplifyVector = FALSE)
     # convert feature_name <-> feature_value pairs to "key=value" strings
     # as it was in original feature space
-    for(i in length(key_val)) {
+    for (i in length(key_val)) {
       kv = key_val[[i]]
       key_val[[i]] = paste(kv$featureName, kv$featureValue, sep = "=")
     }

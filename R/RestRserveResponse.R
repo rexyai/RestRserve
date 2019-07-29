@@ -74,8 +74,8 @@ RestRserveResponse = R6::R6Class(
       )
       self$set_content_type(content_type, serializer)
       body_name = names(body)
-      if(!is.null(body_name)) {
-        if(!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
+      if (!is.null(body_name)) {
+        if (!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
           body = unname(body)
         }
       }
@@ -87,7 +87,7 @@ RestRserveResponse = R6::R6Class(
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
       checkmate::assert_string(content_type, pattern = ".*/.*")
-      if(is.null(serializer)) {
+      if (is.null(serializer)) {
         serializer = switch(
           content_type,
           'application/json' = to_json,
@@ -100,14 +100,14 @@ RestRserveResponse = R6::R6Class(
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
 
-      if(!is.numeric(status_code))
+      if (!is.numeric(status_code))
         stop("'status_code' should be numeric http status code")
 
       status_code_int = as.integer(status_code)
       status_code_char = as.character(status_code)
 
       # default standard body message
-      if(is.null(body)) body = status_codes[[status_code_char]]
+      if (is.null(body)) body = status_codes[[status_code_char]]
 
       self$status_code = status_code_int
       invisible(NULL)
@@ -127,11 +127,11 @@ forward = function() {
 
 as_rserve_response = function(x) {
 
-  if(checkmate::test_string(x$body)) {
-    if(isTRUE(names(x$body) == "file")) {
+  if (checkmate::test_string(x$body)) {
+    if (isTRUE(names(x$body) == "file")) {
       return(list("file" = x$body, x$content_type, x$headers, x$status_code))
     }
-    if(isTRUE(names(x$body) == "tmpfile")) {
+    if (isTRUE(names(x$body) == "tmpfile")) {
       return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
     }
   }

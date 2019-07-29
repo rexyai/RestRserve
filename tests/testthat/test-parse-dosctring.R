@@ -29,4 +29,3 @@ test_that("test extract_docstrings_yaml function", {
   # should only work with functions
   expect_error(parse_docstring(1))
 })
-

@@ -12,15 +12,15 @@ URLenc = function(x) {
 combine_headers_by_key_env = function(header_keys, header_values) {
   res = new.env(parent = emptyenv())
 
-  for(i in seq_along(header_keys)) {
+  for (i in seq_along(header_keys)) {
     key = header_keys[[i]]
     value = header_values[[i]]
     # no such key yet
-    if(is.null(res[[key]])) {
+    if (is.null(res[[key]])) {
       res[[key]] = value
     } else {
       # key already exists and we need cobine values with existing values
-      if(key == "cookie") {
+      if (key == "cookie") {
         res[[key]] = paste(res[[key]], value, sep = "; ")
       } else {
         res[[key]] = paste(res[[key]], value, sep = ", ")
@@ -37,13 +37,13 @@ dict_create = function() {
   new.env(parent = emptyenv())
 }
 dict_insert_not_empty = function(x, key, value) {
-  if(!is.environment(x))
+  if (!is.environment(x))
     stop("x should be environment")
-  if(!is.null(value) && length(value) > 0)
+  if (!is.null(value) && length(value) > 0)
     x[[key]] = value
 }
 dict_is_empty = function(x) {
-  if(!is.environment(x))
+  if (!is.environment(x))
     stop("x should be environment")
   length(x) == 0L
 }
@@ -86,7 +86,7 @@ deparse_vector = function(x) {
 }
 
 guess_mime = function(file_path, content_type) {
-  if(is.null(content_type))
+  if (is.null(content_type))
     content_type = mime::guess_type(file_path)
   content_type
 }

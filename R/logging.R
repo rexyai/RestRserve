@@ -28,7 +28,7 @@ Logger = R6::R6Class(
     printer = NULL,
     #----------------------------------------
     set_name = function(name = "ROOT") {
-      private$name = as.character(name)
+      private$name = as.character(x = name)
     },
     #----------------------------------------
     set_log_level = function(level = INFO) {
@@ -36,7 +36,7 @@ Logger = R6::R6Class(
     },
     #----------------------------------------
     set_printer = function(FUN = NULL) {
-      if(is.null(FUN)) {
+      if (is.null(FUN)) {
         FUN = function(timestamp, level, logger_name, pid, message) {
           x = to_json(
             list(
@@ -50,9 +50,9 @@ Logger = R6::R6Class(
           cat(x, file = "", append = TRUE, sep = "\n")
         }
       }
-      if(!is.function(FUN))
+      if (!is.function(FUN))
         stop("'FUN' should function or NULL")
-      if( length(formals(FUN)) != 5L )
+      if ( length(formals(FUN)) != 5L )
         stop("FUN should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)")
       self$printer = FUN
     },
@@ -91,7 +91,7 @@ Logger = R6::R6Class(
     level = NULL,
     name = NULL,
     log_base = function(msg, ..., log_level, log_level_tag) {
-      if(isTRUE(private$level >= log_level)) {
+      if (isTRUE(private$level >= log_level)) {
         self$printer(Sys.time(), log_level_tag, private$name, Sys.getpid(), msg)
       }
       invisible(msg)

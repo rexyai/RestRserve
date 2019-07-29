@@ -9,7 +9,7 @@ read_allowed_keys = function(path) {
   keys = readLines(path, warn = FALSE)
   # use R environment as dictionary/hash-map
   dict = new.env(parent = emptyenv())
-  for(k in keys) dict[[k]] = TRUE
+  for (k in keys) dict[[k]] = TRUE
   dict
 }
 
@@ -29,11 +29,11 @@ auth_mw = RestRserveAuthMiddleware$new(auth_backend = auth_backend,
 # application logic - create handlers
 #------------------------------------------------------------------------
 calc_fib = function(n) {
-  if(n < 0L) stop("n should be >= 0")
-  if(n == 0L) return(0L)
-  if(n == 1L || n == 2L) return(1L)
+  if (n < 0L) stop("n should be >= 0")
+  if (n == 0L) return(0L)
+  if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-  for(i in 3L:n)
+  for (i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
   x[[n]]
 }

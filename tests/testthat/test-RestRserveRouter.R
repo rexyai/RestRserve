@@ -45,7 +45,12 @@ test_that("add regex path", {
   h$add_path(path = "/test2/{var1}/{var2}", match = "regex", id = "1")
   h$add_path(path = "/test2/", match = "partial", id = "1")
   expect_equal(h$size(), 4L)
-  expect_equal(h$paths, c("regex" = "/test1/{var1}", "regex" = "/test1/{var1}/{var2}", "regex" = "/test2/{var1}/{var2}", "partial" = "/test2/"))
+  expect_equal(h$paths,
+               c("regex" = "/test1/{var1}",
+                 "regex" = "/test1/{var1}/{var2}",
+                 "regex" = "/test2/{var1}/{var2}",
+                 "partial" = "/test2/")
+               )
   expect_error(h$add_path(path = "/test1/{var1}", match = "regex", id = "1"), "Regex already exists.")
   expect_true(h$.__enclos_env__$private$partial[["/test1/"]]$regex)
   expect_true(h$.__enclos_env__$private$partial[["/test2/"]]$regex)

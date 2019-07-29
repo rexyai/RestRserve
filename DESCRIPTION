@@ -28,7 +28,8 @@ Suggests:
   yaml (>= 2.1.14),
   curl (>= 2.7),
   jsonlite (>= 1.6),
-  testthat (>= 2.0.0)
+  testthat (>= 2.0.0), 
+  lintr
 KeepSource: true
 Encoding: UTF-8
 LazyData: true
