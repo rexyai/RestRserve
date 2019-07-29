@@ -6,11 +6,11 @@
 #' @param unbox whether to unbox (simplify) arrays consists of a single element
 #' @export
 to_json = function(x, unbox = TRUE) {
-  if(is.list(x) || is.environment(x)) {
+  if (is.list(x) || is.environment(x)) {
     x = as.list(x)
     keys = names(x)
     values = vapply(x, to_json, "", unbox, USE.NAMES = FALSE)
-    if(is.null(keys)) {
+    if (is.null(keys)) {
       sprintf("[%s]", paste(values, collapse = ","))
     } else {
       keys = deparse_vector(keys)
@@ -19,7 +19,7 @@ to_json = function(x, unbox = TRUE) {
     }
   } else {
     x = make_json_string(x)
-    if(length(x) == 1L && unbox) {
+    if (length(x) == 1L && unbox) {
       x
     } else {
       sprintf('[%s]', paste(x, collapse = ","))
@@ -34,11 +34,11 @@ make_json_string = function(x) {
 }
 
 print_json_string = function(x) {
-  res = UseMethod("print_json_string")
+   UseMethod("print_json_string")
 }
 
 print_json_string.default = function(x) {
-  if(is.null(x)) "null" else as.character(x)
+  if (is.null(x)) "null" else as.character(x)
 }
 
 print_json_string.character = function(x) {
@@ -55,4 +55,3 @@ print_json_string.numeric = function(x) {
   on.exit({options(scipen = scipen_old$scipen)})
   as.character(x)
 }
-

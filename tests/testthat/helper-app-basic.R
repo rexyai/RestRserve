@@ -1,13 +1,13 @@
 library(RestRserve)
 
 calc_fib = function(n) {
-  if(n < 0L) stop("n should be >= 0")
-  if(n == 0L) return(0L)
-  if(n == 1L || n == 2L) return(1L)
+  if (n < 0L) stop("n should be >= 0")
+  if (n == 0L) return(0L)
+  if (n == 1L || n == 2L) return(1L)
 
   x = rep(1L, n)
 
-  for(i in 3L:n)
+  for (i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
 
   x[[n]]
@@ -23,11 +23,11 @@ fib_forward = function(request, response) {
 
 mw1 = RestRserveMiddleware$new(
   process_request = function(req, res) {
-    if(req$path == "/temp")
+    if (req$path == "/temp")
       req$path = "/fib-forward"
   },
   process_response = function(req, res) {
-    if(res$status_code == 500L && startsWith(req$path, "/fib")) {
+    if (res$status_code == 500L && startsWith(req$path, "/fib")) {
       res$set_content_type("text/plain")
       res$body = paste("Custom 500 from mw1")
     }
@@ -40,7 +40,7 @@ mw2 = RestRserveMiddleware$new(
     TRUE
   },
   process_response = function(req, res) {
-    if(res$status_code == 500L && startsWith(req$path, "/fib")) {
+    if (res$status_code == 500L && startsWith(req$path, "/fib")) {
       res$body = paste("Custom 500 from mw2")
       res$set_content_type("text/plain")
     }
@@ -50,11 +50,11 @@ mw2 = RestRserveMiddleware$new(
 
 mw3 = RestRserveMiddleware$new(
   process_request = function(req, res) {
-    if(req$path == "/err-mw-req")
+    if (req$path == "/err-mw-req")
       stop("should be caught by middleware handler and wrapped to error")
   },
   process_response = function(req, res) {
-    if(req$path == "/err-mw-resp")
+    if (req$path == "/err-mw-resp")
       stop("should be caught by middleware handler and wrapped to error")
   },
   name = "mw3"

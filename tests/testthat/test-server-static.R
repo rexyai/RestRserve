@@ -34,4 +34,3 @@ test_that("Check static files headers", {
   expect_equal(get_headers(test_200_2)$`content-type`, "text/html")
   expect_equal(get_headers(test_404)$`content-type`, "text/plain")
 })
-

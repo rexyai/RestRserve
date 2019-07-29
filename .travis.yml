@@ -1,0 +1,39 @@
+language: r
+sudo: false
+cache: packages
+warnings_are_errors: false
+
+env:
+  global:
+    - _R_CHECK_FORCE_SUGGESTS_=true
+matrix:
+  - r: release
+    not_cran: false
+    r_check_args: "--no-manual --as--cran"
+
+compiler:
+  - gcc-4.9
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-4.9
+    - g++-4.9
+    - gfortran-4.9
+r_packages:
+  - covr
+  - lintr
+before_install:
+  - echo "options(repos = c(CRAN = 'https://cran.rstudio.com'))" > ~/.Rprofile
+  - mkdir ~/.R
+  - echo "CXX11=g++-4.9" > ~/.R/Makevars
+  - echo "CXX=g++-4.9" >> ~/.R/Makevars
+  - echo "CXX1X=g++-4.9" >> ~/.R/Makevars
+  - echo "CC=gcc-4.9" >> ~/.R/Makevars
+  - echo 'CFLAGS+="-std=gnu99"' >> ~/.R/Makevars
+after_script:
+  - R CMD INSTALL $PKG_TARBALL
+  - Rscript -e 'lintr::lint_package()'
+after_success:
+  - Rscript -e 'covr::codecov()'

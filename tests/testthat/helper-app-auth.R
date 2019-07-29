@@ -1,13 +1,13 @@
 library(RestRserve)
 
 calc_fib = function(n) {
-  if(n < 0L) stop("n should be >= 0")
-  if(n == 0L) return(0L)
-  if(n == 1L || n == 2L) return(1L)
+  if (n < 0L) stop("n should be >= 0")
+  if (n == 0L) return(0L)
+  if (n == 1L || n == 2L) return(1L)
 
   x = rep(1L, n)
 
-  for(i in 3L:n)
+  for (i in 3L:n)
     x[[i]] = x[[i - 1]] + x[[i - 2]]
 
   x[[n]]
@@ -28,8 +28,19 @@ authorize_token = function(token) {
   identical(token, "secure-token")
 }
 bearer_auth = AuthBackendBearer$new(FUN = authorize_token)
-mw_auth_token = RestRserveAuthMiddleware$new(bearer_auth, routes = "/fib-bearer-auth", name = "bearer_auth")
-mw_auth_token_prefix = RestRserveAuthMiddleware$new(bearer_auth, routes = "/fib-secure", match = "partial", name = "bearer_auth2")
+
+mw_auth_token = RestRserveAuthMiddleware$new(
+  bearer_auth,
+  routes = "/fib-bearer-auth",
+  name = "bearer_auth"
+)
+
+mw_auth_token_prefix = RestRserveAuthMiddleware$new(
+  bearer_auth,
+  routes = "/fib-secure",
+  match = "partial",
+  name = "bearer_auth2"
+)
 
 #---------------------------------------------
 # basic authentification

@@ -94,5 +94,3 @@ test_that("Check authorization didn't affect not specified routes", {
   URL = sprintf("http://localhost:%d/desc", app_auth_port)
   expect_equal(strsplit(get_text(URL), "\n", TRUE)[[1]][[1]], "Package: RestRserve")
 })
-
-

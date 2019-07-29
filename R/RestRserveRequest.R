@@ -112,7 +112,7 @@ parse_request = function(path, query, body, headers) {
   # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
   # according to the code above we assume that "request-method" is always exists
   method = headers[["request-method"]]
-  if(is.null(method)) {
+  if (is.null(method)) {
     method = "GET"
   }
 
@@ -157,15 +157,15 @@ parse_headers = function(headers) {
     idx = grep("^[^:]+:", lines)
     keys = keys[idx]
     values = values[idx]
-    for(i in seq_along(keys)) {
+    for (i in seq_along(keys)) {
       key = keys[[i]]
       value = values[[i]]
       # no such key yet
-      if(is.null(res[[key]])) {
+      if (is.null(res[[key]])) {
         res[[key]] = value
       } else {
         # key already exists and we need cobine values with existing values
-        if(key == "cookie") {
+        if (key == "cookie") {
           res[[key]] = paste(res[[key]], value, sep = "; ")
         } else {
           res[[key]] = paste(res[[key]], value, sep = ", ")
