@@ -92,9 +92,13 @@ AuthBackendBasic = R6::R6Class(
       #-------------------------------------------------------
       result = try({
         result = strsplit(token, ":", TRUE)[[1]]
-        if (length(result) != 2)
-          raise("user-password should be vector of 2")
-         list(user = result[[1]], password = result[[2]])
+        if (length(result) != 2) {
+          raise(private$HTTPError$unauthorized(
+            body = "401 Invalid Authorization Header: user-password should be vector of 2",
+            headers = "WWW-Authenticate: Basic")
+          )
+        }
+        list(user = result[[1]], password = result[[2]])
       }, silent = TRUE)
       #-------------------------------------------------------
       if (inherits(result, "try-error")) {

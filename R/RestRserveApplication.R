@@ -296,15 +296,16 @@ RestRserveApplication = R6::R6Class(
 
       # call handler
       if (isTRUE(need_call_handler)) {
-        # match handler
+        # as a side effect we will populate request$path_parameters (if any)
         handler_id = private$match_handler(request, response)
+
         # early stop
         if (is.null(handler_id)) {
           response = self$HTTPError$not_found()
         } else {
           handler_fun = private$handlers[[handler_id]]
           self$logger$trace(list(request_id = request$request_id, message = sprintf("call handler '%s'", handler_id)))
-          handler_status = private$call_handler(handler_fun, request, response)
+          private$call_handler(handler_fun, request, response)
         }
       }
 
@@ -380,14 +381,15 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     match_handler = function(request, response) {
       # Early stop if no routes for this method
-      if (is.null(private$routes[[request$method]])) {
+      router = private$routes[[request$method]]
+      if (is.null(router)) {
         self$logger$trace(
           list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
         return(NULL)
       }
-      if (private$routes[[request$method]]$size() == 0L) {
+      if (router$size() == 0L) {
         self$logger$trace(
           list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
@@ -399,7 +401,13 @@ RestRserveApplication = R6::R6Class(
         list(request_id = request$request_id,
              message = sprintf("try to match requested path '%s'", request$path))
       )
-      id = private$routes[[request$method]]$match_path(request$path)
+      id = router$match_path(request$path)
+      # if there are extracted parameters
+      path_parameters = attr(id, 'path_parameters')
+      if (is.list(path_parameters)) {
+        request$path_parameters = path_parameters
+      }
+
       if (is.null(id)) {
         self$logger$trace(list(request_id = request$request_id, message = "requested path not matched"))
         return(NULL)

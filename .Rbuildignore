@@ -5,7 +5,7 @@
 ^examples$
 CONTRIBUTING.md
 ^docker$
-drat.R
 ^.*[.]tar.gz$
-openapi.yaml
 ^\.lintr$
+^\.travis\.yml$
+^\.openapi\.yaml$

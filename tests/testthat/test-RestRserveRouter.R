@@ -86,8 +86,8 @@ test_that("get path variables", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
-  expect_equal(attr(h$match_path("/test2/1"), "path_variables"),
+  expect_equal(attr(h$match_path("/test2/1"), "path_parameters"),
                list("var1" = "1"))
-  expect_equal(attr(h$match_path("/test3/1/text/3"), "path_variables"),
+  expect_equal(attr(h$match_path("/test3/1/text/3"), "path_parameters"),
                list("var1" = "1", "var2" = "3"))
 })

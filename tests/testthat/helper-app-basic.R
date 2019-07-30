@@ -63,7 +63,7 @@ mw3 = RestRserveMiddleware$new(
 # create application
 app = RestRserveApplication$new(middleware = list(mw1, mw2, mw3))
 # app = RestRserve::RestRserveApplication$new()
-app$logger$set_log_level(TRACE)
+app$logger$set_log_level(ERROR)
 # register endpoints and corresponding R handlers
 # app$add_route(path = "/fib-return", method = "GET", FUN = fib_immediate_return)
 app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)
@@ -72,6 +72,10 @@ app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)
 app$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
 # serve static dir
 app$add_static(path = "/html", file_path = file.path(R.home("doc"), "html"))
+
+app$add_get(path = "/template/{id1}/{id2}", FUN = function(req, res) {
+  res$body = to_json(req$path_parameters)
+}, match = 'regex')
 
 app_port = 6667L
 

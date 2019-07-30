@@ -21,12 +21,19 @@ RestRserveRequest
 \item named \code{characeter vector} in the case of a URL encoded form.
 It will have the same shape as the query string (named string vector).
 }
-}
-\item{content_type}{ = \code{""}, always character of length 1}
+},
+\item{request_id}{\bold{character}, automatically generated UUID for each request}
+\item{content_type}{\code{""}, always character of length 1}
 \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
 According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
 are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
-}
+},
+\item{path_parameters}{\bold{list()}, list of parameters extracted from templated path after routing.
+For example if we have some hadler listening at \code{/job/{job_id}}} and we are receiving request at
+\code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}. It is important to understand
+that \code{path_parameters} will be available (not empty) only after request will reach handler. This
+effectively means that \code{path_parameters} can be used inside handler and response middleware
+(but not request middleware!)
 }
 }
 \description{

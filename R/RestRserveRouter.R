@@ -113,7 +113,7 @@ RestRserveRouter = R6::R6Class(
                 res = private$partial[[matched]]$patterns[[pattern]]$id
                 if (isTRUE(extract_vars)) {
                   vars = private$parse_vars(path, private$partial[[matched]]$patterns[[pattern]]$template)
-                  attr(res, "path_variables") = vars
+                  attr(res, "path_parameters") = vars
                 }
                 return(res)
               }
@@ -212,7 +212,7 @@ RestRserveRouter = R6::R6Class(
       # checkmate::assert_string(template, pattern = "^/")
       # Check vars exists
       if (is.null(private$vars[[template]])) {
-        return(NULL)
+        return(list())
       }
       splitted = strsplit(path, "/", fixed = TRUE)[[1L]][-1]
       res = structure(
