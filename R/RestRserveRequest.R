@@ -173,8 +173,9 @@ parse_headers = function(headers) {
       if (is.null(res[[key]])) {
         res[[key]] = value
       } else {
-        # key already exists and we need cobine values with existing values
+        # key already exists and we need combine values with existing values
         if (key == "cookie") {
+          # cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
           res[[key]] = paste(res[[key]], value, sep = "; ")
         } else {
           res[[key]] = paste(res[[key]], value, sep = ", ")
