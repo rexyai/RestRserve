@@ -8,6 +8,19 @@ HTTPError = R6::R6Class(
   )
 )
 
+#' @name HTTPErrorFactory
+#' @title helps to generate http error responces
+#' @description helps to generate http error responces. See \link{raise} for example.
+#' @section Methods:
+#' \describe{
+#'   \item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
+#'   \describe{
+#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}
+#'     \item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
+#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+#'     }
+#'   }
+#' }
 #' @export
 HTTPErrorFactory = R6::R6Class(
   classname = 'HTTPErrorFactory',
@@ -157,8 +170,20 @@ HTTPErrorFactory = R6::R6Class(
   )
 )
 
+#' @name raise
+#' @title interrupts request handling
+#' @description interrupts request handling and signals RestRserve to return HTTPError
+#' @param x instance of \code{HTTPError}. Can be created using \link{HTTPErrorFactory} -
+#' see examples.
 #' @export
-raise = function(x, ...) {
+#' @examples
+#' err_factory = HTTPErrorFactory$new()
+#' caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
+#' condition = attr(caught_http_exception, 'condition')
+#' # response is an instance of HTTPError
+#' # and valid RestRserve instace because HTTPError inherits from RestRserveResponse
+#' identical(condition$response$body, "400 Bad Request")
+raise = function(x) {
   exception = errorCondition('raise', response = x, class = class(x))
   stop(exception)
 }
