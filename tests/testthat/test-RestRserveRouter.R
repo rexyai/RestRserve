@@ -57,10 +57,10 @@ test_that("add regex path", {
   expect_false(h$.__enclos_env__$private$partial[["/test1/"]]$prefix)
   expect_true(h$.__enclos_env__$private$partial[["/test2/"]]$prefix)
   expect_equal(as.list(h$.__enclos_env__$private$partial[["/test1/"]]$patterns),
-               list("/test1/([^/]+)/([^/]+)/?$" = list("id" = "1"),
-                    "/test1/([^/]+)/?$" = list("id" = "1")))
+               list("/test1/([^/]+)/([^/]+)/?$" = list("id" = "1", template = "/test1/{var1}/{var2}"),
+                    "/test1/([^/]+)/?$" = list("id" = "1", template = "/test1/{var1}")))
   expect_equal(as.list(h$.__enclos_env__$private$partial[["/test2/"]]$patterns),
-               list("/test2/([^/]+)/([^/]+)/?$" = list("id" = "1")))
+               list("/test2/([^/]+)/([^/]+)/?$" = list("id" = "1", template = "/test2/{var1}/{var2}")))
 })
 
 
@@ -75,10 +75,10 @@ test_that("match path", {
   expect_equal(h$match_path("/test1"), "1")
   expect_null(h$match_path("/test2"))
   expect_equal(h$match_path("/test2/"), "2")
-  expect_equal(h$match_path("/test2/test"), "3")
+  expect_equivalent(h$match_path("/test2/test"), "3")
   expect_equal(h$match_path("/test3/"), "4")
   expect_equal(h$match_path("/test3/test"), "4")
-  expect_equal(h$match_path("/test3/val1/text/val2"), "5")
+  expect_equivalent(h$match_path("/test3/val1/text/val2"), "5")
 })
 
 
@@ -86,9 +86,8 @@ test_that("get path variables", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
-  expect_null(h$get_vars(path = "/test1/1", "/"))
-  expect_equal(h$get_vars(path = "/test2/1", "/test2/{var1}"),
+  expect_equal(attr(h$match_path("/test2/1"), "path_variables"),
                list("var1" = "1"))
-  expect_equal(h$get_vars(path = "/test3/1/text/3", "/test3/{var1}/text/{var2}"),
+  expect_equal(attr(h$match_path("/test3/1/text/3"), "path_variables"),
                list("var1" = "1", "var2" = "3"))
 })
