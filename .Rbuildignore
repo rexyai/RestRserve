@@ -9,3 +9,4 @@ drat.R
 ^.*[.]tar.gz$
 openapi.yaml
 ^\.lintr$
+.travis.yml
