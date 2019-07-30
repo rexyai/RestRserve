@@ -2,7 +2,7 @@ context("Deparse vector")
 
 x = c("line\nline", "foo\\bar", "I said: \"hi!\"")
 
-deparse_vector_base <- function(x) {
+deparse_vector_base = function(x) {
   stopifnot(is.character(x))
   vapply(x, deparse, character(1L), USE.NAMES = FALSE)
 }
