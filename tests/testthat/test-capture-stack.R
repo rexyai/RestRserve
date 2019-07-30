@@ -1,4 +1,4 @@
-context("Test caputre stack")
+context("Test capture stack")
 
 test_that("Normal call", {
   expect_equal(try_capture_stack(1 + 1), 2)
