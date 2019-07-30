@@ -27,4 +27,3 @@ test_that("Check status", {
     expect_equal(get_status_code(test_404), 404L)
   }
 })
-
