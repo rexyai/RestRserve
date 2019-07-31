@@ -10,7 +10,8 @@
 #'   By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}}
 #'   \item{\code{$set_name(name = "ROOT")}}{ sets logger name}
 #'   \item{\code{$set_log_level(level = INFO)}}{ sets log level}
-#'   \item{\code{$set_printer(FUN = NULL)}}{ sets function which defines how to print logs}
+#'   \item{\code{$set_printer(FUN = NULL)}}{ sets function which defines how to print logs.
+#'     \code{FUN} should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)}
 #'   \item{\code{$trace(msg, ...)}}{ write trace message}
 #'   \item{\code{$debug(msg, ...)}}{ write debug message}
 #'   \item{\code{$info(msg, ...)}}{ write info message}

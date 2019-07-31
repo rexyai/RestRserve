@@ -1,3 +1,4 @@
+# nocov start
 ids_with_token = function(source_file, value, fun = `==`) {
   if (identical(source_file$parsed_content$col1, integer(0))) {
     return(NULL)
@@ -24,3 +25,4 @@ assignment_eq_linter = function(source_file) {
     })
   }
 }
+# nocov end

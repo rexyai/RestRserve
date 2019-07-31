@@ -1,3 +1,4 @@
+# nocov start
 #' @importFrom utils unzip
 #' @importFrom utils packageName
 update_swagger_ui = function(dest_dir) {
@@ -31,3 +32,4 @@ update_swagger_ui = function(dest_dir) {
   )
   return(dist_files)
 }
+# nocov end
