@@ -64,14 +64,17 @@ RestRserveResponse = R6::R6Class(
                           headers = character(0),
                           status_code = 200L,
                           serializer = NULL) {
-      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-      checkmate::assert_string(content_type)
-      checkmate::assert_character(headers)
-      checkmate::assert(
-        checkmate::check_string(body),
-        checkmate::check_raw(body),
-        combine = "or"
-      )
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+        checkmate::assert_string(content_type)
+        checkmate::assert_character(headers)
+        checkmate::assert(
+          checkmate::check_string(body),
+          checkmate::check_raw(body),
+          combine = "or"
+        )
+      }
+
       self$set_content_type(content_type, serializer)
       body_name = names(body)
       if (!is.null(body_name)) {
@@ -86,7 +89,10 @@ RestRserveResponse = R6::R6Class(
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
-      checkmate::assert_string(content_type, pattern = ".*/.*")
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(content_type, pattern = ".*/.*")
+      }
+
       if (is.null(serializer)) {
         serializer = switch(
           content_type,
@@ -94,7 +100,10 @@ RestRserveResponse = R6::R6Class(
           'text/plain' = as.character,
           identity)
       }
-      checkmate::assert_function(serializer, null.ok = TRUE)
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_function(serializer, null.ok = TRUE)
+      }
+
       self$serializer = serializer
       self$content_type = content_type
     },

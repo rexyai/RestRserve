@@ -68,12 +68,14 @@ RestRserveRequest = R6::R6Class(
                           body = raw(),
                           content_type = "application/octet-stream"
                           ) {
-      checkmate::assert_string(path)
-      checkmate::assert_string(method)
-      checkmate::assert_string(content_type)
-      checkmate::assert_environment(query)
-      checkmate::assert_environment(headers)
-      checkmate::assert_raw(body)
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(path)
+        checkmate::assert_string(method)
+        checkmate::assert_string(content_type)
+        checkmate::assert_environment(query)
+        checkmate::assert_environment(headers)
+        checkmate::assert_raw(body)
+      }
 
       self$path = path
       self$method = method

@@ -12,6 +12,11 @@
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
   # docstrings inside fucntions
   options("keep.source" = TRUE)
+
+  runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
+  runtime_asserts = isTRUE(as.logical(runtime_asserts))
+  options("RestRserve_RuntimeAsserts" = runtime_asserts)
+
   recent_rserve = "1.8.6"
   if (interactive()) {
     msg = paste("RestRserve is still work in progress",
