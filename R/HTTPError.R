@@ -158,7 +158,9 @@ HTTPErrorFactory = R6::R6Class(
   private = list(
     prepare_response = function(status_code, body, headers) {
       # default standard message
-      if (is.null(body)) body = paste(status_code, status_codes[[as.character(status_code)]])
+      if (is.null(body)) {
+        body = paste(status_code, status_codes[[as.character(status_code)]])
+      }
       HTTPError$new(
         body = body,
         content_type = self$content_type,
