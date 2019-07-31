@@ -6,11 +6,11 @@ test_that("Test to_json", {
     '{"a":"a","one":1,"list_to_array":["object"],"object":{"object":"object"}}'
   )
   expect_identical(
-    to_json(list(one = 1) , unbox = FALSE),
+    to_json(list(one = 1), unbox = FALSE),
     '{"one":[1]}'
   )
   expect_identical(
-    to_json(list(one = 1) , unbox = TRUE),
+    to_json(list(one = 1), unbox = TRUE),
     '{"one":1}'
   )
   expect_identical(

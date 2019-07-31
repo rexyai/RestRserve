@@ -53,7 +53,7 @@ Logger = R6::R6Class(
       }
       if (!is.function(FUN))
         stop("'FUN' should function or NULL")
-      if ( length(formals(FUN)) != 5L )
+      if (length(formals(FUN)) != 5L)
         stop("FUN should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)")
       self$printer = FUN
     },
