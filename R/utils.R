@@ -30,7 +30,7 @@ get_traceback = function(err) {
 
 #https://stackoverflow.com/a/15139734/1069256
 kill_process_group = function(pid, signal = "TERM") {
-  pgid = system2("ps", sprintf("-o pgid= %d | grep -o '[0-9]*'", pid), stdout = T)
+  pgid = system2("ps", sprintf("-o pgid= %d | grep -o '[0-9]*'", pid), stdout = TRUE)
   tools::pskill(pid)
   cmd_args = sprintf("-s %s -- -%s", signal, pgid)
   # message(sprintf("kill %s", cmd_args))
@@ -42,7 +42,7 @@ deparse_vector = function(x) {
   .Call("C_escape_chars", x)
 }
 
-guess_mime = function(file_path, content_type) {
+guess_mime = function(file_path, content_type = NULL) {
   if (is.null(content_type))
     content_type = mime::guess_type(file_path)
   content_type
