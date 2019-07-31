@@ -77,15 +77,15 @@ openapi_info = function(title = "RestRserve OpenAPI",
   checkmate::assert_string(description, null.ok = TRUE)
   checkmate::assert_string(termsOfService, null.ok = TRUE)
 
-  dict = dict_create()
-  dict_insert_not_empty(dict, "title", title)
-  dict_insert_not_empty(dict, "version", version)
-  dict_insert_not_empty(dict, "description", description)
-  dict_insert_not_empty(dict, "termsOfService", termsOfService)
-  dict_insert_not_empty(dict, "contact", contact)
-  dict_insert_not_empty(dict, "license", license)
-
-  res = as.list(dict)
+  res = list(
+    title = title,
+    version = version,
+    description = description,
+    termsOfService = termsOfService,
+    contact = contact,
+    license = license
+  )
+  res = compact_list(res)
   class(res) = "openapi_info"
   res
 }
@@ -108,16 +108,16 @@ openapi_servers = function(servers = list(openapi_server())) {
 openapi_server = function(url = "/",
                           description = NULL,
                           variables = NULL) {
-
   checkmate::assert_string(url)
   checkmate::assert_string(description, null.ok = TRUE)
   checkmate::assert_string(variables, null.ok = TRUE)
 
-  dict = dict_create()
-  dict_insert_not_empty(dict, "url", url)
-  dict_insert_not_empty(dict, "description", description)
-  dict_insert_not_empty(dict, "variables", variables)
-  res = as.list(dict)
+  res = list(
+    url = url,
+    description = description,
+    variables = variables
+  )
+  res = compact_list(res)
   class(res) = "openapi_server"
   res
 }
@@ -129,15 +129,19 @@ openapi_server = function(url = "/",
 #' @rdname openapi_create
 openapi_contact = function(name = NULL, url = NULL, email = NULL) {
   checkmate::assert_string(name, null.ok = TRUE)
-  checkmate::assert_string(url, null.ok = TRUE)
-  checkmate::assert_string(email, null.ok = TRUE)
+  checkmate::assert_string(url, pattern = "https?://", null.ok = TRUE)
+  checkmate::assert_string(email, pattern = ".*@.*", null.ok = TRUE)
 
-  dict = dict_create()
-  dict_insert_not_empty(dict, "name", name)
-  dict_insert_not_empty(dict, "url", url)
-  dict_insert_not_empty(dict, "email", email)
-
-  res = as.list(dict)
+  if (!is.null(name)) {
+    res = list(
+      name = name,
+      url = url,
+      email = email
+    )
+  } else {
+    res = list()
+  }
+  res = compact_list(res)
   class(res) = "openapi_contact"
   res
 }
@@ -146,16 +150,17 @@ openapi_contact = function(name = NULL, url = NULL, email = NULL) {
 #' @rdname openapi_create
 openapi_license = function(name = NULL, url = NULL) {
   checkmate::assert_string(name, null.ok = TRUE)
-  checkmate::assert_string(url, null.ok = TRUE)
-
-  dict = dict_create()
+  checkmate::assert_string(url, pattern = "https?://", null.ok = TRUE)
 
   if (!is.null(name)) {
-    dict[["name"]] = name
-    dict_insert_not_empty(dict, "url", url)
+    res = list(
+      name = name,
+      url = url
+    )
+  } else {
+    res = list()
   }
-
-  res = as.list(dict)
+  res = compact_list(res)
   class(res) = "openapi_license"
   res
 }
