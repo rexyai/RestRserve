@@ -328,7 +328,7 @@ RestRserveApplication = R6::R6Class(
         }
       }
 
-      return(as_rserve_response(response))
+      return(response$to_rserve())
     },
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
