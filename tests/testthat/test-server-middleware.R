@@ -1,4 +1,4 @@
-context("Test server basic")
+context("Test server middleware")
 
 skip_on_cran()
 skip_if_not_installed("curl")
