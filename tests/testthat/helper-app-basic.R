@@ -72,7 +72,7 @@ app$add_route(path = "/fib-forward", method = "GET", FUN = fib_forward)
 app$add_static(path = "/desc", file_path = system.file("DESCRIPTION", package = "RestRserve"))
 # serve static dir
 app$add_static(path = "/html", file_path = file.path(R.home("doc"), "html"))
-
+# Add template
 app$add_get(path = "/template/{id1}/{id2}", FUN = function(req, res) {
   res$body = to_json(req$path_parameters)
 }, match = 'regex')

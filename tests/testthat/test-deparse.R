@@ -1,4 +1,4 @@
-context("Deparse vector")
+context("Test deparse vector")
 
 x = c("line\nline", "foo\\bar", "I said: \"hi!\"")
 
