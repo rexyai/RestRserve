@@ -24,3 +24,4 @@ test_that("Equal with base", {
   expect_length(deparse_vector(x), length(x))
   expect_equal(deparse_vector(x), deparse_vector_base(x))
 })
+

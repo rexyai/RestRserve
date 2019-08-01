@@ -107,29 +107,7 @@ RestRserveRequest = R6::R6Class(
       }
       res = new.env(parent = emptyenv())
       if (is.character(headers) && length(headers) > 0L) {
-        ## parse the headers into key/value pairs, collapsing multi-line values
-        lines = strsplit(gsub("[\r\n]+[ \t]+", " ", headers), "[\r\n]+")[[1]]
-        keys = tolower(gsub(":.*", "", lines))
-        values = gsub("^[^:]*:[[:space:]]*", "", lines)
-        idx = grep("^[^:]+:", lines)
-        keys = keys[idx]
-        values = values[idx]
-        for (i in seq_along(keys)) {
-          key = keys[[i]]
-          value = values[[i]]
-          # no such key yet
-          if (is.null(res[[key]])) {
-            res[[key]] = value
-          } else {
-            # key already exists and we need combine values with existing values
-            if (key == "cookie") {
-              # cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
-              res[[key]] = paste(res[[key]], value, sep = "; ")
-            } else {
-              res[[key]] = paste(res[[key]], value, sep = ", ")
-            }
-          }
-        }
+        res = list2env(as.list(parse_headers_str(headers)), hash = TRUE)
       }
       self$headers = res
       return(invisible(TRUE))
@@ -137,17 +115,7 @@ RestRserveRequest = R6::R6Class(
     parse_cookies = function() {
       res = new.env(parent = emptyenv())
       if (length(self$headers) > 0L && !is.null(self$headers[["cookie"]])) {
-        cookie = strsplit(self$headers[["cookie"]], ";\\s+")[[1L]]
-        keys = tolower(gsub("=.*", "", cookie))
-        values = gsub("^[^:]*=[[:space:]]*", "", cookie)
-        for (i in seq_along(keys)) {
-          key = keys[[i]]
-          value = values[[i]]
-          # no such key yet
-          if (is.null(res[[key]])) {
-            res[[key]] = value
-          }
-        }
+        res = list2env(as.list(parse_cookies_str(self$headers[["cookie"]])), hash = TRUE)
       }
       self$cookies = res
       return(invisible(TRUE))
@@ -166,8 +134,8 @@ RestRserveRequest = R6::R6Class(
     parse_body = function(body = raw(), content_type = "application/octet-stream") {
       if (!is.raw(body)) {
         if (length(body) > 0L) {
-          keys = URLenc(names(body))
-          vals = URLenc(body)
+          keys = url_encode(names(body))
+          vals = url_encode(body)
           body = charToRaw(paste(keys, vals, sep = "=", collapse = "&"))
           content_type = "application/x-www-form-urlencoded"
         } else {
