@@ -3,7 +3,12 @@
 
 http_request = function(url, query, body, headers) {
   # first parse incoming request
-  request = parse_request(url, query, body, headers)
+  request = RestRserveRequest$new(
+    path = url,
+    query = query,
+    body = body,
+    headers = headers
+  )
   app = .GlobalEnv[["RestRserveApp"]]
   app$.__enclos_env__$private$process_request(request)
 }

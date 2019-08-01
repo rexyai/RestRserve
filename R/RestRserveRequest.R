@@ -57,144 +57,131 @@ RestRserveRequest = R6::R6Class(
     method = NULL,
     query = NULL,
     headers = NULL,
+    cookies = NULL,
     content_type = NULL,
     body = NULL,
-    request_id = NULL,
     path_parameters = NULL,
     initialize = function(path = "/",
                           method = "GET",
-                          query = new.env(parent = emptyenv()),
-                          headers = new.env(parent = emptyenv()),
-                          body = raw(),
+                          query = NULL,
+                          headers = NULL,
+                          body = NULL,
                           content_type = "application/octet-stream"
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
         checkmate::assert_string(method)
         checkmate::assert_string(content_type)
-        checkmate::assert_environment(query)
-        checkmate::assert_environment(headers)
-        checkmate::assert_raw(body)
+        checkmate::assert_character(query, null.ok = TRUE)
+        checkmate::assert_raw(headers, null.ok = TRUE)
+        checkmate::assert_raw(body, null.ok = TRUE)
       }
 
+      # Named character vector. Query parameters key-value pairs.
+      private$parse_query(query)
+      private$parse_headers(headers)
+      private$parse_body(body, content_type)
+      private$parse_cookies()
       self$path = path
-      self$method = method
-      self$query = query
-      self$headers = headers
+      # Rserve adds "Request-Method: " key:
+      # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
+      # according to the code above we assume that "request-method" is always exists
+      self$method = self$headers[["request-method"]]
+      if (is.null(self$method)) {
+        self$method = method
+      }
+      self$path_parameters = list()
+      private$id = uuid::UUIDgenerate(TRUE)
+    }
+  ),
+  active = list(
+    request_id = function() {
+      private$id
+    }
+  ),
+  private = list(
+    id = NULL,
+    parse_headers = function(headers) {
+      if (is.raw(headers)) {
+        headers = rawToChar(headers)
+      }
+      res = new.env(parent = emptyenv())
+      if (is.character(headers) && length(headers) > 0L) {
+        ## parse the headers into key/value pairs, collapsing multi-line values
+        lines = strsplit(gsub("[\r\n]+[ \t]+", " ", headers), "[\r\n]+")[[1]]
+        keys = tolower(gsub(":.*", "", lines))
+        values = gsub("^[^:]*:[[:space:]]*", "", lines)
+        idx = grep("^[^:]+:", lines)
+        keys = keys[idx]
+        values = values[idx]
+        for (i in seq_along(keys)) {
+          key = keys[[i]]
+          value = values[[i]]
+          # no such key yet
+          if (is.null(res[[key]])) {
+            res[[key]] = value
+          } else {
+            # key already exists and we need combine values with existing values
+            if (key == "cookie") {
+              # cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
+              res[[key]] = paste(res[[key]], value, sep = "; ")
+            } else {
+              res[[key]] = paste(res[[key]], value, sep = ", ")
+            }
+          }
+        }
+      }
+      self$headers = res
+      return(invisible(TRUE))
+    },
+    parse_cookies = function() {
+      res = new.env(parent = emptyenv())
+      if (length(self$headers) > 0L && !is.null(self$headers[["cookie"]])) {
+        cookie = strsplit(self$headers[["cookie"]], ";\\s+")[[1L]]
+        keys = tolower(gsub("=.*", "", cookie))
+        values = gsub("^[^:]*=[[:space:]]*", "", cookie)
+        for (i in seq_along(keys)) {
+          key = keys[[i]]
+          value = values[[i]]
+          # no such key yet
+          if (is.null(res[[key]])) {
+            res[[key]] = value
+          }
+        }
+      }
+      self$cookies = res
+      return(invisible(TRUE))
+    },
+    parse_query = function(query) {
+      if (length(query) > 0L) {
+        res = as.list(query)
+        # Omit empty keys and empty values
+        res = res[nzchar(names(res)) & nzchar(query)]
+      } else {
+        res = list()
+      }
+      self$query = list2env(res, hash = TRUE)
+      return(invisible(TRUE))
+    },
+    parse_body = function(body = raw(), content_type = "application/octet-stream") {
+      if (!is.raw(body)) {
+        if (length(body) > 0L) {
+          keys = URLenc(names(body))
+          vals = URLenc(body)
+          body = charToRaw(paste(keys, vals, sep = "=", collapse = "&"))
+          content_type = "application/x-www-form-urlencoded"
+        } else {
+          body = raw()
+        }
+      } else {
+        body_type = attr(body, "content-type")
+        if (!is.null(body_type)) {
+          content_type = body_type
+        }
+      }
       self$body = body
       self$content_type = content_type
-      self$request_id = uuid::UUIDgenerate(TRUE)
-      self$path_parameters = list()
+      return(invisible(TRUE))
     }
   )
 )
-
-# this function is adapted from FastRWeb:
-# https://github.com/s-u/FastRWeb/blob/aaf8847f11903675b1ec7eb9c0e1cc98b92512e5/R/run.R#L58
-# https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L286-L288
-
-# @title parses http request from Rserve
-# @description internal (not part of public API) function for convenient parsing of
-# http request objects from Rserve backend.
-# @return
-#    \describe{
-#       \item{path}{ = \code{"/somepath"}, always character of length 1}
-#       \item{method}{ = \code{"GET"}, always character of length 1}
-#       \item{query}{ = \code{c("a" = "1", "b" = "2")}, named character vector. Query parameters key-value pairs.}
-#       \item{body}{ = \code{NULL}.
-#          \itemize{
-#             \item \code{NULL} if the http body is empty or zero length.
-#             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-#             \item named \code{characeter vector} in the case of a URL encoded form.
-#             It will have the same shape as the query string (named string vector).
-#          }
-#       }
-#       \item{content_type}{ = \code{""}, always character of length 1}
-#       \item{headers}{ = \code{c("a" = "1", "b" = "2")}, named character vector. key-value pairs from http-header.}
-#    }
-parse_request = function(path, query, body, headers) {
-  # process query
-  query = parse_query(query)
-
-  # process headers
-  headers = parse_headers(headers)
-
-  # Rserve adds "Request-Method: " key:
-  # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
-  # according to the code above we assume that "request-method" is always exists
-  method = headers[["request-method"]]
-  if (is.null(method)) {
-    method = "GET"
-  }
-
-  ## this is a bit convoluted - the HTTP already parses the body - disable it where you can
-  content_type = "application/octet-stream"
-  if (!is.raw(body)) {
-    if (length(body) > 0L) {
-      body_keys = URLenc(names(body))
-      body_vals = URLenc(body)
-      body = charToRaw(paste(body_keys, body_vals, sep = "=", collapse = "&"))
-      content_type = "application/x-www-form-urlencoded"
-    } else {
-      body = raw()
-    }
-  } else {
-    content_type = attr(body, "content-type")
-  }
-
-  RestRserveRequest$new(
-    path = path,
-    method = method,
-    query = query,
-    headers = headers,
-    body = body,
-    content_type = content_type
-  )
-}
-
-# parse headers
-# combine http-headers by key
-# cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
-parse_headers = function(headers) {
-  if (is.raw(headers)) {
-    headers = rawToChar(headers)
-  }
-  res = new.env(parent = emptyenv())
-  if (is.character(headers) && length(headers) > 0L) {
-    ## parse the headers into key/value pairs, collapsing multi-line values
-    lines = strsplit(gsub("[\r\n]+[ \t]+", " ", headers), "[\r\n]+")[[1]]
-    keys = tolower(gsub(":.*", "", lines))
-    values = gsub("^[^:]*:[[:space:]]*", "", lines)
-    idx = grep("^[^:]+:", lines)
-    keys = keys[idx]
-    values = values[idx]
-    for (i in seq_along(keys)) {
-      key = keys[[i]]
-      value = values[[i]]
-      # no such key yet
-      if (is.null(res[[key]])) {
-        res[[key]] = value
-      } else {
-        # key already exists and we need combine values with existing values
-        if (key == "cookie") {
-          # cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
-          res[[key]] = paste(res[[key]], value, sep = "; ")
-        } else {
-          res[[key]] = paste(res[[key]], value, sep = ", ")
-        }
-      }
-    }
-  }
-  return(res)
-}
-
-# parse query
-parse_query = function(query) {
-  if (length(query) > 0L) {
-    res = as.list(query)
-    res = res[nzchar(names(res))]
-  } else {
-    res = list()
-  }
-  return(list2env(res, hash = TRUE))
-}
