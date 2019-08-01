@@ -24,7 +24,10 @@ test_that("Path param", {
 })
 
 test_that("Parse headers", {
-  h = charToRaw("Request-Method: GET\nHost: 127.0.0.1:5000\nUser-Agent: curl/7.65.3\nAccept: */*")
+  h = charToRaw(
+    paste("Request-Method: GET\nHost: 127.0.0.1:5000",
+          "User-Agent: curl/7.65.3\nAccept: */*", sep = "\n")
+  )
   r = RestRserveRequest$new(headers = h)
   expect_is(r$headers, "environment")
   expect_length(r$headers, 4L)
@@ -35,7 +38,13 @@ test_that("Parse headers", {
 })
 
 test_that("Parse cookies", {
-  h = charToRaw("Request-Method: GET\nHost: 127.0.0.1:5000\nUser-Agent: curl/7.65.3\nAccept: */*\nCookie: param1=value1; param2=value2")
+  h = charToRaw(
+    paste("Request-Method: GET\nHost: 127.0.0.1:5000",
+          "User-Agent: curl/7.65.3",
+          "Accept: */*",
+          "Cookie: param1=value1; param2=value2",
+          sep = "\n")
+  )
   r = RestRserveRequest$new(headers = h)
   expect_is(r$cookies, "environment")
   expect_length(r$cookies, 2L)
