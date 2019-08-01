@@ -6,11 +6,17 @@
 #'   assert_function check_raw assert_raw assert_int assert_class assert_list
 #'   assert_file_exists check_file_exists check_directory_exists
 
-.onAttach = function(libname, pkgname) {
+
+.onAttach = function(libname, pkgname) { # nocov start
   # make it TRUE because only this way comments inside functions can be printed during
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
   # docstrings inside fucntions
   options("keep.source" = TRUE)
+
+  runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
+  runtime_asserts = isTRUE(as.logical(runtime_asserts))
+  options("RestRserve_RuntimeAsserts" = runtime_asserts)
+
   recent_rserve = "1.8.6"
   if (interactive()) {
     msg = paste("RestRserve is still work in progress",
@@ -24,4 +30,4 @@
       packageStartupMessage(paste(m1, m2, m3, sep = "\n"))
     }
   }
-}
+} # nocov end

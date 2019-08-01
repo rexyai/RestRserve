@@ -61,17 +61,14 @@ RestRserveResponse = R6::R6Class(
     #------------------------------------------------
     initialize = function(body = "",
                           content_type = 'text/plain',
-                          headers = character(0),
+                          headers = NULL,
                           status_code = 200L,
                           serializer = NULL) {
-      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-      checkmate::assert_string(content_type)
-      checkmate::assert_character(headers)
-      checkmate::assert(
-        checkmate::check_string(body),
-        checkmate::check_raw(body),
-        combine = "or"
-      )
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+        checkmate::assert_string(content_type)
+        checkmate::assert_character(headers, names = "named", null.ok = TRUE)
+      }
       self$set_content_type(content_type, serializer)
       body_name = names(body)
       if (!is.null(body_name)) {
@@ -80,13 +77,20 @@ RestRserveResponse = R6::R6Class(
         }
       }
       self$body = body
-      self$headers = headers
+      if (length(headers) > 0L) {
+        self$headers = list2env(as.list(headers))
+      } else {
+        self$headers = new.env(parent = emptyenv())
+      }
       self$status_code = as.integer(status_code)
       self$context = new.env(parent = emptyenv())
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
-      checkmate::assert_string(content_type, pattern = ".*/.*")
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(content_type, pattern = ".*/.*")
+      }
+
       if (is.null(serializer)) {
         serializer = switch(
           content_type,
@@ -94,23 +98,69 @@ RestRserveResponse = R6::R6Class(
           'text/plain' = as.character,
           identity)
       }
-      checkmate::assert_function(serializer, null.ok = TRUE)
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_function(serializer, null.ok = TRUE)
+      }
+
       self$serializer = serializer
       self$content_type = content_type
+      return(content_type)
+    },
+    set_status_code = function(code) {
+      checkmate::assert_int(code, lower = 100L, upper = 600L)
+      self$status_code = code
+      return(code)
+    },
+    set_header = function(name, value) {
+      checkmate::assert_string(name)
+      checkmate::assert_string(value)
+      self$headers[[name]] = value
+      return(value)
+    },
+    get_header = function(name) {
+      checkmate::assert_string(name)
+      return(self$headers[[name]])
+    },
+    delete_header = function(name) {
+      checkmate::assert_string(name)
+      self$headers[[name]] = NULL
+      return(TRUE)
+    },
+    set_body = function(body) {
+      self$body = body
+      return(body)
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
-
-      if (!is.numeric(status_code))
-        stop("'status_code' should be numeric http status code")
+      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
 
       status_code_int = as.integer(status_code)
       status_code_char = as.character(status_code)
 
       # default standard body message
-      if (is.null(body)) body = status_codes[[status_code_char]]
-
+      if (is.null(body)) {
+        body = status_codes[[status_code_char]]
+      }
       self$status_code = status_code_int
-      invisible(NULL)
+      return(invisible(NULL))
+    },
+    to_rserve = function() {
+      if (length(self$headers) > 0L) {
+        headers = paste(names(self$headers), as.list(self$headers), sep = ": ", collapse = "\r\n")
+      } else {
+        headers = ""
+      }
+      if (is_string(self$body)) {
+        body_name = names(self$body)
+        if (identical(body_name, "file")) {
+          return(list("file" = self$body, self$content_type, headers, self$status_code))
+        }
+        if (identical(body_name, "tmpfile")) {
+          return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
+        }
+      }
+      body = self$serializer(self$body)
+      res = list(body, self$content_type, headers, self$status_code)
+      return(res)
     }
   )
 )
@@ -123,19 +173,4 @@ forward = function() {
   res = TRUE
   class(res) = "RestRserveForward"
   invisible(res)
-}
-
-as_rserve_response = function(x) {
-
-  if (checkmate::test_string(x$body)) {
-    if (isTRUE(names(x$body) == "file")) {
-      return(list("file" = x$body, x$content_type, x$headers, x$status_code))
-    }
-    if (isTRUE(names(x$body) == "tmpfile")) {
-      return(list("tmpfile" = x$body, x$content_type, x$headers, x$status_code))
-    }
-  }
-
-  body = x$serializer(x$body)
-  return(list(body, x$content_type, x$headers, x$status_code))
 }

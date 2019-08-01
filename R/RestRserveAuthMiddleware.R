@@ -22,7 +22,7 @@ AuthBackend = R6::R6Class(
       if (is.null(auth_header)) {
         err = private$HTTPError$unauthorized(
           body = "401 Missing Authorization Header",
-          headers = "WWW-Authenticate: Basic"
+          headers = c("WWW-Authenticate" = "Basic")
         )
         raise(err)
       }
@@ -33,7 +33,7 @@ AuthBackend = R6::R6Class(
       if (auth_prefix != private$auth_header_prefix) {
         err = private$HTTPError$unauthorized(
           body = sprintf("401 Invalid Authorization Header. Must start with \'%s\'", private$auth_header_prefix),
-          headers = "WWW-Authenticate: Basic"
+          headers = c("WWW-Authenticate" = "Basic")
         )
         raise(err)
       }
@@ -41,13 +41,13 @@ AuthBackend = R6::R6Class(
       if (length(parts) == 1L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Token Missing",
-          headers = "WWW-Authenticate: Basic")
+          headers = c("WWW-Authenticate" = "Basic"))
         )
       }
       if (length(parts) > 2L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Contains extra content",
-          headers = "WWW-Authenticate: Basic")
+          headers = c("WWW-Authenticate" = "Basic"))
         )
       }
       parts[[2]]
@@ -73,7 +73,7 @@ AuthBackendBasic = R6::R6Class(
       if (!isTRUE(res)) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Username/Password",
-          headers = "WWW-Authenticate: Basic")
+          headers = c("WWW-Authenticate" = "Basic"))
         )
       }
     }
@@ -86,7 +86,7 @@ AuthBackendBasic = R6::R6Class(
       if (inherits(token, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Unable to decode credentials",
-          headers = "WWW-Authenticate: Basic")
+          headers = c("WWW-Authenticate" = "Basic"))
         )
       }
       #-------------------------------------------------------
@@ -95,7 +95,7 @@ AuthBackendBasic = R6::R6Class(
         if (length(result) != 2) {
           raise(private$HTTPError$unauthorized(
             body = "401 Invalid Authorization Header: user-password should be vector of 2",
-            headers = "WWW-Authenticate: Basic")
+            headers = c("WWW-Authenticate" = "Basic"))
           )
         }
         list(user = result[[1]], password = result[[2]])
@@ -104,7 +104,7 @@ AuthBackendBasic = R6::R6Class(
       if (inherits(result, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization: Unable to decode credentials",
-          headers = "WWW-Authenticate: Basic")
+          headers = c("WWW-Authenticate" = "Basic"))
         )
       }
       #-------------------------------------------------------
@@ -146,7 +146,9 @@ AuthBackendBearer = R6::R6Class(
       } else {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Token",
-          headers = c('WWW-Authenticate: error="invalid_token", error_description="Invalid or expired access token"')
+          headers = c(
+            "WWW-Authenticate" = "error=invalid_token",
+            "error_description" = "Invalid or expired access token")
           )
         )
       }
