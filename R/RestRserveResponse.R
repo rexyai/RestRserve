@@ -117,6 +117,7 @@ RestRserveResponse = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       return(self$headers[[name]])
     },
     set_header = function(name, value) {
@@ -124,6 +125,7 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
+      name = tolower(name)
       self$headers[[name]] = value
       return(value)
     },
@@ -131,6 +133,7 @@ RestRserveResponse = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       self$headers[[name]] = NULL
       return(TRUE)
     },
@@ -139,6 +142,7 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
+      name = tolower(name)
       if (!is.null(self$headers[[name]])) {
         self$headers[[name]] = append(self$headers[[name]], value)
       }

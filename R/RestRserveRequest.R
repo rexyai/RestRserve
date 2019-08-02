@@ -96,6 +96,7 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       return(self$headers[[name]])
     },
     set_header = function(name, value) {
@@ -103,6 +104,7 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
+      name = tolower(name)
       self$headers[[name]] = value
       return(value)
     },
@@ -110,7 +112,23 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       self$headers[[name]] = NULL
+      return(TRUE)
+    },
+    append_header = function(name, value) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+        checkmate::assert_string(value)
+      }
+      name = tolower(name)
+      if (!is.null(self$headers[[name]])) {
+        if (name == "cookie") {
+          self$headers[[name]] = paste(self$headers[[name]], value, sep = ";")
+        } else {
+          self$headers[[name]] = paste(self$headers[[name]], value, sep = ",")
+        }
+      }
       return(TRUE)
     },
     has_header = function(name) {
