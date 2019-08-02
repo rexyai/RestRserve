@@ -19,8 +19,8 @@ bool starts_with(const std::string& s, const std::string& prefix) {
 }
 
 // convert unordered map to list
-Environment map_to_env(const CharacterMap& x) {
-    Environment env = Rcpp::new_env();
+Rcpp::Environment map_to_env(const CharacterMap& x) {
+    Rcpp::Environment env = Rcpp::new_env();
     for (const auto& pair: x) {
         env.assign(pair.first, pair.second);
     }

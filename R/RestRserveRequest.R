@@ -107,7 +107,7 @@ RestRserveRequest = R6::R6Class(
       }
       res = new.env(parent = emptyenv())
       if (is.character(headers) && length(headers) > 0L) {
-        res = list2env(as.list(parse_headers_str(headers)), hash = TRUE)
+        res = list2env(parse_headers_str(headers), hash = TRUE)
       }
       self$headers = res
       return(invisible(TRUE))
@@ -115,7 +115,7 @@ RestRserveRequest = R6::R6Class(
     parse_cookies = function() {
       res = new.env(parent = emptyenv())
       if (length(self$headers) > 0L && !is.null(self$headers[["cookie"]])) {
-        res = list2env(as.list(parse_cookies_str(self$headers[["cookie"]])), hash = TRUE)
+        res = list2env(parse_cookies_str(self$headers[["cookie"]]), hash = TRUE)
       }
       self$cookies = res
       return(invisible(TRUE))

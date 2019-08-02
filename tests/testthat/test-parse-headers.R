@@ -3,9 +3,9 @@ context("Test parse headers")
 test_that("Empty input", {
   expect_error(parse_headers_str(NA))
   expect_error(parse_headers_str(NULL))
-  expect_is(parse_headers_str(NA_character_), "character")
+  expect_is(parse_headers_str(NA_character_), "list")
   expect_length(parse_headers_str(NA_character_), 0L)
-  expect_is(parse_headers_str(""), "character")
+  expect_is(parse_headers_str(""), "list")
   expect_length(parse_headers_str(""), 0L)
 })
 
@@ -25,7 +25,7 @@ Cache-Control: max-age=0\r\n
 TE: Trailers\r\n\r\n"
   # nolint end
   r = parse_headers_str(h)
-  expect_is(r, "character")
+  expect_is(r, "list")
   expect_length(r, 12L)
   expect_equal(r[["connection"]], "keep-alive")
   expect_equal(r[["accept"]], "text/html,application/xhtml+xml,application/xml")

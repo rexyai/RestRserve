@@ -5,8 +5,7 @@
 #include <Rcpp.h>
 
 using CharacterMap = std::unordered_map<std::string, std::string>;
-using Rcpp::Environment;
-using Rcpp::CharacterVector;
-using Rcpp::String;
+using str_value_t = std::string::value_type;
+using str_size_t = std::string::size_type;
 
 #endif

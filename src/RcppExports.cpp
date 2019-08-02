@@ -17,18 +17,18 @@ BEGIN_RCPP
 END_RCPP
 }
 // deparse_vector
-CharacterVector deparse_vector(CharacterVector x);
+Rcpp::CharacterVector deparse_vector(Rcpp::CharacterVector x);
 RcppExport SEXP _RestRserve_deparse_vector(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(deparse_vector(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // parse_cookies_str
-CharacterVector parse_cookies_str(std::string header);
+Rcpp::List parse_cookies_str(std::string header);
 RcppExport SEXP _RestRserve_parse_cookies_str(SEXP headerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -39,7 +39,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // parse_headers_str
-CharacterVector parse_headers_str(const std::string& headers);
+Rcpp::List parse_headers_str(const std::string& headers);
 RcppExport SEXP _RestRserve_parse_headers_str(SEXP headersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -61,12 +61,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // url_decode
-CharacterVector url_decode(CharacterVector x);
+Rcpp::CharacterVector url_decode(Rcpp::CharacterVector x);
 RcppExport SEXP _RestRserve_url_decode(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< CharacterVector >::type x(xSEXP);
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(url_decode(x));
     return rcpp_result_gen;
 END_RCPP

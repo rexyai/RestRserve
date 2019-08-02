@@ -5,7 +5,7 @@
 #include "utils.h"
 
 // [[Rcpp::export]]
-CharacterVector parse_cookies_str(std::string header) {
+Rcpp::List parse_cookies_str(std::string header) {
   CharacterMap res;
   std::string to_erase = "Cookie: ";
   if (starts_with(header, to_erase)) {

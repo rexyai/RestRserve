@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 #include <Rcpp.h>
+#include "types.h"
 
 // [[Rcpp::export]]
 std::string url_encode_one(const std::string& value) {
@@ -11,7 +12,7 @@ std::string url_encode_one(const std::string& value) {
   escaped << std::hex;
 
   for (auto i = value.begin(), n = value.end(); i != n; ++i) {
-    std::string::value_type c = (*i);
+    str_value_t c = (*i);
     // Keep alphanumeric and other accepted characters intact
     if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
       escaped << c;

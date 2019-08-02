@@ -15,7 +15,7 @@ std::string url_decode_one(const std::string& value) {
   escaped.fill('0');
 
   for (auto i = value.begin(), n = value.end(); i != n; ++i) {
-    std::string::value_type c = (*i);
+    str_value_t c = (*i);
 
     if (c == '%') {
       if (i[1] && i[2]) {
@@ -34,11 +34,11 @@ std::string url_decode_one(const std::string& value) {
 }
 
 // [[Rcpp::export]]
-CharacterVector url_decode(CharacterVector x) {
+Rcpp::CharacterVector url_decode(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
-  CharacterVector out = Rcpp::no_init(n);
+  Rcpp::CharacterVector out = Rcpp::no_init(n);
   for (std::size_t i = 0; i < n; ++i) {
-    String cur = x[i];
+    Rcpp::String cur = x[i];
     out[i] = url_decode_one(cur);
   }
 

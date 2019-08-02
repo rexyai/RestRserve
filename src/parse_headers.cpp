@@ -5,11 +5,11 @@
 #include "utils.h"
 
 // [[Rcpp::export]]
-CharacterVector parse_headers_str(const std::string& headers) {
+Rcpp::List parse_headers_str(const std::string& headers) {
   CharacterMap res;
   std::istringstream stream(headers);
   std::string buffer;
-  std::string::size_type index;
+  str_size_t index;
   while (std::getline(stream, buffer) && buffer != "\r") {
     index = buffer.find(':', 0);
     if(index != std::string::npos) {

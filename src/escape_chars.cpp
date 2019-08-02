@@ -1,5 +1,5 @@
 #include <Rcpp.h>
-#include "utils.h"
+#include "types.h"
 
 // [[Rcpp::export]]
 std::string escape_chars(const std::string& x) {
@@ -15,7 +15,7 @@ std::string escape_chars(const std::string& x) {
       case '\t': out += "\\t";  break;
       case '\b': out += "\\b";  break;
       case '\f': out += "\\f";  break;
-      default:     out += cur;
+      default:   out += cur;
     }
   }
   out += '"';
@@ -23,9 +23,9 @@ std::string escape_chars(const std::string& x) {
 }
 
 // [[Rcpp::export]]
-CharacterVector deparse_vector(CharacterVector x) {
+Rcpp::CharacterVector deparse_vector(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
-  CharacterVector out = Rcpp::no_init(n);
+  Rcpp::CharacterVector out = Rcpp::no_init(n);
   for (std::size_t i = 0; i < n; ++i) {
     Rcpp::String cur = x[i];
     out[i] = escape_chars(cur);
