@@ -77,7 +77,6 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_raw(body, null.ok = TRUE)
       }
 
-      # Named character vector. Query parameters key-value pairs.
       private$parse_query(query)
       private$parse_headers(headers)
       private$parse_body(body, content_type)
@@ -92,11 +91,128 @@ RestRserveRequest = R6::R6Class(
       }
       self$path_parameters = list()
       private$id = uuid::UUIDgenerate(TRUE)
+    },
+    get_header = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      return(self$headers[[name]])
+    },
+    set_header = function(name, value) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+        checkmate::assert_string(value)
+      }
+      self$headers[[name]] = value
+      return(value)
+    },
+    delete_header = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      self$headers[[name]] = NULL
+      return(TRUE)
+    },
+    has_header = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      return(is.null(self$headers[[name]]))
+    },
+    get_body = function() {
+      return(self$body)
+    },
+    set_body = function(body) {
+      self$body = body
+      return(body)
+    },
+    has_body = function() {
+      res = length(self$body) > 0L
+      return(res)
+    },
+    get_param = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      return(self$query[[name]])
+    },
+    set_param = function(name, value) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+        checkmate::assert_string(value)
+      }
+      self$query[[name]] = value
+      return(value)
+    },
+    delete_param = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      self$query[[name]] = NULL
+      return(TRUE)
+    },
+    has_param = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      return(is.null(self$query[[name]]))
     }
   ),
   active = list(
     request_id = function() {
       private$id
+    },
+    query_string = function() {
+      res = NULL
+      if (length(self$query) > 0L) {
+        res = paste(names(self$query), URLenc(as.list(self$query)), sep = "=", collapse = "&")
+      }
+      return(res)
+    },
+    uri = function() {
+      query = self$query_string
+      if (is.null(q)) {
+        res = self$path
+      } else {
+        res = paste(self$path, query, sep = "&")
+      }
+      return(res)
+    },
+    url = function() {
+      return(self$uri)
+    },
+    date = function() {
+      return(to_http_date(self$headers[["date"]]))
+    },
+    user_agent = function() {
+      return(self$headers[["user_agent"]])
+    },
+    referer = function() {
+      return(self$headers[["referer"]])
+    },
+    accept = function() {
+      res = "*/*"
+      if (!is.null(self$headers[["accept"]])) {
+        res = strsplit(self$headers[["accept"]], split = ",", fixed = TRUE)
+      }
+      return(res)
+    },
+    accept_json = function() {
+      res = FALSE
+      if (!is.null(self$headers[["accept"]])) {
+        res = grepl("application/json", self$headers[["accept"]], fixed = TRUE)
+      }
+      return(res)
+    },
+    accept_xml = function() {
+      res = FALSE
+      if (!is.null(self$headers[["accept"]])) {
+        res = grepl("text/xml", self$headers[["accept"]], fixed = TRUE)
+      }
+      return(res)
+    },
+    expect = function() {
+      return(self$headers[["expect"]])
     }
   ),
   private = list(
@@ -154,6 +270,7 @@ RestRserveRequest = R6::R6Class(
     },
     parse_query = function(query) {
       if (length(query) > 0L) {
+        # Named character vector. Query parameters key-value pairs.
         res = as.list(query)
         # Omit empty keys and empty values
         res = res[nzchar(names(res)) & nzchar(query)]
