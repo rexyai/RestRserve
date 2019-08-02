@@ -5,7 +5,7 @@
 #include "utils.h"
 
 // [[Rcpp::export]]
-CharacterVector parse_headers_str(std::string headers) {
+CharacterVector parse_headers_str(const std::string& headers) {
   CharacterMap res;
   std::istringstream stream(headers);
   std::string buffer;
@@ -25,7 +25,7 @@ CharacterVector parse_headers_str(std::string headers) {
           val = val + ", " + res[key];
         }
       }
-      res.insert(std::make_pair(key, val));
+      res.emplace(key, val);
     }
   }
   return Rcpp::wrap(res);

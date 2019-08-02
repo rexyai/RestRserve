@@ -39,12 +39,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // parse_headers_str
-CharacterVector parse_headers_str(std::string headers);
+CharacterVector parse_headers_str(const std::string& headers);
 RcppExport SEXP _RestRserve_parse_headers_str(SEXP headersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type headers(headersSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type headers(headersSEXP);
     rcpp_result_gen = Rcpp::wrap(parse_headers_str(headers));
     return rcpp_result_gen;
 END_RCPP
