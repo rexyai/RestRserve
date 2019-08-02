@@ -28,4 +28,3 @@ test_that("Correct encode", {
 test_that("Encode and decode revert", {
   expect_equal(text, url_decode(url_encode(text)))
 })
-

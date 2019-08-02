@@ -10,6 +10,7 @@ test_that("Empty input", {
 })
 
 test_that("Test fields", {
+  # nolint start
   h = "Host: stackoverflow.com\r\n
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0\r\n
 Accept: text/html,application/xhtml+xml,application/xml\r\n
@@ -22,6 +23,7 @@ Cookie: prov=f1e12498-1231-c8f0-8f53-97a8a6b17754; notice-ctt=4%3B1560153827826;
 Upgrade-Insecure-Requests: 1\r\n
 Cache-Control: max-age=0\r\n
 TE: Trailers\r\n\r\n"
+  # nolint end
   r = parse_headers_str(h)
   expect_is(r, "character")
   expect_length(r, 12L)

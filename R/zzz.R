@@ -36,4 +36,3 @@
 .onUnload = function(libpath) { # nocov start
   library.dynam.unload("RestRserve", libpath)
 } # nocov end
-
