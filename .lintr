@@ -8,4 +8,8 @@ linters: with_defaults(
   trailing_blank_lines_linter,
   trailing_whitespace_linter,
   line_length_linter(120),
-  default = NULL)
+  default = NULL
+)
+exclusions: list(
+  "RcppExports.R"
+)
