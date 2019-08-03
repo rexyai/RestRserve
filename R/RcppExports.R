@@ -9,6 +9,10 @@ deparse_vector <- function(x) {
     .Call(`_RestRserve_deparse_vector`, x)
 }
 
+format_headers <- function(x) {
+    .Call(`_RestRserve_format_headers`, x)
+}
+
 parse_cookies_str <- function(header) {
     .Call(`_RestRserve_parse_cookies_str`, header)
 }
