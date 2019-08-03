@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <Rcpp.h>
 
-using CharacterMap = std::unordered_map<std::string, std::string>;
+using string_map = std::unordered_map<std::string, std::string>;
 using str_value_t = std::string::value_type;
 using str_size_t = std::string::size_type;
 

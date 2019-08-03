@@ -6,7 +6,7 @@
 
 // [[Rcpp::export]]
 Rcpp::List parse_headers_str(const std::string& headers) {
-  CharacterMap res;
+  string_map res;
   std::istringstream stream(headers);
   std::string buffer;
   str_size_t index;
@@ -20,9 +20,9 @@ Rcpp::List parse_headers_str(const std::string& headers) {
       str_trim(val);
       if (res.find(key) != res.end()) {
         if (key == "cookie") {
-          val = val + "; " + res[key];
+          val = val + ';' + ' ' + res[key];
         } else {
-          val = val + ", " + res[key];
+          val = val + ',' + ' ' + res[key];
         }
       }
       res.emplace(key, val);

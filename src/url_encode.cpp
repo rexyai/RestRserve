@@ -11,17 +11,19 @@ std::string url_encode_one(const std::string& value) {
   escaped.fill('0');
   escaped << std::hex;
 
-  for (auto i = value.begin(), n = value.end(); i != n; ++i) {
-    str_value_t c = (*i);
+  for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
+    str_value_t c = (*cur);
     // Keep alphanumeric and other accepted characters intact
-    if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~') {
+    // See: https://tools.ietf.org/html/rfc3986#section-2.3
+    if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~') {
       escaped << c;
       continue;
     }
 
     // Any other characters are percent-encoded
     escaped << std::uppercase;
-    escaped << '%' << std::setw(2) << int((unsigned char) c);
+    escaped << '%' << std::setw(2);
+    escaped << static_cast<unsigned int>(static_cast<unsigned char>(c));
     escaped << std::nouppercase;
   }
 

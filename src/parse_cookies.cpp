@@ -6,7 +6,7 @@
 
 // [[Rcpp::export]]
 Rcpp::List parse_cookies_str(std::string header) {
-  CharacterMap res;
+  string_map res;
   std::string to_erase = "Cookie: ";
   if (starts_with(header, to_erase)) {
     header.erase(0, to_erase.length());

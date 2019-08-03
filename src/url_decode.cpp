@@ -5,7 +5,7 @@
 #include "types.h"
 
 static inline char from_hex(char ch) {
-  return isdigit(ch) ? ch - '0' : tolower(ch) - 'a' + 10;
+  return std::isdigit(ch) ? ch - '0' : std::tolower(ch) - 'a' + 10;
 }
 
 // [[Rcpp::export]]
@@ -14,14 +14,13 @@ std::string url_decode_one(const std::string& value) {
   std::ostringstream escaped;
   escaped.fill('0');
 
-  for (auto i = value.begin(), n = value.end(); i != n; ++i) {
-    str_value_t c = (*i);
-
+  for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
+    str_value_t c = (*cur);
     if (c == '%') {
-      if (i[1] && i[2]) {
-        h = from_hex(i[1]) << 4 | from_hex(i[2]);
+      if (cur[1] && cur[2]) {
+        h = from_hex(cur[1]) << 4 | from_hex(cur[2]);
         escaped << h;
-        i += 2;
+        cur += 2;
       }
     } else if (c == '+') {
       escaped << ' ';
