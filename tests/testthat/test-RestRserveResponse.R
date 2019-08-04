@@ -128,4 +128,3 @@ test_that("Test status method", {
   r$set_status_code(400L)
   expect_equal(r$status, "400 Bad Request")
 })
-

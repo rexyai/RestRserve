@@ -262,7 +262,7 @@ RestRserveResponse = R6::R6Class(
     prepare_headers = function() {
       if (length(self$headers) > 0L) {
         h = as.list(self$headers)
-        if (!is.null(h[["Set-Cookie"]]) && length((h[["Set-Cookie"]])) > 1L) {
+        if (!is.null(h[["Set-Cookie"]]) && length(h[["Set-Cookie"]]) > 1L) {
           h[["Set-Cookie"]] = paste(h[["Set-Cookie"]], collapse = ";")
         }
         to_collapse = lengths(h) > 1L
