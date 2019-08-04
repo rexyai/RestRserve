@@ -18,7 +18,7 @@ test_that("Empty object", {
   expect_length(r$cookies, 0)
 })
 
-test_that("Test method handling", {
+test_that("Test method field handling", {
   r1 = RestRserveRequest$new(
     method = "POST",
     headers = charToRaw("Request-Method: PUT")
@@ -100,6 +100,13 @@ test_that("Test set headers method", {
   expect_equal(r$get_header("test"), "test-value")
 })
 
+test_that("Test delete headers method", {
+  r = RestRserveRequest$new()
+  r$set_header("test", "test-value")
+  expect_true(r$delete_header("test"))
+  expect_false(r$has_header("test"))
+})
+
 test_that("Test append headers method", {
   r = RestRserveRequest$new()
   r$append_header("accept", "text/plain")
@@ -108,13 +115,6 @@ test_that("Test append headers method", {
   r$append_header("cookie", "param1=value1")
   r$append_header("cookie", "param2=value2")
   expect_equal(r$get_header("cookie"), "param1=value1; param2=value2")
-})
-
-test_that("Test delete headers method", {
-  r = RestRserveRequest$new()
-  r$set_header("test", "test-value")
-  expect_true(r$delete_header("test"))
-  expect_false(r$has_header("test"))
 })
 
 test_that("Test has query param method", {

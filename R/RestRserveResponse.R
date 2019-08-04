@@ -89,6 +89,7 @@ RestRserveResponse = R6::R6Class(
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(content_type, pattern = ".*/.*")
+        checkmate::assert_function(serializer, null.ok = TRUE)
       }
 
       if (is.null(serializer)) {
@@ -98,10 +99,6 @@ RestRserveResponse = R6::R6Class(
           'text/plain' = as.character,
           identity)
       }
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_function(serializer, null.ok = TRUE)
-      }
-
       self$serializer = serializer
       self$content_type = content_type
       return(content_type)
@@ -113,11 +110,16 @@ RestRserveResponse = R6::R6Class(
       self$status_code = code
       return(code)
     },
+    has_header = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      return(!is.null(self$headers[[name]]))
+    },
     get_header = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      name = tolower(name)
       return(self$headers[[name]])
     },
     set_header = function(name, value) {
@@ -125,7 +127,6 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
-      name = tolower(name)
       self$headers[[name]] = value
       return(value)
     },
@@ -133,7 +134,6 @@ RestRserveResponse = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      name = tolower(name)
       self$headers[[name]] = NULL
       return(TRUE)
     },
@@ -142,19 +142,20 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
-      name = tolower(name)
-      if (!is.null(self$headers[[name]])) {
-        self$headers[[name]] = append(self$headers[[name]], value)
-      }
+      self$headers[[name]] = append(self$headers[[name]], value)
       return(TRUE)
     },
     set_date = function(dtm = Sys.time()) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_posixct(dtm)
+        checkmate::assert_posixct(dtm, null.ok = TRUE)
       }
       res = to_http_date(dtm)
-      self$headers[["date"]] = res
+      self$headers[["Date"]] = res
       return(res)
+    },
+    unset_date = function() {
+      self$headers[["Date"]] = NULL
+      return(TRUE)
     },
     set_cookie = function(name, value, expires = NULL, max_age = NULL, domain = NULL,
                           path = NULL, secure = NULL, http_only = TRUE) {
