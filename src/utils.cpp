@@ -14,8 +14,33 @@ void str_lower(std::string& s) {
     std::transform(s.begin(), s.end(), s.begin(), ::tolower);
 }
 
-bool starts_with(const std::string& s, const std::string& prefix) {
-    return s.size() >= prefix.size() && s.compare(0, prefix.size(), prefix) == 0;
+// toupper sting (in place)
+void str_upper(std::string& s) {
+    std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+}
+
+// check prefix
+bool str_starts_with(const std::string& s, const std::string& prefix) {
+    return s.size() >= prefix.size() && 0 == s.compare(0, prefix.size(), prefix);
+}
+
+// check suffix
+bool str_ends_with(const std::string& s, const std::string& suffix) {
+    return s.size() >= suffix.size() && 0 == s.compare(s.size() - suffix.size(), suffix.size(), suffix);
+}
+
+// split string into vecvtor
+std::vector<std::string> str_split(const std::string& s, const char sep, bool trim = false) {
+    std::stringstream ss(s);
+    std::vector<std::string> out;
+    std::string tmp;
+    while(getline(ss, tmp, sep)) {
+      if (trim) {
+        str_trim(tmp);
+      }
+      out.push_back(tmp);
+    }
+    return out;
 }
 
 // convert unordered map to list
