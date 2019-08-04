@@ -124,10 +124,13 @@ RestRserveRequest = R6::R6Class(
       name = tolower(name)
       if (!is.null(self$headers[[name]])) {
         if (name == "cookie") {
-          self$headers[[name]] = paste(self$headers[[name]], value, sep = ";")
+          self$headers[[name]] = paste(self$headers[[name]], value, sep = "; ")
+          private$parse_cookies()
         } else {
-          self$headers[[name]] = paste(self$headers[[name]], value, sep = ",")
+          self$headers[[name]] = paste(self$headers[[name]], value, sep = ", ")
         }
+      } else {
+        self$headers[[name]] = value
       }
       return(TRUE)
     },
@@ -135,7 +138,8 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      return(is.null(self$headers[[name]]))
+      name = tolower(name)
+      return(!is.null(self$headers[[name]]))
     },
     get_body = function() {
       return(self$body)
@@ -145,13 +149,13 @@ RestRserveRequest = R6::R6Class(
       return(body)
     },
     has_body = function() {
-      res = length(self$body) > 0L
-      return(res)
+      return(length(self$body) > 0L)
     },
     get_param = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       return(self$query[[name]])
     },
     set_param = function(name, value) {
@@ -159,6 +163,7 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
+      name = tolower(name)
       self$query[[name]] = value
       return(value)
     },
@@ -166,6 +171,7 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
+      name = tolower(name)
       self$query[[name]] = NULL
       return(TRUE)
     },
@@ -173,7 +179,8 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      return(is.null(self$query[[name]]))
+      name = tolower(name)
+      return(!is.null(self$query[[name]]))
     }
   ),
   active = list(
@@ -183,27 +190,31 @@ RestRserveRequest = R6::R6Class(
     query_string = function() {
       res = NULL
       if (length(self$query) > 0L) {
-        res = paste(names(self$query), URLenc(as.list(self$query)), sep = "=", collapse = "&")
+        res = paste(names(self$query), URLenc(as.list(self$query)),
+                    sep = "=", collapse = "&")
       }
       return(res)
     },
-    uri = function() {
+    host = function() {
+      return(self$headers[["host"]])
+    },
+    fullpath = function() {
       query = self$query_string
-      if (is.null(q)) {
+      if (is.null(query)) {
         res = self$path
       } else {
-        res = paste(self$path, query, sep = "&")
+        res = paste(self$path, query, sep = "?")
       }
       return(res)
     },
-    url = function() {
-      return(self$uri)
-    },
     date = function() {
-      return(to_http_date(self$headers[["date"]]))
+      return(from_http_date(self$headers[["date"]]))
     },
     user_agent = function() {
       return(self$headers[["user_agent"]])
+    },
+    client_ip = function() {
+      return(self$headers[["client-addr"]])
     },
     referer = function() {
       return(self$headers[["referer"]])
@@ -211,7 +222,7 @@ RestRserveRequest = R6::R6Class(
     accept = function() {
       res = "*/*"
       if (!is.null(self$headers[["accept"]])) {
-        res = strsplit(self$headers[["accept"]], split = ",", fixed = TRUE)
+        res = strsplit(self$headers[["accept"]], split = ",\\s+")[[1]]
       }
       return(res)
     },
