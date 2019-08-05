@@ -1,3 +1,5 @@
+# nocov start
+
 #' @title Default RestRserve configuration
 #' @description returns default RestRserve configuration
 #' @return named character vector - names are Rserve configuration parameters
@@ -90,3 +92,5 @@ create_rserve_configuration_lines = function(configuration = c("encoding" = "utf
   } else
     character(0)
 }
+
+# nocov end
