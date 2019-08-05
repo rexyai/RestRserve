@@ -1,3 +1,5 @@
+# nocov start
+
 #' @title stops RestRserve application
 #' @description Assuming that RserveApplication is deployed to a \code{dir},
 #' \code{restrserve_stop} stops Rserve by executing \code{kill -TERM -- -$PGID}
@@ -31,3 +33,5 @@ restrserve_stop = function(dir) {
 
   invisible(kill_process_group(PID, "TERM"))
 }
+
+# nocov end

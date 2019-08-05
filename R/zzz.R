@@ -5,7 +5,8 @@
 #' @importFrom checkmate assert assert_string test_string check_string assert_flag
 #'   assert_function check_raw assert_raw assert_int assert_class assert_list
 #'   assert_file_exists check_file_exists check_directory_exists
-
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib RestRserve, .registration=TRUE
 
 .onAttach = function(libname, pkgname) { # nocov start
   # make it TRUE because only this way comments inside functions can be printed during
@@ -30,4 +31,8 @@
       packageStartupMessage(paste(m1, m2, m3, sep = "\n"))
     }
   }
+} # nocov end
+
+.onUnload = function(libpath) { # nocov start
+  library.dynam.unload("RestRserve", libpath)
 } # nocov end
