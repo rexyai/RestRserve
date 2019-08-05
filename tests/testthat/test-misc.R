@@ -38,3 +38,24 @@ test_that("Test guess_mime", {
   expect_equal(guess_mime(css_file), "text/css")
   expect_equal(guess_mime(txt_file, "mytype/text"), "mytype/text")
 })
+
+
+test_that("Test http_request", {
+  app = RestRserveApplication$new()
+  app$add_get('/say', function(req, res) {
+    res$body = req$query$hello
+  })
+  keep = .GlobalEnv[['RestRserveApp']]
+  .GlobalEnv[['RestRserveApp']] = app
+
+  answer = RestRserve:::http_request(
+    url = '/say',
+    query = c('hello' = 'world'),
+    body = NULL,
+    headers = NULL
+  )
+
+  expect_equal(answer[[1]], "world")
+
+  .GlobalEnv[['RestRserveApp']] = keep
+})
