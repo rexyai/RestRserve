@@ -1,22 +1,23 @@
 #include <string>
 #include <sstream>
+#include <unordered_map>
 #include <Rcpp.h>
-#include "types.h"
 #include "utils.h"
 
+using map = std::unordered_map<std::string, std::string>;
+
 // [[Rcpp::export]]
-Rcpp::List parse_cookies_str(std::string header) {
-  string_map res;
-  std::string to_erase = "Cookie: ";
-  if (str_starts_with(header, to_erase)) {
-    header.erase(0, to_erase.length());
-  }
+Rcpp::List parse_cookies(const std::vector<std::string>& x) {
+  std::size_t n = x.size();
+  map res;
   std::string key, val;
-  std::istringstream stream(header);
-  while (std::getline(std::getline(stream, key, '='), val, ';')) {
-    str_trim(key);
-    str_trim(val);
-    res.emplace(key, val);
+  for (std::size_t i = 0; i < n; ++i) {
+    std::string::size_type pos = x[i].find_first_of('=');
+    if (pos != std::string::npos) {
+      std::string key = x[i].substr(0, pos);
+      std::string val = x[i].substr(pos + 1);
+      res.emplace(key, val);
+    }
   }
   return Rcpp::wrap(res);
 }
