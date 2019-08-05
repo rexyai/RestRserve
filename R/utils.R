@@ -1,11 +1,3 @@
-#------------------------------------------------
-# vectorized URLencode
-#------------------------------------------------
-URLenc = function(x) {
-  x = as.character(x)
-  vapply(x, utils::URLencode, character(1L), USE.NAMES = FALSE)
-}
-
 # borrowed from
 # https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
 try_capture_stack = function(expr, env = environment()) {
@@ -37,10 +29,6 @@ kill_process_group = function(pid, signal = "TERM") {
   system2("kill", cmd_args)
 }
 
-#' @useDynLib RestRserve, .registration=TRUE
-deparse_vector = function(x) {
-  .Call("C_escape_chars", x)
-}
 
 guess_mime = function(file_path, content_type = NULL) {
   if (is.null(content_type))

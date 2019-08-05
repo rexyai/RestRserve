@@ -9,3 +9,5 @@ linters: with_defaults(
   trailing_whitespace_linter,
   line_length_linter(120),
   default = NULL)
+exclusions: list(
+  "R/RcppExports.R")
