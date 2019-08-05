@@ -190,7 +190,8 @@ RestRserveRequest = R6::R6Class(
     query_string = function() {
       res = NULL
       if (length(self$query) > 0L) {
-        res = paste(names(self$query), URLenc(as.list(self$query)),
+        res = paste(names(self$query),
+                    url_encode(as.character(as.list(self$query))),
                     sep = "=", collapse = "&")
       }
       return(res)
@@ -222,21 +223,21 @@ RestRserveRequest = R6::R6Class(
     accept = function() {
       res = "*/*"
       if (!is.null(self$headers[["accept"]])) {
-        res = strsplit(self$headers[["accept"]], split = ",\\s+")[[1]]
+        res = self$headers[["accept"]]
       }
       return(res)
     },
     accept_json = function() {
       res = FALSE
       if (!is.null(self$headers[["accept"]])) {
-        res = grepl("application/json", self$headers[["accept"]], fixed = TRUE)
+        res = any(startsWith(self$headers[["accept"]], "application/json"))
       }
       return(res)
     },
     accept_xml = function() {
       res = FALSE
       if (!is.null(self$headers[["accept"]])) {
-        res = grepl("text/xml", self$headers[["accept"]], fixed = TRUE)
+        res = any(startsWith(self$headers[["accept"]], "text/xml"))
       }
       return(res)
     },

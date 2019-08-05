@@ -52,8 +52,8 @@ test_that("Test parse headers", {
   expect_equal(r$headers[["request-method"]], "GET")
   expect_equal(r$headers[["user-agent"]], "curl/7.65.3")
   expect_equal(r$headers[["host"]], "127.0.0.1:5000")
-  expect_equal(r$headers[["accept"]], "text/plain, text/html")
-  expect_equal(r$headers[["cookie"]], "param1=value1; param2=value2")
+  expect_equal(r$headers[["accept"]], c("text/plain", "text/html"))
+  expect_equal(r$headers[["cookie"]], c("param1=value1", "param2=value2"))
 })
 
 test_that("Test parse cookies", {
