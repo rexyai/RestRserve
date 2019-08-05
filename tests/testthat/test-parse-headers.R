@@ -28,7 +28,7 @@ TE: Trailers\r\n\r\n"
   expect_is(r, "list")
   expect_length(r, 12L)
   expect_equal(r[["connection"]], "keep-alive")
-  expect_equal(r[["accept"]], c("text/html","application/xhtml+xml","application/xml"))
+  expect_equal(r[["accept"]], c("text/html", "application/xhtml+xml", "application/xml"))
   expect_equal(r[["user-agent"]], "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0")
   expect_equal(r[["accept-encoding"]], c("gzip", "deflate", "br"))
   expect_equal(r[["accept-language"]], c("ru-RU", "ru"))
