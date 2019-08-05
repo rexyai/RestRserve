@@ -5,11 +5,10 @@
 #include <Rcpp.h>
 #include "utils.h"
 
-using map = std::unordered_map<std::string, std::vector<std::string>>;
 
 // [[Rcpp::export]]
 Rcpp::List parse_headers(const std::string& headers) {
-  map res;
+  std::unordered_map<std::string, std::vector<std::string>> res;
   std::istringstream stream(headers);
   std::string buffer;
   while (std::getline(stream, buffer) && buffer != "\r") {
