@@ -1,31 +1,30 @@
-#include <Rcpp.h>
+#include <vector>
 #include <string>
 #include <sstream>
-#include "types.h"
+#include <unordered_map>
+#include <Rcpp.h>
 #include "utils.h"
 
+
 // [[Rcpp::export]]
-Rcpp::List parse_headers_str(const std::string& headers) {
-  string_map res;
+Rcpp::List parse_headers(const std::string& headers) {
+  std::unordered_map<std::string, std::vector<std::string>> res;
   std::istringstream stream(headers);
   std::string buffer;
-  str_size_t index;
   while (std::getline(stream, buffer) && buffer != "\r") {
-    index = buffer.find(':', 0);
+    std::string::size_type index = buffer.find(':', 0);
     if(index != std::string::npos) {
       std::string key = buffer.substr(0, index);
-      std::string val = buffer.substr(index + 1);
+      std::string val_str = buffer.substr(index + 1);
       str_trim(key);
       str_lower(key);
-      str_trim(val);
+      char sep = key == "cookie" ? ';' : ',';
+      std::vector<std::string> val_vec;
+      str_split(val_str, val_vec, sep, true);
       if (res.find(key) != res.end()) {
-        if (key == "cookie") {
-          val = val + ';' + ' ' + res[key];
-        } else {
-          val = val + ',' + ' ' + res[key];
-        }
+        res[key].insert(res[key].end(), val_vec.begin(), val_vec.end());
       }
-      res.emplace(key, val);
+      res.emplace(key, val_vec);
     }
   }
   return Rcpp::wrap(res);

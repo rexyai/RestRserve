@@ -1,5 +1,6 @@
 #include <cctype>
 #include <string>
+#include <sstream>
 #include <algorithm>
 #include "utils.h"
 
@@ -19,35 +20,39 @@ void str_upper(std::string& s) {
     std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 }
 
-// check prefix
-bool str_starts_with(const std::string& s, const std::string& prefix) {
-    return s.size() >= prefix.size() && 0 == s.compare(0, prefix.size(), prefix);
-}
-
-// check suffix
-bool str_ends_with(const std::string& s, const std::string& suffix) {
-    return s.size() >= suffix.size() && 0 == s.compare(s.size() - suffix.size(), suffix.size(), suffix);
-}
-
 // split string into vecvtor
-std::vector<std::string> str_split(const std::string& s, const char sep, bool trim = false) {
+void str_split(const std::string& s, std::vector<std::string>& out,
+               const char sep, bool trim = false) {
     std::stringstream ss(s);
-    std::vector<std::string> out;
     std::string tmp;
     while(getline(ss, tmp, sep)) {
       if (trim) {
         str_trim(tmp);
       }
       out.push_back(tmp);
-    }
-    return out;
+    };
+}
+
+// check prefix
+bool str_starts_with(const std::string& s, const std::string& prefix) {
+  std::size_t str_n = s.size();
+  std::size_t cmp_n = prefix.size();
+  return str_n >= cmp_n && 0 == s.compare(0, cmp_n, prefix);
+}
+
+// check suffix
+bool str_ends_with(const std::string& s, const std::string& suffix) {
+  std::size_t str_n = s.size();
+  std::size_t cmp_n = suffix.size();
+  return str_n >= cmp_n && 0 == s.compare(str_n - cmp_n, cmp_n, suffix);
 }
 
 // convert unordered map to list
-Rcpp::Environment map_to_env(const string_map& x) {
+template<typename T>
+Rcpp::Environment map_to_env(const std::unordered_map<std::string,T>& x) {
     Rcpp::Environment env = Rcpp::new_env();
     for (const auto& pair: x) {
-        env.assign(pair.first, pair.second);
+      env.assign(pair.first, pair.second);
     }
     return env;
 }

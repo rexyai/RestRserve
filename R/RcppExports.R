@@ -13,12 +13,12 @@ format_headers <- function(x) {
     .Call(`_RestRserve_format_headers`, x)
 }
 
-parse_cookies_str <- function(header) {
-    .Call(`_RestRserve_parse_cookies_str`, header)
+parse_cookies <- function(x) {
+    .Call(`_RestRserve_parse_cookies`, x)
 }
 
-parse_headers_str <- function(headers) {
-    .Call(`_RestRserve_parse_headers_str`, headers)
+parse_headers <- function(headers) {
+    .Call(`_RestRserve_parse_headers`, headers)
 }
 
 url_decode_one <- function(value) {

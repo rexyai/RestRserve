@@ -1,8 +1,8 @@
+#include <cctype>
 #include <iostream>
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <Rcpp.h>
-#include "types.h"
 
 static inline char from_hex(char ch) {
   return std::isdigit(ch) ? ch - '0' : std::tolower(ch) - 'a' + 10;
@@ -15,7 +15,7 @@ std::string url_decode_one(const std::string& value) {
   escaped.fill('0');
 
   for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
-    str_value_t c = (*cur);
+    std::string::value_type c = (*cur);
     if (c == '%') {
       if (cur[1] && cur[2]) {
         h = from_hex(cur[1]) << 4 | from_hex(cur[2]);

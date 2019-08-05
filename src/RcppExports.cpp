@@ -38,25 +38,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// parse_cookies_str
-Rcpp::List parse_cookies_str(std::string header);
-RcppExport SEXP _RestRserve_parse_cookies_str(SEXP headerSEXP) {
+// parse_cookies
+Rcpp::List parse_cookies(const std::vector<std::string>& x);
+RcppExport SEXP _RestRserve_parse_cookies(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type header(headerSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_cookies_str(header));
+    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_cookies(x));
     return rcpp_result_gen;
 END_RCPP
 }
-// parse_headers_str
-Rcpp::List parse_headers_str(const std::string& headers);
-RcppExport SEXP _RestRserve_parse_headers_str(SEXP headersSEXP) {
+// parse_headers
+Rcpp::List parse_headers(const std::string& headers);
+RcppExport SEXP _RestRserve_parse_headers(SEXP headersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type headers(headersSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_headers_str(headers));
+    rcpp_result_gen = Rcpp::wrap(parse_headers(headers));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -109,8 +109,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_escape_chars", (DL_FUNC) &_RestRserve_escape_chars, 1},
     {"_RestRserve_deparse_vector", (DL_FUNC) &_RestRserve_deparse_vector, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
-    {"_RestRserve_parse_cookies_str", (DL_FUNC) &_RestRserve_parse_cookies_str, 1},
-    {"_RestRserve_parse_headers_str", (DL_FUNC) &_RestRserve_parse_headers_str, 1},
+    {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
+    {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},
     {"_RestRserve_url_decode_one", (DL_FUNC) &_RestRserve_url_decode_one, 1},
     {"_RestRserve_url_decode", (DL_FUNC) &_RestRserve_url_decode, 1},
     {"_RestRserve_url_encode_one", (DL_FUNC) &_RestRserve_url_encode_one, 1},

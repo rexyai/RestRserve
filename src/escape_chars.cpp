@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include "types.h"
 
 // [[Rcpp::export]]
 std::string escape_chars(const std::string& x) {

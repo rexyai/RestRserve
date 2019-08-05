@@ -1,9 +1,8 @@
 #include <cctype>
 #include <iomanip>
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <Rcpp.h>
-#include "types.h"
 
 // [[Rcpp::export]]
 std::string url_encode_one(const std::string& value) {
@@ -12,7 +11,7 @@ std::string url_encode_one(const std::string& value) {
   escaped << std::hex;
 
   for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
-    str_value_t c = (*cur);
+    std::string::value_type c = (*cur);
     // Keep alphanumeric and other accepted characters intact
     // See: https://tools.ietf.org/html/rfc3986#section-2.3
     if (std::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~') {

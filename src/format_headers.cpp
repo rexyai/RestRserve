@@ -1,5 +1,5 @@
-#include <sstream>
 #include <string>
+#include <sstream>
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
