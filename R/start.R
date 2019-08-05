@@ -1,3 +1,5 @@
+# nocov start
+
 #' @title starts RestRserve application
 #' @description Assuming that RserveApplication is deployed to a \code{dir},
 #' \code{restrserve_start} starts Rserve from it. Application "deployed" means that
@@ -73,3 +75,5 @@ read_pid = function(pid_path, n_retry = 10L, wait_retry = 0.01) {
     warning(sprintf("can't read pid from %s - returning dummy -1 value", pid_path))
   pid
 }
+
+# nocov end
