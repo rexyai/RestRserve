@@ -58,6 +58,7 @@ RestRserveRequest = R6::R6Class(
     query = NULL,
     headers = NULL,
     cookies = NULL,
+    context = NULL,
     content_type = NULL,
     body = NULL,
     path_parameters = NULL,
@@ -90,6 +91,7 @@ RestRserveRequest = R6::R6Class(
         self$method = method
       }
       self$path_parameters = list()
+      self$context = new.env(parent = emptyenv())
       private$id = uuid::UUIDgenerate(TRUE)
     },
     get_header = function(name) {
