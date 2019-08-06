@@ -32,7 +32,10 @@ std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
         out << sep << ' ';
       }
     }
-    out << '\r' << '\n';
+    // can not be '\r\n' at the end
+    if (i < n - 1) {
+      out << '\r' << '\n';
+    }
   }
 
   return out.str();

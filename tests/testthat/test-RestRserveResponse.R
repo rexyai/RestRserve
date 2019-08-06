@@ -117,7 +117,7 @@ test_that("Test to_rserve method", {
   r$set_header("Custom-Header", "text")
   body = "{status: ok}"
   cont = "applicaiton/json"
-  headers = "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text\r\n"
+  headers = "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text"
   status = 200L
   expect_equal(r$to_rserve(), list(body, cont, headers, status))
 })

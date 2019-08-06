@@ -20,8 +20,7 @@ test_that("Test headers", {
     c("content-type: application/json",
       "content-length: 10",
       "set-cookie: param=value; param2=value",
-      "custom: value1, value2",
-      ""),
+      "custom: value1, value2"),
     collapse = "\r\n"
   )
   expect_equal(r, v)

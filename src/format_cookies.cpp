@@ -39,7 +39,10 @@ std::string format_cookies(Rcpp::ListOf<Rcpp::List> cookies) {
     if (cookie.containsElementNamed("http_only")) {
       out << "; HttpOnly";
     }
-    out << ';' << '\r' << '\n';
+    // can not be '\r\n' at the end
+    if (i < n - 1) {
+      out << '\r' << '\n';
+    }
   }
 
   return out.str();

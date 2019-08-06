@@ -15,12 +15,11 @@ test_that("Test list of cookies", {
     list(name = "var5", value = "val5", path = "/", domain = "example.com", http_only = TRUE)
   )
   v = paste(
-    "Set-Cookie: var1=val1;",
-    "Set-Cookie: var2=val2; Path=/; Domain=example.com;",
-    "Set-Cookie: var3=val3; Secure;",
-    "Set-Cookie: var4=val4; Secure; HttpOnly;",
-    "Set-Cookie: var5=val5; Path=/; Domain=example.com; HttpOnly;",
-    "",
+    "Set-Cookie: var1=val1",
+    "Set-Cookie: var2=val2; Path=/; Domain=example.com",
+    "Set-Cookie: var3=val3; Secure",
+    "Set-Cookie: var4=val4; Secure; HttpOnly",
+    "Set-Cookie: var5=val5; Path=/; Domain=example.com; HttpOnly",
     sep = "\r\n"
   )
   r = format_cookies(cookies)
