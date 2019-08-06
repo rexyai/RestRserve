@@ -111,10 +111,12 @@ test_that("Test append headers method", {
   r = RestRserveRequest$new()
   r$append_header("accept", "text/plain")
   r$append_header("accept", "text/html")
-  expect_equal(r$get_header("accept"), "text/plain, text/html")
+  expect_equal(r$get_header("accept"), c("text/plain", "text/html"))
   r$append_header("cookie", "param1=value1")
   r$append_header("cookie", "param2=value2")
-  expect_equal(r$get_header("cookie"), "param1=value1; param2=value2")
+  expect_equal(r$get_header("cookie"), c("param1=value1", "param2=value2"))
+  expect_equal(r$cookies[["param1"]], "value1")
+  expect_equal(r$cookies[["param2"]], "value2")
 })
 
 test_that("Test has query param method", {

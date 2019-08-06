@@ -124,15 +124,9 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(value)
       }
       name = tolower(name)
-      if (!is.null(self$headers[[name]])) {
-        if (name == "cookie") {
-          self$headers[[name]] = paste(self$headers[[name]], value, sep = "; ")
-          private$parse_cookies()
-        } else {
-          self$headers[[name]] = paste(self$headers[[name]], value, sep = ", ")
-        }
-      } else {
-        self$headers[[name]] = value
+      self$headers[[name]] = append(self$headers[[name]], value)
+      if (name == "cookie") {
+        private$parse_cookies()
       }
       return(TRUE)
     },
