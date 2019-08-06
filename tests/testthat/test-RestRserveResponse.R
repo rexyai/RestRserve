@@ -115,11 +115,11 @@ test_that("Test to_rserve method", {
   r$set_content_type("applicaiton/json")
   r$set_status_code(200L)
   r$set_header("Custom-Header", "text")
-  expect_equal(r$to_rserve(),
-               list("{status: ok}",
-                    "applicaiton/json",
-                    "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text",
-                    200L))
+  body = "{status: ok}"
+  cont = "applicaiton/json"
+  headers = "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text\r\n"
+  status = 200L
+  expect_equal(r$to_rserve(), list(body, cont, headers, status))
 })
 
 test_that("Test status method", {
