@@ -55,6 +55,7 @@ RestRserveResponse = R6::R6Class(
     content_type = NULL,
     headers = NULL,
     status_code = NULL,
+    cookies = NULL,
     context = NULL,
     exception = NULL,
     serializer = NULL,
@@ -83,6 +84,7 @@ RestRserveResponse = R6::R6Class(
         self$headers = new.env(parent = emptyenv())
       }
       self$status_code = as.integer(status_code)
+      self$cookies = new.env(parent = emptyenv())
       self$context = new.env(parent = emptyenv())
     },
     #------------------------------------------------
@@ -158,7 +160,7 @@ RestRserveResponse = R6::R6Class(
       return(TRUE)
     },
     set_cookie = function(name, value, expires = NULL, max_age = NULL, domain = NULL,
-                          path = NULL, secure = NULL, http_only = TRUE) {
+                          path = NULL, secure = NULL, http_only = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(value)
@@ -169,15 +171,26 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_flag(secure, null.ok = TRUE)
         checkmate::assert_flag(http_only, null.ok = TRUE)
       }
+
       # FIXME: implement right logic
-      self$headers[["Set-Cookie"]] = append(self$headers[["Set-Cookie"]], value)
+      cookie = list(
+        name = name,
+        value = value,
+        expires = to_http_date(expires),
+        max_age = max_age,
+        domain = domain,
+        path = path,
+        secure = secure,
+        http_only = http_only
+      )
+      self$cookies[[name]] = compact_list(cookie)
       return(TRUE)
     },
     unset_cookie = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      self$headers[["Set-Cookie"]] = NULL
+      self$cookies[[name]] = NULL
       return(TRUE)
     },
     set_body = function(body) {
@@ -261,17 +274,14 @@ RestRserveResponse = R6::R6Class(
   private = list(
     prepare_headers = function() {
       if (length(self$headers) > 0L) {
-        h = as.list(self$headers)
-        if (!is.null(h[["Set-Cookie"]]) && length(h[["Set-Cookie"]]) > 1L) {
-          h[["Set-Cookie"]] = paste(h[["Set-Cookie"]], collapse = ";")
+        res = format_headers(as.list(self$headers))
+        if (length(self$cookies) > 0L) {
+          res = paste(res, fornat_cookies(as.list(self$cookies)), sep = "\r\n")
         }
-        to_collapse = lengths(h) > 1L
-        h[to_collapse] = lapply(to_collapse, paste, collapse = ",")
-        headers = paste(names(h), h, sep = ": ", collapse = "\r\n")
       } else {
-        headers = ""
+        res = ""
       }
-      return(headers)
+      return(res)
     }
   )
 )
