@@ -27,8 +27,19 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// format_cookies
+std::string format_cookies(Rcpp::ListOf<Rcpp::List> cookies);
+RcppExport SEXP _RestRserve_format_cookies(SEXP cookiesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::List> >::type cookies(cookiesSEXP);
+    rcpp_result_gen = Rcpp::wrap(format_cookies(cookies));
+    return rcpp_result_gen;
+END_RCPP
+}
 // format_headers
-Rcpp::CharacterVector format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
+std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
 RcppExport SEXP _RestRserve_format_headers(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -108,6 +119,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_escape_chars", (DL_FUNC) &_RestRserve_escape_chars, 1},
     {"_RestRserve_deparse_vector", (DL_FUNC) &_RestRserve_deparse_vector, 1},
+    {"_RestRserve_format_cookies", (DL_FUNC) &_RestRserve_format_cookies, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
     {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},

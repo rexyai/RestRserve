@@ -3,7 +3,7 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export]]
-Rcpp::CharacterVector format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
+std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
   std::size_t n = x.size();
   std::ostringstream out;
   Rcpp::CharacterVector nm = x.names();
