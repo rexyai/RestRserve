@@ -160,7 +160,7 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(value)
       }
       name = tolower(name)
-      self$query[[name]] = value
+      self$query[[name]] = enc2utf8(value)
       return(value)
     },
     delete_param = function(name) {
