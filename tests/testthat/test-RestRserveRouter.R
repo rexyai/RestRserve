@@ -1,6 +1,6 @@
-context("test path handler class")
+context("Test RestRserveRouter class")
 
-test_that("empty object", {
+test_that("Test empty object", {
   h = RestRserveRouter$new()
   expect_s3_class(h, "RestRserveRouter")
   expect_equal(h$size(), 0L)
@@ -8,7 +8,7 @@ test_that("empty object", {
 })
 
 
-test_that("add exact path", {
+test_that("Test 'exact' path handling", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "exact", id = "1")
   h$add_path(path = "/test2", match = "exact", id = "1")
@@ -23,7 +23,7 @@ test_that("add exact path", {
 })
 
 
-test_that("add partial path", {
+test_that("Test add 'partial' path handling", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "partial", id = "1")
   h$add_path(path = "/test2", match = "partial", id = "1")
@@ -38,7 +38,7 @@ test_that("add partial path", {
 })
 
 
-test_that("add regex path", {
+test_that("Test 'regex' path handling", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test1/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test1/{var1}/{var2}", match = "regex", id = "1")
@@ -64,7 +64,7 @@ test_that("add regex path", {
 })
 
 
-test_that("match path", {
+test_that("Test match_path method", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test1", match = "exact", id = "1")
   h$add_path(path = "/test2/", match = "partial", id = "2")
@@ -82,7 +82,7 @@ test_that("match path", {
 })
 
 
-test_that("get path variables", {
+test_that("Test extract path variables", {
   h = RestRserveRouter$new()
   h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
   h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
