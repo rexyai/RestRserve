@@ -28,7 +28,7 @@ get_text = function(url, handle = NULL) {
 create_basic_auth_handle = function(x = "user-1:password-1", prefix = "Basic") {
   function() {
     h = curl::new_handle()
-    curl::handle_setheaders(h, "Authorization" = paste(prefix, base64enc::base64encode(charToRaw(x)), sep = " "))
+    curl::handle_setheaders(h, "Authorization" = paste(prefix, jsonlite::base64_enc(charToRaw(x)), sep = " "))
     h
   }
 }
