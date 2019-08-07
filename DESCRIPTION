@@ -24,11 +24,11 @@ Imports:
   checkmate (>= 1.9.3),
   digest (>= 0.6.20),
   mime (>= 0.7),
-  Rcpp (>= 1.0.2)
+  Rcpp (>= 1.0.2),
+  jsonlite (>= 1.6)
 Suggests:
   yaml (>= 2.1.14),
   curl (>= 2.7),
-  jsonlite (>= 1.6),
   testthat (>= 2.0.0), 
   lintr
 LinkingTo: 
