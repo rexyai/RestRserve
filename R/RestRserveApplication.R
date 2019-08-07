@@ -106,7 +106,7 @@ RestRserveApplication = R6::R6Class(
       }
 
       # Generate UID
-      id = digest::digest(FUN, algo = "murmur32", serialize = TRUE)
+      id = digest::digest(FUN, algo = "murmur32")
       # Add path
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
@@ -123,7 +123,7 @@ RestRserveApplication = R6::R6Class(
         private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
       }
 
-      invisible(TRUE)
+      invisible(id)
     },
     #------------------------------------------------------------------------
     add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {
