@@ -5,28 +5,6 @@
 
 using namespace Rcpp;
 
-// escape_chars
-std::string escape_chars(const std::string& x);
-RcppExport SEXP _RestRserve_escape_chars(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(escape_chars(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// deparse_vector
-Rcpp::CharacterVector deparse_vector(Rcpp::CharacterVector x);
-RcppExport SEXP _RestRserve_deparse_vector(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(deparse_vector(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // format_headers
 Rcpp::CharacterVector format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
 RcppExport SEXP _RestRserve_format_headers(SEXP xSEXP) {
@@ -106,8 +84,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_RestRserve_escape_chars", (DL_FUNC) &_RestRserve_escape_chars, 1},
-    {"_RestRserve_deparse_vector", (DL_FUNC) &_RestRserve_deparse_vector, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
     {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},

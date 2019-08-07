@@ -44,5 +44,5 @@ test_that("Test body", {
   expect_equal(r$body, list())
   expect_equal(r$content_type, "application/json")
   expect_equal(r$serializer, to_json)
-  expect_equal(r$to_rserve()[[1]], "[]")
+  expect_equal(r$to_rserve()[[1]], to_json(list()))
 })
