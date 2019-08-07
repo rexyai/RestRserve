@@ -7,7 +7,7 @@
 to_json(x, unbox = TRUE)
 }
 \arguments{
-\item{x}{an R object. Lists (possibly named and nested) and arrays are supported}
+\item{x}{the object to be encoded}
 
 \item{unbox}{\code{TRUE} by default. Whether to unbox (simplify) arrays consists of a single element}
 }
