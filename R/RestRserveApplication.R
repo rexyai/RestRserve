@@ -93,6 +93,9 @@ RestRserveApplication = R6::R6Class(
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       self$content_type = content_type
+      private$response = RestRserveResponse$new(content_type = self$content_type)
+      private$response$reset(self$content_type)
+
       do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
@@ -257,8 +260,11 @@ RestRserveApplication = R6::R6Class(
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
+    response = NULL,
     #------------------------------------------------------------------------
     process_request = function(request) {
+      on.exit(private$response$reset(self$content_type, NULL))
+
       self$logger$trace(
         list(request_id = request$request_id,
              method = request$method,
@@ -266,10 +272,7 @@ RestRserveApplication = R6::R6Class(
              query = request$query,
              headers = request$headers)
         )
-      # dummy response
-      response = RestRserveResponse$new(content_type = self$content_type)
-      #------------------------------------------------------------------------------
-
+      response = private$response
       # Call middleware for the request
       mw_ids = as.character(seq_along(private$middleware))
       mw_called = new.env(parent = emptyenv())
@@ -327,8 +330,9 @@ RestRserveApplication = R6::R6Class(
           break
         }
       }
+      rserve_response = response$to_rserve()
 
-      return(response$to_rserve())
+      return(rserve_response)
     },
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29

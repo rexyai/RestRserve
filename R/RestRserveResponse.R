@@ -85,6 +85,13 @@ RestRserveResponse = R6::R6Class(
       self$status_code = as.integer(status_code)
       self$context = new.env(parent = emptyenv())
     },
+    reset = function(content_type, serializer = NULL) {
+      self$body = ""
+      self$set_content_type(content_type, serializer)
+      self$status_code = 200L
+      self$context = new.env(parent = emptyenv())
+      self$headers = new.env(parent = emptyenv())
+    },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain', serializer = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
