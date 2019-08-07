@@ -1,5 +1,4 @@
 #' @importFrom R6 R6Class
-#' @importFrom digest digest
 #' @importFrom uuid UUIDgenerate
 #' @importFrom mime guess_type
 #' @importFrom utils packageName

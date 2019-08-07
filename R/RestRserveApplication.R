@@ -106,7 +106,7 @@ RestRserveApplication = R6::R6Class(
       }
 
       # Generate UID
-      id = digest::digest(FUN, algo = "murmur32")
+      id = uuid::UUIDgenerate()
       # Add path
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
