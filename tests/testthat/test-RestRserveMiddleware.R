@@ -1,7 +1,7 @@
-context("test middlewate class")
+context("test RestRserveMiddleware class")
 
 
-test_that("empty object", {
+test_that("Test empty object", {
   mw = RestRserveMiddleware$new()
   expect_s3_class(mw, "RestRserveMiddleware")
   expect_equal(mw$name, "Middleware")
@@ -10,7 +10,7 @@ test_that("empty object", {
 })
 
 
-test_that("defined object", {
+test_that("Test defined object", {
   mw = RestRserveMiddleware$new(
     name = "test",
     process_request = function(request, response) 1,
