@@ -82,82 +82,16 @@ test_that("Test parse query", {
   expect_equal(r$query[["param4"]], "value4")
 })
 
-test_that("Test has headers method", {
-  r = RestRserveRequest$new(headers = charToRaw("User-Agent: curl/7.65.3"))
-  expect_false(r$has_header("test"))
-  expect_true(r$has_header("user-agent"))
-})
-
-test_that("Test get headers method", {
+test_that("Test get_header method", {
   r = RestRserveRequest$new(headers = charToRaw("User-Agent: curl/7.65.3"))
   expect_null(r$get_header("test"))
   expect_equal(r$get_header("user-agent"), "curl/7.65.3")
 })
 
-test_that("Test set headers method", {
-  r = RestRserveRequest$new()
-  r$set_header("test", "test-value")
-  expect_equal(r$get_header("test"), "test-value")
-})
-
-test_that("Test delete headers method", {
-  r = RestRserveRequest$new()
-  r$set_header("test", "test-value")
-  expect_true(r$delete_header("test"))
-  expect_false(r$has_header("test"))
-})
-
-test_that("Test append headers method", {
-  r = RestRserveRequest$new()
-  r$append_header("accept", "text/plain")
-  r$append_header("accept", "text/html")
-  expect_equal(r$get_header("accept"), c("text/plain", "text/html"))
-  r$append_header("cookie", "param1=value1")
-  r$append_header("cookie", "param2=value2")
-  expect_equal(r$get_header("cookie"), c("param1=value1", "param2=value2"))
-  expect_equal(r$cookies[["param1"]], "value1")
-  expect_equal(r$cookies[["param2"]], "value2")
-})
-
-test_that("Test has query param method", {
+test_that("Test get_param_query method", {
   r = RestRserveRequest$new(query = c("param" = "value"))
-  expect_false(r$has_param("test"))
-  expect_true(r$has_param("param"))
-})
-
-test_that("Test get query param method", {
-  r = RestRserveRequest$new(query = c("param" = "value"))
-  expect_null(r$get_param("test"))
-  expect_equal(r$get_param("param"), "value")
-})
-
-test_that("Test set query param method", {
-  r = RestRserveRequest$new()
-  r$set_param("param", "value")
-  expect_equal(r$get_param("param"), "value")
-})
-
-test_that("Test delete query param method", {
-  r = RestRserveRequest$new()
-  r$set_param("param", "value")
-  expect_true(r$delete_header("param"))
-  expect_false(r$has_header("param"))
-})
-
-test_that("Test query_string method", {
-  r = RestRserveRequest$new(path = "/path")
-  r$set_param("param", "value")
-  expect_equal(r$query_string, "param=value")
-  r$set_param("field", "some text")
-  expect_equal(r$query_string, "param=value&field=some%20text")
-})
-
-test_that("Test fullpath method", {
-  r = RestRserveRequest$new(path = "/path")
-  expect_equal(r$fullpath, "/path")
-  r$set_param("param", "value")
-  r$set_param("field", "some text")
-  expect_equal(r$fullpath, "/path?param=value&field=some%20text")
+  expect_null(r$get_param_query("test"))
+  expect_equal(r$get_param_query("param"), "value")
 })
 
 test_that("Test accept method", {
@@ -168,16 +102,16 @@ test_that("Test accept method", {
   expect_equal(r$accept, c("plain/text", "text/html"))
   expect_false(r$accept_json)
   expect_false(r$accept_xml)
-  r$set_header("accept", "application/json")
+  r$headers[["accept"]] = "application/json"
   expect_true(r$accept_json)
-  r$set_header("accept", "text/xml")
+  r$headers[["accept"]] = "text/xml"
   expect_true(r$accept_xml)
 })
 
 test_that("Test date method", {
   r = RestRserveRequest$new()
   expect_null(r$date)
-  r$set_header("date", "Sun, 04 Aug 2019 07:17:39 GMT")
+  r$headers[["date"]] = "Sun, 04 Aug 2019 07:17:39 GMT"
   expect_is(r$date, "POSIXct")
   expect_equal(as.numeric(r$date), 1564903059)
 })

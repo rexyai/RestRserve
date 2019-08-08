@@ -101,120 +101,27 @@ RestRserveRequest = R6::R6Class(
       name = tolower(name)
       return(self$headers[[name]])
     },
-    set_header = function(name, value) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-        checkmate::assert_string(value)
-      }
-      name = tolower(name)
-      self$headers[[name]] = value
-      return(value)
-    },
-    delete_header = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-      }
-      name = tolower(name)
-      self$headers[[name]] = NULL
-      return(TRUE)
-    },
-    append_header = function(name, value) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-        checkmate::assert_string(value)
-      }
-      name = tolower(name)
-      self$headers[[name]] = append(self$headers[[name]], value)
-      if (name == "cookie") {
-        private$parse_cookies()
-      }
-      return(TRUE)
-    },
-    has_header = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-      }
-      name = tolower(name)
-      return(!is.null(self$headers[[name]]))
-    },
-    get_body = function() {
-      return(self$body)
-    },
-    set_body = function(body) {
-      self$body = body
-      return(body)
-    },
-    has_body = function() {
-      return(length(self$body) > 0L)
-    },
-    get_param = function(name) {
+    get_param_query = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
       name = tolower(name)
       return(self$query[[name]])
     },
-    set_param = function(name, value) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-        checkmate::assert_string(value)
-      }
-      name = tolower(name)
-      self$query[[name]] = enc2utf8(value)
-      return(value)
-    },
-    delete_param = function(name) {
+    get_param_path = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
       name = tolower(name)
-      self$query[[name]] = NULL
-      return(TRUE)
-    },
-    has_param = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(name)
-      }
-      name = tolower(name)
-      return(!is.null(self$query[[name]]))
+      return(self$path_parameters[[name]])
     }
   ),
   active = list(
     request_id = function() {
       private$id
     },
-    query_string = function() {
-      res = NULL
-      if (length(self$query) > 0L) {
-        res = paste(names(self$query),
-                    url_encode(as.character(as.list(self$query))),
-                    sep = "=", collapse = "&")
-      }
-      return(res)
-    },
-    host = function() {
-      return(self$headers[["host"]])
-    },
-    fullpath = function() {
-      query = self$query_string
-      if (is.null(query)) {
-        res = self$path
-      } else {
-        res = paste(self$path, query, sep = "?")
-      }
-      return(res)
-    },
     date = function() {
       return(from_http_date(self$headers[["date"]]))
-    },
-    user_agent = function() {
-      return(self$headers[["user_agent"]])
-    },
-    client_ip = function() {
-      return(self$headers[["client-addr"]])
-    },
-    referer = function() {
-      return(self$headers[["referer"]])
     },
     accept = function() {
       res = "*/*"
@@ -236,9 +143,6 @@ RestRserveRequest = R6::R6Class(
         res = any(startsWith(self$headers[["accept"]], "text/xml"))
       }
       return(res)
-    },
-    expect = function() {
-      return(self$headers[["expect"]])
     }
   ),
   private = list(
