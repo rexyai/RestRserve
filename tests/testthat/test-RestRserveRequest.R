@@ -1,6 +1,6 @@
-context("Test request class")
+context("Test RestRserveRequest class")
 
-test_that("Empty object", {
+test_that("Test empty object", {
   r = RestRserveRequest$new()
   expect_is(r, "RestRserveRequest")
   expect_is(r$request_id, "character")
@@ -30,12 +30,12 @@ test_that("Test method field handling", {
   expect_equal(r2$method, "POST")
 })
 
-test_that("Test path param", {
+test_that("Test path constructor param", {
   r = RestRserveRequest$new(path = "/path")
   expect_equal(r$path, "/path")
 })
 
-test_that("Test parse headers", {
+test_that("Test parse headers in constructor", {
   h = charToRaw(
     paste("Request-Method: GET",
           "Host: 127.0.0.1:5000",
@@ -56,7 +56,7 @@ test_that("Test parse headers", {
   expect_equal(r$headers[["cookie"]], c("param1=value1", "param2=value2"))
 })
 
-test_that("Test parse cookies", {
+test_that("Test parse cookies in constructor", {
   h = charToRaw(
     paste("Request-Method: GET",
           "Host: 127.0.0.1:5000",
@@ -72,7 +72,7 @@ test_that("Test parse cookies", {
   expect_equal(r$cookies[["param2"]], "value2")
 })
 
-test_that("Test parse query", {
+test_that("Test parse query in constructor", {
   q = setNames(c("value1", "value2", "", "value4"),
                c("param1", "", "param3", "param4"))
   r = RestRserveRequest$new(query = q)

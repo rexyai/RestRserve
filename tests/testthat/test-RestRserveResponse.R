@@ -1,4 +1,4 @@
-context("text response class")
+context("text RestRserveResponse class")
 
 test_that("Test empty object", {
   r = RestRserveResponse$new()
