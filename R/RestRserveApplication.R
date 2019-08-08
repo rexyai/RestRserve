@@ -106,12 +106,8 @@ RestRserveApplication = R6::R6Class(
         private$routes[[method]] = RestRserveRouter$new()
       }
       # Generate ID for handler
-      idx = which(vapply(private$handlers, identical, logical(1L), y = FUN))
-      if (length(idx) > 0L) {
-        id = names(private$handlers)[idx[1L]]
-      } else {
-        id = as.character(length(private$handlers) + 1L)
-      }
+      id = as.character(length(private$handlers) + 1L)
+
       # Add path
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
