@@ -129,23 +129,32 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
+      if (tolower(name) %in% c("content-type", "content-length")) {
+        warning("'Content-Length' and 'Content-Type' not accepted by Rserve.")
+        return(invisible(NULL))
+      }
       self$headers[[name]] = value
-      return(value)
+      return(invisible(value))
     },
     delete_header = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
       self$headers[[name]] = NULL
-      return(TRUE)
+      return(invisible(TRUE))
     },
     append_header = function(name, value) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
-      self$headers[[name]] = append(self$headers[[name]], value)
-      return(TRUE)
+      if (tolower(name) %in% c("content-type", "content-length")) {
+        warning("'Content-Length' and 'Content-Type' not accepted by Rserve.")
+        return(invisible(NULL))
+      }
+      value = append(self$headers[[name]], value)
+      self$headers[[name]] = value
+      return(invisible(value))
     },
     set_date = function(dtm = Sys.time()) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -153,11 +162,11 @@ RestRserveResponse = R6::R6Class(
       }
       res = to_http_date(dtm)
       self$headers[["Date"]] = res
-      return(res)
+      return(invisible(res))
     },
     unset_date = function() {
       self$headers[["Date"]] = NULL
-      return(TRUE)
+      return(invisible(TRUE))
     },
     set_cookie = function(name, value, expires = NULL, max_age = NULL, domain = NULL,
                           path = NULL, secure = NULL, http_only = NULL) {
@@ -183,15 +192,16 @@ RestRserveResponse = R6::R6Class(
         secure = secure,
         http_only = http_only
       )
-      self$cookies[[name]] = compact_list(cookie)
-      return(TRUE)
+      cookie = compact_list(cookie)
+      self$cookies[[name]] = cookie
+      return(invisible(cookie))
     },
     unset_cookie = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
       self$cookies[[name]] = NULL
-      return(TRUE)
+      return(invisible(TRUE))
     },
     set_body = function(body) {
       self$body = body
@@ -210,7 +220,7 @@ RestRserveResponse = R6::R6Class(
         body = status_codes[[status_code_char]]
       }
       self$status_code = status_code_int
-      return(invisible(NULL))
+      return(invisible(TRUE))
     },
     to_rserve = function() {
       headers = private$prepare_headers()

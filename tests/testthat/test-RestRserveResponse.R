@@ -27,7 +27,7 @@ test_that("Test parse headers", {
   expect_equal(r$headers[["Test-Header2"]], "value2")
 })
 
-test_that("Test has headers method", {
+test_that("Test has_header method", {
   r = RestRserveResponse$new(
     headers = c("Test-Header" = "value")
   )
@@ -35,7 +35,7 @@ test_that("Test has headers method", {
   expect_true(r$has_header("Test-Header"))
 })
 
-test_that("Test get headers method", {
+test_that("Test get_header method", {
   r = RestRserveResponse$new(
     headers = c("Test-Header" = "value")
   )
@@ -43,20 +43,20 @@ test_that("Test get headers method", {
   expect_equal(r$get_header("Test-Header"), "value")
 })
 
-test_that("Test set headers method", {
+test_that("Test set_header method", {
   r = RestRserveResponse$new()
   r$set_header("test", "test-value")
   expect_equal(r$get_header("test"), "test-value")
 })
 
-test_that("Test delete headers method", {
+test_that("Test delete_header method", {
   r = RestRserveResponse$new()
   r$set_header("test", "test-value")
   expect_true(r$delete_header("test"))
   expect_false(r$has_header("test"))
 })
 
-test_that("Test append headers method", {
+test_that("Test append_header method", {
   r = RestRserveResponse$new()
   r$append_header("accept", "text/plain")
   r$append_header("accept", "text/html")
@@ -66,14 +66,14 @@ test_that("Test append headers method", {
   expect_equal(r$get_header("cookie"), c("param1=value1", "param2=value2"))
 })
 
-test_that("Test set status code", {
+test_that("Test set_status_code method", {
   r = RestRserveResponse$new(status_code = 200L)
   expect_equal(r$status_code, 200L)
   r$set_status_code(400L)
   expect_equal(r$status_code, 400L)
 })
 
-test_that("Test set content type", {
+test_that("Test set_content_type method", {
   r = RestRserveResponse$new()
   r$set_content_type("test/type")
   expect_equal(r$content_type, "test/type")
@@ -82,7 +82,7 @@ test_that("Test set content type", {
   expect_equal(r$serializer, as.character)
 })
 
-test_that("Test body", {
+test_that("Test body assign in contructor", {
   r = RestRserveResponse$new(
     body = list(),
     content_type = "application/json",
@@ -94,13 +94,13 @@ test_that("Test body", {
   expect_equal(r$to_rserve()[[1]], to_json(list()))
 })
 
-test_that("Test set date method", {
+test_that("Test set_date method", {
   r = RestRserveResponse$new()
   r$set_date(.POSIXct(1564760173, tz = "GMT"))
   expect_equal(r$get_header("Date"), "Fri, 02 Aug 2019 15:36:13 GMT")
 })
 
-test_that("Test unset date method", {
+test_that("Test unset_date method", {
   r = RestRserveResponse$new()
   r$set_date(.POSIXct(1564760173, tz = "GMT"))
   r$unset_date()
