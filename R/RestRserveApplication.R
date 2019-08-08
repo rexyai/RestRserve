@@ -101,12 +101,13 @@ RestRserveApplication = R6::R6Class(
       checkmate::assert_choice(method, private$supported_methods)
       checkmate::assert_function(FUN, nargs = 2L)
 
+      # Add router if no exists
       if (is.null(private$routes[[method]])) {
         private$routes[[method]] = RestRserveRouter$new()
       }
+      # Generate ID for handler
+      id = as.character(length(private$handlers) + 1L)
 
-      # Generate UID
-      id = digest::digest(FUN)
       # Add path
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
@@ -123,7 +124,7 @@ RestRserveApplication = R6::R6Class(
         private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
       }
 
-      invisible(TRUE)
+      invisible(id)
     },
     #------------------------------------------------------------------------
     add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {

@@ -1,3 +1,5 @@
+#' @importFrom jsonlite base64_dec
+
 # https://github.com/loanzen/falcon-auth/blob/master/falcon_auth/backends.py
 # https://github.com/loanzen/falcon-auth
 AuthBackend = R6::R6Class(
@@ -82,7 +84,7 @@ AuthBackendBasic = R6::R6Class(
     extract_credentials = function(request, response) {
       token = super$parse_auth_token_from_request(request, response)
       #-------------------------------------------------------
-      token = try(rawToChar(base64enc::base64decode(token)), silent = TRUE)
+      token = try(rawToChar(jsonlite::base64_dec(token)), silent = TRUE)
       if (inherits(token, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Unable to decode credentials",

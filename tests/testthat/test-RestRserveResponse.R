@@ -1,4 +1,4 @@
-context("text response class")
+context("text RestRserveResponse class")
 
 test_that("Test empty object", {
   r = RestRserveResponse$new()
@@ -18,7 +18,7 @@ test_that("Test empty object", {
   expect_equal(r$to_rserve(), list("", "text/plain", "", 200L))
 })
 
-test_that("Test headers", {
+test_that("Test parse headers in constructor", {
   r = RestRserveResponse$new(headers = c("Test-header" = "value"))
   r$set_header("Test-header2", "value2")
   expect_equal(r$headers[["Test-header"]], "value")
@@ -28,14 +28,14 @@ test_that("Test headers", {
   expect_equal(r$to_rserve()[[3]], "Test-header2: NULL\r\nTest-header: value")
 })
 
-test_that("Test status code", {
+test_that("Test set status code in constructor", {
   r = RestRserveResponse$new(status_code = 200L)
   expect_equal(r$status_code, 200L)
   r$set_status_code(400L)
   expect_equal(r$status_code, 400L)
 })
 
-test_that("Test body", {
+test_that("Test set body in constructor", {
   r = RestRserveResponse$new(
     body = list(),
     content_type = "application/json",
@@ -44,5 +44,5 @@ test_that("Test body", {
   expect_equal(r$body, list())
   expect_equal(r$content_type, "application/json")
   expect_equal(r$serializer, to_json)
-  expect_equal(r$to_rserve()[[1]], "[]")
+  expect_equal(r$to_rserve()[[1]], to_json(list()))
 })
