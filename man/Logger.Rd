@@ -31,8 +31,8 @@ By default when \code{printer = NULL} logger writes message in JSON format to \c
 }
 
 \examples{
-logger = Logger$new(INFO)
+logger = Logger$new("info")
 logger$info("hello world")
-logger$info(list(message = "hello world", code = 0L))
+logger$info("", context = list(message = "hello world", code = 0L))
 }
 \keyword{datasets}

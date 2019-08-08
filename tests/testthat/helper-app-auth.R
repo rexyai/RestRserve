@@ -55,7 +55,7 @@ mw_auth_basic = RestRserveAuthMiddleware$new(basic_auth, routes = "/fib-basic-au
 app_auth = RestRserveApplication$new(
   middleware = list(mw_auth_token, mw_auth_basic, mw_auth_token_prefix)
 )
-app_auth$logger$set_log_level(ERROR)
+app_auth$logger$set_log_level("error")
 # register endpoints and corresponding R handlers
 app_auth$add_get(path = "/fib-bearer-auth", FUN = fib_forward)
 app_auth$add_get(path = "/fib-basic-auth", FUN = fib_forward)

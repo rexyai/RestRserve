@@ -20,9 +20,9 @@
 #' }
 #' @export
 #' @examples
-#' logger = Logger$new(INFO)
+#' logger = Logger$new("info")
 #' logger$info("hello world")
-#' logger$info(list(message = "hello world", code = 0L))
+#' logger$info("", context = list(message = "hello world", code = 0L))
 Logger = R6::R6Class(
   classname = "Logger",
   public = list(
