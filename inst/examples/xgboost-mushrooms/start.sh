@@ -10,6 +10,3 @@ echo "curl -H \"Content-Type: application/json\" --data @$REQ  http://localhost:
 echo "-----------------------------------------------"
 
 Rscript app.R $DIR
-
-
-
