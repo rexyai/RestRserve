@@ -74,7 +74,11 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(content_type)
         checkmate::assert_character(query, null.ok = TRUE)
         checkmate::assert_raw(headers, null.ok = TRUE)
-        checkmate::assert_raw(body, null.ok = TRUE)
+        checkmate::assert(
+          checkmate::check_raw(body, null.ok = TRUE),
+          checkmate::check_character(body, null.ok = TRUE),
+          combine = "or"
+        )
       }
 
       # Named character vector. Query parameters key-value pairs.
