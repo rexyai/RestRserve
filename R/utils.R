@@ -52,6 +52,9 @@ to_http_date = function(dtm) {
   if (is.null(dtm)) {
     return(NULL)
   }
+  ## An RFC 5322 header (Eastern Canada, during DST)
+  ## In a non-English locale the commented lines may be needed.
+  ## see ?strptime
   old_loc = Sys.getlocale("LC_TIME")
   on.exit(Sys.setlocale("LC_TIME", old_loc))
   Sys.setlocale("LC_TIME", "C")
@@ -63,6 +66,9 @@ from_http_date = function(str) {
   if (is.null(str)) {
     return(NULL)
   }
+  ## An RFC 5322 header (Eastern Canada, during DST)
+  ## In a non-English locale the commented lines may be needed.
+  ## see ?strptime
   old_loc = Sys.getlocale("LC_TIME")
   on.exit(Sys.setlocale("LC_TIME", old_loc))
   Sys.setlocale("LC_TIME", "C")
