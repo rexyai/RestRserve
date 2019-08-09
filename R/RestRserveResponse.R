@@ -149,6 +149,10 @@ RestRserveResponse = R6::R6Class(
       } else {
         headers = ""
       }
+      # body can't be NULL
+      if (is.null(self$body)) {
+        self$body = ""
+      }
       if (is_string(self$body)) {
         body_name = names(self$body)
         if (identical(body_name, "file")) {
