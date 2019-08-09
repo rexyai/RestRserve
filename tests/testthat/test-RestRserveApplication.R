@@ -23,7 +23,7 @@ test_that("Test empty routes handling", {
   a = RestRserveApplication$new()
   rq = RestRserveRequest$new()
   rs = RestRserveResponse$new()
-  expect_null(  a$.__enclos_env__$private$match_handler(rq, rs))
+  expect_null(a$.__enclos_env__$private$match_handler(rq, rs))
 })
 
 
