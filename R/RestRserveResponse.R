@@ -147,22 +147,23 @@ RestRserveResponse = R6::R6Class(
       if (length(self$headers) > 0L) {
         headers = paste(names(self$headers), as.list(self$headers), sep = ": ", collapse = "\r\n")
       } else {
-        headers = ""
+        headers = character(0)
       }
+      body = self$body
       # body can't be NULL
-      if (is.null(self$body)) {
-        self$body = ""
+      if (is.null(body)) {
+        body = raw()
       }
-      if (is_string(self$body)) {
-        body_name = names(self$body)
+      if (is_string(body)) {
+        body_name = names(body)
         if (identical(body_name, "file")) {
-          return(list("file" = self$body, self$content_type, headers, self$status_code))
+          return(list("file" = body, self$content_type, headers, self$status_code))
         }
         if (identical(body_name, "tmpfile")) {
-          return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
+          return(list("tmpfile" = body, self$content_type, headers, self$status_code))
         }
       }
-      body = self$serializer(self$body)
+      body = self$serializer(body)
       res = list(body, self$content_type, headers, self$status_code)
       return(res)
     }
