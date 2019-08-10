@@ -15,7 +15,7 @@ test_that("Test empty object", {
   expect_is(r$status_code, "integer")
   expect_length(r$status_code, 1L)
   expect_equal(r$status_code, 200L)
-  expect_equal(r$to_rserve(), list("", "text/plain", "", 200L))
+  expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 })
 
 test_that("Test parse headers in constructor", {

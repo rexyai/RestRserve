@@ -99,7 +99,7 @@ test_that("Test process_request method", {
   rq = RestRserveRequest$new(path = "/")
   rs = RestRserveResponse$new()
   r = a$.__enclos_env__$private$process_request(rq)
-  expect_equal(r, list("1", "text/plain", "", 200L))
+  expect_equal(r, list("1", "text/plain", character(0), 200L))
 })
 
 
