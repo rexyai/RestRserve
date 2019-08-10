@@ -4,7 +4,7 @@
 
 .http.request = function(path, query, body, headers) {
   resp_body = "Hello, World!"
-  resp_headers = ""
+  resp_headers = character(0)
   content_type = "text/plain"
   status_code = 200
   list(
