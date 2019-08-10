@@ -94,12 +94,12 @@ test_that("Test match_handler method", {
 
 test_that("Test process_request method", {
   a = RestRserveApplication$new()
-  f = function(rq, rs) {rs$body = list(a = 1)}
+  f = function(rq, rs) {rs$body = "text"}
   a$add_route("/", "GET", f, "exact")
   rq = RestRserveRequest$new(path = "/")
   rs = RestRserveResponse$new()
   r = a$.__enclos_env__$private$process_request(rq)
-  expect_equal(r, list("1", "text/plain", character(0), 200L))
+  expect_equal(r, list("text", "text/plain", character(0), 200L))
 })
 
 
