@@ -26,7 +26,7 @@ magick_handler = function(request, response) {
     raise(err$bad_request())
   }
   # make plot and save it in temp file
-  img <- image_graph(width = 480, height = 480, bg = "white")
+  img = image_graph(width = 480, height = 480, bg = "white")
   plot(cars)
   lines(lowess(cars))
   dev.off()
