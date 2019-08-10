@@ -34,6 +34,18 @@ secure_handler = function(request, response) {
   response$serializer = identity
 }
 
+securearea_handler = function(request, response) {
+  auth = request$headers[["authorization"]]
+  auth = sub("Basic ", "", auth, fixed = TRUE)
+  auth = rawToChar(base64_dec(auth))
+  nm = strsplit(auth, ":", TRUE)[[1L]][1L]
+  res = request$path_parameters[["resource"]]
+  response$body = sprintf("Hello, %s! Request resource is '%s'.", nm, res)
+  response$content_type = "text/plain"
+  response$status_code = 200L
+  response$serializer = identity
+}
+
 
 ## ---- basic authentification ----
 
@@ -47,10 +59,16 @@ auth_fun = function(user, password) {
   return(TRUE)
 }
 auth_backend = AuthBackendBasic$new(FUN = auth_fun)
-auth_mw = RestRserveAuthMiddleware$new(
+auth_mw_exact = RestRserveAuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
+  name = "basic_auth"
+)
+auth_mw_partial = RestRserveAuthMiddleware$new(
+  auth_backend = auth_backend,
+  routes = "/securearea",
+  match = "partial",
   name = "basic_auth"
 )
 
@@ -65,7 +83,8 @@ app = RestRserveApplication$new(
 
 ## ---- register middlewares ----
 
-app$append_middleware(auth_mw)
+app$append_middleware(auth_mw_exact)
+app$append_middleware(auth_mw_partial)
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -82,9 +101,17 @@ app$add_get(
   match = "exact"
 )
 
+app$add_get(
+  path = "/securearea/{resource}",
+  FUN = securearea_handler,
+  match = "regex"
+)
+
 
 ## ---- start application ----
 
-app$run(
-  http_port = 8001
-)
+if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
+  app$run(
+    http_port = 8001
+  )
+}

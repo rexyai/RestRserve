@@ -18,6 +18,8 @@
 
 ## ---- start application ----
 
-Rserve::run.Rserve(
-  http.port = 8001
-)
+if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
+  Rserve::run.Rserve(
+    http.port = 8001
+  )
+}

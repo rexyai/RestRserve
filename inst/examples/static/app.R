@@ -28,6 +28,8 @@ app$add_static(
 
 ## ---- start application ----
 
-app$run(
-  http_port = 8001
-)
+if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
+  app$run(
+    http_port = 8001
+  )
+}

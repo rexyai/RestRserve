@@ -1,20 +1,15 @@
 #!/usr/bin/env Rscript
 
 ## ---- load packages ----
+
 library(RestRserve)
+library(Rcpp)
 
 
 ## ---- Functions ----
 
 # function to calc Fibonacci numbers
-calc_fib = function(n) {
-  if (n < 0L) stop("n should be >= 0")
-  if (n == 0L) return(0L)
-  if (n == 1L || n == 2L) return(1L)
-  x = rep(1L, n)
-  for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
-  x[[n]]
-}
+sourceCpp(file.path("src", "fib.cpp"))
 
 
 ## ---- create handler for the HTTP requests ----
@@ -28,7 +23,7 @@ fib_handler = function(request, response) {
     )
     raise(err$bad_request())
   }
-  response$body = calc_fib(n)
+  response$body = calc_fib_cpp(n)
   response$content_type = "text/plain"
   response$serializer = as.character
 }
@@ -53,6 +48,8 @@ app$add_get(
 
 ## ---- start application ----
 
-app$run(
-  http_port = 8001
-)
+if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
+  app$run(
+    http_port = 8001
+  )
+}
