@@ -54,6 +54,8 @@ saveRDS(create_model_matrix, file.path(DIR, "create_model_matrix.rds"))
 #----------------------------------------
 # generate sample request:
 #----------------------------------------
+# nolint start
 request = '[{"featureName": "stalk-color-below-ring", "featureValue": "red"},{"featureName": "cap-shape","featureValue": "conical"}]'
+# nolint end
 writeLines(request, file.path(DIR, "request.json"))
 #----------------------------------------
