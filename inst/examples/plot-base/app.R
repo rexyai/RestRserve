@@ -10,12 +10,13 @@ library(RestRserve)
 plot_handler = function(request, response) {
   # make plot and save it in temp file
   tmp = tempfile(fileext = ".png")
-  on.exit(unlink(tmp))
   png(tmp, bg = "transparent")
   plot(1:10)
   rect(1, 5, 3, 7, col = "white")
   dev.off()
-  response$body = readBin(tmp, raw(), file.size(tmp))
+  # on.exit(unlink(tmp))
+  # response$body = readBin(tmp, raw(), file.size(tmp))
+  response$body = c("tmpfile" = tmp)
   response$content_type = "image/png"
   response$status_code = 200L
   response$serializer = identity

@@ -11,10 +11,11 @@ library(ggplot2)
 ggplot_handler = function(request, response) {
   # make plot and save it in temp file
   tmp = tempfile(fileext = ".png")
-  on.exit(unlink(tmp))
   p = ggplot(mtcars, aes(wt, mpg)) + geom_point()
   ggsave(tmp, p, "png")
-  response$body = readBin(tmp, raw(), file.size(tmp))
+  # on.exit(unlink(tmp))
+  # response$body = readBin(tmp, raw(), file.size(tmp))
+  response$body = c("tmpfile" = tmp)
   response$content_type = "image/png"
   response$status_code = 200L
   response$serializer = identity
