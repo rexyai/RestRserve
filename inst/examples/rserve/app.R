@@ -3,10 +3,16 @@
 ## ---- HTTTP request handler ----
 
 .http.request = function(path, query, body, headers) {
-  resp_body = "Hello, World!"
+  if (path == "/hello") {
+    resp_body = "Hello, World!"
+    status_code = 200L
+  } else {
+    resp_body = "Not Found"
+    status_code = 404L
+  }
+
   resp_headers = character(0)
   content_type = "text/plain"
-  status_code = 200
   list(
     resp_body,
     content_type,
