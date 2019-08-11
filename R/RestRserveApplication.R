@@ -243,6 +243,24 @@ RestRserveApplication = R6::R6Class(
       invisible(file_path)
     },
     #------------------------------------------------------------------------
+    add_redoc = function(path = "/redoc",
+                         path_openapi = "/openapi.yaml",
+                         file_path = "redoc.html") {
+      checkmate::assert_string(file_path)
+      file_path = path.expand(file_path)
+
+      file_dir = dirname(file_path)
+      if (!dir.exists(file_dir)) {
+        dir.create(file_dir, recursive = TRUE)
+      }
+
+      html = readLines(system.file("redoc", "index.html", package = packageName()))
+      html = gsub("{path_openapi}", path_openapi, html, fixed = TRUE)
+      writeLines(html, file_path)
+      self$add_static(path, file_path, content_type = "text/html")
+      invisible(file_path)
+    },
+    #------------------------------------------------------------------------
     append_middleware = function(...) {
       mw_list = list(...)
       checkmate::assert_list(mw_list, types = "RestRserveMiddleware", unique = TRUE)
