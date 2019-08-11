@@ -10,7 +10,7 @@ library(htmltools)
 
 # simple response
 form_handler = function(request, response) {
-  doc <- tags$html(
+  doc = tags$html(
     tags$head(
       tags$title("From page")
     ),
@@ -51,13 +51,13 @@ sent_hanlder = function(request, response) {
   user_name = request$query[["uname"]]
   num = request$query[["num"]]
 
-  doc <- tags$html(
+  doc = tags$html(
     tags$head(
       tags$title("Result page")
     ),
     tags$body(
       h1("Form sent success"),
-      p("Hi, ", strong(user_name),"."),
+      p("Hi, ", strong(user_name), "."),
       p("Yor number is ", dQuote(num), ".")
     )
   )

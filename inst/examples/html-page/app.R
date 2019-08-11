@@ -11,7 +11,7 @@ library(knitr)
 
 # simple response
 html_handler = function(request, response) {
-  doc <- tags$html(
+  doc = tags$html(
     tags$head(
       tags$title("Iris dataset")
     ),
