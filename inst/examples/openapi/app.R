@@ -70,16 +70,28 @@ app$add_get(
 )
 
 app$add_openapi(
-  path = "/doc/openapi.yaml",
+  path = "/openapi.yaml",
   openapi = openapi_create(),
   file_path = tempfile(fileext = ".yaml")
 )
 
 app$add_swagger_ui(
-  path = "/doc",
-  path_openapi = "/doc/openapi.yaml",
-  path_swagger_assets = "/doc/assets/",
+  path = "/swagger",
+  path_openapi = "/openapi.yaml",
+  path_swagger_assets = "/swagger/assets/",
   file_path = tempfile(fileext = ".html")
+)
+
+app$add_static(
+  path = "/redoc",
+  file_path = "redoc.html",
+  content_type = "text/html"
+)
+
+app$add_static(
+  path = "/rapidoc",
+  file_path = "rapidoc.html",
+  content_type = "text/html"
 )
 
 

@@ -5,7 +5,7 @@ app = ex_app("openapi")
 test_that("Test OpenAPI endpoint", {
   rs = app$.__enclos_env__$private$process_request(
     RestRserveRequest$new(
-      path = "/doc/openapi.yaml"
+      path = "/openapi.yaml"
     )
   )
   expect_equal(names(rs[[1]]), "file")
@@ -18,7 +18,7 @@ test_that("Test OpenAPI endpoint", {
 test_that("Test Swagger UI endpoint", {
   rs = app$.__enclos_env__$private$process_request(
     RestRserveRequest$new(
-      path = "/doc"
+      path = "/swagger"
     )
   )
   expect_equal(names(rs[[1]]), "file")
@@ -31,7 +31,7 @@ test_that("Test Swagger UI endpoint", {
 test_that("Test Swagger UI assets", {
   rs = app$.__enclos_env__$private$process_request(
     RestRserveRequest$new(
-      path = "/doc/assets/swagger-ui.css"
+      path = "/swagger/assets/swagger-ui.css"
     )
   )
   expect_equal(names(rs[[1]]), "file")
