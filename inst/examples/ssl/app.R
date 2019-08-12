@@ -40,7 +40,7 @@ if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
   if (any(!file.exists(ssl_files))) {
     system("./get-ssl-cert.sh", wait = TRUE)
   }
-  
+
   # set up options according to https://github.com/s-u/Rserve/wiki/rserve.conf
   app$run(
     # http_port <= 0 means not allow plain http interface
