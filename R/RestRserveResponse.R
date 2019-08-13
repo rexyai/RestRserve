@@ -133,6 +133,10 @@ RestRserveResponse = R6::R6Class(
         warning("'Content-Length' and 'Content-Type' not accepted by Rserve.")
         return(invisible(NULL))
       }
+      if (tolower(name) == "set-cookie") {
+        warning("Use 'set_cookie' method instread")
+        return(invisible(NULL))
+      }
       self$headers[[name]] = value
       return(invisible(value))
     },
