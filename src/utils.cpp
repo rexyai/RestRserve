@@ -6,31 +6,63 @@
 
 // trim string (in place)
 void str_trim(std::string& s) {
-    s.erase(std::find_if_not(s.rbegin(), s.rend(), ::isspace).base(), s.end());
-    s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), ::isspace));
+  s.erase(std::find_if_not(s.rbegin(), s.rend(), ::isspace).base(), s.end());
+  s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), ::isspace));
 }
 
 // tolower sting (in place)
 void str_lower(std::string& s) {
-    std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+  std::transform(s.begin(), s.end(), s.begin(), ::tolower);
 }
 
 // toupper sting (in place)
 void str_upper(std::string& s) {
-    std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+  std::transform(s.begin(), s.end(), s.begin(), ::toupper);
 }
 
 // split string into vecvtor
 void str_split(const std::string& s, std::vector<std::string>& out,
                const char sep, bool trim = false) {
-    std::stringstream ss(s);
-    std::string tmp;
-    while(getline(ss, tmp, sep)) {
-      if (trim) {
-        str_trim(tmp);
-      }
-      out.push_back(tmp);
-    };
+  std::stringstream ss(s);
+  std::string tmp;
+  while(std::getline(ss, tmp, sep)) {
+    if (trim) {
+      str_trim(tmp);
+    }
+    out.push_back(tmp);
+  };
+}
+
+// join vector to string
+template <typename T>
+std::string str_join(const T& svec, const std::string& sep) {
+  std::size_t n = svec.size();
+  if (n == 0) {
+    return "";
+  }
+  std::ostringstream os;
+  for (std::size_t i = 0; i < n; ++i) {
+    os << svec[i];
+    if (i < n - 1) {
+      os << sep;
+    }
+  }
+  return os.str();
+}
+
+std::string str_join(Rcpp::CharacterVector svec, const std::string& sep) {
+  std::size_t n = svec.size();
+  if (n == 0) {
+    return "";
+  }
+  std::ostringstream os;
+  for (std::size_t i = 0; i < n; ++i) {
+    os << svec[i];
+    if (i < n - 1) {
+      os << sep;
+    }
+  }
+  return os.str();
 }
 
 // check prefix
