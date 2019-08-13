@@ -226,16 +226,18 @@ RestRserveResponse = R6::R6Class(
       headers = private$prepare_headers()
       if (is_string(self$body)) {
         body_name = names(self$body)
-        if (identical(body_name, "file")) {
+        if (isTRUE(body_name == "file")) {
           return(list("file" = self$body, self$content_type, headers, self$status_code))
         }
-        if (identical(body_name, "tmpfile")) {
+        if (isTRUE(body_name == "tmpfile")) {
           return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
         }
       }
       body = self$serializer(self$body)
-      res = list(body, self$content_type, headers, self$status_code)
-      return(res)
+      if (length(body) == 0L) {
+        body = raw()
+      }
+      return(list(body, self$content_type, headers, self$status_code))
     }
   ),
   active = list(
@@ -289,7 +291,7 @@ RestRserveResponse = R6::R6Class(
           res = paste(res, fornat_cookies(as.list(self$cookies)), sep = "\r\n")
         }
       } else {
-        res = ""
+        res = character(0)
       }
       return(res)
     }

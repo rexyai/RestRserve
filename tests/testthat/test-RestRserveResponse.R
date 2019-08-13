@@ -15,7 +15,7 @@ test_that("Test empty object", {
   expect_is(r$status_code, "integer")
   expect_length(r$status_code, 1L)
   expect_equal(r$status_code, 200L)
-  expect_equal(r$to_rserve(), list("", "text/plain", "", 200L))
+  expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 })
 
 test_that("Test parse headers", {
@@ -109,7 +109,7 @@ test_that("Test unset_date method", {
 
 test_that("Test to_rserve method", {
   r = RestRserveResponse$new()
-  expect_equal(r$to_rserve(), list("", "text/plain", "", 200L))
+  expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
   r$set_date(.POSIXct(1564760173, tz = "GMT"))
   r$set_body("{status: ok}")
   r$set_content_type("applicaiton/json")
