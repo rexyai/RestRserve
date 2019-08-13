@@ -55,12 +55,12 @@ RestRserveRequest = R6::R6Class(
   public = list(
     path = NULL,
     method = NULL,
-    query = NULL,
     headers = NULL,
     cookies = NULL,
     context = NULL,
     content_type = NULL,
     body = NULL,
+    query = NULL,
     path_parameters = NULL,
     initialize = function(path = "/",
                           method = "GET",
@@ -75,9 +75,18 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(content_type)
         checkmate::assert_character(query, null.ok = TRUE)
         checkmate::assert_raw(headers, null.ok = TRUE)
-        checkmate::assert_raw(body, null.ok = TRUE)
+        checkmate::assert(
+          checkmate::check_raw(body, null.ok = TRUE),
+          checkmate::check_character(body, null.ok = TRUE),
+          combine = "or"
+        )
       }
 
+      self$headers = new.env(parent = emptyenv())
+      self$context = new.env(parent = emptyenv())
+      self$cookies = new.env(parent = emptyenv())
+      self$query = new.env(parent = emptyenv())
+      self$path_parameters = list()
       private$parse_query(query)
       private$parse_headers(headers)
       private$parse_body(body, content_type)
@@ -90,8 +99,6 @@ RestRserveRequest = R6::R6Class(
       if (is.null(self$method)) {
         self$method = method
       }
-      self$path_parameters = list()
-      self$context = new.env(parent = emptyenv())
       private$id = uuid::UUIDgenerate(TRUE)
     },
     get_header = function(name) {
@@ -151,19 +158,15 @@ RestRserveRequest = R6::R6Class(
       if (is.raw(headers)) {
         headers = rawToChar(headers)
       }
-      res = new.env(parent = emptyenv())
-      if (is.character(headers) && length(headers) > 0L) {
-        res = list2env(parse_headers(headers), hash = TRUE)
+      if (is_string(headers)) {
+        self$headers = as.environment(parse_headers(headers))
       }
-      self$headers = res
       return(invisible(TRUE))
     },
     parse_cookies = function() {
-      res = new.env(parent = emptyenv())
-      if (length(self$headers) > 0L && !is.null(self$headers[["cookie"]])) {
-        res = list2env(parse_cookies(self$headers[["cookie"]]), hash = TRUE)
+      if (!is.null(self$headers[["cookie"]])) {
+        self$cookies = as.environment(parse_cookies(self$headers[["cookie"]]))
       }
-      self$cookies = res
       return(invisible(TRUE))
     },
     parse_query = function(query) {
@@ -172,19 +175,32 @@ RestRserveRequest = R6::R6Class(
         res = as.list(query)
         # Omit empty keys and empty values
         res = res[nzchar(names(res)) & nzchar(query)]
-      } else {
-        res = list()
+        self$query = as.environment(res)
       }
-      self$query = list2env(res, hash = TRUE)
       return(invisible(TRUE))
     },
     parse_body = function(body = raw(), content_type = "application/octet-stream") {
       if (!is.raw(body)) {
         if (length(body) > 0L) {
-          keys = url_encode(names(body))
-          vals = url_encode(body)
-          body = charToRaw(paste(keys, vals, sep = "=", collapse = "&"))
-          content_type = "application/x-www-form-urlencoded"
+          # parse form
+          if (self$headers[["content-type"]] == "application/x-www-form-urlencoded") {
+            # Named character vector. Body parameters key-value pairs.
+            res = as.list(body)
+            # Omit empty keys and empty values
+            res = res[nzchar(names(res)) & nzchar(body)]
+            # FIXME: should overwrite query or appent as attr to body?
+            keys = names(res)
+            # FIXME: add not exists keys onlly
+            to_add = which(keys %in% names(self$query))
+            for (i in to_add) {
+              self$query[[keys[i]]] = res[[i]]
+            }
+            # FIXME: should we encode it?
+            body = paste(url_encode(keys), url_encode(as.character(res)),
+                         sep = "=", collapse = "&")
+            body = charToRaw(body)
+            content_type = "application/x-www-form-urlencoded"
+          }
         } else {
           body = raw()
         }
@@ -192,6 +208,12 @@ RestRserveRequest = R6::R6Class(
         body_type = attr(body, "content-type")
         if (!is.null(body_type)) {
           content_type = body_type
+        } else {
+          body_type = content_type
+        }
+        if (startsWith(body_type, "multipart/form-data")) {
+          # FIXME: not implemented
+          # res = parse_multipart(body)
         }
       }
       self$body = body

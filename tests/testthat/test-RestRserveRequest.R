@@ -82,8 +82,33 @@ test_that("Test parse query in constructor", {
   expect_equal(r$query[["param4"]], "value4")
 })
 
+test_that("Test parse body urlencoded form", {
+  b = setNames(c("value1", "value2", "", "value4 and others"),
+               c("param1", "", "param3", "param4"))
+  h = charToRaw("Content-type: application/x-www-form-urlencoded")
+  r = RestRserveRequest$new(headers = h, body = b)
+  expect_equal(rawToChar(r$body), "param1=value1&param4=value4%20and%20others")
+  expect_equal(r$content_type, "application/x-www-form-urlencoded")
+})
+
+test_that("Test parse null bobdy", {
+  r = RestRserveRequest$new(body = NULL)
+  expect_equal(r$body, raw())
+})
+
+
+test_that("Test parse raw bobdy", {
+  b = raw(10)
+  attr(b, "content-type") = "custom/type"
+  r = RestRserveRequest$new(body = b)
+  expect_equal(r$body, b)
+  expect_equal(r$content_type, "custom/type")
+})
+
 test_that("Test get_header method", {
-  r = RestRserveRequest$new(headers = charToRaw("User-Agent: curl/7.65.3"))
+  r = RestRserveRequest$new(
+    headers = charToRaw("User-Agent: curl/7.65.3")
+  )
   expect_null(r$get_header("test"))
   expect_equal(r$get_header("user-agent"), "curl/7.65.3")
 })
