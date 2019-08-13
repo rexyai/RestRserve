@@ -107,6 +107,20 @@ test_that("Test unset_date method", {
   expect_null(r$get_header("Date"))
 })
 
+test_that("Test set_cookie method", {
+  r = RestRserveResponse$new()
+  r$set_cookie(name = "param", "value")
+  expect_equal(r$cookies[["param"]], list(name = "param", value = "value"))
+})
+
+test_that("Test unset_cookie method", {
+  r = RestRserveResponse$new()
+  r$set_cookie(name = "param", "value")
+  expect_equal(r$cookies[["param"]], list(name = "param", value = "value"))
+  r$unset_cookie("param")
+  expect_null(r$cookies[["param"]])
+})
+
 test_that("Test to_rserve method", {
   r = RestRserveResponse$new()
   expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
