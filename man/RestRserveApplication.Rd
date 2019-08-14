@@ -17,7 +17,7 @@ allowing to easily register R functions for handling http-requests.
 
 \describe{
 \item{\code{logger}}{\link{Logger} instance. Can be replaced/manipulated with corresponding
-\link{Logger} methods.}
+\link{Logger} methods. Alternatively one can use loggers from \code{lgr} package as drop-on replacement.}
 }}
 
 \section{Usage}{
