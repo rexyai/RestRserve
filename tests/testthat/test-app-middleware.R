@@ -1,7 +1,7 @@
 context("Test app with middleware")
 
 app = ex_app("middleware")
-app$logger$set_log_level(OFF)
+app$logger$set_log_level("off")
 
 test_that("Test /hello-world endpoint", {
   rs = app$.__enclos_env__$private$process_request(
