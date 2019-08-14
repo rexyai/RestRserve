@@ -17,7 +17,7 @@
 #' }
 #'
 #' @field logger \link{Logger} instance. Can be replaced/manipulated with corresponding
-#'   \link{Logger} methods.
+#'   \link{Logger} methods. Alternatively one can use loggers from \code{lgr} package as drop-on replacement.
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new(middleware = list(),content_type = "text/plain", ...)}}{
@@ -79,15 +79,7 @@ RestRserveApplication = R6::R6Class(
                           ...) {
       checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      if (hasArg("logger")) {
-        msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
-                    "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
-                    sep = "\n")
-        warning(msg, call. = FALSE)
-        self$logger = list(...)$logger
-      } else {
-        self$logger = Logger$new(INFO, name = "RestRserveApplication")
-      }
+      self$logger = Logger$new("info", name = "RestRserveApplication")
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
@@ -192,9 +184,9 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if (length(self$endpoints()) == 0) {
-        self$logger$warning("'RestRserveApp' doesn't have any endpoints")
+        self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
       }
-      self$logger$info(list(endpoints = self$endpoints()))
+      self$logger$info("", context = list(endpoints = self$endpoints()))
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
@@ -269,8 +261,8 @@ RestRserveApplication = R6::R6Class(
     middleware = NULL,
     #------------------------------------------------------------------------
     process_request = function(request) {
-      self$logger$trace(
-        list(request_id = request$request_id,
+      self$logger$trace("",
+        context = list(request_id = request$request_id,
              method = request$method,
              path = request$path,
              query = request$query,
@@ -288,8 +280,8 @@ RestRserveApplication = R6::R6Class(
 
       for (id in mw_ids) {
         mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace(
-          list(request_id = request$request_id,
+        self$logger$trace("",
+          context = list(request_id = request$request_id,
                middleware = mw_name,
                message = sprintf("call %s middleware", mw_flag))
         )
@@ -314,7 +306,12 @@ RestRserveApplication = R6::R6Class(
           response = self$HTTPError$not_found()
         } else {
           handler_fun = private$handlers[[handler_id]]
-          self$logger$trace(list(request_id = request$request_id, message = sprintf("call handler '%s'", handler_id)))
+          self$logger$trace("",
+            context = list(
+              request_id = request$request_id,
+              message = sprintf("call handler '%s'", handler_id)
+            )
+          )
           private$call_handler(handler_fun, request, response)
         }
       }
@@ -324,8 +321,8 @@ RestRserveApplication = R6::R6Class(
       # call in reverse order
       for (id in rev(names(mw_called))) {
         mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace(
-          list(request_id = request$request_id,
+        self$logger$trace("",
+          context = list(request_id = request$request_id,
                middleware = mw_name,
                message = sprintf("call %s middleware", mw_flag))
         )
@@ -393,22 +390,22 @@ RestRserveApplication = R6::R6Class(
       # Early stop if no routes for this method
       router = private$routes[[request$method]]
       if (is.null(router)) {
-        self$logger$trace(
-          list(request_id = request$request_id,
+        self$logger$trace("",
+          context = list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
         return(NULL)
       }
       if (router$size() == 0L) {
-        self$logger$trace(
-          list(request_id = request$request_id,
+        self$logger$trace("",
+          context = list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
         return(NULL)
       }
       # Get handler UID
-      self$logger$trace(
-        list(request_id = request$request_id,
+      self$logger$trace("",
+        context = list(request_id = request$request_id,
              message = sprintf("try to match requested path '%s'", request$path))
       )
       id = router$match_path(request$path)
@@ -419,10 +416,20 @@ RestRserveApplication = R6::R6Class(
       }
 
       if (is.null(id)) {
-        self$logger$trace(list(request_id = request$request_id, message = "requested path not matched"))
+        self$logger$trace("",
+          context = list(
+            request_id = request$request_id,
+            message = "requested path not matched"
+          )
+        )
         return(NULL)
       }
-      self$logger$trace(list(request_id = request$request_id, message = "requested path matched"))
+      self$logger$trace("",
+        context = list(
+          request_id = request$request_id,
+          message = "requested path matched"
+        )
+      )
       return(id)
     },
     #------------------------------------------------------------------------
@@ -431,7 +438,12 @@ RestRserveApplication = R6::R6Class(
       success = TRUE
       if (inherits(status, 'simpleError')) {
         # means UNHANDLED exception in middleware
-        self$logger$error(list(request_id = request$request_id, message = get_traceback(status)))
+        self$logger$error("",
+          context = list(
+            request_id = request$request_id,
+            message = get_traceback(status)
+          )
+        )
         status = self$HTTPError$internal_server_error()
         success = FALSE
       }

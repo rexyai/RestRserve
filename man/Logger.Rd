@@ -21,18 +21,18 @@ By default when \code{printer = NULL} logger writes message in JSON format to \c
 \item{\code{$set_name(name = "ROOT")}}{ sets logger name}
 \item{\code{$set_log_level(level = INFO)}}{ sets log level}
 \item{\code{$set_printer(FUN = NULL)}}{ sets function which defines how to print logs.
-\code{FUN} should be a function with 5 formal arguments - (timestamp, level, logger_name, pid, message)}
+\code{FUN} should be a function with 6 formal arguments - (timestamp, level, logger_name, pid, message, ...)}
 \item{\code{$trace(msg, ...)}}{ write trace message}
 \item{\code{$debug(msg, ...)}}{ write debug message}
 \item{\code{$info(msg, ...)}}{ write info message}
-\item{\code{$warning(msg, ...)}}{ write warning message}
+\item{\code{$warn(msg, ...)}}{ write warning message}
 \item{\code{$error(msg, ...)}}{ write error message}
 }
 }
 
 \examples{
-logger = Logger$new(INFO)
+logger = Logger$new("info")
 logger$info("hello world")
-logger$info(list(message = "hello world", code = 0L))
+logger$info("", context = list(message = "hello world", code = 0L))
 }
 \keyword{datasets}

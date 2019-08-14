@@ -75,7 +75,7 @@ fib = function(request, response) {
   response$status_code = 200L
 }
 
-logger = Logger$new(level = INFO, name = "app")
+logger = Logger$new(level = "info", name = "app")
 app = RestRserveApplication$new(middleware = list(auth_mw), logger = logger)
 app$add_get(path = "/fib", FUN = fib)
 #------------------------------------------------------------------------
