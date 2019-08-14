@@ -221,10 +221,14 @@ RestRserveApplication = R6::R6Class(
       invisible(file_path)
     },
     #------------------------------------------------------------------------
-    add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
+    add_swagger_ui = function(path = "/swagger",
+                              path_openapi = "/openapi.yaml",
+                              use_cdn = TRUE,
                               path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
-      checkmate::assert_string(file_path)
+      checkmate::assert_string(file_path, pattern = "^/")
+      checkmate::assert_string(path_swagger_assets, pattern = "^/")
+      checkmate::assert_flag(use_cdn)
       file_path = path.expand(file_path)
 
       file_dir = dirname(file_path)
@@ -232,14 +236,19 @@ RestRserveApplication = R6::R6Class(
         dir.create(file_dir, recursive = TRUE)
       }
 
-      path_swagger_assets = gsub("/$", "", path_swagger_assets) # remove / from the end
-      index_html = readLines(system.file("swagger", "index.html", package = packageName()))
-      index_html = gsub("{path_swagger_assets}", path_swagger_assets, index_html, fixed = TRUE)
-      index_html = gsub("{path_openapi}", path_openapi, index_html, fixed = TRUE)
-      writeLines(index_html, file_path)
+      html = readLines(system.file("swagger", "index.html", package = packageName()))
+      html = gsub("{path_openapi}", path_openapi, html, fixed = TRUE)
 
-      self$add_static(path_swagger_assets, system.file("swagger", package = packageName()))
-      self$add_static(path, file_path)
+      if (use_cdn) {
+        cdn_url = "https://cdn.jsdelivr.net/npm/swagger-ui-dist@latest"
+        html = gsub("{path_swagger_assets}", cdn_url, html, fixed = TRUE)
+      } else {
+        path_swagger_assets = sub("/$", "", path_swagger_assets)
+        html = gsub("{path_swagger_assets}", path_swagger_assets, html, fixed = TRUE)
+        self$add_static(path_swagger_assets, system.file("swagger", package = packageName()))
+      }
+      writeLines(html, file_path)
+      self$add_static(path, file_path, "text/html")
       invisible(file_path)
     },
     #------------------------------------------------------------------------
