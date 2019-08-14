@@ -79,7 +79,8 @@ app$add_swagger_ui(
   path = "/swagger",
   path_openapi = "/openapi.yaml",
   path_swagger_assets = "/swagger/assets/",
-  file_path = tempfile(fileext = ".html")
+  file_path = tempfile(fileext = ".html"),
+  use_cdn = FALSE
 )
 
 app$add_static(

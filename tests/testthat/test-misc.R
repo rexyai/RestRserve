@@ -47,15 +47,12 @@ test_that("Test http_request", {
   })
   keep = .GlobalEnv[['RestRserveApp']]
   .GlobalEnv[['RestRserveApp']] = app
-
   answer = RestRserve:::http_request(
     url = '/say',
     query = c('hello' = 'world'),
     body = NULL,
     headers = NULL
   )
-
   expect_equal(answer[[1]], "world")
-
   .GlobalEnv[['RestRserveApp']] = keep
 })
