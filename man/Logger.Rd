@@ -25,7 +25,7 @@ By default when \code{printer = NULL} logger writes message in JSON format to \c
 \item{\code{$trace(msg, ...)}}{ write trace message}
 \item{\code{$debug(msg, ...)}}{ write debug message}
 \item{\code{$info(msg, ...)}}{ write info message}
-\item{\code{$warning(msg, ...)}}{ write warning message}
+\item{\code{$warn(msg, ...)}}{ write warning message}
 \item{\code{$error(msg, ...)}}{ write error message}
 }
 }

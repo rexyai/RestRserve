@@ -15,7 +15,7 @@
 #'   \item{\code{$trace(msg, ...)}}{ write trace message}
 #'   \item{\code{$debug(msg, ...)}}{ write debug message}
 #'   \item{\code{$info(msg, ...)}}{ write info message}
-#'   \item{\code{$warning(msg, ...)}}{ write warning message}
+#'   \item{\code{$warn(msg, ...)}}{ write warning message}
 #'   \item{\code{$error(msg, ...)}}{ write error message}
 #' }
 #' @export
@@ -84,7 +84,7 @@ Logger = R6::R6Class(
       private$log_base(msg, ..., log_level = logging_constants$info, log_level_tag = "INFO")
     },
     #----------------------------------------
-    warning = function(msg, ...) {
+    warn = function(msg, ...) {
       private$log_base(msg, ..., log_level = logging_constants$warn, log_level_tag = "WARN")
     },
     #----------------------------------------
@@ -100,7 +100,7 @@ Logger = R6::R6Class(
     level = NULL,
     name = NULL,
     log_base = function(msg, ..., log_level, log_level_tag) {
-      if (isTRUE(private$level >= log_level)) {
+      if (isTRUE(private$level >= log_level) || is.na(private$level)) {
         self$printer(Sys.time(), log_level_tag, private$name, Sys.getpid(), msg, ...)
       }
       invisible(msg)

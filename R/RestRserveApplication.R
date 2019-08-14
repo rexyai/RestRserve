@@ -17,7 +17,7 @@
 #' }
 #'
 #' @field logger \link{Logger} instance. Can be replaced/manipulated with corresponding
-#'   \link{Logger} methods.
+#'   \link{Logger} methods. Alternatively one can use loggers from \code{lgr} package as drop-on replacement.
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new(middleware = list(),content_type = "text/plain", ...)}}{
@@ -79,15 +79,7 @@ RestRserveApplication = R6::R6Class(
                           ...) {
       checkmate::assert_list(middleware)
       self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      if (hasArg("logger")) {
-        msg = paste("THIS MESSAGE WILL BE TURNED INTO ERROR SOON",
-                    "'logger' argument is DEPRECATED, please use public `app$logger` field to control logging.",
-                    sep = "\n")
-        warning(msg, call. = FALSE)
-        self$logger = list(...)$logger
-      } else {
-        self$logger = Logger$new("info", name = "RestRserveApplication")
-      }
+      self$logger = Logger$new("info", name = "RestRserveApplication")
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
@@ -192,7 +184,7 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if (length(self$endpoints()) == 0) {
-        self$logger$warning("", context = "'RestRserveApp' doesn't have any endpoints")
+        self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
       }
       self$logger$info("", context = list(endpoints = self$endpoints()))
     },
