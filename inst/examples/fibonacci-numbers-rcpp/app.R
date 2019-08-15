@@ -9,7 +9,20 @@ library(Rcpp)
 ## ---- Functions ----
 
 # function to calc Fibonacci numbers
-sourceCpp(file.path("src", "fib.cpp"))
+# use double to avoid int overflow
+cppFunction('
+double calc_fib_cpp(const int n) {
+  if (n < 1) return(0);
+  double old = 0;
+  double cur = 1;
+  double hold;
+  for (int i = 1; i < n; ++i) {
+    hold = cur;
+    cur += old;
+    old = hold;
+  }
+  return cur;
+}')
 
 
 ## ---- create handler for the HTTP requests ----
