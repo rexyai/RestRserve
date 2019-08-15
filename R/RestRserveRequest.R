@@ -179,7 +179,7 @@ RestRserveRequest = R6::R6Class(
       }
       return(invisible(TRUE))
     },
-    parse_body = function(body = raw(), content_type = "application/octet-stream") {
+    parse_body = function(body = raw(), default_content_type = "application/octet-stream") {
       if (!is.raw(body)) {
         if (length(body) > 0L) {
           # parse form
@@ -209,10 +209,11 @@ RestRserveRequest = R6::R6Class(
         if (!is.null(body_type)) {
           content_type = body_type
         } else {
-          body_type = content_type
+          content_type = default_content_type
         }
-        if (startsWith(body_type, "multipart/form-data")) {
+        if (startsWith(content_type, "multipart/form-data")) {
           # FIXME: not implemented
+          stop(sprintf("Not implemented yet - can't parae body with content-type=%s", content_type))
           # res = parse_multipart(body)
         }
       }

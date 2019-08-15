@@ -72,19 +72,21 @@ RestRserveApplication = R6::R6Class(
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
+    content_handlers = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(),
                           content_type = "text/plain",
-                          serializer = NULL,
                           ...) {
       checkmate::assert_list(middleware)
-      self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
+      self$HTTPError = HTTPErrorFactory$new(content_type)
       self$logger = Logger$new("info", name = "RestRserveApplication")
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       self$content_type = content_type
+      self$content_handlers = RestRserveContentHandlers
+
       do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
@@ -333,6 +335,14 @@ RestRserveApplication = R6::R6Class(
         if (!isTRUE(mw_status)) {
           break
         }
+      }
+
+      # this means that response wants RestRerveApplication to select
+      # serializer automatically
+      if (!is.function(response$serializer)) {
+        ct = response$get_header('content-type')
+        serializer = self$content_handlers$get_serializer(ct)
+        response$serializer = serializer
       }
 
       return(response$to_rserve())

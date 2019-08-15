@@ -2,8 +2,8 @@ HTTPError = R6::R6Class(
   classname = 'HTTPError',
   inherit = RestRserveResponse,
   public = list(
-    initialize = function(body, content_type, headers, status_code, serializer) {
-      super$initialize(body, content_type, headers, status_code, serializer)
+    initialize = function(body, content_type, headers, status_code) {
+      super$initialize(body, content_type, headers, status_code)
     }
   )
 )
@@ -16,7 +16,6 @@ HTTPError = R6::R6Class(
 #'   \item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
 #'   \describe{
 #'     \item{content_type}{type of the error response. \code{"text/plain"} by default}
-#'     \item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
 #'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
 #'     }
 #'   }
@@ -27,7 +26,8 @@ HTTPErrorFactory = R6::R6Class(
   inherit = RestRserveResponse,
   public = list(
     initialize = function(content_type = "text/plain", serializer = NULL) {
-      super$set_content_type(content_type, serializer)
+      super$set_content_type(content_type)
+      super$serializer = serializer
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = character(0)) {
@@ -183,7 +183,7 @@ HTTPErrorFactory = R6::R6Class(
 #' caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
 #' condition = attr(caught_http_exception, 'condition')
 #' # response is an instance of HTTPError
-#' # and valid RestRserve instace because HTTPError inherits from RestRserveResponse
+#' # and valid RestRserveResponse instace because HTTPError inherits from RestRserveResponse
 #' identical(condition$response$body, "400 Bad Request")
 raise = function(x) {
   exception = errorCondition('raise', response = x, class = class(x))
