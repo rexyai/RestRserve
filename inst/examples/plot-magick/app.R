@@ -10,6 +10,11 @@ library(mime)
 
 ## ---- create handler for the HTTP requests ----
 
+err = HTTPErrorFactory$new(
+  content_type = "text/plain",
+  serializer = as.character
+)
+
 magick_handler = function(request, response) {
   img_type = request$query[["format"]]
   # default type
@@ -17,10 +22,6 @@ magick_handler = function(request, response) {
     img_type = "png"
   }
   if (!img_type %in% c("png", "jpeg", "gif")) {
-    err = HTTPErrorFactory$new(
-      content_type = "text/plain",
-      serializer = as.character
-    )
     raise(err$bad_request())
   }
   img = image_graph(width = 480, height = 480, bg = "white")
@@ -29,16 +30,13 @@ magick_handler = function(request, response) {
   dev.off()
   response$body = image_write(img, format = img_type, quality = 100)
   response$content_type = mimemap[[img_type]]
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "image/png"
 )
 
 
@@ -53,8 +51,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

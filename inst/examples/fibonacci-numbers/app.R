@@ -19,26 +19,24 @@ calc_fib = function(n) {
 
 ## ---- create handler for the HTTP requests ----
 
+err = HTTPErrorFactory$new(
+    content_type = "text/plain",
+    serializer = as.character
+)
+
 fib_handler = function(request, response) {
   n = as.integer(request$query[["n"]])
   if (length(n) == 0L || is.na(n)) {
-    err = HTTPErrorFactory$new(
-      content_type = "text/plain",
-      serializer = as.character
-    )
     raise(err$bad_request())
   }
-  response$body = calc_fib(n)
-  response$content_type = "text/plain"
-  response$serializer = as.character
+  response$body = as.character(calc_fib(n))
 }
 
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = as.character
+  content_type = "text/plain"
 )
 
 
@@ -53,8 +51,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

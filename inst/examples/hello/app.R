@@ -10,9 +10,6 @@ library(RestRserve)
 # simple response
 hello_handler = function(request, response) {
   response$body = "Hello, World!"
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 # handle query parameter
@@ -24,9 +21,6 @@ heelo_query_handler = function(request, response) {
     nm = "anonym"
   }
   response$body = sprintf("Hello, %s!", nm)
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 # handle path variable
@@ -34,17 +28,13 @@ hello_path_handler = function(request, response) {
   # user name
   nm = request$path_parameters[["name"]]
   response$body = sprintf("Hello, %s!", nm)
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "text/plain"
 )
 
 
@@ -71,8 +61,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

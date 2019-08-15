@@ -18,9 +18,6 @@ token_db = list(
 
 hello_handler = function(request, response) {
   response$body = "Hello, World!"
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 
@@ -48,13 +45,8 @@ auth_mw = RestRserveAuthMiddleware$new(
 
 app = RestRserveApplication$new(
   content_type = "text/plain",
-  serializer = identity
+  middleware = list(auth_mw)
 )
-
-
-## ---- register middlewares ----
-
-app$append_middleware(auth_mw)
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -74,8 +66,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

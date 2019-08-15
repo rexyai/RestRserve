@@ -8,8 +8,7 @@ library(RestRserve)
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "text/plain"
 )
 
 
@@ -28,8 +27,4 @@ app$add_static(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

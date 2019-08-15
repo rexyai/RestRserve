@@ -10,8 +10,6 @@ library(RestRserve)
 hello_handler = function(request, response) {
   response$body = "Hello, World!"
   response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 stop_handler = function(request, response) {
@@ -26,16 +24,12 @@ mw1 = RestRserveMiddleware$new(
     if (req$path == "/temp")
       req$path = "/hello-world"
   },
-  process_response = function(req, res) {
-    TRUE
-  },
+  process_response = function(req, res) { TRUE },
   name = "mw1"
 )
 
 mw2 = RestRserveMiddleware$new(
-  process_request = function(req, res) {
-    TRUE
-  },
+  process_request = function(req, res) { TRUE },
   process_response = function(req, res) {
     if (res$status_code == 500L && startsWith(req$path, "/hello")) {
       res$body = paste("Custom 500 from mw2")
@@ -62,15 +56,8 @@ mw3 = RestRserveMiddleware$new(
 
 app = RestRserveApplication$new(
   content_type = "text/plain",
-  serializer = identity
+  middleware = list(mw1, mw2,mw3)
 )
-
-
-## ---- append middleware ----
-
-app$append_middleware(mw1)
-app$append_middleware(mw2)
-app$append_middleware(mw3)
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -90,8 +77,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

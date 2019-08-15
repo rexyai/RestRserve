@@ -16,17 +16,13 @@ ggplot_handler = function(request, response) {
   # on.exit(unlink(tmp))
   # response$body = readBin(tmp, raw(), file.size(tmp))
   response$body = c("tmpfile" = tmp)
-  response$content_type = "image/png"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "image/png"
 )
 
 
@@ -41,8 +37,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

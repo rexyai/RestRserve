@@ -40,12 +40,8 @@ form_handler = function(request, response) {
       )
     )
   )
-  response$body = doc
-  response$content_type = "text/html"
-  response$status_code = 200L
-  response$serializer = as.character
+  response$body = as.character(doc)
 }
-
 
 sent_hanlder = function(request, response) {
   user_name = request$query[["uname"]]
@@ -61,17 +57,14 @@ sent_hanlder = function(request, response) {
       p("Yor number is ", dQuote(num), ".")
     )
   )
-  response$body = doc
-  response$content_type = "text/html"
-  response$status_code = 200L
-  response$serializer = as.character
+  response$body = as.character(doc)
 }
+
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "text/html"
 )
 
 
@@ -92,8 +85,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

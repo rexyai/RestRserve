@@ -18,22 +18,18 @@ user_db = list(
 
 hello_handler = function(request, response) {
   response$body = "Hello, World!"
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
+# see details about http basic auth https://en.wikipedia.org/wiki/Basic_access_authentication
 secure_handler = function(request, response) {
   auth = request$headers[["authorization"]]
   auth = sub("Basic ", "", auth, fixed = TRUE)
   auth = rawToChar(base64_dec(auth))
   nm = strsplit(auth, ":", TRUE)[[1L]][1L]
   response$body = sprintf("Hello, %s!", nm)
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
+# see details about http basic auth https://en.wikipedia.org/wiki/Basic_access_authentication
 securearea_handler = function(request, response) {
   auth = request$headers[["authorization"]]
   auth = sub("Basic ", "", auth, fixed = TRUE)
@@ -41,9 +37,6 @@ securearea_handler = function(request, response) {
   nm = strsplit(auth, ":", TRUE)[[1L]][1L]
   res = request$path_parameters[["resource"]]
   response$body = sprintf("Hello, %s! Request resource is '%s'.", nm, res)
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
 }
 
 
@@ -77,14 +70,8 @@ auth_mw_partial = RestRserveAuthMiddleware$new(
 
 app = RestRserveApplication$new(
   content_type = "text/plain",
-  serializer = identity
+  middleware = list(auth_mw_exact, auth_mw_partial)
 )
-
-
-## ---- register middlewares ----
-
-app$append_middleware(auth_mw_exact)
-app$append_middleware(auth_mw_partial)
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -110,8 +97,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

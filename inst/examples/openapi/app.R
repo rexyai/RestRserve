@@ -19,6 +19,11 @@ calc_fib = function(n) {
 
 ## ---- create handler for the HTTP requests ----
 
+err = HTTPErrorFactory$new(
+  content_type = "text/plain",
+  serializer = as.character
+)
+
 fib_handler = function(request, response) {
   #' ---
   #' description: Calculates Fibonacci number
@@ -41,23 +46,16 @@ fib_handler = function(request, response) {
   #' ---
   n = as.integer(request$query[["n"]])
   if (length(n) == 0L || is.na(n)) {
-    err = HTTPErrorFactory$new(
-      content_type = "text/plain",
-      serializer = as.character
-    )
     raise(err$bad_request())
   }
-  response$body = calc_fib(n)
-  response$content_type = "text/plain"
-  response$serializer = as.character
+  response$body = as.character(calc_fib(n))
 }
 
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = as.character
+  content_type = "text/plain"
 )
 
 
@@ -75,6 +73,7 @@ app$add_openapi(
   file_path = tempfile(fileext = ".yaml")
 )
 
+# see details on https://swagger.io/tools/swagger-ui/
 app$add_swagger_ui(
   path = "/swagger",
   path_openapi = "/openapi.yaml",
@@ -83,12 +82,14 @@ app$add_swagger_ui(
   use_cdn = FALSE
 )
 
+# see details on https://github.com/Redocly/redoc
 app$add_static(
   path = "/redoc",
   file_path = "redoc.html",
   content_type = "text/html"
 )
 
+# see details on https://github.com/mrin9/RapiDoc
 app$add_static(
   path = "/rapidoc",
   file_path = "rapidoc.html",
@@ -98,8 +99,4 @@ app$add_static(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)

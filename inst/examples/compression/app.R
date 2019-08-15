@@ -10,22 +10,19 @@ library(RestRserve)
 # simple response
 hello_handler = function(request, response) {
   resp_body = "Hello, World!"
-  enc = request$headers[["accept-encoding"]]
+  enc = request$get_header("accept-encoding")
   if (!is.null(enc) && any(grepl("gzip", enc))) {
     resp_body = memCompress(resp_body, "gzip")
-    response$headers[["Content-encoding"]] = "gzip"
+    response$set_header("Content-encoding", "gzip")
   }
   response$body = resp_body
-  response$content_type = "text/plain"
-  response$status_code = 200L
-  response$serializer = identity
+  response$serializer = identity # prevent convert to character
 }
 
 ## ---- create application -----
 
 app = RestRserveApplication$new(
-  content_type = "text/plain",
-  serializer = identity
+  content_type = "text/plain"
 )
 
 
@@ -40,8 +37,4 @@ app$add_get(
 
 ## ---- start application ----
 
-if (isTRUE(mget("run_app", ifnotfound = TRUE)$run_app)) {
-  app$run(
-    http_port = 8001
-  )
-}
+# app$run(http_port = 8001)
