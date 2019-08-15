@@ -20,32 +20,32 @@ stop_handler = function(request, response) {
 ## ---- create middleware ----
 
 mw1 = RestRserveMiddleware$new(
-  process_request = function(req, res) {
-    if (req$path == "/temp")
-      req$path = "/hello-world"
+  process_request = function(request, response) {
+    if (request$path == "/temp")
+      request$path = "/hello-world"
   },
-  process_response = function(req, res) { TRUE },
+  process_response = function(request, response) { TRUE },
   name = "mw1"
 )
 
 mw2 = RestRserveMiddleware$new(
-  process_request = function(req, res) { TRUE },
-  process_response = function(req, res) {
-    if (res$status_code == 500L && startsWith(req$path, "/hello")) {
-      res$body = paste("Custom 500 from mw2")
-      res$set_content_type("text/plain")
+  process_request = function(request, response) { TRUE },
+  process_response = function(request, response) {
+    if (response$status_code == 500L && startsWith(request$path, "/hello")) {
+      response$body = paste("Custom 500 from mw2")
+      response$set_content_type("text/plain")
     }
   },
   name = "mw2"
 )
 
 mw3 = RestRserveMiddleware$new(
-  process_request = function(req, res) {
-    if (req$path == "/err-mw-req")
+  process_request = function(request, response) {
+    if (request$path == "/err-mw-req")
       stop("should be caught by middleware handler and wrapped to error")
   },
-  process_response = function(req, res) {
-    if (req$path == "/err-mw-resp")
+  process_response = function(request, response) {
+    if (request$path == "/err-mw-resp")
       stop("should be caught by middleware handler and wrapped to error")
   },
   name = "mw3"
@@ -56,7 +56,7 @@ mw3 = RestRserveMiddleware$new(
 
 app = RestRserveApplication$new(
   content_type = "text/plain",
-  middleware = list(mw1, mw2,mw3)
+  middleware = list(mw1, mw2, mw3)
 )
 
 
