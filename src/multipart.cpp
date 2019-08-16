@@ -40,8 +40,7 @@ namespace Rcpp {
 
 using MultipartItems = std::unordered_multimap<std::string,Rcpp::RObject>;
 
-
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 std::string parse_multipart_boundary(const std::string& content_type) {
   std::string::size_type pos = content_type.find("boundary=");
   if (pos == std::string::npos) {
@@ -50,8 +49,7 @@ std::string parse_multipart_boundary(const std::string& content_type) {
   return content_type.substr(pos + 9);
 }
 
-
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
   // body size
   std::size_t body_n = body.size();
@@ -92,7 +90,7 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     block_end_pos = body_sv.find(boundary, block_start_pos);
     if (block_end_pos != std::string_view::npos) {
       std::string name;
-      MultipartFile from_file;
+      MultipartFile form_file;
       MultipartValue form_value;
 
       bool found_cdisp = false;
@@ -101,9 +99,6 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
       auto block_size = block_end_pos - block_start_pos;
       // offset eol before next boundary
       std::string_view block = body_sv.substr(block_start_pos, block_size);
-      std::cout << "Start block: " << block_start_pos << "\n";
-      std::cout << "End block: " << block_end_pos << "\n";
-      std::cout << "Block size: " << block.size() << "\n";
       auto line_start_pos = 0;
       auto line_end_pos = block.find(eol);
       while (line_end_pos != std::string_view::npos) {
@@ -116,15 +111,19 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
           std::cmatch m;
           if (!found_cdisp && std::regex_match(line.begin(), line.end(), m, re_cdisp)) {
             name = m[1];
-            from_file.filename = m[2];
+            form_file.filename = m[2];
             found_cdisp = true;
-            found_file = !from_file.filename.empty();
+            found_file = !form_file.filename.empty();
           }
           if (found_file && !found_ctype && std::regex_match(line.begin(), line.end(), m, re_ctype)) {
-            from_file.content_type = m[1];
-            from_file.offset = block_start_pos + line_end_pos + eol_n;
-            from_file.length = block_end_pos - from_file.offset - eol_n;
+            form_file.content_type = m[1];
             found_ctype = true;
+            form_file.offset = block_start_pos + line_end_pos;
+            // skip double empty line
+            form_file.offset += eol_n + eol_n;
+            // add one for the R
+            form_file.offset += 1;
+            form_file.length = block_end_pos - form_file.offset - 1;
           }
           if (found_cdisp && !found_file) {
             form_value.value = line;
@@ -134,7 +133,7 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
         line_end_pos = block.find(eol, line_start_pos);
       }
       if (found_file && found_ctype) {
-        res.emplace(name, Rcpp::wrap(from_file));
+        res.emplace(name, Rcpp::wrap(form_file));
       } else {
         res.emplace(name, Rcpp::wrap(form_value));
       }
