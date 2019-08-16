@@ -27,24 +27,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// parse_cookies
-Rcpp::List parse_cookies(const std::vector<std::string>& x);
-RcppExport SEXP _RestRserve_parse_cookies(SEXP xSEXP) {
+// parse_multipart_boundary
+std::string parse_multipart_boundary(const std::string& content_type);
+RcppExport SEXP _RestRserve_parse_multipart_boundary(SEXP content_typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::vector<std::string>& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type content_type(content_typeSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_multipart_boundary(content_type));
+    return rcpp_result_gen;
+END_RCPP
+}
+// parse_multipart_body
+Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary);
+RcppExport SEXP _RestRserve_parse_multipart_body(SEXP bodySEXP, SEXP boundarySEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::RawVector >::type body(bodySEXP);
+    Rcpp::traits::input_parameter< const char* >::type boundary(boundarySEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_multipart_body(body, boundary));
+    return rcpp_result_gen;
+END_RCPP
+}
+// parse_cookies
+Rcpp::List parse_cookies(Rcpp::CharacterVector x);
+RcppExport SEXP _RestRserve_parse_cookies(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(parse_cookies(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // parse_headers
-Rcpp::List parse_headers(const std::string& headers);
+Rcpp::List parse_headers(const char* headers);
 RcppExport SEXP _RestRserve_parse_headers(SEXP headersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type headers(headersSEXP);
+    Rcpp::traits::input_parameter< const char* >::type headers(headersSEXP);
     rcpp_result_gen = Rcpp::wrap(parse_headers(headers));
     return rcpp_result_gen;
 END_RCPP
@@ -97,6 +119,8 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_format_cookies", (DL_FUNC) &_RestRserve_format_cookies, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
+    {"_RestRserve_parse_multipart_boundary", (DL_FUNC) &_RestRserve_parse_multipart_boundary, 1},
+    {"_RestRserve_parse_multipart_body", (DL_FUNC) &_RestRserve_parse_multipart_body, 2},
     {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},
     {"_RestRserve_url_decode_one", (DL_FUNC) &_RestRserve_url_decode_one, 1},

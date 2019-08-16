@@ -33,9 +33,24 @@ void str_split(const std::string& s, std::vector<std::string>& out,
   };
 }
 
+// split string into vector
+void str_split(const std::string& s, std::vector<std::string>& out,
+               const std::string& sep, bool trim = false) {
+  std::string::size_type pos = 0;
+  std::string::size_type prev = 0;
+  while ((pos = s.find(sep, prev)) != std::string::npos) {
+      std::string tmp = s.substr(prev, pos - prev);
+    if (trim) {
+      str_trim(tmp);
+    }
+    out.push_back(tmp);
+    prev = pos + sep.size();
+  }
+}
+
 // join vector to string
 template <typename T>
-std::string str_join(const T& svec, const std::string& sep) {
+std::string str_join(const T& svec, const char* sep) {
   std::size_t n = svec.size();
   if (n == 0) {
     return "";
@@ -50,7 +65,8 @@ std::string str_join(const T& svec, const std::string& sep) {
   return os.str();
 }
 
-std::string str_join(Rcpp::CharacterVector svec, const std::string& sep) {
+
+std::string str_join(Rcpp::CharacterVector svec, const char* sep) {
   std::size_t n = svec.size();
   if (n == 0) {
     return "";

@@ -32,7 +32,7 @@ Suggests:
   lintr
 LinkingTo: 
   Rcpp
-SystemRequirements: C++11
+SystemRequirements: C++17
 KeepSource: true
 Encoding: UTF-8
 LazyData: true

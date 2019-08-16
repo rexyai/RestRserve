@@ -9,6 +9,14 @@ format_headers <- function(x) {
     .Call(`_RestRserve_format_headers`, x)
 }
 
+parse_multipart_boundary <- function(content_type) {
+    .Call(`_RestRserve_parse_multipart_boundary`, content_type)
+}
+
+parse_multipart_body <- function(body, boundary) {
+    .Call(`_RestRserve_parse_multipart_body`, body, boundary)
+}
+
 parse_cookies <- function(x) {
     .Call(`_RestRserve_parse_cookies`, x)
 }

@@ -5,14 +5,18 @@
 #include <Rcpp.h>
 #include "utils.h"
 
+bool validate_header_name(const std::string& x) {
+  auto check = [&](char c) { return std::isalpha(c) || c == '-'; };
+  return std::all_of(x.begin(), x.end(), check);
+}
 
 // [[Rcpp::export]]
-Rcpp::List parse_headers(const std::string& headers) {
+Rcpp::List parse_headers(const char* headers) {
   std::unordered_map<std::string, std::vector<std::string>> res;
   std::istringstream stream(headers);
   std::string buffer;
   while (std::getline(stream, buffer) && buffer != "\r") {
-    std::string::size_type index = buffer.find(':', 0);
+    std::string::size_type index = buffer.find_first_of(':');
     if(index != std::string::npos) {
       std::string key = buffer.substr(0, index);
       std::string val_str = buffer.substr(index + 1);
