@@ -1,6 +1,7 @@
 context("Test Logger")
 
 test_that("Test Logger", {
+  skip_on_covr()
   log_const = RestRserve:::logging_constants
   log_const_names = names(log_const)
   for (level_logger in log_const_names) {
