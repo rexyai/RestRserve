@@ -3,7 +3,7 @@
 #include <Rcpp.h>
 #include "utils.h"
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
   Rcpp::CharacterVector nm = x.names();
   if (Rf_isNull(nm)) {

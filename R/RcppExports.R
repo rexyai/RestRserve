@@ -25,16 +25,8 @@ parse_headers <- function(headers) {
     .Call(`_RestRserve_parse_headers`, headers)
 }
 
-url_decode_one <- function(value) {
-    .Call(`_RestRserve_url_decode_one`, value)
-}
-
 url_decode <- function(x) {
     .Call(`_RestRserve_url_decode`, x)
-}
-
-url_encode_one <- function(value) {
-    .Call(`_RestRserve_url_encode_one`, value)
 }
 
 url_encode <- function(x) {

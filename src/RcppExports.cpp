@@ -10,7 +10,6 @@ std::string format_cookies(Rcpp::ListOf<Rcpp::List> cookies);
 RcppExport SEXP _RestRserve_format_cookies(SEXP cookiesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::List> >::type cookies(cookiesSEXP);
     rcpp_result_gen = Rcpp::wrap(format_cookies(cookies));
     return rcpp_result_gen;
@@ -21,7 +20,6 @@ std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
 RcppExport SEXP _RestRserve_format_headers(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::ListOf<Rcpp::CharacterVector> >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(format_headers(x));
     return rcpp_result_gen;
@@ -32,7 +30,6 @@ std::string parse_multipart_boundary(const std::string& content_type);
 RcppExport SEXP _RestRserve_parse_multipart_boundary(SEXP content_typeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type content_type(content_typeSEXP);
     rcpp_result_gen = Rcpp::wrap(parse_multipart_boundary(content_type));
     return rcpp_result_gen;
@@ -43,7 +40,6 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary);
 RcppExport SEXP _RestRserve_parse_multipart_body(SEXP bodySEXP, SEXP boundarySEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::RawVector >::type body(bodySEXP);
     Rcpp::traits::input_parameter< const char* >::type boundary(boundarySEXP);
     rcpp_result_gen = Rcpp::wrap(parse_multipart_body(body, boundary));
@@ -65,20 +61,8 @@ Rcpp::List parse_headers(const char* headers);
 RcppExport SEXP _RestRserve_parse_headers(SEXP headersSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const char* >::type headers(headersSEXP);
     rcpp_result_gen = Rcpp::wrap(parse_headers(headers));
-    return rcpp_result_gen;
-END_RCPP
-}
-// url_decode_one
-std::string url_decode_one(const std::string& value);
-RcppExport SEXP _RestRserve_url_decode_one(SEXP valueSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(url_decode_one(value));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -87,20 +71,8 @@ Rcpp::CharacterVector url_decode(Rcpp::CharacterVector x);
 RcppExport SEXP _RestRserve_url_decode(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(url_decode(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// url_encode_one
-std::string url_encode_one(const std::string& value);
-RcppExport SEXP _RestRserve_url_encode_one(SEXP valueSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const std::string& >::type value(valueSEXP);
-    rcpp_result_gen = Rcpp::wrap(url_encode_one(value));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -109,7 +81,6 @@ Rcpp::CharacterVector url_encode(Rcpp::CharacterVector x);
 RcppExport SEXP _RestRserve_url_encode(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
     rcpp_result_gen = Rcpp::wrap(url_encode(x));
     return rcpp_result_gen;
@@ -123,9 +94,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_parse_multipart_body", (DL_FUNC) &_RestRserve_parse_multipart_body, 2},
     {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},
-    {"_RestRserve_url_decode_one", (DL_FUNC) &_RestRserve_url_decode_one, 1},
     {"_RestRserve_url_decode", (DL_FUNC) &_RestRserve_url_decode, 1},
-    {"_RestRserve_url_encode_one", (DL_FUNC) &_RestRserve_url_encode_one, 1},
     {"_RestRserve_url_encode", (DL_FUNC) &_RestRserve_url_encode, 1},
     {NULL, NULL, 0}
 };
