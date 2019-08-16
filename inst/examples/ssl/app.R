@@ -24,8 +24,7 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/hello",
-  FUN = hello_handler,
-  match = "exact"
+  FUN = hello_handler
 )
 
 

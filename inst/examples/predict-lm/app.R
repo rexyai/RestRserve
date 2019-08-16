@@ -59,14 +59,12 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/predict",
-  FUN = get_handler,
-  match = "exact"
+  FUN = get_handler
 )
 
 app$add_post(
   path = "/predict",
-  FUN = post_handler,
-  match = "exact"
+  FUN = post_handler
 )
 
 

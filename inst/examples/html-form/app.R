@@ -72,14 +72,12 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/form",
-  FUN = form_handler,
-  match = "exact"
+  FUN = form_handler
 )
 
 app$add_get(
   path = "/sent",
-  FUN = sent_hanlder,
-  match = "exact"
+  FUN = sent_hanlder
 )
 
 

@@ -36,8 +36,7 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/iris",
-  FUN = html_handler,
-  match = "exact"
+  FUN = html_handler
 )
 
 

@@ -42,14 +42,12 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/hello",
-  FUN = hello_handler,
-  match = "exact"
+  FUN = hello_handler
 )
 
 app$add_get(
   path = "/hello/query",
-  FUN = heelo_query_handler,
-  match = "exact"
+  FUN = heelo_query_handler
 )
 
 app$add_get(

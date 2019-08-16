@@ -52,8 +52,7 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/fib",
-  FUN = fib_handler,
-  match = "exact"
+  FUN = fib_handler
 )
 
 

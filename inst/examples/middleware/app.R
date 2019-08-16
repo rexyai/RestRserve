@@ -64,14 +64,12 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/hello-world",
-  FUN = hello_handler,
-  match = "exact"
+  FUN = hello_handler
 )
 
 app$add_get(
   path = "/hello-stop",
-  FUN = stop_handler,
-  match = "exact"
+  FUN = stop_handler
 )
 
 

@@ -30,8 +30,7 @@ app = RestRserveApplication$new(
 
 app$add_get(
   path = "/plot",
-  FUN = ggplot_handler,
-  match = "exact"
+  FUN = ggplot_handler
 )
 
 
