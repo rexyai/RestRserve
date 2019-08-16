@@ -4,12 +4,12 @@
 #include <sstream>
 #include <Rcpp.h>
 
-// [[Rcpp::export]]
+using Rcpp::as;
+
 std::string url_encode_one(const std::string& value) {
   std::ostringstream escaped;
   escaped.fill('0');
   escaped << std::hex;
-
   for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
     std::string::value_type c = (*cur);
     // Keep alphanumeric and other accepted characters intact
@@ -18,7 +18,6 @@ std::string url_encode_one(const std::string& value) {
       escaped << c;
       continue;
     }
-
     // Any other characters are percent-encoded
     escaped << std::uppercase;
     escaped << '%' << std::setw(2);
@@ -29,12 +28,12 @@ std::string url_encode_one(const std::string& value) {
   return escaped.str();
 }
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 Rcpp::CharacterVector url_encode(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
   Rcpp::CharacterVector out = Rcpp::no_init(n);
   for (std::size_t i = 0; i < n; ++i) {
-    Rcpp::String cur = x[i];
+    std::string cur = as<std::string>(x[i]);
     out[i] = url_encode_one(cur);
   }
 
