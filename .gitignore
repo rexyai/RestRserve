@@ -3,10 +3,13 @@
 .RData
 .Ruserdata
 *.DS_Store
-examples/xgboost-mushrooms/run
-examples/api-key-authentication/run/
 *.o
+*.o.tmp
 *.so
-examples/api-key-authentication/cert/*
+*.gcda
+*.gcno
+tmp/*
+inst/prof_*.html
+inst/examples/ssl/cert/*
 openapi.yaml
 RestRserve*.tar.gz
