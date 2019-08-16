@@ -23,9 +23,8 @@ test_that("Test empty routes handling", {
   a = RestRserveApplication$new()
   rq = RestRserveRequest$new()
   rs = RestRserveResponse$new()
-  expect_null(  a$.__enclos_env__$private$match_handler(rq, rs))
+  expect_null(a$.__enclos_env__$private$match_handler(rq, rs))
 })
-
 
 test_that("Test append_middleware method", {
   a = RestRserveApplication$new()
@@ -40,18 +39,42 @@ test_that("Test append_middleware method", {
   expect_equal(a$.__enclos_env__$private$middleware[["1"]], mw)
 })
 
-
 test_that("Test add_route method", {
   a = RestRserveApplication$new()
   f1 = function(rq, rs) {1}
   f2 = function(rq, rs) {2}
+  f3 = function(rq, rs) {3}
   id1 = a$add_route("/", "GET", f1, "exact")
   id2 = a$add_route("/test1", "GET", f2, "exact")
+  id3 = a$add_route("/test1", "POST", f3, "exact")
+  expect_length(a$.__enclos_env__$private$handlers, 3L)
+  expect_equal(a$.__enclos_env__$private$handlers[[id1]], f1)
+  expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
+  expect_equal(a$.__enclos_env__$private$handlers[[id3]], f3)
+})
+
+test_that("Test add_get method", {
+  a = RestRserveApplication$new()
+  f1 = function(rq, rs) {1}
+  f2 = function(rq, rs) {2}
+  a$add_get("/test1", f1, "exact", add_head = FALSE)
+  a$add_get("/test2", f2, "exact")
+  expect_length(a$.__enclos_env__$private$handlers, 3L)
+  expect_equal(a$.__enclos_env__$private$handlers[["1"]], f1)
+  expect_equal(a$.__enclos_env__$private$handlers[["2"]], f2) # head method
+  expect_equal(a$.__enclos_env__$private$handlers[["3"]], f2)
+})
+
+test_that("Test add_get method", {
+  a = RestRserveApplication$new()
+  f1 = function(rq, rs) {1}
+  f2 = function(rq, rs) {2}
+  id1 = a$add_post("/test1", f1, "exact")
+  id2 = a$add_post("/test2", f2, "exact")
   expect_length(a$.__enclos_env__$private$handlers, 2L)
   expect_equal(a$.__enclos_env__$private$handlers[[id1]], f1)
   expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
 })
-
 
 test_that("Test error on duplicates routes", {
   a = RestRserveApplication$new()
@@ -64,7 +87,6 @@ test_that("Test error on duplicates routes", {
   expect_error(a$add_route("/regex/{var}", "GET", f, match = "regex"))
 })
 
-
 test_that("Test call handler method", {
   a = RestRserveApplication$new()
   f = function(rq, rs) {rs$body = list(a = 1)}
@@ -73,7 +95,6 @@ test_that("Test call handler method", {
   a$.__enclos_env__$private$call_handler(f, rq, rs)
   expect_equal(rs$body, list(a = 1))
 })
-
 
 test_that("Test match_handler method", {
   a = RestRserveApplication$new()
@@ -91,21 +112,26 @@ test_that("Test match_handler method", {
   expect_equal(attr(r2, "path_parameters"), list(var = "value"))
 })
 
-
 test_that("Test process_request method", {
   a = RestRserveApplication$new()
-  f = function(rq, rs) {rs$body = list(a = 1)}
+  f = function(rq, rs) {rs$body = "text"}
   a$add_route("/", "GET", f, "exact")
   rq = RestRserveRequest$new(path = "/")
   rs = RestRserveResponse$new()
   r = a$.__enclos_env__$private$process_request(rq)
-  expect_equal(r, list("1", "text/plain", character(0), 200L))
+  expect_equal(r, list("text", "text/plain", character(0), 200L))
 })
-
 
 test_that("Test endpoints method", {
   a = RestRserveApplication$new()
   f = function(rq, rs) {}
   expect_equal(a$endpoints(), list())
   a$add_route("/", "GET", f, "exact")
+  a$add_route("/dir", "GET", f, "partial")
+  a$add_route("/post", "POST", f, "exact")
+  ep = list(
+    "POST" = c("exact" = "/post"),
+    "GET" = c("exact" = "/", "partial" = "/dir/")
+  )
+  expect_equal(a$endpoints(), ep)
 })

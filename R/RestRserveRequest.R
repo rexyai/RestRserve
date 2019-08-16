@@ -183,7 +183,7 @@ RestRserveRequest = R6::R6Class(
       if (!is.raw(body)) {
         if (length(body) > 0L) {
           # parse form
-          if (self$headers[["content-type"]] == "application/x-www-form-urlencoded") {
+          if (isTRUE(self$headers[["content-type"]] == "application/x-www-form-urlencoded")) {
             # Named character vector. Body parameters key-value pairs.
             res = as.list(body)
             # Omit empty keys and empty values

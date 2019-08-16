@@ -82,6 +82,23 @@ test_that("Test parse query in constructor", {
   expect_equal(r$query[["param4"]], "value4")
 })
 
+test_that("Test character body", {
+  r = RestRserveRequest$new(
+    headers = charToRaw("Content-Type: application/x-www-form-urlencoded"),
+    body = c("param1" = "value1", "param2" = "value2")
+  )
+  expect_equal(rawToChar(r$body), "param1=value1&param2=value2")
+  expect_equal(r$content_type, "application/x-www-form-urlencoded")
+})
+
+test_that("Test raw body", {
+  b = raw(10)
+  attr(b, "content-type", "application/octet-stream")
+  r = RestRserveRequest$new(body = b)
+  expect_equal(r$body, b)
+  expect_equal(r$content_type, "application/octet-stream")
+})
+
 test_that("Test parse body urlencoded form", {
   b = setNames(c("value1", "value2", "", "value4 and others"),
                c("param1", "", "param3", "param4"))
