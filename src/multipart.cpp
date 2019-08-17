@@ -90,8 +90,7 @@ MultipartItem parse_multipart_block(std::string_view block, std::size_t offset) 
         form_file.filename = m[2];
         found_cdisp = true;
         found_file = !form_file.filename.empty();
-      }
-      if (found_file && !found_ctype && std::regex_match(line.begin(), line.end(), m, re_ctype)) {
+      } else if (found_file && !found_ctype && std::regex_match(line.begin(), line.end(), m, re_ctype)) {
         form_file.content_type = m[1];
         found_ctype = true;
         // offset by current line
@@ -103,17 +102,15 @@ MultipartItem parse_multipart_block(std::string_view block, std::size_t offset) 
         form_file.length = block_n - form_file.offset - 1;
         // correct to block position
         form_file.offset += offset;
-      }
-      if (found_cdisp && !found_file) {
+        res = {name, Rcpp::wrap(form_file)};
+        return res;
+      } else if (found_cdisp && !found_file) {
         form_value.value = line;
+        res = {name, Rcpp::wrap(form_value)};
+        return res;
       }
     }
     cur_pos = next_pos + eol_n;
-  }
-  if (found_file && found_ctype) {
-    res = {name, Rcpp::wrap(form_file)};
-  } else {
-    res = {name, Rcpp::wrap(form_value)};
   }
   return res;
 }
@@ -153,7 +150,7 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     if (block_end_pos != std::string_view::npos) {
       auto block_size = block_end_pos - block_start_pos;
       std::string_view block = body_sv.substr(block_start_pos, block_size);
-      res.emplace(parse_multipart_block(block, block_start_pos));
+      res.insert(parse_multipart_block(block, block_start_pos));
     }
     // std::string_view block = body_sv.substr(start_pos + boundary_n + 2);
     block_start_pos = block_end_pos;
