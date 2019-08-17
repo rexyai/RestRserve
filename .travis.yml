@@ -12,25 +12,25 @@ matrix:
     r_check_args: "--no-manual --as--cran"
 
 compiler:
-  - gcc-4.9
+  - gcc-8
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.9
-    - g++-4.9
-    - gfortran-4.9
+    - gcc-8
+    - g++-8
+    - gfortran-8
 r_packages:
   - covr
   - lintr
 before_install:
   - echo "options(repos = c(CRAN = 'https://cran.rstudio.com'))" > ~/.Rprofile
   - mkdir ~/.R
-  - echo "CXX11=g++-4.9" > ~/.R/Makevars
-  - echo "CXX=g++-4.9" >> ~/.R/Makevars
-  - echo "CXX1X=g++-4.9" >> ~/.R/Makevars
-  - echo "CC=gcc-4.9" >> ~/.R/Makevars
+  - echo "CXX11=g++-8" > ~/.R/Makevars
+  - echo "CXX=g++-8" >> ~/.R/Makevars
+  - echo "CXX1X=g++-8" >> ~/.R/Makevars
+  - echo "CC=gcc-8" >> ~/.R/Makevars
   - echo 'CFLAGS+="-std=gnu99"' >> ~/.R/Makevars
 after_script:
   - R CMD INSTALL $PKG_TARBALL
