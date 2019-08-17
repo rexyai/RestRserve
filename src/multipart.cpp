@@ -15,25 +15,17 @@ struct MultipartFile {
   std::size_t length;
 };
 
-struct MultipartValue {
-  std::string value;
-};
-
 namespace Rcpp {
   template <>
   SEXP wrap(const MultipartFile& x) {
-    return Rcpp::List::create(
+    Rcpp::List res = Rcpp::List::create(
       Rcpp::Named("filename") = x.filename,
       Rcpp::Named("content_type") = x.content_type,
       Rcpp::Named("offset") = x.offset,
       Rcpp::Named("length") = x.length
     );
-  }
-  template <>
-  SEXP wrap(const MultipartValue& x) {
-    return Rcpp::List::create(
-      Rcpp::Named("value") = x.value
-    );
+    res.attr("class") = "form_file";
+    return res;
   }
 }
 
@@ -55,7 +47,6 @@ MultipartItem parse_multipart_block(std::string_view block, std::size_t offset) 
 
   std::string name;
   MultipartFile form_file;
-  MultipartValue form_value;
   MultipartItem res;
 
   bool found_cdisp = false;
@@ -105,8 +96,7 @@ MultipartItem parse_multipart_block(std::string_view block, std::size_t offset) 
         res = {name, Rcpp::wrap(form_file)};
         return res;
       } else if (found_cdisp && !found_file) {
-        form_value.value = line;
-        res = {name, Rcpp::wrap(form_value)};
+        res = {name, Rcpp::wrap(std::string(line))};
         return res;
       }
     }
@@ -126,7 +116,8 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
   // boundary size
   std::size_t boundary_n = std::strlen(boundary);
   // output object
-  MultipartItems res;
+  MultipartItems form_files;
+  MultipartItems form_values;
   // body as string representation
   std::string_view body_sv(reinterpret_cast<const char*>(body.begin()), body_n);
   // end of line string
@@ -150,11 +141,20 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     if (block_end_pos != std::string_view::npos) {
       auto block_size = block_end_pos - block_start_pos;
       std::string_view block = body_sv.substr(block_start_pos, block_size);
-      res.insert(parse_multipart_block(block, block_start_pos));
+      MultipartItem tmp = parse_multipart_block(block, block_start_pos);
+      if (tmp.second.inherits("form_file")) {
+        form_files.insert(tmp);
+      } else {
+        form_values.insert(tmp);
+      }
     }
     // std::string_view block = body_sv.substr(start_pos + boundary_n + 2);
     block_start_pos = block_end_pos;
     Rcpp::checkUserInterrupt();
   }
-  return Rcpp::wrap(res);
+  Rcpp::List res = Rcpp::List::create(
+    Rcpp::Named("files") = form_files,
+    Rcpp::Named("values") = form_values
+  );
+  return res;
 }
