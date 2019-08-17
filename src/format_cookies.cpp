@@ -4,7 +4,7 @@
 
 using Rcpp::as;
 
-// [[Rcpp::export]]
+// [[Rcpp::export(rng=false)]]
 std::string format_cookies(Rcpp::ListOf<Rcpp::List> cookies) {
   std::size_t n = cookies.size();
   std::ostringstream out;

@@ -61,6 +61,7 @@ RestRserveRequest = R6::R6Class(
     content_type = NULL,
     body = NULL,
     query = NULL,
+    files = NULL,
     path_parameters = NULL,
     initialize = function(path = "/",
                           method = "GET",
@@ -121,6 +122,19 @@ RestRserveRequest = R6::R6Class(
       }
       name = tolower(name)
       return(self$path_parameters[[name]])
+    },
+    get_file = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      if (is.null(self$files[[name]]) || !is.raw(self$body)) {
+        return(NULL)
+      }
+      idx = seq_len(self$files[[name]]$length) + self$files[[name]]$offset
+      res = self$body[idx]
+      attr(res, "filname") = self$files[[name]]$filename
+      attr(res, "content-type") = self$files[[name]]$content_type
+      return(res)
     }
   ),
   active = list(
@@ -212,8 +226,20 @@ RestRserveRequest = R6::R6Class(
           body_type = content_type
         }
         if (startsWith(body_type, "multipart/form-data")) {
-          # FIXME: not implemented
-          # res = parse_multipart(body)
+          boundary = parse_multipart_boundary(attr(body, "content-type"))
+          res = parse_multipart_body(body, paste0("--", boundary))
+          if (length(res$values) > 0L) {
+            values = res$values[nzchar(names(res$values)) & nzchar(res$values)]
+            keys = names(values)
+            # FIXME: add not exists keys onlly
+            to_add = which(keys %in% names(self$query))
+            for (i in to_add) {
+              self$query[[keys[i]]] = values[[i]]
+            }
+          }
+          if (length(res$files) > 0L) {
+            self$files = as.environment(res$files)
+          }
         }
       }
       self$body = body
