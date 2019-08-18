@@ -18,6 +18,6 @@ err_factory = HTTPErrorFactory$new()
 caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
 condition = attr(caught_http_exception, 'condition')
 # response is an instance of HTTPError
-# and valid RestRserve instace because HTTPError inherits from RestRserveResponse
+# and valid RestRserveResponse instace because HTTPError inherits from RestRserveResponse
 identical(condition$response$body, "400 Bad Request")
 }

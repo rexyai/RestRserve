@@ -8,7 +8,8 @@
 #'   query = new.env(parent = emptyenv()),
 #'   headers = new.env(parent = emptyenv()),
 #'   body = raw(),
-#'   content_type = "application/octet-stream")}
+#'   content_type = "application/octet-stream",
+#'   decode = NULL)}
 #' \describe{
 #'   \item{path}{\code{"/somepath"}, always character of length 1}
 #'   \item{method}{\code{"GET"}, always character of length 1}
@@ -31,11 +32,14 @@
 #'       \item{body}{ = \code{raw(0)}.
 #'          \itemize{
 #'             \item \code{NULL} if the http body is empty or zero length.
-#'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
+#'             \item \code{raw vector} in all cases except URL encoded form
 #'             \item named \code{characeter vector} in the case of a URL encoded form.
 #'             It will have the same shape as the query string (named string vector).
 #'          }
 #'       },
+#'       \item{body_decoded}{ body parsed according to the 'content-type' request header
+#'         and \code{decode} argument of the r
+#'       }
 #'       \item{request_id}{\bold{character}, automatically generated UUID for each request}
 #'       \item{content_type}{\code{""}, always character of length 1}
 #'       \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
@@ -53,6 +57,9 @@
 RestRserveRequest = R6::R6Class(
   classname = "RestRserveRequest",
   public = list(
+    #---------------------------------
+    # public members
+    #---------------------------------
     path = NULL,
     method = NULL,
     headers = NULL,
@@ -62,12 +69,17 @@ RestRserveRequest = R6::R6Class(
     body = NULL,
     query = NULL,
     path_parameters = NULL,
+    decode = NULL,
+    #---------------------------------
+    # methods
+    #---------------------------------
     initialize = function(path = "/",
                           method = "GET",
                           query = NULL,
                           headers = NULL,
                           body = NULL,
-                          content_type = "application/octet-stream"
+                          content_type = "application/octet-stream",
+                          decode = NULL
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
@@ -80,6 +92,7 @@ RestRserveRequest = R6::R6Class(
           checkmate::check_character(body, null.ok = TRUE),
           combine = "or"
         )
+        checkmate::assert_function(decode, null.ok = TRUE)
       }
 
       self$headers = new.env(parent = emptyenv())
@@ -87,9 +100,11 @@ RestRserveRequest = R6::R6Class(
       self$cookies = new.env(parent = emptyenv())
       self$query = new.env(parent = emptyenv())
       self$path_parameters = list()
+      self$decode = decode
+
       private$parse_query(query)
       private$parse_headers(headers)
-      private$parse_body(body, content_type)
+      private$parse_body_and_content_type(body, content_type)
       private$parse_cookies()
       self$path = path
       # Rserve adds "Request-Method: " key:
@@ -124,6 +139,13 @@ RestRserveRequest = R6::R6Class(
     }
   ),
   active = list(
+    body_decoded = function() {
+      if (!is.function(self$decode)) {
+        return(self$body)
+      } else {
+        return(self$decode(self$body))
+      }
+    },
     request_id = function() {
       private$id
     },
@@ -179,7 +201,9 @@ RestRserveRequest = R6::R6Class(
       }
       return(invisible(TRUE))
     },
-    parse_body = function(body = raw(), default_content_type = "application/octet-stream") {
+    parse_body_and_content_type = function(body = raw(), default_content_type = "application/octet-stream") {
+      content_type = default_content_type
+
       if (!is.raw(body)) {
         if (length(body) > 0L) {
           # parse form
@@ -208,12 +232,10 @@ RestRserveRequest = R6::R6Class(
         body_type = attr(body, "content-type")
         if (!is.null(body_type)) {
           content_type = body_type
-        } else {
-          content_type = default_content_type
         }
         if (startsWith(content_type, "multipart/form-data")) {
           # FIXME: not implemented
-          stop(sprintf("Not implemented yet - can't parae body with content-type=%s", content_type))
+          stop(sprintf("Not implemented yet - can't parse body with content-type='%s'", content_type))
           # res = parse_multipart(body)
         }
       }

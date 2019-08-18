@@ -10,8 +10,8 @@ test_that("Test empty object", {
   expect_is(r$context, "environment")
   expect_is(r$headers, "environment")
   expect_length(r$headers, 0L)
-  expect_is(r$serializer, "function")
-  expect_equal(r$serializer, as.character)
+  expect_is(r$encode, "function")
+  expect_equal(r$encode, as.character)
   expect_is(r$status_code, "integer")
   expect_length(r$status_code, 1L)
   expect_equal(r$status_code, 200L)
@@ -79,18 +79,18 @@ test_that("Test set_content_type method", {
   expect_equal(r$content_type, "test/type")
   r$set_content_type("test/type2", as.character)
   expect_equal(r$content_type, "test/type2")
-  expect_equal(r$serializer, as.character)
+  expect_equal(r$encode, as.character)
 })
 
 test_that("Test body assign in contructor", {
   r = RestRserveResponse$new(
     body = list(),
     content_type = "application/json",
-    serializer = to_json
+    encode = to_json
   )
   expect_equal(r$body, list())
   expect_equal(r$content_type, "application/json")
-  expect_equal(r$serializer, to_json)
+  expect_equal(r$encode, to_json)
   expect_equal(r$to_rserve()[[1]], to_json(list()))
 })
 

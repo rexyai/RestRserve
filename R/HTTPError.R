@@ -13,10 +13,11 @@ HTTPError = R6::R6Class(
 #' @description helps to generate http error responces. See \link{raise} for example.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
+#'   \item{\code{$new(content_type = "text/plain", encode = NULL)}}{Factory constructor.
 #'   \describe{
-#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}
-#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}{
+#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument
+#'       }
 #'     }
 #'   }
 #' }
@@ -25,9 +26,9 @@ HTTPErrorFactory = R6::R6Class(
   classname = 'HTTPErrorFactory',
   inherit = RestRserveResponse,
   public = list(
-    initialize = function(content_type = "text/plain", serializer = NULL) {
+    initialize = function(content_type = "text/plain", encode = NULL) {
       super$set_content_type(content_type)
-      super$serializer = serializer
+      super$encode = encode
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = character(0)) {
@@ -166,7 +167,7 @@ HTTPErrorFactory = R6::R6Class(
         content_type = self$content_type,
         headers = headers,
         status_code = status_code,
-        serializer = self$serializer
+        encode = self$encode
       )
     }
   )

@@ -85,7 +85,7 @@ RestRserveApplication = R6::R6Class(
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       self$content_type = content_type
-      self$content_handlers = RestRserveContentHandlers
+      self$content_handlers = RestRserveContentHandlersFactory$new()
 
       do.call(self$append_middleware, middleware)
     },
@@ -263,6 +263,9 @@ RestRserveApplication = R6::R6Class(
     middleware = NULL,
     #------------------------------------------------------------------------
     process_request = function(request) {
+
+      request$decode = self$content_handlers$get_decode(content_type = request$content_type)
+
       self$logger$trace("",
         context = list(request_id = request$request_id,
              method = request$method,
@@ -338,11 +341,11 @@ RestRserveApplication = R6::R6Class(
       }
 
       # this means that response wants RestRerveApplication to select
-      # serializer automatically
-      if (!is.function(response$serializer)) {
+      # how to encode automatically
+      if (!is.function(response$encode)) {
         ct = response$get_header('content-type')
-        serializer = self$content_handlers$get_serializer(ct)
-        response$serializer = serializer
+        encode = self$content_handlers$get_encode(ct)
+        response$encode = encode
       }
 
       return(response$to_rserve())

@@ -1,3 +1,4 @@
+#' @export
 RestRserveContentHandlersFactory = R6::R6Class(
   classname = 'RestRserveContentHandler',
   public = list(
@@ -5,46 +6,48 @@ RestRserveContentHandlersFactory = R6::R6Class(
     initialize = function() {
       self$handlers = new.env(parent = emptyenv())
 
-      self$set_serializer('application/json', RestRserve::to_json)
-      self$set_deserializer('application/json', function(x) jsonlite::fromJSON(rawToChar(x), simplifyVector = FALSE))
+      self$set_encode('application/json', to_json)
+      self$set_decode('application/json', function(x) jsonlite::fromJSON(rawToChar(x), simplifyVector = FALSE))
 
-      self$set_serializer('text/plain', as.character)
-      self$set_deserializer('text/plain', rawToChar)
+      self$set_encode('text/plain', as.character)
+      self$set_decode('text/plain', rawToChar)
     },
 
-    set_serializer = function(content_type, FUN) {
+    set_encode = function(content_type, FUN) {
       if (is.null(self$handlers[[content_type]])) {
         self$handlers[[content_type]] = list()
       }
-      self$handlers[[content_type]][['serializer']] = FUN
+      self$handlers[[content_type]][['encode']] = FUN
     },
-    get_serializer = function(content_type) {
-      serializer = self$handlers[[content_type]][['serializer']]
-      if (!is.function(serializer)) {
-        msg = sprintf("RestRserveContentHandlers doesn't know how to serialize '%s'.", content_type)
+    get_encode = function(content_type) {
+      encode = self$handlers[[content_type]][['encode']]
+      if (!is.function(encode)) {
+        msg = sprintf("RestRserveContentHandlers doesn't know how to encode '%s'.", content_type)
         msg = paste(msg, "Providing fall back to 'as.character()'")
+        # FIXME - use logger for this msg
         warning(msg)
-        serializer = as.character
+        encode = as.character
       }
-      serializer
+      encode
     },
 
-    set_deserializer = function(content_type, FUN) {
+    set_decode = function(content_type, FUN) {
       if (is.null(self$handlers[[content_type]])) {
         self$handlers[[content_type]] = list()
       }
-      self$handlers[[content_type]][['deserializer']] = FUN
+      self$handlers[[content_type]][['decode']] = FUN
     },
 
-    get_deserializer = function(content_type) {
-      deserializer = self$handlers[[content_type]][['deserializer']]
-      if (!is.function(deserializer)) {
-        msg = sprintf("RestRserveContentHandlers doesn't know how to deserialize '%s'.", content_type)
-        msg = paste(msg, "Leaving 'as is'")
+    get_decode = function(content_type) {
+      decode = self$handlers[[content_type]][['decode']]
+      if (!is.function(decode)) {
+        msg = sprintf("RestRserveContentHandlers doesn't know how to decode '%s'.", content_type)
+        msg = paste(msg, "Returning 'as is'")
+        # FIXME - use logger for this msg
         warning(msg)
-        deserializer = identity
+        decode = identity
       }
-      deserializer
+      decode
     },
 
     list = function() {
@@ -53,7 +56,4 @@ RestRserveContentHandlersFactory = R6::R6Class(
   )
 )
 
-RestRserveContentHandlers = RestRserveContentHandlersFactory$new()
-
-#' @export
-RestRserveContentHandlers
+# RestRserveContentHandlers = RestRserveContentHandlersFactory$new()
