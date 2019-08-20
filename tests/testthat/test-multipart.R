@@ -68,4 +68,3 @@ test_that("Test parse_multipart_body", {
   expect_identical(get_multipart_file(body, parsed$files[["raw_file.bin"]]),
                    readBin(tmp_rds, raw(), file.size(tmp_rds)))
 })
-
