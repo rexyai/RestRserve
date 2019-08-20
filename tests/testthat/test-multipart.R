@@ -26,11 +26,6 @@ test_that("Test parse_multipart_body", {
   # rds file
   tmp_rds = tempfile(fileext = ".rds")
   saveRDS(letters, tmp_rds)
-  # png file
-  tmp_png = tempfile(fileext = ".png")
-  png(tmp_png)
-  plot(1:10)
-  dev.off()
   # form values
   params = list(
     "param1" = "value1",
@@ -45,10 +40,6 @@ test_that("Test parse_multipart_body", {
     "raw_file.bin" = list(
       path = tmp_rds,
       ctype = "application/octet-stream"
-    ),
-    "plog.png" = list(
-      path = tmp_png,
-      ctype = "image/png"
     )
   )
 
@@ -63,7 +54,7 @@ test_that("Test parse_multipart_body", {
   expect_equal(parsed$values$param1, "value1")
   expect_equal(parsed$values$param2, "value2")
   expect_is(parsed$files, "list")
-  expect_length(parsed$files, 3L)
+  expect_length(parsed$files, 2L)
 
   expect_equal(parsed$files[["desc_file.txt"]]$filename, basename(tmp_txt))
   expect_equal(parsed$files[["desc_file.txt"]]$content_type, "plain/text")
@@ -74,16 +65,9 @@ test_that("Test parse_multipart_body", {
 
   expect_equal(parsed$files[["raw_file.bin"]]$filename, basename(tmp_rds))
   expect_equal(parsed$files[["raw_file.bin"]]$content_type, "application/octet-stream")
-  expect_equal(parsed$files[["raw_file.bin"]]$offset, 1653)
+  expect_equal(parsed$files[["raw_file.bin"]]$offset, 1652)
   expect_equal(parsed$files[["raw_file.bin"]]$length, file.size(tmp_rds))
-  expect_identical(get_multipart_file(body, parsed$files[["plog.png"]]),
-                   readBin(tmp_png, raw(), file.size(tmp_png)))
-
-  expect_equal(parsed$files[["plog.png"]]$filename, basename(tmp_png))
-  expect_equal(parsed$files[["plog.png"]]$content_type, "image/png")
-  expect_equal(parsed$files[["plog.png"]]$offset, 1917)
-  expect_equal(parsed$files[["plog.png"]]$length, file.size(tmp_png))
-  expect_identical(get_multipart_file(body, parsed$files[["plog.png"]]),
-                  readBin(tmp_png, raw(), file.size(tmp_png)))
+  expect_identical(get_multipart_file(body, parsed$files[["raw_file.bin"]]),
+                   readBin(tmp_rds, raw(), file.size(tmp_rds)))
 })
 
