@@ -82,21 +82,15 @@ test_that("Test parse query in constructor", {
   expect_equal(r$query[["param4"]], "value4")
 })
 
-test_that("Test character body", {
+test_that("Test parse url encoded body", {
   r = RestRserveRequest$new(
     headers = charToRaw("Content-Type: application/x-www-form-urlencoded"),
     body = c("param1" = "value1", "param2" = "value2")
   )
+  expect_equal(r$query$param1, "value1")
+  expect_equal(r$query$param2, "value2")
   expect_equal(rawToChar(r$body), "param1=value1&param2=value2")
   expect_equal(r$content_type, "application/x-www-form-urlencoded")
-})
-
-test_that("Test raw body", {
-  b = raw(10)
-  attr(b, "content-type", "application/octet-stream")
-  r = RestRserveRequest$new(body = b)
-  expect_equal(r$body, b)
-  expect_equal(r$content_type, "application/octet-stream")
 })
 
 test_that("Test parse body urlencoded form", {
@@ -113,13 +107,37 @@ test_that("Test parse null bobdy", {
   expect_equal(r$body, raw())
 })
 
-
 test_that("Test parse raw bobdy", {
   b = raw(10)
   attr(b, "content-type") = "custom/type"
   r = RestRserveRequest$new(body = b)
   expect_equal(r$body, b)
   expect_equal(r$content_type, "custom/type")
+})
+
+test_that("Test parse multipart body", {
+  # rds file
+  tmp_rds = tempfile(fileext = ".rds")
+  saveRDS(letters, tmp_rds)
+  files = list(
+    "rds" = list(
+      path = tmp_rds,
+      ctype = "application/octet-stream"
+    )
+  )
+  # form values
+  params = list(
+    "param1" = "value1",
+    "param2" = "value2"
+  )
+  b = make_multipart_body(params, files)
+  r = RestRserveRequest$new(body = b)
+  expect_is(r$body, "raw")
+  expect_is(r$files, "environment")
+  expect_length(r$files, 1L)
+  expect_equivalent(r$get_file("rds"), readBin(tmp_rds, raw(), file.size(tmp_rds)))
+  expect_equal(r$query$param1, "value1")
+  expect_equal(r$query$param2, "value2")
 })
 
 test_that("Test get_header method", {
