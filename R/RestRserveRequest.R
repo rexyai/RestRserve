@@ -61,18 +61,17 @@ RestRserveRequest = R6::R6Class(
     content_type = NULL,
     body = NULL,
     query = NULL,
+    files = NULL,
     path_parameters = NULL,
     initialize = function(path = "/",
                           method = "GET",
                           query = NULL,
                           headers = NULL,
-                          body = NULL,
-                          content_type = "application/octet-stream"
+                          body = NULL
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
         checkmate::assert_string(method)
-        checkmate::assert_string(content_type)
         checkmate::assert_character(query, null.ok = TRUE)
         checkmate::assert_raw(headers, null.ok = TRUE)
         checkmate::assert(
@@ -87,9 +86,12 @@ RestRserveRequest = R6::R6Class(
       self$cookies = new.env(parent = emptyenv())
       self$query = new.env(parent = emptyenv())
       self$path_parameters = list()
-      private$parse_query(query)
+      # parse first
       private$parse_headers(headers)
-      private$parse_body(body, content_type)
+      private$parse_query(query)
+      # parse after headers
+      private$parse_body(body)
+      # parse after headers
       private$parse_cookies()
       self$path = path
       # Rserve adds "Request-Method: " key:
@@ -121,6 +123,19 @@ RestRserveRequest = R6::R6Class(
       }
       name = tolower(name)
       return(self$path_parameters[[name]])
+    },
+    get_file = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      if (is.null(self$files[[name]]) || !is.raw(self$body)) {
+        return(NULL)
+      }
+      idx = seq_len(self$files[[name]]$length) + self$files[[name]]$offset - 1L
+      res = self$body[idx]
+      attr(res, "filname") = self$files[[name]]$filename
+      attr(res, "content-type") = self$files[[name]]$content_type
+      return(res)
     }
   ),
   active = list(
@@ -179,45 +194,73 @@ RestRserveRequest = R6::R6Class(
       }
       return(invisible(TRUE))
     },
-    parse_body = function(body = raw(), content_type = "application/octet-stream") {
-      if (!is.raw(body)) {
-        if (length(body) > 0L) {
-          # parse form
-          if (isTRUE(self$headers[["content-type"]] == "application/x-www-form-urlencoded")) {
-            # Named character vector. Body parameters key-value pairs.
-            res = as.list(body)
-            # Omit empty keys and empty values
-            res = res[nzchar(names(res)) & nzchar(body)]
-            # FIXME: should overwrite query or appent as attr to body?
-            keys = names(res)
-            # FIXME: add not exists keys onlly
-            to_add = which(keys %in% names(self$query))
-            for (i in to_add) {
-              self$query[[keys[i]]] = res[[i]]
-            }
-            # FIXME: should we encode it?
-            body = paste(url_encode(keys), url_encode(as.character(res)),
-                         sep = "=", collapse = "&")
-            body = charToRaw(body)
-            content_type = "application/x-www-form-urlencoded"
-          }
-        } else {
-          body = raw()
+    parse_form_urlencoded = function(body) {
+      if (length(body) > 0L) {
+        # Named character vector. Body parameters key-value pairs.
+        # Omit empty keys and empty values
+        values = body[nzchar(names(body)) & nzchar(body)]
+        # FIXME: should overwrite query or appent as attr to body?
+        keys = names(values)
+        # FIXME: add not exists keys only
+        to_add = which(!keys %in% names(self$query))
+        for (i in to_add) {
+          self$query[[keys[i]]] = values[[i]]
         }
+        # FIXME: should we encode it?
+        values = paste(url_encode(keys), url_encode(values), sep = "=", collapse = "&")
+        body = charToRaw(values)
       } else {
-        body_type = attr(body, "content-type")
-        if (!is.null(body_type)) {
-          content_type = body_type
-        } else {
-          body_type = content_type
+        body = raw()
+      }
+      self$body = body
+      self$content_type = "application/x-www-form-urlencoded"
+      return(invisible(TRUE))
+    },
+    parse_form_multipart = function(body) {
+      content_type = attr(body, "content-type")
+      boundary = parse_multipart_boundary(content_type)
+      res = parse_multipart_body(body, paste0("--", boundary))
+      if (length(res$values) > 0L) {
+        values = res$values[nzchar(names(res$values)) & nzchar(res$values)]
+        keys = names(values)
+        # FIXME: add not exists keys onlly
+        to_add = which(!keys %in% names(self$query))
+        for (i in to_add) {
+          self$query[[keys[i]]] = values[[i]]
         }
-        if (startsWith(body_type, "multipart/form-data")) {
-          # FIXME: not implemented
-          # res = parse_multipart(body)
-        }
+      }
+      if (length(res$files) > 0L) {
+        self$files = as.environment(res$files)
       }
       self$body = body
       self$content_type = content_type
+      return(invisible(TRUE))
+    },
+    parse_body = function(body) {
+      h_ctype = self$headers[["content-type"]]
+      b_ctype = attr(body, "content-type")
+      if (!is.null(b_ctype)) {
+        h_ctype = b_ctype
+      }
+      if (is.null(h_ctype)) {
+        h_ctype = "application/octet-stream"
+      }
+      if (is.null(body)) {
+        self$body = raw()
+        self$content_type = h_ctype
+      } else if (!is.raw(body)) {
+        # parse form
+        if (h_ctype == "application/x-www-form-urlencoded") {
+          return(private$parse_form_urlencoded(body))
+        }
+      } else {
+        if (startsWith(h_ctype, "multipart/form-data")) {
+          return(private$parse_form_multipart(body))
+        } else {
+          self$body = body
+          self$content_type = h_ctype
+        }
+      }
       return(invisible(TRUE))
     }
   )
