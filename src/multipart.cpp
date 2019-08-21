@@ -34,7 +34,7 @@ using MultipartItems = std::unordered_multimap<std::string,Rcpp::RObject>;
 std::string parse_multipart_boundary(const std::string& content_type) {
   std::string::size_type pos = content_type.find("boundary=");
   if (pos == std::string::npos) {
-    throw(std::runtime_error("boundary string no found."));
+    Rcpp::stop("Boundary string no found.");
   }
   return content_type.substr(pos + 9);
 }
