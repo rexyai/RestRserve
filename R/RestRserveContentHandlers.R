@@ -1,5 +1,4 @@
-#' @export
-RestRserveContentHandlersFactory = R6::R6Class(
+ContentHandlersFactory = R6::R6Class(
   classname = 'RestRserveContentHandler',
   public = list(
     handlers = NULL,
@@ -7,7 +6,19 @@ RestRserveContentHandlersFactory = R6::R6Class(
       self$handlers = new.env(parent = emptyenv())
 
       self$set_encode('application/json', to_json)
-      self$set_decode('application/json', function(x) jsonlite::fromJSON(rawToChar(x), simplifyVector = FALSE))
+      self$set_decode(
+        'application/json',
+        function(x) {
+          res = try(
+            {
+              x = rawToChar(x)
+              jsonlite::fromJSON(x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+            },
+            silent = TRUE
+          )
+          res
+        }
+      )
 
       self$set_encode('text/plain', as.character)
       self$set_decode('text/plain', rawToChar)
@@ -56,4 +67,8 @@ RestRserveContentHandlersFactory = R6::R6Class(
   )
 )
 
-# RestRserveContentHandlers = RestRserveContentHandlersFactory$new()
+#' @name ContentHandlers
+#' @title ContentHandlers
+#' @description ContentHandlers
+#' @export
+ContentHandlers = NULL

@@ -1,13 +1,3 @@
-HTTPError = R6::R6Class(
-  classname = 'HTTPError',
-  inherit = RestRserveResponse,
-  public = list(
-    initialize = function(body, content_type, headers, status_code) {
-      super$initialize(body, content_type, headers, status_code)
-    }
-  )
-)
-
 #' @name HTTPErrorFactory
 #' @title helps to generate http error responces
 #' @description helps to generate http error responces. See \link{raise} for example.
@@ -24,11 +14,18 @@ HTTPError = R6::R6Class(
 #' @export
 HTTPErrorFactory = R6::R6Class(
   classname = 'HTTPErrorFactory',
-  inherit = RestRserveResponse,
   public = list(
+    content_type = NULL,
+    encode = NULL,
     initialize = function(content_type = "text/plain", encode = NULL) {
-      super$set_content_type(content_type)
-      super$encode = encode
+      self$set_content_type(content_type)
+      self$set_encode(encode)
+    },
+    set_content_type = function(content_type) {
+      self$content_type = content_type
+    },
+    set_encode = function(encode) {
+      self$encode = encode
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = character(0)) {
@@ -162,13 +159,16 @@ HTTPErrorFactory = R6::R6Class(
       if (is.null(body)) {
         body = paste(status_code, status_codes[[as.character(status_code)]])
       }
-      HTTPError$new(
-        body = body,
-        content_type = self$content_type,
-        headers = headers,
-        status_code = status_code,
-        encode = self$encode
-      )
+      res =
+        RestRserveResponse$new(
+          body = body,
+          content_type = self$content_type,
+          headers = headers,
+          status_code = status_code,
+          encode = self$encode
+        )
+      class(res) = c('HTTPError', class(res))
+      res
     }
   )
 )
@@ -176,17 +176,21 @@ HTTPErrorFactory = R6::R6Class(
 #' @name raise
 #' @title interrupts request handling
 #' @description interrupts request handling and signals RestRserve to return HTTPError
-#' @param x instance of \code{HTTPError}. Can be created using \link{HTTPErrorFactory} -
+#' @param x instance of \code{RestRserveResponse}. Can be created using \link{HTTPError} -
 #' see examples.
 #' @export
 #' @examples
-#' err_factory = HTTPErrorFactory$new()
-#' caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
+#' caught_http_exception = try(raise(HTTPError$bad_request()), silent = TRUE)
 #' condition = attr(caught_http_exception, 'condition')
-#' # response is an instance of HTTPError
-#' # and valid RestRserveResponse instace because HTTPError inherits from RestRserveResponse
+#' # response is a valid RestRserveResponse instace
 #' identical(condition$response$body, "400 Bad Request")
 raise = function(x) {
   exception = errorCondition('raise', response = x, class = class(x))
   stop(exception)
 }
+
+#' @name HTTPError
+#' @title HTTPError
+#' @description HTTPError
+#' @export
+HTTPError = NULL

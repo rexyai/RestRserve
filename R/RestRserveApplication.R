@@ -85,7 +85,7 @@ RestRserveApplication = R6::R6Class(
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
       private$middleware = new.env(parent = emptyenv())
       self$content_type = content_type
-      self$content_handlers = RestRserveContentHandlersFactory$new()
+      self$content_handlers = ContentHandlers
 
       do.call(self$append_middleware, middleware)
     },

@@ -227,7 +227,11 @@ RestRserveResponse = R6::R6Class(
         }
       }
 
-      body = self$encode(self$body)
+      if (!is.function(self$encode)) {
+        body = self$body
+      } else {
+        body = self$encode(self$body)
+      }
 
       if (length(body) == 0L) {
         body = raw()
@@ -293,13 +297,3 @@ RestRserveResponse = R6::R6Class(
     }
   )
 )
-
-#' @title continue request-response cycle
-#' @description forwards processing of the request to the downstream handlers/middleware
-#' @export
-forward = function() {
-  .Deprecated(msg = "there is no need to call forward() it anymore")
-  res = TRUE
-  class(res) = "RestRserveForward"
-  invisible(res)
-}
