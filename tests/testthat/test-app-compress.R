@@ -26,4 +26,3 @@ test_that("Test compressed content", {
   expect_equal(rs[[3]], "Content-encoding: gzip")
   expect_equal(rs[[4]], 200L)
 })
-
