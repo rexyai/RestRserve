@@ -27,9 +27,9 @@ Imports:
 Suggests:
   yaml (>= 2.1.14),
   curl (>= 2.7),
-  testthat (>= 2.0.0), 
+  tinytest (>= 0.9.6), 
   lgr (>= 0.3.1),
-  lintr
+  lintr (>= 1.0.3)
 LinkingTo: 
   Rcpp
 SystemRequirements: C++11
