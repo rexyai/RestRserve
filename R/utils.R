@@ -47,31 +47,3 @@ is_string = function(x) {
 is_path = function(path) {
   is_string(path) && startsWith(path, "/")
 }
-
-to_http_date = function(dtm) {
-  if (is.null(dtm)) {
-    return(NULL)
-  }
-  ## An RFC 5322 header (Eastern Canada, during DST)
-  ## In a non-English locale the commented lines may be needed.
-  ## see ?strptime
-  old_loc = Sys.getlocale("LC_TIME")
-  on.exit(Sys.setlocale("LC_TIME", old_loc))
-  Sys.setlocale("LC_TIME", "C")
-  res = format(dtm, format = "%a, %d %b %Y %H:%M:%S %Z", tz = "GMT")
-  return(res)
-}
-
-from_http_date = function(str) {
-  if (is.null(str)) {
-    return(NULL)
-  }
-  ## An RFC 5322 header (Eastern Canada, during DST)
-  ## In a non-English locale the commented lines may be needed.
-  ## see ?strptime
-  old_loc = Sys.getlocale("LC_TIME")
-  on.exit(Sys.setlocale("LC_TIME", old_loc))
-  Sys.setlocale("LC_TIME", "C")
-  res = as.POSIXct(str, format = "%a, %d %b %Y %H:%M:%S", tz = "GMT")
-  return(res)
-}
