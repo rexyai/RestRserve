@@ -10,8 +10,7 @@ expect_equal(obj$status_code, NULL)
 expect_true(inherits(obj$content_type, "character"))
 expect_equal(length(obj$content_type), 1L)
 expect_equal(obj$content_type, "text/plain")
-expect_true(inherits(obj$serializer, "function"))
-expect_equal(obj$serializer, as.character)
+expect_equal(obj$encode, NULL)
 
 # Test error method result
 resp = obj$error(500L, "Error text")

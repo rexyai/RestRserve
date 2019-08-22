@@ -1,4 +1,4 @@
-#' @importFrom jsonlite toJSON
+#' @importFrom jsonlite toJSON fromJSON
 
 #' @name to_json
 #' @title simple json encoder

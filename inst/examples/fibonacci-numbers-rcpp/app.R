@@ -29,7 +29,7 @@ double calc_fib_cpp(const int n) {
 
 err = HTTPErrorFactory$new(
     content_type = "text/plain",
-    serializer = as.character
+    encode = as.character
 )
 
 fib_handler = function(request, response) {

@@ -8,11 +8,12 @@
 #'   query = new.env(parent = emptyenv()),
 #'   headers = new.env(parent = emptyenv()),
 #'   body = raw(),
-#'   content_type = "application/octet-stream")}
+#'   content_type = "application/octet-stream",
+#'   decode = NULL)}
 #' \describe{
 #'   \item{path}{\code{"/somepath"}, always character of length 1}
 #'   \item{method}{\code{"GET"}, always character of length 1}
-#'   \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+#'   \item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 #'   \item{body}{
 #'     \itemize{
 #'       \item \code{NULL} if the http body is empty or zero length.
@@ -20,25 +21,28 @@
 #'       \item named \code{characeter vector} in the case of a URL encoded form.
 #'          It will have the same shape as the query string (named string vector)}
 #'     }
-#'   \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
+#'   \item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.}
 #' }
 #' }
 #' @return \code{RestRserveRequest} object - R6 class:
 #'    \describe{
 #'       \item{path}{ = \code{"/somepath"}, always character of length 1}
 #'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+#'       \item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 #'       \item{body}{ = \code{raw(0)}.
 #'          \itemize{
 #'             \item \code{NULL} if the http body is empty or zero length.
-#'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
+#'             \item \code{raw vector} in all cases except URL encoded form
 #'             \item named \code{characeter vector} in the case of a URL encoded form.
 #'             It will have the same shape as the query string (named string vector).
 #'          }
 #'       },
+#'       \item{body_decoded}{ body parsed according to the 'content-type' request header
+#'         and \code{decode} argument of the r
+#'       }
 #'       \item{request_id}{\bold{character}, automatically generated UUID for each request}
 #'       \item{content_type}{\code{""}, always character of length 1}
-#'       \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
+#'       \item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.
 #'         According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
 #'         are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
 #'       },
@@ -53,6 +57,9 @@
 RestRserveRequest = R6::R6Class(
   classname = "RestRserveRequest",
   public = list(
+    #---------------------------------
+    # public members
+    #---------------------------------
     path = NULL,
     method = NULL,
     headers = NULL,
@@ -63,11 +70,17 @@ RestRserveRequest = R6::R6Class(
     query = NULL,
     files = NULL,
     path_parameters = NULL,
+    decode = NULL,
+    #---------------------------------
+    # methods
+    #---------------------------------
     initialize = function(path = "/",
                           method = "GET",
                           query = NULL,
                           headers = NULL,
-                          body = NULL
+                          body = NULL,
+                          content_type = "application/octet-stream",
+                          decode = NULL
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
@@ -79,19 +92,21 @@ RestRserveRequest = R6::R6Class(
           checkmate::check_character(body, null.ok = TRUE),
           combine = "or"
         )
+        checkmate::assert_function(decode, null.ok = TRUE)
       }
 
-      self$headers = new.env(parent = emptyenv())
+      self$headers = list()
       self$context = new.env(parent = emptyenv())
-      self$cookies = new.env(parent = emptyenv())
-      self$query = new.env(parent = emptyenv())
+      self$cookies = list()
+      self$query = list()
       self$path_parameters = list()
-      # parse first
-      private$parse_headers(headers)
+
+      self$decode = decode
+
       private$parse_query(query)
-      # parse after headers
-      private$parse_body(body)
-      # parse after headers
+      private$parse_headers(headers)
+      private$parse_body_and_content_type(body)
+
       private$parse_cookies()
       self$path = path
       # Rserve adds "Request-Method: " key:
@@ -139,6 +154,13 @@ RestRserveRequest = R6::R6Class(
     }
   ),
   active = list(
+    body_decoded = function() {
+      if (!is.function(self$decode)) {
+        return(self$body)
+      } else {
+        return(self$decode(self$body))
+      }
+    },
     request_id = function() {
       private$id
     },
@@ -174,13 +196,13 @@ RestRserveRequest = R6::R6Class(
         headers = rawToChar(headers)
       }
       if (is_string(headers)) {
-        self$headers = as.environment(parse_headers(headers))
+        self$headers = parse_headers(headers)
       }
       return(invisible(TRUE))
     },
     parse_cookies = function() {
       if (!is.null(self$headers[["cookie"]])) {
-        self$cookies = as.environment(parse_cookies(self$headers[["cookie"]]))
+        self$cookies = parse_cookies(self$headers[["cookie"]])
       }
       return(invisible(TRUE))
     },
@@ -190,7 +212,7 @@ RestRserveRequest = R6::R6Class(
         res = as.list(query)
         # Omit empty keys and empty values
         res = res[nzchar(names(res)) & nzchar(query)]
-        self$query = as.environment(res)
+        self$query = res
       }
       return(invisible(TRUE))
     },
@@ -230,13 +252,13 @@ RestRserveRequest = R6::R6Class(
         }
       }
       if (length(res$files) > 0L) {
-        self$files = as.environment(res$files)
+        self$files = res$files
       }
       self$body = body
       self$content_type = content_type
       return(invisible(TRUE))
     },
-    parse_body = function(body) {
+    parse_body_and_content_type = function(body) {
       h_ctype = self$headers[["content-type"]]
       b_ctype = attr(body, "content-type")
       if (!is.null(b_ctype)) {

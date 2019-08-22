@@ -7,17 +7,15 @@
 raise(x)
 }
 \arguments{
-\item{x}{instance of \code{HTTPError}. Can be created using \link{HTTPErrorFactory} -
+\item{x}{instance of \code{RestRserveResponse}. Can be created using \link{HTTPError} -
 see examples.}
 }
 \description{
 interrupts request handling and signals RestRserve to return HTTPError
 }
 \examples{
-err_factory = HTTPErrorFactory$new()
-caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
+caught_http_exception = try(raise(HTTPError$bad_request()), silent = TRUE)
 condition = attr(caught_http_exception, 'condition')
-# response is an instance of HTTPError
-# and valid RestRserve instace because HTTPError inherits from RestRserveResponse
+# response is a valid RestRserveResponse instace
 identical(condition$response$body, "400 Bad Request")
 }
