@@ -174,7 +174,6 @@ RestRserveApplication = R6::R6Class(
           cmd = sprintf("`kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid())
           message(paste("You can kill process GROUP with", cmd))
           message("NOTE that current master process also will be killed")
-
         }
         do.call(Rserve::run.Rserve, ARGS)
       }
@@ -275,7 +274,6 @@ RestRserveApplication = R6::R6Class(
         )
       # dummy response
       response = RestRserveResponse$new(content_type = self$content_type)
-      #------------------------------------------------------------------------------
 
       # Call middleware for the request
       mw_ids = as.character(seq_along(private$middleware))
@@ -344,8 +342,7 @@ RestRserveApplication = R6::R6Class(
       # how to encode automatically
       if (!is.function(response$encode)) {
         ct = response$get_header('content-type')
-        encode = self$content_handlers$get_encode(ct)
-        response$encode = encode
+        response$encode = self$content_handlers$get_encode(ct)
       }
 
       return(response$to_rserve())

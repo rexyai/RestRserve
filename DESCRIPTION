@@ -27,7 +27,7 @@ Imports:
 Suggests:
   yaml (>= 2.1.14),
   curl (>= 2.7),
-  testthat (>= 2.0.0), 
+  testthat (>= 2.2.0), 
   lgr (>= 0.3.1),
   lintr
 LinkingTo: 

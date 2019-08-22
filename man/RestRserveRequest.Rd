@@ -13,7 +13,7 @@ RestRserveRequest
 \describe{
 \item{path}{ = \code{"/somepath"}, always character of length 1}
 \item{method}{ = \code{"GET"}, always character of length 1}
-\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+\item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 \item{body}{ = \code{raw(0)}.
 \itemize{
 \item \code{NULL} if the http body is empty or zero length.
@@ -27,7 +27,7 @@ and \code{decode} argument of the r
 }
 \item{request_id}{\bold{character}, automatically generated UUID for each request}
 \item{content_type}{\code{""}, always character of length 1}
-\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
+\item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.
 According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
 are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
 },
@@ -53,7 +53,7 @@ Called internally for handling incoming requests from Rserve side. Also useful f
 \describe{
 \item{path}{\code{"/somepath"}, always character of length 1}
 \item{method}{\code{"GET"}, always character of length 1}
-\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+\item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 \item{body}{
 \itemize{
 \item \code{NULL} if the http body is empty or zero length.
@@ -61,7 +61,7 @@ Called internally for handling incoming requests from Rserve side. Also useful f
 \item named \code{characeter vector} in the case of a URL encoded form.
 It will have the same shape as the query string (named string vector)}
 }
-\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
+\item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.}
 }
 }
 }

@@ -1,8 +1,9 @@
 context("Test parse cookies")
 
 test_that("Empty input", {
-  expect_error(parse_cookies(NA))
   expect_error(parse_cookies(NULL))
+  expect_is(parse_cookies(NA), "list")
+  expect_length(parse_cookies(NA), 0L)
   expect_is(parse_cookies(NA_character_), "list")
   expect_length(parse_cookies(NA_character_), 0L)
   expect_is(parse_cookies(""), "list")

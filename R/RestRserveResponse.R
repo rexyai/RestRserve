@@ -68,6 +68,7 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_int(status_code, lower = 100L, upper = 600L)
         checkmate::assert_string(content_type)
         checkmate::assert_character(headers, names = "named", null.ok = TRUE)
+        checkmate::assert_function(encode, null.ok = TRUE)
       }
       self$set_content_type(content_type)
       body_name = names(body)
@@ -78,13 +79,14 @@ RestRserveResponse = R6::R6Class(
       }
       self$body = body
       if (length(headers) > 0L) {
-        self$headers = list2env(as.list(headers))
+        self$headers = as.list(headers)
       } else {
-        self$headers = new.env(parent = emptyenv())
+        self$headers = list()
       }
       self$status_code = as.integer(status_code)
-      self$cookies = new.env(parent = emptyenv())
+      self$cookies = list()
       self$context = new.env(parent = emptyenv())
+      self$encode = encode
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain') {

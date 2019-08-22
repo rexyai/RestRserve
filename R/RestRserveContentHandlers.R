@@ -31,12 +31,16 @@ ContentHandlersFactory = R6::R6Class(
       self$handlers[[content_type]][['encode']] = FUN
     },
     get_encode = function(content_type) {
+      if (!is.character(content_type)) {
+        content_type = NA_character_
+      }
+
       encode = self$handlers[[content_type]][['encode']]
       if (!is.function(encode)) {
         msg = sprintf("RestRserveContentHandlers doesn't know how to encode '%s'.", content_type)
         msg = paste(msg, "Providing fall back to 'as.character()'")
         # FIXME - use logger for this msg
-        warning(msg)
+        # warning(msg)
         encode = as.character
       }
       encode
@@ -50,12 +54,16 @@ ContentHandlersFactory = R6::R6Class(
     },
 
     get_decode = function(content_type) {
+      if (!is.character(content_type)) {
+        content_type = NA_character_
+      }
+
       decode = self$handlers[[content_type]][['decode']]
       if (!is.function(decode)) {
         msg = sprintf("RestRserveContentHandlers doesn't know how to decode '%s'.", content_type)
         msg = paste(msg, "Returning 'as is'")
         # FIXME - use logger for this msg
-        warning(msg)
+        # warning(msg)
         decode = identity
       }
       decode

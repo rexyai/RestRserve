@@ -13,7 +13,7 @@
 #' \describe{
 #'   \item{path}{\code{"/somepath"}, always character of length 1}
 #'   \item{method}{\code{"GET"}, always character of length 1}
-#'   \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+#'   \item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 #'   \item{body}{
 #'     \itemize{
 #'       \item \code{NULL} if the http body is empty or zero length.
@@ -21,14 +21,14 @@
 #'       \item named \code{characeter vector} in the case of a URL encoded form.
 #'          It will have the same shape as the query string (named string vector)}
 #'     }
-#'   \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
+#'   \item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.}
 #' }
 #' }
 #' @return \code{RestRserveRequest} object - R6 class:
 #'    \describe{
 #'       \item{path}{ = \code{"/somepath"}, always character of length 1}
 #'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
+#'       \item{query}{\code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from query parameters.}
 #'       \item{body}{ = \code{raw(0)}.
 #'          \itemize{
 #'             \item \code{NULL} if the http body is empty or zero length.
@@ -42,7 +42,7 @@
 #'       }
 #'       \item{request_id}{\bold{character}, automatically generated UUID for each request}
 #'       \item{content_type}{\code{""}, always character of length 1}
-#'       \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
+#'       \item{headers}{ \code{list("a" = "1", "b" = "2")}, \bold{list}, key-value pairs from http-header.
 #'         According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
 #'         are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
 #'       },
@@ -68,6 +68,7 @@ RestRserveRequest = R6::R6Class(
     content_type = NULL,
     body = NULL,
     query = NULL,
+    files = NULL,
     path_parameters = NULL,
     decode = NULL,
     #---------------------------------
@@ -84,7 +85,6 @@ RestRserveRequest = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
         checkmate::assert_string(method)
-        checkmate::assert_string(content_type)
         checkmate::assert_character(query, null.ok = TRUE)
         checkmate::assert_raw(headers, null.ok = TRUE)
         checkmate::assert(
@@ -95,16 +95,18 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_function(decode, null.ok = TRUE)
       }
 
-      self$headers = new.env(parent = emptyenv())
+      self$headers = list()
       self$context = new.env(parent = emptyenv())
-      self$cookies = new.env(parent = emptyenv())
-      self$query = new.env(parent = emptyenv())
+      self$cookies = list()
+      self$query = list()
       self$path_parameters = list()
+
       self$decode = decode
 
       private$parse_query(query)
       private$parse_headers(headers)
-      private$parse_body_and_content_type(body, content_type)
+      private$parse_body_and_content_type(body)
+
       private$parse_cookies()
       self$path = path
       # Rserve adds "Request-Method: " key:
@@ -136,6 +138,19 @@ RestRserveRequest = R6::R6Class(
       }
       name = tolower(name)
       return(self$path_parameters[[name]])
+    },
+    get_file = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      if (is.null(self$files[[name]]) || !is.raw(self$body)) {
+        return(NULL)
+      }
+      idx = seq_len(self$files[[name]]$length) + self$files[[name]]$offset - 1L
+      res = self$body[idx]
+      attr(res, "filname") = self$files[[name]]$filename
+      attr(res, "content-type") = self$files[[name]]$content_type
+      return(res)
     }
   ),
   active = list(
@@ -181,13 +196,13 @@ RestRserveRequest = R6::R6Class(
         headers = rawToChar(headers)
       }
       if (is_string(headers)) {
-        self$headers = as.environment(parse_headers(headers))
+        self$headers = parse_headers(headers)
       }
       return(invisible(TRUE))
     },
     parse_cookies = function() {
       if (!is.null(self$headers[["cookie"]])) {
-        self$cookies = as.environment(parse_cookies(self$headers[["cookie"]]))
+        self$cookies = parse_cookies(self$headers[["cookie"]])
       }
       return(invisible(TRUE))
     },
@@ -197,50 +212,77 @@ RestRserveRequest = R6::R6Class(
         res = as.list(query)
         # Omit empty keys and empty values
         res = res[nzchar(names(res)) & nzchar(query)]
-        self$query = as.environment(res)
+        self$query = res
       }
       return(invisible(TRUE))
     },
-    parse_body_and_content_type = function(body = raw(), default_content_type = "application/octet-stream") {
-      content_type = default_content_type
-
-      if (!is.raw(body)) {
-        if (length(body) > 0L) {
-          # parse form
-          if (self$headers[["content-type"]] == "application/x-www-form-urlencoded") {
-            # Named character vector. Body parameters key-value pairs.
-            res = as.list(body)
-            # Omit empty keys and empty values
-            res = res[nzchar(names(res)) & nzchar(body)]
-            # FIXME: should overwrite query or appent as attr to body?
-            keys = names(res)
-            # FIXME: add not exists keys onlly
-            to_add = which(keys %in% names(self$query))
-            for (i in to_add) {
-              self$query[[keys[i]]] = res[[i]]
-            }
-            # FIXME: should we encode it?
-            body = paste(url_encode(keys), url_encode(as.character(res)),
-                         sep = "=", collapse = "&")
-            body = charToRaw(body)
-            content_type = "application/x-www-form-urlencoded"
-          }
-        } else {
-          body = raw()
+    parse_form_urlencoded = function(body) {
+      if (length(body) > 0L) {
+        # Named character vector. Body parameters key-value pairs.
+        # Omit empty keys and empty values
+        values = body[nzchar(names(body)) & nzchar(body)]
+        # FIXME: should overwrite query or appent as attr to body?
+        keys = names(values)
+        # FIXME: add not exists keys only
+        to_add = which(!keys %in% names(self$query))
+        for (i in to_add) {
+          self$query[[keys[i]]] = values[[i]]
         }
+        # FIXME: should we encode it?
+        values = paste(url_encode(keys), url_encode(values), sep = "=", collapse = "&")
+        body = charToRaw(values)
       } else {
-        body_type = attr(body, "content-type")
-        if (!is.null(body_type)) {
-          content_type = body_type
+        body = raw()
+      }
+      self$body = body
+      self$content_type = "application/x-www-form-urlencoded"
+      return(invisible(TRUE))
+    },
+    parse_form_multipart = function(body) {
+      content_type = attr(body, "content-type")
+      boundary = parse_multipart_boundary(content_type)
+      res = parse_multipart_body(body, paste0("--", boundary))
+      if (length(res$values) > 0L) {
+        values = res$values[nzchar(names(res$values)) & nzchar(res$values)]
+        keys = names(values)
+        # FIXME: add not exists keys onlly
+        to_add = which(!keys %in% names(self$query))
+        for (i in to_add) {
+          self$query[[keys[i]]] = values[[i]]
         }
-        if (startsWith(content_type, "multipart/form-data")) {
-          # FIXME: not implemented
-          stop(sprintf("Not implemented yet - can't parse body with content-type='%s'", content_type))
-          # res = parse_multipart(body)
-        }
+      }
+      if (length(res$files) > 0L) {
+        self$files = res$files
       }
       self$body = body
       self$content_type = content_type
+      return(invisible(TRUE))
+    },
+    parse_body_and_content_type = function(body) {
+      h_ctype = self$headers[["content-type"]]
+      b_ctype = attr(body, "content-type")
+      if (!is.null(b_ctype)) {
+        h_ctype = b_ctype
+      }
+      if (is.null(h_ctype)) {
+        h_ctype = "application/octet-stream"
+      }
+      if (is.null(body)) {
+        self$body = raw()
+        self$content_type = h_ctype
+      } else if (!is.raw(body)) {
+        # parse form
+        if (h_ctype == "application/x-www-form-urlencoded") {
+          return(private$parse_form_urlencoded(body))
+        }
+      } else {
+        if (startsWith(h_ctype, "multipart/form-data")) {
+          return(private$parse_form_multipart(body))
+        } else {
+          self$body = body
+          self$content_type = h_ctype
+        }
+      }
       return(invisible(TRUE))
     }
   )

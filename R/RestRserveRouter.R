@@ -64,38 +64,6 @@ RestRserveRouter = R6::R6Class(
       # Append paths
       self$paths = append(self$paths, setNames(path, match))
     },
-    del_path = function(path, match = c("exact", "partial", "regex"), recursive = FALSE) {
-      private$assert_path(path)
-      checkmate::assert_flag(recursive)
-      match = match.arg(match)
-      switch(
-        match,
-        "exact" = {
-          if (!is.null(private$exact[[path]])) {
-            return(FALSE)
-          }
-          private$exact[[path]] = NULL
-          return(FALSE)
-        },
-        "partial" = {
-          if (is.null(private$partial[[path]])) {
-            return(FALSE)
-          }
-          if (recursive) {
-            private$partial[[path]] = NULL
-            return(TRUE)
-          }
-          if (isTRUE(private$partial[[path]]$prefix) && !is.null(private$partial[[path]]$patterns)) {
-            private$partial[[path]]$prefix = FALSE
-            return(TRUE)
-          }
-          return(FALSE)
-        },
-        "regex" = {
-          stop("not implemented.")
-        }
-      )
-    },
     match_path = function(path, extract_vars = TRUE) {
       # private$assert_path(path)
       if (!is.null(private$exact[[path]])) {
@@ -125,25 +93,6 @@ RestRserveRouter = R6::R6Class(
         }
       }
       return(NULL)
-    },
-    print = function() {
-      paths = self$paths
-      methods = names(self$paths)
-      cat("<RestRserveRouter>", "\n")
-      cat("  Endpoints:", "\n")
-      if (any(methods == "exact")) {
-        cat("    Exact match:", "\n")
-        cat(paste0("      - ", paths[methods == "exact"], collapse = "\n"), "\n")
-      }
-      if (any(methods == "partial")) {
-        cat("    Partial match:", "\n")
-        cat(paste0("      - ", paths[methods == "partial"], collapse = "\n"), "\n")
-      }
-      if (any(methods == "regex")) {
-        cat("    Regex match:", "\n")
-        cat(paste0("      - ", paths[methods == "regex"], collapse = "\n"), "\n")
-      }
-      return(invisible(NULL))
     }
   ),
   private = list(
@@ -163,19 +112,6 @@ RestRserveRouter = R6::R6Class(
         path = paste0(path, "/")
       }
       return(path)
-    },
-    find_regex_prefix = function(path) {
-      # Split path
-      splitted = strsplit(path, "/", fixed = TRUE)[[1L]][-1L]
-      # Detect variables positions
-      pos = which(startsWith(splitted, "{") & endsWith(splitted, "}"))
-      # Exit if variables not found
-      if (length(pos) == 0L) {
-        stop("Can't detect variables in path template.", call. = FALSE)
-      }
-      # Make path prefix to fast match
-      prefix = paste0("/", paste(splitted[seq_len(pos[1] - 1)], collapse = "/"), "/")
-      return(prefix)
     },
     parse_template = function(path, start = "{", end = "}") {
       # Split path
