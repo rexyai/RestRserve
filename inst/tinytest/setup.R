@@ -4,8 +4,7 @@ ex_app = function(name) {
   if (!file.exists(app_file)) {
     stop("app does not exists")
   }
-  app_env = new.env(parent = .GlobalEnv)
-  app_env[["run_app"]] = FALSE
+  app_env = .GlobalEnv
   sys.source(app_file, app_env, chdir = TRUE)
   return(app_env[["app"]])
 }

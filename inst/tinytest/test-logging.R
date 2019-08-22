@@ -24,7 +24,7 @@ lg$set_log_level("trace")
 expect_equal(lg$.__enclos_env__$private$level, constants[["trace"]])
 
 # capture output function
-co = function(lvl, msg, ...) capture.output(lg[[lvl]](msg, ...))
+co = function(lvl, msg, ...) capture.output(lg[[lvl]](msg, ...), type = "output")
 # Test silent log levels
 lg$set_log_level("info")
 expect_true(nzchar(co("error", "message")))
@@ -33,12 +33,15 @@ expect_true(nzchar(co("info", "message")))
 expect_equal(co("debug", "message"), character(0))
 expect_equal(co("trace", "message"), character(0))
 
-# Test logg message structure
-entry = co("info", "message", data = list(one = 1))
-parsed = jsonlite::fromJSON(entry)
-expect_true(inherits(parsed, "list"))
-expect_equal(length(parsed), 6L)
-expect_equal(names(parsed), c("timestamp", "level", "name", "pid", "msg", "data"))
-expect_equal(parsed[["name"]], lg$.__enclos_env__$private$name)
-expect_equal(parsed[["msg"]], "message")
-expect_equal(parsed[["data"]], list(one = 1))
+# skip on covr
+if (!identical(Sys.getenv("R_COVR"), "true")) {
+  # Test logg message structure
+  entry = co("info", "message", data = list(one = 1))
+  parsed = jsonlite::fromJSON(entry)
+  expect_true(inherits(parsed, "list"))
+  expect_equal(length(parsed), 6L)
+  expect_equal(names(parsed), c("timestamp", "level", "name", "pid", "msg", "data"))
+  expect_equal(parsed[["name"]], lg$.__enclos_env__$private$name)
+  expect_equal(parsed[["msg"]], "message")
+  expect_equal(parsed[["data"]], list(one = 1))
+}
