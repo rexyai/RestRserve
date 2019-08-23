@@ -6,7 +6,7 @@
 using namespace Rcpp;
 
 // format_cookies
-std::string format_cookies(Rcpp::ListOf<Rcpp::List> cookies);
+Rcpp::CharacterVector format_cookies(Rcpp::ListOf<Rcpp::List> cookies);
 RcppExport SEXP _RestRserve_format_cookies(SEXP cookiesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -16,7 +16,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // format_headers
-std::string format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
+Rcpp::CharacterVector format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x);
 RcppExport SEXP _RestRserve_format_headers(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
