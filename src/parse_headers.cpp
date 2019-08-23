@@ -24,10 +24,10 @@ Rcpp::List parse_headers(const char* headers) {
     if (buffer.empty()) {
       continue;
     }
-    std::string::size_type index = buffer.find_first_of(':');
-    if(index != std::string::npos) {
-      std::string key = buffer.substr(0, index);
-      std::string val_str = buffer.substr(index + 1);
+    std::string::size_type pos = buffer.find_first_of(':');
+    if (pos != std::string::npos) {
+      std::string key = buffer.substr(0, pos);
+      std::string val_str = buffer.substr(pos + 1);
       str_trim(key);
       str_lower(key);
       if (!validate_header_name(key)) {

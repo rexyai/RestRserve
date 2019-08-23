@@ -1,11 +1,11 @@
 context("Test format headers")
 
 test_that("Empty object", {
-  expect_error(format_headers(NULL))
   expect_error(format_headers(""))
   expect_error(format_headers(NA))
   expect_error(format_headers(list("")))
-  expect_error(format_headers(list()))
+  expect_equal(format_headers(NULL), "")
+  expect_equal(format_headers(list()), "")
 })
 
 test_that("Test headers", {
