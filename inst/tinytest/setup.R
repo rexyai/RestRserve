@@ -1,3 +1,15 @@
+# get example application
+ex_app = function(name) {
+  app_file = system.file("examples", name, "app.R", package = "RestRserve")
+  if (!file.exists(app_file)) {
+    stop("app does not exists")
+  }
+  app_env = .GlobalEnv
+  sys.source(app_file, app_env, chdir = TRUE)
+  return(app_env[["app"]])
+}
+
+# genearate multipart binary body
 make_multipart_body = function(params, files) {
   # write character as raw
   wb = function(con, txt) writeBin(charToRaw(txt), con)
@@ -42,7 +54,7 @@ make_multipart_body = function(params, files) {
   return(rr)
 }
 
-
+# get file byted from the binary body
 get_multipart_file = function(body, file) {
   body[seq(file$offset, by = 1, length.out = file$length)]
 }
