@@ -33,7 +33,7 @@ r = RestRserveRequest$new(path = "/path")
 expect_equal(r$path, "/path")
 
 # Test parse headers in constructor
-h =   paste(
+h = paste(
   "Request-Method: GET",
   "Host: 127.0.0.1:5000",
   "User-Agent: curl/7.65.3",

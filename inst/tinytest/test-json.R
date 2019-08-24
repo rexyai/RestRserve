@@ -17,7 +17,7 @@ expect_equivalent(unclass(to_json(l, unbox = FALSE)), v)
 
 # Convert one length array with unbox
 l = list(one = 1)
-v =  '{"one":1}'
+v = '{"one":1}'
 expect_equivalent(unclass(to_json(l, unbox = TRUE)), v)
 
 # Convert logical and missing types

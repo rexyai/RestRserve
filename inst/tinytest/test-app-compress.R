@@ -7,7 +7,7 @@ source("setup.R")
 app = ex_app("compression")
 
 # Test uncompressed content
-rq =   RestRserveRequest$new(path = "/hello")
+rq = RestRserveRequest$new(path = "/hello")
 rs = app$.__enclos_env__$private$process_request(rq)
 expect_equal(rs[[1]], "Hello, World!")
 expect_equal(rs[[2]], "text/plain")
@@ -16,7 +16,7 @@ expect_equal(rs[[4]], 200L)
 
 # Test compressed content
 h = "Accept-Encoding: gzip"
-rq =   RestRserveRequest$new(path = "/hello", headers = charToRaw(h))
+rq = RestRserveRequest$new(path = "/hello", headers = charToRaw(h))
 rs = app$.__enclos_env__$private$process_request(rq)
 expect_equal(memDecompress(rs[[1]], "gzip", TRUE), "Hello, World!")
 expect_equal(rs[[2]], "text/plain")

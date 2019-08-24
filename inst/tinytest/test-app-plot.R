@@ -7,7 +7,7 @@ source("setup.R")
 app = ex_app("plot-base")
 
 # Test /plot endpoint
-rq =   RestRserveRequest$new(path = "/plot")
+rq = RestRserveRequest$new(path = "/plot")
 rs = app$.__enclos_env__$private$process_request(rq)
 expect_true(inherits(rs[[1]], "character"))
 expect_equal(names(rs[[1]]), "tmpfile")
