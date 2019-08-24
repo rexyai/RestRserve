@@ -71,12 +71,6 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_function(encode, null.ok = TRUE)
       }
       self$set_content_type(content_type)
-      body_name = names(body)
-      if (!is.null(body_name)) {
-        if (!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
-          body = unname(body)
-        }
-      }
       self$body = body
       if (length(headers) > 0L) {
         self$headers = as.list(headers)
@@ -94,14 +88,14 @@ RestRserveResponse = R6::R6Class(
         checkmate::assert_string(content_type, pattern = ".*/.*")
       }
       self$content_type = content_type
-      return(content_type)
+      return(invisible(content_type))
     },
     set_status_code = function(code) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_int(code, lower = 100L, upper = 600L)
       }
       self$status_code = code
-      return(code)
+      return(invisible(code))
     },
     has_header = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -200,7 +194,7 @@ RestRserveResponse = R6::R6Class(
     },
     set_body = function(body) {
       self$body = body
-      return(body)
+      return(invisible(body))
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {

@@ -48,7 +48,6 @@ Called internally for handling incoming requests from Rserve side. Also useful f
   query = new.env(parent = emptyenv()),
   headers = new.env(parent = emptyenv()),
   body = raw(),
-  content_type = "application/octet-stream",
   decode = NULL)}
 \describe{
 \item{path}{\code{"/somepath"}, always character of length 1}

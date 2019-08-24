@@ -8,7 +8,6 @@
 #'   query = new.env(parent = emptyenv()),
 #'   headers = new.env(parent = emptyenv()),
 #'   body = raw(),
-#'   content_type = "application/octet-stream",
 #'   decode = NULL)}
 #' \describe{
 #'   \item{path}{\code{"/somepath"}, always character of length 1}
@@ -79,7 +78,7 @@ RestRserveRequest = R6::R6Class(
                           query = NULL,
                           headers = NULL,
                           body = NULL,
-                          content_type = "application/octet-stream",
+                          # content_type = "text/plain",
                           decode = NULL
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -155,11 +154,11 @@ RestRserveRequest = R6::R6Class(
   ),
   active = list(
     body_decoded = function() {
-      if (!is.function(self$decode)) {
-        return(self$body)
-      } else {
-        return(self$decode(self$body))
+      decode = self$decode
+      if (!is.function(decode)) {
+        decode = ContentHandlers$get_decode(self$content_type)
       }
+      decode(self$body)
     },
     request_id = function() {
       private$id
@@ -265,7 +264,7 @@ RestRserveRequest = R6::R6Class(
         h_ctype = b_ctype
       }
       if (is.null(h_ctype)) {
-        h_ctype = "application/octet-stream"
+        h_ctype = "text/plain"
       }
       if (is.null(body)) {
         self$body = raw()
@@ -287,3 +286,19 @@ RestRserveRequest = R6::R6Class(
     }
   )
 )
+
+
+# this is workhorse for RestRserve
+# it is assigned to .http.request as per requirements of Rserve for http interface
+
+http_request = function(url, query, body, headers) {
+  # first parse incoming request
+  request = RestRserveRequest$new(
+    path = url,
+    query = query,
+    body = body,
+    headers = headers
+  )
+  app = .GlobalEnv[["RestRserveApp"]]
+  app$.__enclos_env__$private$process_request(request)
+}

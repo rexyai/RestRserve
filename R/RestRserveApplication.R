@@ -72,21 +72,22 @@ RestRserveApplication = R6::R6Class(
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
-    content_handlers = NULL,
+    ContentHandlers = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(),
                           content_type = "text/plain",
                           ...) {
-      checkmate::assert_list(middleware)
-      self$HTTPError = HTTPErrorFactory$new(content_type)
-      self$logger = Logger$new("info", name = "RestRserveApplication")
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
-      private$middleware = new.env(parent = emptyenv())
-      self$content_type = content_type
-      self$content_handlers = ContentHandlers
 
+      self$logger = Logger$new("info", name = "RestRserveApplication")
+      self$content_type = content_type
+      self$HTTPError = HTTPError
+      self$ContentHandlers = ContentHandlers
+
+      checkmate::assert_list(middleware)
+      private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
@@ -263,7 +264,7 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     process_request = function(request) {
 
-      request$decode = self$content_handlers$get_decode(content_type = request$content_type)
+      request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
       self$logger$trace("",
         context = list(request_id = request$request_id,
@@ -341,8 +342,7 @@ RestRserveApplication = R6::R6Class(
       # this means that response wants RestRerveApplication to select
       # how to encode automatically
       if (!is.function(response$encode)) {
-        ct = response$get_header('content-type')
-        response$encode = self$content_handlers$get_encode(ct)
+        response$encode = self$ContentHandlers$get_encode(response$content_type)
       }
 
       return(response$to_rserve())

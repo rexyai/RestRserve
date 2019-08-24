@@ -31,17 +31,17 @@ ContentHandlersFactory = R6::R6Class(
       self$handlers[[content_type]][['encode']] = FUN
     },
     get_encode = function(content_type) {
+
       if (!is.character(content_type)) {
-        content_type = NA_character_
+        return(as.character)
       }
 
       encode = self$handlers[[content_type]][['encode']]
+
       if (!is.function(encode)) {
-        msg = sprintf("RestRserveContentHandlers doesn't know how to encode '%s'.", content_type)
-        msg = paste(msg, "Providing fall back to 'as.character()'")
-        # FIXME - use logger for this msg
-        # warning(msg)
-        encode = as.character
+        encode  = as.character
+        # msg = sprintf("Don't know how to encode '%s' body.", content_type)
+        # raise(HTTPError$internal_server_error(msg))
       }
       encode
     },
@@ -54,18 +54,19 @@ ContentHandlersFactory = R6::R6Class(
     },
 
     get_decode = function(content_type) {
+
       if (!is.character(content_type)) {
-        content_type = NA_character_
+        msg = "'content-type' header is not set - don't know how to decode the body"
+        raise(HTTPError$internal_server_error(msg))
       }
 
       decode = self$handlers[[content_type]][['decode']]
+
       if (!is.function(decode)) {
-        msg = sprintf("RestRserveContentHandlers doesn't know how to decode '%s'.", content_type)
-        msg = paste(msg, "Returning 'as is'")
-        # FIXME - use logger for this msg
-        # warning(msg)
-        decode = identity
+        msg = sprintf("Don't know how to decode '%s' body.", content_type)
+        raise(HTTPError$internal_server_error(msg))
       }
+
       decode
     },
 
@@ -76,7 +77,7 @@ ContentHandlersFactory = R6::R6Class(
 )
 
 #' @name ContentHandlers
-#' @title ContentHandlers
-#' @description ContentHandlers
+#' @title Controls how RestRserve encodes and decodes different content types
+#' @description Controls how RestRserve encodes and decodes different content types
 #' @export
 ContentHandlers = NULL
