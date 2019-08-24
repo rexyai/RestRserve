@@ -4,10 +4,18 @@
 #include <algorithm>
 #include "utils.h"
 
+void str_ltrim(std::string& s) {
+  s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), ::isspace));
+}
+
+void str_rtrim(std::string& s) {
+  s.erase(std::find_if_not(s.rbegin(), s.rend(), ::isspace).base(), s.end());
+}
+
 // trim string (in place)
 void str_trim(std::string& s) {
-  s.erase(std::find_if_not(s.rbegin(), s.rend(), ::isspace).base(), s.end());
-  s.erase(s.begin(), std::find_if_not(s.begin(), s.end(), ::isspace));
+  str_ltrim(s);
+  str_rtrim(s);
 }
 
 // tolower sting (in place)
@@ -39,7 +47,7 @@ void str_split(const std::string& s, std::vector<std::string>& out,
   std::string::size_type pos = 0;
   std::string::size_type prev = 0;
   while ((pos = s.find(sep, prev)) != std::string::npos) {
-      std::string tmp = s.substr(prev, pos - prev);
+    std::string tmp = s.substr(prev, pos - prev);
     if (trim) {
       str_trim(tmp);
     }
@@ -50,35 +58,34 @@ void str_split(const std::string& s, std::vector<std::string>& out,
 
 // join vector to string
 template <typename T>
-std::string str_join(const T& svec, const char* sep) {
-  std::size_t n = svec.size();
-  if (n == 0) {
+std::string str_join(const std::vector<T>& x, const char* sep) {
+  std::size_t n = x.size();
+  switch(n) {
+  case 0:
     return "";
+  case 1:
+    return std::string(x[0]);
+  default:
+    std::stringstream s;
+  std::copy(x.begin(), x.end() - 1, std::ostream_iterator<T>(s, sep));
+  s << *(x.begin() + n - 1); // last element
+  return s.str();
   }
-  std::ostringstream os;
-  for (std::size_t i = 0; i < n; ++i) {
-    os << svec[i];
-    if (i < n - 1) {
-      os << sep;
-    }
-  }
-  return os.str();
 }
 
-
-std::string str_join(Rcpp::CharacterVector svec, const char* sep) {
-  std::size_t n = svec.size();
-  if (n == 0) {
+std::string str_join(Rcpp::CharacterVector x, const char* sep) {
+  std::size_t n = x.size();
+  switch(n) {
+  case 0:
     return "";
+  case 1:
+    return std::string(x[0]);
+  default:
+    std::stringstream s;
+  std::copy(x.begin(), x.end() - 1, std::ostream_iterator<const char *>(s, sep));
+  s << *(x.begin() + n - 1); // last element
+  return s.str();
   }
-  std::ostringstream os;
-  for (std::size_t i = 0; i < n; ++i) {
-    os << svec[i];
-    if (i < n - 1) {
-      os << sep;
-    }
-  }
-  return os.str();
 }
 
 // check prefix
@@ -98,9 +105,9 @@ bool str_ends_with(const std::string& s, const std::string& suffix) {
 // convert unordered map to list
 template<typename T>
 Rcpp::Environment map_to_env(const std::unordered_map<std::string,T>& x) {
-    Rcpp::Environment env = Rcpp::new_env();
-    for (const auto& pair: x) {
-      env.assign(pair.first, pair.second);
-    }
-    return env;
+  Rcpp::Environment env = Rcpp::new_env();
+  for (const auto& pair: x) {
+    env.assign(pair.first, pair.second);
+  }
+  return env;
 }
