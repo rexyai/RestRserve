@@ -17,16 +17,16 @@ matrix:
     r_check_args: --no-manual --as--cran
 
 compiler:
-  - gcc-4.9
+  - gcc
 
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - gcc-4.9
-    - g++-4.9
-    - gfortran-4.9
+    - gcc-5
+    - g++-5
+    - gfortran-5
 
 r_packages:
   - covr
@@ -34,10 +34,10 @@ r_packages:
 
 before_install:
   - mkdir ~/.R
-  - echo "CXX11=g++-4.9" > ~/.R/Makevars
-  - echo "CXX=g++-4.9" >> ~/.R/Makevars
-  - echo "CXX1X=g++-4.9" >> ~/.R/Makevars
-  - echo "CC=gcc-4.9" >> ~/.R/Makevars
+  - echo "CXX11=g++-5" > ~/.R/Makevars
+  - echo "CXX=g++-5" >> ~/.R/Makevars
+  - echo "CXX1X=g++-5" >> ~/.R/Makevars
+  - echo "CC=gcc-5" >> ~/.R/Makevars
   - echo 'CFLAGS+="-std=gnu99"' >> ~/.R/Makevars
 
 after_script:
