@@ -1,4 +1,8 @@
 #include <Rcpp.h>
+#include <iomanip>
+#include <locale>
+#include <ctime>
+#include <sstream>
 
 // [[Rcpp::export(rng=false)]]
 Rcpp::CharacterVector Cpp_to_http_date(const Rcpp::Datetime& x) {
