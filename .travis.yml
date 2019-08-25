@@ -8,6 +8,7 @@ r_check_args: --no-vignettes --no-manual --timings --as--cran
 env:
   global:
     - _R_CHECK_FORCE_SUGGESTS_=true
+    - R_TESTS=""
 
 repos:
   CRAN: https://cloud.r-project.org
