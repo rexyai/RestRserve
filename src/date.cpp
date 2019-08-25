@@ -31,7 +31,7 @@ Rcpp::RObject Cpp_from_http_date(const std::string& x) {
   if (t == -1) {
     return R_NilValue;
   }
-  Rcpp::RObject out = Rcpp::wrap(static_cast<double>(t));
+  Rcpp::RObject out = Rcpp::wrap(t);
   out.attr("class") = Rcpp::CharacterVector::create("POSIXct", "POSIXt");
   out.attr("tzone") = "GMT";
   return out;
