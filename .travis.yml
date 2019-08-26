@@ -3,7 +3,7 @@ sudo: false
 cache: packages
 warnings_are_errors: false
 r_build_args: --no-build-vignettes --no-manual
-r_check_args: --no-vignettes --no-manual --timings --as--cran
+r_check_args: --no-vignettes --no-manual --timings --as-cran
 
 r:
   - release
@@ -37,7 +37,7 @@ before_install:
   - VER=-5
   - echo "CC=gcc$(VER)" >> ~/.R/Makevars
   - echo "CXX=g++$(VER)" >> ~/.R/Makevars
-  - echo "CXX1X=g++$(VER)" >> ~/.R/Makevars
+  - echo "CXX11=g++$(VER)" >> ~/.R/Makevars
   - echo "FC=gfortran$(VER)" >> ~/.R/Makevars
   - echo "F77=gfortran$(VER)" >> ~/.R/Makevars
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc${VER} 60 --slave /usr/bin/g++ g++ /usr/bin/g++${VER}
