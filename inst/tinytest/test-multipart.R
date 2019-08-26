@@ -1,5 +1,8 @@
 # Test parse_multipart
 
+# source helpsers
+source("setup.R")
+
 # import functions
 parse_multipart_boundary = RestRserve:::parse_multipart_boundary
 parse_multipart_body = RestRserve:::parse_multipart_body

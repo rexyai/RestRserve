@@ -1,5 +1,8 @@
 # Test RestRserveRequest class
 
+# source helpsers
+source("setup.R")
+
 # Test empty object
 r = RestRserveRequest$new()
 expect_true(inherits(r, "RestRserveRequest"))
