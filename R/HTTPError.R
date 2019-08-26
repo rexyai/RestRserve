@@ -157,7 +157,8 @@ HTTPErrorFactory = R6::R6Class(
     prepare_response = function(status_code, body, headers) {
       # default standard message
       if (is.null(body)) {
-        body = paste(status_code, status_codes[[as.character(status_code)]])
+        #body = paste(status_code, status_codes[[as.character(status_code)]])
+        body = list(error = paste(status_code, status_codes[[as.character(status_code)]]))
       }
       res =
         RestRserveResponse$new(

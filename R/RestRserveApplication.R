@@ -83,7 +83,7 @@ RestRserveApplication = R6::R6Class(
 
       self$logger = Logger$new("info", name = "RestRserveApplication")
       self$content_type = content_type
-      self$HTTPError = HTTPError
+      self$HTTPError = HTTPErrorFactory$new(content_type = content_type)
       self$ContentHandlers = ContentHandlers
 
       checkmate::assert_list(middleware)
@@ -464,6 +464,7 @@ RestRserveApplication = R6::R6Class(
         }
         # Copy fields to response
         response$body = status$body
+        response$content_type = status$content_type
         response$headers = status$headers
         response$status_code = status$status_code
         response$context = status$context
