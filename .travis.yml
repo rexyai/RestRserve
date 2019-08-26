@@ -21,7 +21,7 @@ compiler:
 
 addons:
   apt:
-    sources: 
+    sources:
       - ubuntu-toolchain-r-test
     packages:
       - gcc-5
@@ -35,11 +35,11 @@ r_packages:
 before_install:
   - mkdir -p ~/.R && touch ~/.R/Makevars
   - VER=-5
-  - echo "CC=gcc$${VER}" >> ~/.R/Makevars
-  - echo "CXX=g++$${VER}" >> ~/.R/Makevars
-  - echo "CXX1X=g++$${VER}" >> ~/.R/Makevars
-  - echo "FC=gfortran$${VER}" >> ~/.R/Makevars
-  - echo "F77=gfortran$${VER}" >> ~/.R/Makevars
+  - echo "CC=gcc${VER}" >> ~/.R/Makevars
+  - echo "CXX=g++${VER}" >> ~/.R/Makevars
+  - echo "CXX1X=g++${VER}" >> ~/.R/Makevars
+  - echo "FC=gfortran${VER}" >> ~/.R/Makevars
+  - echo "F77=gfortran${VER}" >> ~/.R/Makevars
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc${VER} 60 --slave /usr/bin/g++ g++ /usr/bin/g++${VER}
   - sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran${VER} 60
 
