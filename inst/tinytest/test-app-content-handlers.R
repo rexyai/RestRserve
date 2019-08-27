@@ -47,6 +47,9 @@ attr(body, 'content-type') = 'application/json'
 request_post_json = RestRserveRequest$new(path = "/json", body = body)
 request_post_json$method = "POST"
 rs = app$.__enclos_env__$private$process_request(request_post_json)
-expect_equal(rs[[1]], "lexical error: invalid char in json text.\n                              {\"bad\" : json}\n                     (right here) ------^\n")
+err_msg = paste0("lexical error: invalid char in json text.\n",
+                 "                              {\"bad\" : json}\n",
+                 "                     (right here) ------^\n")
+expect_equal(rs[[1]], err_msg)
 expect_equal(rs[[2]], "text/plain")
 #---------------

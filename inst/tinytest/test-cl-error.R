@@ -52,7 +52,7 @@ error_methods = c(
   'network_authentication_required'
 )
 
-for(err_method in error_methods) {
+for (err_method in error_methods) {
   resp = obj[[err_method]]()
   code = as.character(resp$status_code)
   target_error = RestRserve:::status_codes[[code]]
