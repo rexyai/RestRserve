@@ -23,9 +23,9 @@ Rcpp::RObject Cpp_from_http_date(const std::string& x) {
   std::istringstream ss(x);
   ss.imbue(std::locale("C"));
   std::tm tm = {};
-  ss >> std::get_time(&tm, "%a, %d %b %Y %T %Z");
+  ss >> std::get_time(&tm, "%a, %d %b %Y %T");
   if (ss.fail()) {
-    return R_NilValue;
+    Rcpp::stop("Parse date string failed.");
   }
   std::time_t t = Rcpp::mktime00(tm);
   if (t == -1) {

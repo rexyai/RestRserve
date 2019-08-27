@@ -85,7 +85,11 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(path)
         checkmate::assert_string(method)
         checkmate::assert_character(query, null.ok = TRUE)
-        checkmate::assert_raw(headers, null.ok = TRUE)
+        checkmate::assert(
+          checkmate::check_raw(headers, null.ok = TRUE),
+          checkmate::check_character(headers, null.ok = TRUE),
+          combine = "or"
+        )
         checkmate::assert(
           checkmate::check_raw(body, null.ok = TRUE),
           checkmate::check_character(body, null.ok = TRUE),

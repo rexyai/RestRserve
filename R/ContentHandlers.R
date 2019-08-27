@@ -16,7 +16,12 @@ ContentHandlersFactory = R6::R6Class(
             },
             silent = TRUE
           )
-          res
+
+          if (inherits(res, 'try-error')) {
+            raise(HTTPError$bad_request(body = attributes(res)$condition$message))
+          } else {
+            return(res)
+          }
         }
       )
 
@@ -40,8 +45,6 @@ ContentHandlersFactory = R6::R6Class(
 
       if (!is.function(encode)) {
         encode  = as.character
-        # msg = sprintf("Don't know how to encode '%s' body.", content_type)
-        # raise(HTTPError$internal_server_error(msg))
       }
       encode
     },
