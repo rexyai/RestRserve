@@ -23,7 +23,7 @@ Rcpp::RObject Cpp_from_http_date(const std::string& x) {
   std::istringstream ss(x);
   ss.imbue(std::locale("C"));
   std::tm tm = {};
-  ss >> std::get_time(&tm, "%a, %d %b %Y %T %Z");
+  ss >> std::get_time(&tm, "%a, %d %b %Y %T");
   if (ss.fail()) {
     return R_NilValue;
   }
