@@ -5,7 +5,7 @@ expect_error(RestRserve:::AuthBackend$new())
 # Test empty object
 f = function() TRUE
 prefix = "my-prefix"
-obj <- RestRserve:::AuthBackend$new(
+obj = RestRserve:::AuthBackend$new(
   FUN = f,
   auth_header_prefix = prefix
 )
