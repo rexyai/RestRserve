@@ -1,6 +1,6 @@
 # Test HTTPErrorFactory class
 
-obj = HTTPErrorFactory$new()
+obj = RestRserve:::HTTPErrorFactory$new()
 
 # Test empty object
 expect_true(inherits(obj, "HTTPErrorFactory"))

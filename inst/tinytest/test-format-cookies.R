@@ -7,9 +7,9 @@ format_cookies = RestRserve:::format_cookies
 expect_equal(format_cookies(NULL), "")
 expect_equal(format_cookies(list()), "")
 expect_error(format_cookies(NA))
+expect_error(format_cookies(list(name = "value")), "cookie object must contain")
 
 # Test list of cookies
-
 cookies = list(
   list(name = "var1", value = "val1"),
   list(name = "var2", value = "val2", path = "/", domain = "example.com"),

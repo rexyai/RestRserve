@@ -17,31 +17,33 @@ expect_equal(r$status_code, 200L)
 expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 
 # Test parse_headers
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value",
-              "Test-Header2" = "value2")
-)
+h = c("Test-Header" = "value",
+      "Test-Header2" = "value2")
+r = RestRserveResponse$new(headers = h)
 expect_equal(r$headers[["Test-Header"]], "value")
 expect_equal(r$headers[["Test-Header2"]], "value2")
 
 # Test has_header method
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value")
-)
+h = c("Test-Header" = "value")
+r = RestRserveResponse$new(headers = h)
 expect_false(r$has_header("test"))
 expect_true(r$has_header("Test-Header"))
 
 # Test get_header method
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value")
-)
+h = c("Test-Header" = "value")
+r = RestRserveResponse$new(headers =  h)
 expect_equal(r$get_header("test"), NULL)
 expect_equal(r$get_header("Test-Header"), "value")
 
 # Test set_header method
 r = RestRserveResponse$new()
+expect_error(r$set_header("name", NA))
 r$set_header("test", "test-value")
 expect_equal(r$get_header("test"), "test-value")
+expect_warning(r$set_header("Content-type", "custom/type"), "not accepted by Rserve")
+expect_equal(r$get_header("Content-type"), NULL)
+expect_warning(r$set_header("Content-length", "0"), "not accepted by Rserve")
+expect_equal(r$get_header("Content-length"), NULL)
 
 # Test delete_header method
 r = RestRserveResponse$new()
