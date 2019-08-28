@@ -10,38 +10,40 @@ expect_equal(r$content_type, "text/plain")
 expect_true(inherits(r$context, "environment"))
 expect_true(inherits(r$headers, "list"))
 expect_equal(length(r$headers), 0L)
-expect_equal(r$encode, NULL)
+expect_null(r$encode)
 expect_true(inherits(r$status_code, "integer"))
 expect_equal(length(r$status_code), 1L)
 expect_equal(r$status_code, 200L)
 expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 
 # Test parse_headers
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value",
-              "Test-Header2" = "value2")
-)
+h = c("Test-Header" = "value",
+      "Test-Header2" = "value2")
+r = RestRserveResponse$new(headers = h)
 expect_equal(r$headers[["Test-Header"]], "value")
 expect_equal(r$headers[["Test-Header2"]], "value2")
 
 # Test has_header method
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value")
-)
+h = c("Test-Header" = "value")
+r = RestRserveResponse$new(headers = h)
 expect_false(r$has_header("test"))
 expect_true(r$has_header("Test-Header"))
 
 # Test get_header method
-r = RestRserveResponse$new(
-  headers = c("Test-Header" = "value")
-)
-expect_equal(r$get_header("test"), NULL)
+h = c("Test-Header" = "value")
+r = RestRserveResponse$new(headers =  h)
+expect_null(r$get_header("test"))
 expect_equal(r$get_header("Test-Header"), "value")
 
 # Test set_header method
 r = RestRserveResponse$new()
+expect_error(r$set_header("name", NA))
 r$set_header("test", "test-value")
 expect_equal(r$get_header("test"), "test-value")
+expect_warning(r$set_header("Content-type", "custom/type"), "not accepted by Rserve")
+expect_null(r$get_header("Content-type"))
+expect_warning(r$set_header("Content-length", "0"), "not accepted by Rserve")
+expect_null(r$get_header("Content-length"))
 
 # Test delete_header method
 r = RestRserveResponse$new()
@@ -91,7 +93,7 @@ expect_equal(r$get_header("Date"), "Fri, 02 Aug 2019 15:36:13 GMT")
 r = RestRserveResponse$new()
 r$set_date(.POSIXct(1564760173, tz = "GMT"))
 r$unset_date()
-expect_equal(r$get_header("Date"), NULL)
+expect_null(r$get_header("Date"))
 
 # Test set_cookie method
 r = RestRserveResponse$new()
@@ -103,7 +105,7 @@ r = RestRserveResponse$new()
 r$set_cookie(name = "param", "value")
 expect_equal(r$cookies[["param"]], list(name = "param", value = "value"))
 r$unset_cookie("param")
-expect_equal(r$cookies[["param"]], NULL)
+expect_null(r$cookies[["param"]])
 
 # Test to_rserve method
 r = RestRserveResponse$new()

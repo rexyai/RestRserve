@@ -131,12 +131,12 @@ expect_equal(r$query$param2, "value2")
 r = RestRserveRequest$new(
   headers = charToRaw("User-Agent: curl/7.65.3")
 )
-expect_equal(r$get_header("test"), NULL)
+expect_null(r$get_header("test"))
 expect_equal(r$get_header("user-agent"), "curl/7.65.3")
 
 # Test get_param_query method
 r = RestRserveRequest$new(query = c("param" = "value"))
-expect_equal(r$get_param_query("test"), NULL)
+expect_null(r$get_param_query("test"))
 expect_equal(r$get_param_query("param"), "value")
 
 # Test accept method
@@ -154,7 +154,7 @@ expect_true(r$accept_xml)
 
 # Test date method
 r = RestRserveRequest$new()
-expect_equal(r$date, NULL)
+expect_null(r$date)
 r$headers[["date"]] = "Sun, 04 Aug 2019 07:17:39 GMT"
 expect_true(inherits(r$date, "POSIXct"))
 expect_equal(as.numeric(r$date), 1564903059)
