@@ -21,7 +21,7 @@ expect_equal(a$.__enclos_env__$private$supported_methods,
 a = RestRserveApplication$new()
 rq = RestRserveRequest$new()
 rs = RestRserveResponse$new()
-expect_equal(a$.__enclos_env__$private$match_handler(rq, rs), NULL)
+expect_null(a$.__enclos_env__$private$match_handler(rq, rs))
 
 # Test app with middleware
 mw = RestRserveMiddleware$new(

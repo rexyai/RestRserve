@@ -19,7 +19,7 @@ obj$set_decode(ct, f)
 expect_true(ct %in% names(obj$handlers))
 expect_equal(obj$get_decode(ct), f)
 expect_equal(obj$handlers[[ct]][["decode"]], f)
-expect_equal(obj$handlers[[ct]][["encode"]], NULL)
+expect_null(obj$handlers[[ct]][["encode"]])
 
 f = function() FALSE
 ct = "custom/type2"
@@ -27,7 +27,7 @@ obj$set_encode(ct, f)
 expect_true(ct %in% names(obj$handlers))
 expect_equal(obj$get_encode(ct), f)
 expect_equal(obj$handlers[[ct]][["encode"]], f)
-expect_equal(obj$handlers[[ct]][["decode"]], NULL)
+expect_null(obj$handlers[[ct]][["decode"]])
 
 f = function() NULL
 ct = "custom/type3"
