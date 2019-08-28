@@ -20,15 +20,15 @@ Imports:
   Rserve (>= 1.7.3),
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
-  checkmate (>= 1.9.3),
+  checkmate (>= 1.9.4),
   mime (>= 0.7),
   Rcpp (>= 1.0.2),
   jsonlite (>= 1.6)
 Suggests:
-  yaml (>= 2.1.14),
-  curl (>= 2.7),
-  tinytest (>= 0.9.6), 
-  lgr (>= 0.3.1),
+  yaml (>= 2.2.0),
+  curl (>= 4.0),
+  tinytest (>= 1.0.0), 
+  lgr (>= 0.3.2),
   lintr (>= 1.0.3)
 LinkingTo: 
   Rcpp
