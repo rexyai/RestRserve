@@ -8,7 +8,7 @@ app = ex_app("plot-base")
 
 # Test /plot endpoint
 rq = RestRserveRequest$new(path = "/plot")
-rs = app$.__enclos_env__$private$process_request(rq)
+rs = app$process_request(rq)
 expect_true(inherits(rs[[1]], "character"))
 expect_equal(names(rs[[1]]), "tmpfile")
 # magick bytes for png (see http://www.libpng.org/pub/png/spec/1.2/PNG-Structure.html)

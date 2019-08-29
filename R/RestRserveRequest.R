@@ -304,5 +304,5 @@ http_request = function(url, query, body, headers) {
     headers = headers
   )
   app = .GlobalEnv[["RestRserveApp"]]
-  app$.__enclos_env__$private$process_request(request)
+  app$process_request(request)
 }
