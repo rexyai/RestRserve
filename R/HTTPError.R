@@ -1,33 +1,31 @@
-HTTPError = R6::R6Class(
-  classname = 'HTTPError',
-  inherit = RestRserveResponse,
-  public = list(
-    initialize = function(body, content_type, headers, status_code, serializer) {
-      super$initialize(body, content_type, headers, status_code, serializer)
-    }
-  )
-)
-
 #' @name HTTPErrorFactory
 #' @title helps to generate http error responces
 #' @description helps to generate http error responces. See \link{raise} for example.
 #' @section Methods:
 #' \describe{
-#'   \item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
+#'   \item{\code{$new(content_type = "text/plain", encode = NULL)}}{Factory constructor.
 #'   \describe{
-#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}
-#'     \item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
-#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}{
+#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument
+#'       }
 #'     }
 #'   }
 #' }
 #' @export
 HTTPErrorFactory = R6::R6Class(
   classname = 'HTTPErrorFactory',
-  inherit = RestRserveResponse,
   public = list(
-    initialize = function(content_type = "text/plain", serializer = NULL) {
-      super$set_content_type(content_type, serializer)
+    content_type = NULL,
+    encode = NULL,
+    initialize = function(content_type = "text/plain", encode = NULL) {
+      self$set_content_type(content_type)
+      self$set_encode(encode)
+    },
+    set_content_type = function(content_type) {
+      self$content_type = content_type
+    },
+    set_encode = function(encode) {
+      self$encode = encode
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = character(0)) {
@@ -159,15 +157,19 @@ HTTPErrorFactory = R6::R6Class(
     prepare_response = function(status_code, body, headers) {
       # default standard message
       if (is.null(body)) {
-        body = paste(status_code, status_codes[[as.character(status_code)]])
+        #body = paste(status_code, status_codes[[as.character(status_code)]])
+        body = list(error = paste(status_code, status_codes[[as.character(status_code)]]))
       }
-      HTTPError$new(
-        body = body,
-        content_type = self$content_type,
-        headers = headers,
-        status_code = status_code,
-        serializer = self$serializer
-      )
+      res =
+        RestRserveResponse$new(
+          body = body,
+          content_type = self$content_type,
+          headers = headers,
+          status_code = status_code,
+          encode = self$encode
+        )
+      class(res) = c('HTTPError', class(res))
+      res
     }
   )
 )
@@ -175,17 +177,21 @@ HTTPErrorFactory = R6::R6Class(
 #' @name raise
 #' @title interrupts request handling
 #' @description interrupts request handling and signals RestRserve to return HTTPError
-#' @param x instance of \code{HTTPError}. Can be created using \link{HTTPErrorFactory} -
+#' @param x instance of \code{RestRserveResponse}. Can be created using \link{HTTPError} -
 #' see examples.
 #' @export
 #' @examples
-#' err_factory = HTTPErrorFactory$new()
-#' caught_http_exception = try(raise(err_factory$bad_request()), silent = TRUE)
+#' caught_http_exception = try(raise(HTTPError$bad_request()), silent = TRUE)
 #' condition = attr(caught_http_exception, 'condition')
-#' # response is an instance of HTTPError
-#' # and valid RestRserve instace because HTTPError inherits from RestRserveResponse
+#' # response is a valid RestRserveResponse instace
 #' identical(condition$response$body, "400 Bad Request")
 raise = function(x) {
   exception = errorCondition('raise', response = x, class = class(x))
   stop(exception)
 }
+
+#' @name HTTPError
+#' @title HTTPError
+#' @description HTTPError
+#' @export
+HTTPError = NULL

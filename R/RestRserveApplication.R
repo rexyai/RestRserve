@@ -72,19 +72,22 @@ RestRserveApplication = R6::R6Class(
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
+    ContentHandlers = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(),
                           content_type = "text/plain",
-                          serializer = NULL,
                           ...) {
-      checkmate::assert_list(middleware)
-      self$HTTPError = HTTPErrorFactory$new(content_type, serializer)
-      self$logger = Logger$new("info", name = "RestRserveApplication")
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
-      private$middleware = new.env(parent = emptyenv())
+
+      self$logger = Logger$new("info", name = "RestRserveApplication")
       self$content_type = content_type
+      self$HTTPError = HTTPErrorFactory$new(content_type = content_type)
+      self$ContentHandlers = ContentHandlers
+
+      checkmate::assert_list(middleware)
+      private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
     },
     #------------------------------------------------------------------------
@@ -251,22 +254,19 @@ RestRserveApplication = R6::R6Class(
         private$middleware[[id]] = mw
       }
       invisible(length(private$middleware))
-    }
-  ),
-  private = list(
-    routes = NULL,
-    handlers = NULL,
-    handlers_openapi_definitions = NULL,
-    middleware = NULL,
+    },
     #------------------------------------------------------------------------
     process_request = function(request) {
+
+      request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
+
       self$logger$trace("",
-        context = list(request_id = request$request_id,
-             method = request$method,
-             path = request$path,
-             query = request$query,
-             headers = request$headers)
-        )
+                        context = list(request_id = request$request_id,
+                                       method = request$method,
+                                       path = request$path,
+                                       query = request$query,
+                                       headers = request$headers)
+      )
       # dummy response
       response = RestRserveResponse$new(content_type = self$content_type)
 
@@ -279,9 +279,9 @@ RestRserveApplication = R6::R6Class(
       for (id in mw_ids) {
         mw_name = private$middleware[[id]][["name"]]
         self$logger$trace("",
-          context = list(request_id = request$request_id,
-               middleware = mw_name,
-               message = sprintf("call %s middleware", mw_flag))
+                          context = list(request_id = request$request_id,
+                                         middleware = mw_name,
+                                         message = sprintf("call %s middleware", mw_flag))
         )
         FUN = private$middleware[[id]][[mw_flag]]
         mw_status = private$call_handler(FUN, request, response)
@@ -305,10 +305,10 @@ RestRserveApplication = R6::R6Class(
         } else {
           handler_fun = private$handlers[[handler_id]]
           self$logger$trace("",
-            context = list(
-              request_id = request$request_id,
-              message = sprintf("call handler '%s'", handler_id)
-            )
+                            context = list(
+                              request_id = request$request_id,
+                              message = sprintf("call handler '%s'", handler_id)
+                            )
           )
           private$call_handler(handler_fun, request, response)
         }
@@ -320,9 +320,9 @@ RestRserveApplication = R6::R6Class(
       for (id in rev(names(mw_called))) {
         mw_name = private$middleware[[id]][["name"]]
         self$logger$trace("",
-          context = list(request_id = request$request_id,
-               middleware = mw_name,
-               message = sprintf("call %s middleware", mw_flag))
+                          context = list(request_id = request$request_id,
+                                         middleware = mw_name,
+                                         message = sprintf("call %s middleware", mw_flag))
         )
         FUN = private$middleware[[id]][[mw_flag]]
         mw_status = private$call_handler(FUN, request, response)
@@ -333,8 +333,20 @@ RestRserveApplication = R6::R6Class(
         }
       }
 
+      # this means that response wants RestRerveApplication to select
+      # how to encode automatically
+      if (!is.function(response$encode)) {
+        response$encode = self$ContentHandlers$get_encode(response$content_type)
+      }
+
       return(response$to_rserve())
-    },
+    }
+  ),
+  private = list(
+    routes = NULL,
+    handlers = NULL,
+    handlers_openapi_definitions = NULL,
+    middleware = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -452,6 +464,7 @@ RestRserveApplication = R6::R6Class(
         }
         # Copy fields to response
         response$body = status$body
+        response$content_type = status$content_type
         response$headers = status$headers
         response$status_code = status$status_code
         response$context = status$context

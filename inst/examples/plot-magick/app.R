@@ -12,7 +12,7 @@ library(mime)
 
 err = HTTPErrorFactory$new(
   content_type = "text/plain",
-  serializer = as.character
+  encode = as.character
 )
 
 magick_handler = function(request, response) {

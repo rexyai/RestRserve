@@ -25,11 +25,10 @@
 #'   If it is a named character with a name \code{file} or \code{tmpfile}
 #'   then the value is considered as a path to a file and content oh this file is served as body.
 #'   The latter will be deleted once served.}
-#'   \item{content_type}{\code{"text/plain"} must be a character vector of length one. RestRserve will automatically
-#'   encode body for common \code{content_type} values such as \code{application/json} or \code{text/plain}.
-#'   If it is not desired to do any automatic encoding set \code{serializer = `identity`}}
-#'   \item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
-#'   then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+#'   \item{content_type}{\code{"text/plain"} must be a character vector of length one}
+#'   \item{encode}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
+#'   then \link{RestRserveApplication} will try to automatically encode body properly according to
+#'   \code{content_type} argument. If you want to process body "as is" then use \code{encode = identity}}
 #'   \item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
 #'   Neither Content-type nor Content-length may be used.}
 #'   \item{status_code}{\code{200L} must be an integer}
@@ -41,11 +40,11 @@
 #' @section Methods:
 #' \describe{
 #'   \item{\code{$new(body = "", content_type = "text/plain", headers = character(0),
-#'   status_code = 200L, serializer = NULL)}}{Constructor for RestRserveResponse}
+#'   status_code = 200L, encode = NULL)}}{Constructor for RestRserveResponse}
 #'   \item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{ facilitate
 #'   in setting response. If \code{body} is not specified (\code{NULL}),
 #'   provides standard default values for all standard status codes.}
-#'   \item{\code{$set_content_type(content_type = 'text/plain', serializer = NULL)}}{Sets content type and corresponding serializer}
+#'   \item{\code{$set_content_type(content_type = 'text/plain')}}{Sets content type}
 #' }
 #' @export
 RestRserveResponse = R6::R6Class(
@@ -58,59 +57,45 @@ RestRserveResponse = R6::R6Class(
     cookies = NULL,
     context = NULL,
     exception = NULL,
-    serializer = NULL,
+    encode = NULL,
     #------------------------------------------------
     initialize = function(body = "",
                           content_type = 'text/plain',
                           headers = NULL,
                           status_code = 200L,
-                          serializer = NULL) {
+                          encode = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_int(status_code, lower = 100L, upper = 600L)
         checkmate::assert_string(content_type)
         checkmate::assert_character(headers, names = "named", null.ok = TRUE)
+        checkmate::assert_function(encode, null.ok = TRUE)
       }
-      self$set_content_type(content_type, serializer)
-      body_name = names(body)
-      if (!is.null(body_name)) {
-        if (!(identical(body_name, "file") || identical(body_name, "tmpfile"))) {
-          body = unname(body)
-        }
-      }
+      self$set_content_type(content_type)
       self$body = body
       if (length(headers) > 0L) {
-        self$headers = list2env(as.list(headers))
+        self$headers = as.list(headers)
       } else {
-        self$headers = new.env(parent = emptyenv())
+        self$headers = list()
       }
       self$status_code = as.integer(status_code)
-      self$cookies = new.env(parent = emptyenv())
+      self$cookies = list()
       self$context = new.env(parent = emptyenv())
+      self$encode = encode
     },
     #------------------------------------------------
-    set_content_type = function(content_type = 'text/plain', serializer = NULL) {
+    set_content_type = function(content_type = 'text/plain') {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(content_type, pattern = ".*/.*")
-        checkmate::assert_function(serializer, null.ok = TRUE)
       }
-
-      if (is.null(serializer)) {
-        serializer = switch(
-          content_type,
-          'application/json' = to_json,
-          'text/plain' = as.character,
-          identity)
-      }
-      self$serializer = serializer
       self$content_type = content_type
-      return(content_type)
+      return(invisible(content_type))
     },
     set_status_code = function(code) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_int(code, lower = 100L, upper = 600L)
       }
       self$status_code = code
-      return(code)
+      return(invisible(code))
     },
     has_header = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -209,7 +194,7 @@ RestRserveResponse = R6::R6Class(
     },
     set_body = function(body) {
       self$body = body
-      return(body)
+      return(invisible(body))
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -237,10 +222,17 @@ RestRserveResponse = R6::R6Class(
           return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
         }
       }
-      body = self$serializer(self$body)
+
+      if (!is.function(self$encode)) {
+        body = self$body
+      } else {
+        body = self$encode(self$body)
+      }
+
       if (length(body) == 0L) {
         body = raw()
       }
+
       return(list(body, self$content_type, headers, self$status_code))
     }
   ),
@@ -301,13 +293,3 @@ RestRserveResponse = R6::R6Class(
     }
   )
 )
-
-#' @title continue request-response cycle
-#' @description forwards processing of the request to the downstream handlers/middleware
-#' @export
-forward = function() {
-  .Deprecated(msg = "there is no need to call forward() it anymore")
-  res = TRUE
-  class(res) = "RestRserveForward"
-  invisible(res)
-}

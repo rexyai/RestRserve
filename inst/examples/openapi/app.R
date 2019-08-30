@@ -21,7 +21,7 @@ calc_fib = function(n) {
 
 err = HTTPErrorFactory$new(
   content_type = "text/plain",
-  serializer = as.character
+  encode = as.character
 )
 
 fib_handler = function(request, response) {

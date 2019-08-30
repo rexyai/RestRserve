@@ -18,7 +18,7 @@ rm(x, y)
 
 err = HTTPErrorFactory$new(
   content_type = "application/json",
-  serializer = to_json
+  encode = to_json
 )
 
 get_handler = function(request, response) {

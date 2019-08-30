@@ -16,7 +16,7 @@ hello_handler = function(request, response) {
     response$set_header("Content-encoding", "gzip")
   }
   response$body = resp_body
-  response$serializer = identity # prevent convert to character
+  response$encode = identity # prevent convert to character
 }
 
 ## ---- create application -----

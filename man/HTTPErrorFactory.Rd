@@ -14,11 +14,11 @@ helps to generate http error responces. See \link{raise} for example.
 \section{Methods}{
 
 \describe{
-\item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
+\item{\code{$new(content_type = "text/plain", encode = NULL)}}{Factory constructor.
 \describe{
-\item{content_type}{type of the error response. \code{"text/plain"} by default}
-\item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
-then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
+\item{content_type}{type of the error response. \code{"text/plain"} by default}{
+then RestRserve will try to automatically encode body properly according to \code{content_type} argument
+}
 }
 }
 }

@@ -30,7 +30,7 @@ r1 = RestRserveRequest$new(
 p1 = profvis(
   expr = {
     for (i in seq_len(1000)) {
-      app$.__enclos_env__$private$process_request(r1)
+      app$process_request(r1)
     }
   },
   interval = 0.005
@@ -45,7 +45,7 @@ r2 = RestRserveRequest$new(
 p2 = profvis(
   expr = {
     for (i in seq_len(1000)) {
-      app$.__enclos_env__$private$process_request(r2)
+      app$process_request(r2)
     }
   },
   interval = 0.005
