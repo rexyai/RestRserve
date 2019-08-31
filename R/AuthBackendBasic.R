@@ -116,7 +116,7 @@ AuthBackendBasic = R6::R6Class(
 #' @rdname AuthBackendBasic
 #' @usage NULL
 #' @export
-BasicAuthBackend = R6::R6Class(
+BasicAuthBackend = R6::R6Class( # nocov start
   "BasicAuthBackend",
   inherit = AuthBackendBasic,
   public = list(
@@ -125,4 +125,4 @@ BasicAuthBackend = R6::R6Class(
       super$initialize(...)
     }
   )
-)
+) # nocov end

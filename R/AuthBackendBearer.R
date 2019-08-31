@@ -90,7 +90,7 @@ AuthBackendBearer = R6::R6Class(
 #' @rdname AuthBackendBearer
 #' @usage NULL
 #' @export
-BearerAuthBackend = R6::R6Class(
+BearerAuthBackend = R6::R6Class( # nocov start
   "BearerAuthBackend",
   inherit = AuthBackendBearer,
   public = list(
@@ -99,4 +99,4 @@ BearerAuthBackend = R6::R6Class(
       super$initialize(...)
     }
   )
-)
+) # nocov end

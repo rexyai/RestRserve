@@ -36,7 +36,7 @@
   library.dynam.unload("RestRserve", libpath)
 } # nocov end
 
-.onLoad = function(...) {
+.onLoad = function(...) { # nocov start
   assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
   assign('ContentHandlers', ContentHandlersFactory$new(), envir = parent.env(environment()))
-}
+} # nocov end
