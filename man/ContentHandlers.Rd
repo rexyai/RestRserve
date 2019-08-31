@@ -9,6 +9,9 @@
 ContentHandlers
 }
 \description{
-Controls how RestRserve encodes and decodes different content types
+Controls how RestRserve encodes and decodes different content types.
+}
+\seealso{
+\link{ContentHandlersFactory}
 }
 \keyword{datasets}

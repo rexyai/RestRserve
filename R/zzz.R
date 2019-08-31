@@ -2,6 +2,7 @@
 #' @importFrom uuid UUIDgenerate
 #' @importFrom mime guess_type
 #' @importFrom utils packageName
+#' @importFrom jsonlite base64_dec toJSON fromJSON
 #' @importFrom checkmate assert assert_string test_string check_string assert_flag
 #'   assert_function check_raw assert_raw assert_int assert_class assert_list
 #'   assert_file_exists check_file_exists check_directory_exists

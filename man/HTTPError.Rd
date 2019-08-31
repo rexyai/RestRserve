@@ -9,6 +9,9 @@
 HTTPError
 }
 \description{
-HTTPError
+Contains \link{HTTPErrorFactory} class for the exception in the user's code.
+}
+\seealso{
+\link{raise} \link{HTTPErrorFactory}
 }
 \keyword{datasets}

@@ -1,70 +1,200 @@
-#' @name RestRserveApplication
 #' @title Creates RestRserveApplication.
-#' @description Creates RestRserveApplication object.
-#' RestRserveApplication converts user-supplied R code into high-performance REST API by
-#' allowing to easily register R functions for handling http-requests.
-#' @section Usage:
 #'
-#' \bold{For usage details see Methods, Arguments and Examples sections.}
+#' @usage NULL
+#' @format [R6::R6Class] object.
 #'
-#' \itemize{
-#' \item \code{app = RestRserveApplication$new()}
-#' \item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
-#'   response$body = request$query[[1]]
-#'   response$content_type = "text/plain"
-#'   })}
-#' \item \code{app$routes()}
-#' }
+#' @description
+#' Creates RestRserveApplication object.
+#' RestRserveApplication converts user-supplied R code into high-performance
+#' REST API by allowing to easily register R functions for handling http-requests.
 #'
-#' @field logger \link{Logger} instance. Can be replaced/manipulated with corresponding
-#'   \link{Logger} methods. Alternatively one can use loggers from \code{lgr} package as drop-on replacement.
-#' @section Methods:
-#' \describe{
-#'   \item{\code{$new(middleware = list(),content_type = "text/plain", ...)}}{
-#'     Constructor for RestRserveApplication. Sets \code{middleware} ( list of \link{RestRserveMiddleware})
-#'     and \code{content_type} - default response format.}
-#'   \item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
-#'   and register user-supplied R function as a handler.
-#'   User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
-#'   The goal of the user function is to \bold{modify} \code{response} or throw exception (call `stop()`)).
-#'   Both \code{response} and \code{request} objects modified in-place and internally passed further to
-#'   RestRserve execution pipeline.}
-#'   \item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
-#'   \item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
-#'   \item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
-#'   file or directory at \code{file_path}. If \code{content_type = NULL}
-#'   then MIME code \code{content_type}  will be inferred automatically (from file extension).
-#'   If it will be impossible to guess about file type then \code{content_type} will be set to
-#'   \code{"application/octet-stream"}}
-#'   \item{\code{$run(http_port = 8001L, ..., background = FALSE)}}{starts RestRserve application from current R session.
-#'      \code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
-#'      \code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-#'        \code{http_port} will be silently replaced with its value.
-#'      \code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
-#'   \item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
-#'   Calls handler function for a given request.}
-#'   \item{\code{$routes()}}{Lists all registered routes}
-#'   \item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-#'   \item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
-#'   to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
-#'   \item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
-#'                               path_swagger_assets = "/__swagger__/",
-#'                               file_path = tempfile(fileext = ".html"))}}{Adds endpoint to show swagger-ui.}
-#' }
-#' @section Arguments:
-#' \describe{
-#'  \item{app}{A \code{RestRserveApplication} object}
-#'  \item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}.
-#'  If it is named character vector with name equal to \code{"prefix"} then all the endopoints which
-#'  begin with the path will call corresponding handler.}
-#'  \item{method}{\code{character} of length 1. At the moment one of
-#'    \code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
-#'  \item{FUN}{\code{function} which \strong{must take 2 arguments - \code{request}, \code{response} objects}.
-#'    See \link{RestRserveRequest} and \link{RestRserveResponse} for details.
-#'  }
-#' }
-#' @format \code{\link{R6Class}} object.
+#' @section Construction:
+#'
+#' Constructor for `RestRserveApplication`.
+#'
+#' ```
+#' RestRserveApplication$new(middleware = list(), content_type = "text/plain", ...)
+#' ````
+#'
+#' * `middleware` :: `list([RestRserveMiddleware])`\cr
+#'   List of middlewares.
+#'
+#' * `content_type` :: `character(1)`\cr
+#'   Default response body content (media) type. `"text/plain"` by default.
+#'
+#'
+#' @section Fields:
+#'
+#' * `logger` :: [Logger]\cr
+#'   Loger object to trace requests process.
+#'
+#' * `content_type` :: `chararcter(1)`\cr
+#'   Default response body content tyoe.
+#'
+#' * `HTTPError` :: `HTTPErrorFactory`\cr
+#'   Helper to raise HTTP errors.
+#'
+#' * `ContentHandlers` :: [ContentHandlersFactory]\cr
+#'   Helper to decode request body and encode response body.
+#'
+#' * `endpoints` :: `named list()`\cr
+#'   Prints all the registered routes with allowed methods.
+#'
+#' @section  Methods:
+#'
+#' * `add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
+#'   `character(1)`, `character(1)`, `character(1)` -> `character(1)` \cr
+#'   Adds endpoint and register user-supplied R function as a handler.
+#'
+#'   Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
+#'
+#'   `match` param defines how route will be processed.
+#'
+#'   * `exact` - match route as is. Returns 404 if route is not matched.
+#'
+#'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
+#'
+#'   * `regex` - match route as template. Returns 404 if template pattern not matched.
+#'
+#'   User function `FUN` **must** take two arguments: first is `request`
+#'   ([RestRserveRequest]) and second is `response` ([RestRserveResponse]).
+#'
+#'   The goal of the user function is to **modify** `response` or throw
+#'   exception (call [raise()] or [stop()]).
+#'
+#'   Both `response` and `request` objects modified in-place and internally
+#'   passed further to RestRserve execution pipeline.
+#'
+#' * `add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `character(1)` \cr
+#'   Shorthand to `add_route` with `GET` method. With `add_head = TRUE` HEAD method
+#'   handlers will be added (with `add_head()`).
+#'
+#' * `add_post(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   Shorthand to `add_route` with `POST` method.
+#'
+#' * `add_static(path, file_path, content_type = NULL, ...)`\cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   Adds GET method to serve file or directory at `file_path`.
+#'
+#'   If `content_type = NULL` then MIME code `content_type`  will be inferred
+#'   automatically (from file extension).
+#'
+#'   If it will be impossible to guess about file type then `content_type` will
+#'   be set to `"application/octet-stream"`.
+#'
+#' * `append_middleware(...)`\cr
+#'   `list()` of [RestRserveMiddleware] -> `integer(1)`\cr
+#'   Appends middleware to handlers pipeline.
+#'
+#' * `process_request(request)`\cr
+#'   [RestRserveRequest] -> `list()`\cr
+#'   Process incomming request and generate Rserve compatible answer with
+#'   [RestRserveResponse] `to_rserve()`. Useful for tests your handlers before
+#'   deploy applicaiton.
+#'
+#' * `run(http_port = 8001L, ..., background = FALSE)`\cr
+#'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
+#'   Starts RestRserve application from current R session.
+#'
+#'   * `http_port` - http port for application. Negative values (such as -1)
+#'     means not to expose plain http.
+#'
+#'   * `...` - key-value pairs of the Rserve configuration. If contains
+#'     `"http.port"` then `http_port` will be silently replaced with its value.
+#'
+#'   * `background` - whether to try to launch in background process on UNIX
+#'     systems. Ignored on windows.
+#'
+#' * `print_endpoints_summary()`\cr
+#'   -> `self`\cr
+#'   Prints all the registered routes with allowed methods.
+#'
+#' * `add_openapi(path = "/openapi.yaml", openapi = openapi_create(),
+#'                file_path = "openapi.yaml")`
+#'   `character(1)`, `named list()`, `character(1)` -> `character(1)`\cr
+#'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
+#'   available methods.
+#'
+#' * `add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
+#'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
+#'                   file_path = "swagger-ui.html")`\cr
+#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `character(1)`
+#'   Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
+#'
 #' @export
+#'
+#' @seealso [HTTPError] [ContentHandlers] [RestRserveMiddleware]
+#'          [RestRserveRequest] [RestRserveResponse]
+#'
+#' @examples
+#' # init logger
+#' lg = Logger$new()
+#' # set log level for the middleware
+#' lg$set_log_level("debug")
+#' # set logger name
+#' lg$set_name("MW Logger")
+#' # init middleware to logging
+#' mw = RestRserveMiddleware$new(
+#'   process_request = function(rq, rs) {
+#'     lg$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
+#'   },
+#'   process_response = function(rq, rs) {
+#'     lg$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
+#'   },
+#'   name = "logger"
+#' )
+#'
+#' # init application
+#' app = RestRserveApplication$new(middleware = list(mw))
+#' # set log level for the app
+#' app$logger$set_log_level("error")
+#'
+#' # define simply request handler
+#' status_handler = function(rq, rs) {
+#'   rs$set_body("OK")
+#'   rs$set_content_type("text/plain")
+#'   rs$set_status_code(200L)
+#' }
+#' # add route
+#' app$add_get("/status", status_handler, "exact")
+#'
+#' # add static file handler
+#' desc_file = system.file("DESCRIPTION", package = "RestRserve")
+#' # add route
+#' app$add_static("/desc", desc_file, "text/plain")
+#'
+#' # define say message handler
+#' say_handler = function(rq, rs) {
+#'   who = rq$path_parameters[["user"]]
+#'   msg = rq$query[["message"]]
+#'   if (is.null(msg)) msg <- "Hello"
+#'   rs$set_body(paste(who, "say", dQuote(msg)))
+#'   rs$set_content_type("text/plain")
+#'   rs$set_status_code(200L)
+#' }
+#' # add route
+#' app$add_get("/say/{user}", say_handler, "regex")
+#'
+#' # print endpoint
+#' app$endpoints
+#'
+#' # test app
+#' # simulate requests
+#' not_found_rq = RestRserveRequest$new(path = "/no")
+#' status_rq = RestRserveRequest$new(path = "/status")
+#' desc_rq = RestRserveRequest$new(path = "/desc")
+#' say_rq = RestRserveRequest$new(path = "/say/anonym", query = c("message" = "Hola"))
+#' # process prepared requests
+#' app$process_request(not_found_rq)
+#' app$process_request(status_rq)
+#' app$process_request(desc_rq)
+#' app$process_request(say_rq)
+#'
+#' # run app
+#' # app$run(8001L)
+#'
 RestRserveApplication = R6::R6Class(
   classname = "RestRserveApplication",
   public = list(
@@ -180,15 +310,13 @@ RestRserveApplication = R6::R6Class(
       }
     },
     #------------------------------------------------------------------------
-    endpoints = function() {
-      lapply(private$routes, function(r) r$paths)
-    },
-    #------------------------------------------------------------------------
     print_endpoints_summary = function() {
-      if (length(self$endpoints()) == 0) {
+      endpoints = self$endpoints()
+      if (length(endpoints) == 0) {
         self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
       }
-      self$logger$info("", context = list(endpoints = self$endpoints()))
+      self$logger$info("", context = list(endpoints = endpoints))
+      return(invisible(self))
     },
     #------------------------------------------------------------------------
     add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
@@ -212,7 +340,7 @@ RestRserveApplication = R6::R6Class(
       # for now use  "application/x-yaml":
       # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
       self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml")
-      invisible(file_path)
+      return(invisible(file_path))
     },
     #------------------------------------------------------------------------
     add_swagger_ui = function(path = "/swagger",
@@ -243,7 +371,7 @@ RestRserveApplication = R6::R6Class(
       }
       writeLines(html, file_path)
       self$add_static(path, file_path, "text/html")
-      invisible(file_path)
+      return(invisible(file_path))
     },
     #------------------------------------------------------------------------
     append_middleware = function(...) {
@@ -253,11 +381,10 @@ RestRserveApplication = R6::R6Class(
         id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw
       }
-      invisible(length(private$middleware))
+      return(invisible(length(private$middleware)))
     },
     #------------------------------------------------------------------------
     process_request = function(request) {
-
       request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
       self$logger$trace("",
@@ -340,6 +467,11 @@ RestRserveApplication = R6::R6Class(
       }
 
       return(response$to_rserve())
+    }
+  ),
+  active = list(
+    endpoints = function() {
+      lapply(private$routes, function(r) r$paths)
     }
   ),
   private = list(

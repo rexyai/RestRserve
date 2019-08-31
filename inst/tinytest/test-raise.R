@@ -1,7 +1,7 @@
 # Test raise HTTP error
 
 # Test raise returns class
-h = HTTPErrorFactory$new()
+h = RestRserve:::HTTPErrorFactory$new()
 e = tryCatch(raise(h$not_found()), error = function(e) e)
 expect_error(raise(h))
 expect_true(inherits(e, "HTTPError"))
