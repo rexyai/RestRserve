@@ -30,7 +30,7 @@ expect_equal(e$response$status_code, 401L)
 expect_equal(e$response$body, "401 Invalid Authorization Header. Must start with 'bearer'")
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
-# Test heade without token
+# Test heade with extra token
 h = c("Authorization: bearer")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
@@ -39,6 +39,17 @@ e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
 expect_equal(e$response$status_code, 401L)
 expect_equal(e$response$body, "401 Invalid Authorization Header: Token Missing")
+expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
+
+# Test heade without token
+h = c("Authorization: bearer token1 token2")
+rq = RestRserveRequest$new(headers = h)
+rs = RestRserveResponse$new()
+expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
+e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
+             error = function(e) e)
+expect_equal(e$response$body, "401 Invalid Authorization Header: Contains extra content")
+expect_equal(e$response$status_code, 401L)
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test correct token

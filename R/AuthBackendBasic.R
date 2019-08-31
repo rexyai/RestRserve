@@ -103,7 +103,7 @@ AuthBackendBasic = R6::R6Class(
       #-------------------------------------------------------
       if (inherits(result, "try-error")) {
         raise(private$HTTPError$unauthorized(
-          body = "401 Invalid Authorization: Unable to decode credentials",
+          body = "401 Invalid Authorization Header: Unable to decode credentials",
           headers = c("WWW-Authenticate" = "Basic"))
         )
       }

@@ -73,8 +73,8 @@ AuthBackendBearer = R6::R6Class(
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Token",
           headers = c(
-            "WWW-Authenticate" = "error=invalid_token",
-            "error_description" = "Invalid or expired access token")
+            "WWW-Authenticate" = "error=\"invalid_token\",error_description=\"Invalid or expired access token\""
+          )
         )
         )
       }

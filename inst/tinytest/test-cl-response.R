@@ -44,6 +44,8 @@ expect_warning(r$set_header("Content-type", "custom/type"), "not accepted by Rse
 expect_null(r$get_header("Content-type"))
 expect_warning(r$set_header("Content-length", "0"), "not accepted by Rserve")
 expect_null(r$get_header("Content-length"))
+expect_warning(r$set_header("Set-cookie", "param=value"), "Use 'set_cookie' method instread")
+expect_null(r$get_header("Set-cookie"))
 
 # Test delete_header method
 r = RestRserveResponse$new()
@@ -59,6 +61,12 @@ expect_equal(r$get_header("accept"), c("text/plain", "text/html"))
 r$append_header("cookie", "param1=value1")
 r$append_header("cookie", "param2=value2")
 expect_equal(r$get_header("cookie"), c("param1=value1", "param2=value2"))
+expect_warning(r$append_header("Content-type", "custom/type"), "not accepted by Rserve")
+expect_null(r$get_header("Content-type"))
+expect_warning(r$append_header("Content-length", "0"), "not accepted by Rserve")
+expect_null(r$get_header("Content-length"))
+expect_warning(r$append_header("Set-cookie", "param=value"), "Use 'set_cookie' method instread")
+expect_null(r$get_header("Set-cookie"))
 
 # Test set_status_code method
 r = RestRserveResponse$new(status_code = 200L)
@@ -120,6 +128,13 @@ cont = "applicaiton/json"
 headers = "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text"
 status = 200L
 expect_equal(r$to_rserve(), list(body, cont, headers, status))
+
+# Test set_response method
+r = RestRserveResponse$new()
+r$set_response(404L, "No no", "text/unknown")
+expect_equal(r$status_code, 404L)
+expect_equal(r$body, "No no")
+expect_equal(r$content_type, "text/unknown")
 
 # Test status method
 r = RestRserveResponse$new()

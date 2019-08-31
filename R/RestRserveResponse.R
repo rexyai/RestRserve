@@ -238,7 +238,11 @@ RestRserveResponse = R6::R6Class(
       }
       if (tolower(name) %in% c("content-type", "content-length")) {
         warning("'Content-Length' and 'Content-Type' not accepted by Rserve.")
-        return(invisible(NULL))
+        return(invisible(self))
+      }
+      if (tolower(name) == "set-cookie") {
+        warning("Use 'set_cookie' method instread")
+        return(invisible(self))
       }
       value = append(self$headers[[name]], value)
       self$headers[[name]] = value
@@ -298,6 +302,7 @@ RestRserveResponse = R6::R6Class(
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+        checkmate::assert_string(content_type, pattern = ".*/.*")
       }
 
       status_code_int = as.integer(status_code)
@@ -307,7 +312,9 @@ RestRserveResponse = R6::R6Class(
       if (is.null(body)) {
         body = status_codes[[status_code_char]]
       }
+      self$body = body
       self$status_code = status_code_int
+      self$content_type = content_type
       return(invisible(self))
     },
     to_rserve = function() {
