@@ -3,46 +3,62 @@
 \docType{data}
 \name{RestRserveMiddleware}
 \alias{RestRserveMiddleware}
-\title{Creates RestRserveMiddleware}
-\format{\code{\link{R6Class}} object.}
-\usage{
-RestRserveMiddleware
-}
+\title{Creates RestRserveMiddleware class}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveMiddleware object.
-RestRserveMiddleware is a very useful concept which allows to perform pre-processing of requests and
-post-processing of responses. Middleware has an access to both \code{request} and  \code{response} objects
-and can modify them. This way each request can be checked/modified before passing hadnler and response can be
-post processed (for example this way we developer can set up custom error messages).
-\bold{\code{process_request} and \code{process_response} functions modify \code{response}
-or throw exception using \code{HTTPError} helper.}
+
+RestRserveMiddleware is a very useful concept which allows to perform
+preprocessing of requests and post-processing of responses. Middleware has
+an access to both \code{request} and  \code{response} objects and can modify them.
+This way each request can be checked/modified before passing handler and
+response can be post processed (for example this way we developer can set up
+custom error messages).
 }
-\section{Usage}{
+\section{Construction}{
+\preformatted{RestRserveMiddleware$new(
+  process_request  = function(request, response) TRUE,
+  process_response = function(request, response) TRUE,
+  name = "Middleware"
+)
+}
+\itemize{
+\item \code{process_request} :: \code{function}\cr
+Modify \code{request} or \code{response} objects or  throw exception using
+\code{[HTTPError]} helper. This function evaluate before router handler called.
+\item \code{process_response} :: \code{function}\cr
+Modify \code{request} or \code{response} objects or  throw exception using
+\code{[HTTPError]} helper. This function evaluate after router handler called.
+\item \code{name} :: \code{character(1)}\cr
+Middleware name.
+}
+}
+
+\section{Fields}{
 
 \itemize{
-\item \code{app = RestRserveMiddleware$new(
-process_request  = function(request, response) TRUE,
-process_response = function(request, response) TRUE,
-name = NULL
-)}
-}
-For usage details see \bold{Methods, Arguments and Examples} sections.
-}
-
-\section{Arguments}{
-
-\describe{
-\item{process_request}{\bold{function} which takes 2 arguments - \code{request} and \code{response}
-objects (class \code{RestRserveRequest} and \code{RestRserveResponse} correspondingly) and modify
+\item \code{process_request} :: \code{function}\cr
+Function which takes 2 arguments - \code{request} and \code{response} objects (class
+\link{RestRserveRequest} and \link{RestRserveResponse} correspondingly) and modify
 \code{request} and \code{response} or throw exception using \code{HTTPError} helper.
+
 Function is called before request is routed to handler.
-Usually \code{process_request} is used to perform logging, check authorization, etc.}
-\item{process_response}{\bold{function} which takes 2 arguments - \code{request} and \code{response}
-objects (of class \code{RestRserveRequest}, and \code{RestRserveResponse} correspondingly) and modify
+
+Usually \code{process_request} is used to perform logging, check authorization, etc.
+\item \code{process_response} :: \code{funciotn}\cr
+Function which takes 2 arguments - \code{request} and \code{response} objects (class
+\link{RestRserveRequest} and \link{RestRserveResponse} correspondingly) and modify
 \code{request} and \code{response} or throw exception using \code{HTTPError} helper.
+
 Function is called after request is processed by handler.
-Usually \code{process_response} is used to perform logging, custom error hadnling, etc.}
+
+Usually \code{process_response} is used to perform logging, custom error handling, etc.
+\item \code{name} :: \code{character(1)}\cr
+Middleware name.
 }
 }
 
+\seealso{
+\link{RestRserveRequest} \link{RestRserveResponse} \link{RestRserveApplication}
+}
 \keyword{datasets}

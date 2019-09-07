@@ -30,13 +30,13 @@ extract_docstrings_yaml = function(FUN) {
 }
 
 #' @title creates OpenAPI objects
-#' @description Facilitates in building \href{https://www.openapis.org/}{OpenAPI} description document by
+#' @description Facilitates in building [OpenAPI](https://www.openapis.org/) description document by
 #' creating objects described in
-#'  \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
-#' @param openapi string, version of open api. For example \code{"3.0.1"}
-#' @param info infoObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}.
-#' See \link{openapi_info}
-#' @param ... other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}
+#'  <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md>
+#' @param openapi string, version of open api. For example `"3.0.1"`
+#' @param info infoObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject>.
+#' See [openapi_info]
+#' @param ... other parameters - see <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject>
 #' @export
 openapi_create = function(openapi = openapi_openapi_version(),
                    info = openapi_info(),
@@ -56,12 +56,12 @@ openapi_openapi_version = function(openapi_version = "3.0.1") {
 
 # https://swagger.io/specification/#info-object-19
 #' @export
-#' @details \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}
+#' @details <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject>
 #' @param title the title of the application
 #' @param version version of the application
 #' @param description description
 #' @param termsOfService termsOfService of the application
-#' @param contact contact of the maintainer - see \link{openapi_contact}
+#' @param contact contact of the maintainer - see [openapi_contact]
 #' @param license license of the api
 #' @rdname openapi_create
 openapi_info = function(title = "RestRserve OpenAPI",
@@ -91,8 +91,8 @@ openapi_info = function(title = "RestRserve OpenAPI",
 }
 
 #' @export
-#' @param servers serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
-#' See \link{openapi_servers}
+#' @param servers serverObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject>
+#' See [openapi_servers]
 #' @rdname openapi_create
 openapi_servers = function(servers = list(openapi_server())) {
   checkmate::assert_list(servers, types = "openapi_server")

@@ -8,7 +8,7 @@
 
 [RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance microservices and app backends**. The main difference with other frameworks ([plumber](https://github.com/trestletech/plumber), [jug](https://github.com/Bart6114/jug)) is that it is **parallel by design** (thanks to [Rserve](https://github.com/s-u/Rserve)).
 
-YES - it means it will handle all the incomming requests in parallel - each request in a separate fork.
+YES - it means it will handle all the incoming requests in parallel - each request in a separate fork.
 
 ### Features
 
@@ -45,7 +45,7 @@ Please follow [quick start article on http://restrserve.org/](http://restrserve.
 
 # Known limitations
 
-- RestRserve is primarily tested on UNIX systems. While it works natively on Windows plase don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) and report to us.
+- RestRserve is primarily tested on UNIX systems. While it works natively on Windows please don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) and report to us.
 - The main goal for RestRserve is to provide framework to create backend microservices with performance close to bare metal. So we haven't had a focus on the useful but not absolutely necessary things like [uri templates](https://github.com/dselivanov/RestRserve/issues/10). Contributions are very welcome.
 - Keep in mind that every request is handled in a separate process (forked from parent Rserve instance). While this is absolutely awesome feature which allows to handle requests in parallel it also put some limitations on reusing certain objects - notably database connections.
 - as already mentioned `Rserve` and `RestRserve` process each request in a separate fork. In certain edge cases (usually badly designed user code) it is possible that `Rserve` won't be able to create a fork (for example lack of RAM). In these cases `Rserve` will return 500 error. Keep in mind that `Rserve` and `RestRserve` can't control on how much resources will be needed to handle incoming request - everything depends on the user code. In order to limit number of connections/requests it is recommended to use specialized software such as [HAproxy](http://www.haproxy.org/).
@@ -56,7 +56,7 @@ Please follow [quick start article on http://restrserve.org/](http://restrserve.
 - [Simon Urbanek](https://github.com/s-u/) (@s-u) for awesome [Rserve](https://github.com/s-u/Rserve) and all the work on R itself and on his other packages
 - [Artem Klevtsov](https://github.com/artemklevtsov) (@artemklevtsov) for useful suggestions and work on test coverage
 - [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on Swagger UI in [plumber](https://github.com/trestletech/plumber) (from where we took inspiration for our implementation)
-- [Brodie Gaslam](https://github.com/brodieG) (@brodieG) for help with understanding on how to get traceback from try-catched function calls. Also thanks [Hadley Wickham](https://github.com/hadley) (@hadley) for [evaluate::try_capture_stack](https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29) function which we use for this purpose.
+- [Brodie Gaslam](https://github.com/brodieG) (@brodieG) for help with understanding on how to get traceback from try-caught function calls. Also thanks [Hadley Wickham](https://github.com/hadley) (@hadley) for [evaluate::try_capture_stack](https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29) function which we use for this purpose.
 
 # Related projects
 

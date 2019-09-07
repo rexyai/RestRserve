@@ -57,3 +57,8 @@ expect_equal(names(parsed), c("timestamp", "level", "name", "pid", "msg", "data"
 expect_equal(parsed[["name"]], lg$.__enclos_env__$private$name)
 expect_equal(parsed[["msg"]], "message")
 expect_equal(parsed[["data"]], list(one = 1))
+
+# Test set_printer method
+lgp = Logger$new()
+expect_error(lgp$set_printer(NA), "'FUN' should function or NULL")
+expect_error(lgp$set_printer(identity), "FUN should be a function with 6 formal arguments")

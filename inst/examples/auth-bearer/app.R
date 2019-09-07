@@ -21,7 +21,7 @@ hello_handler = function(request, response) {
 }
 
 
-## ---- bearer authentification ----
+## ---- bearer authentication ----
 
 auth_fun = function(token) {
   if (is.null(token_db[[token]])) {

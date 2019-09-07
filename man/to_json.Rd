@@ -2,17 +2,23 @@
 % Please edit documentation in R/json.R
 \name{to_json}
 \alias{to_json}
-\title{simple json encoder}
+\title{simple JSON encoder}
 \usage{
 to_json(x, unbox = TRUE)
 }
 \arguments{
 \item{x}{the object to be encoded}
 
-\item{unbox}{\code{TRUE} by default. Whether to unbox (simplify) arrays consists of a single element}
+\item{unbox}{\code{TRUE} by default. Whether to unbox (simplify) arrays consists
+of a single element}
 }
 \description{
-encode R objects as json. Wrapper around \code{jsonlite::toJSON} with
+Encode R objects as json. Wrapper around \code{jsonlite::toJSON} with
 default parameters set to following values:
-\code{dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'}
+\code{dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'}.
+}
+\examples{
+to_json(NULL)
+to_json(list(name = "value"))
+
 }

@@ -1,19 +1,47 @@
-#' @name HTTPErrorFactory
-#' @title helps to generate http error responces
-#' @description helps to generate http error responces. See \link{raise} for example.
+#' @title Helps to generate http error responses
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
+#' @description
+#' helps to generate http error responses See [raise] for example.
+#'
+#' @section Construction:
+#'
+#' ```
+#' HTTPErrorFactory$new(content_type = "text/plain", encode = NULL)
+#' ```
+#'
+#' * `content_type` :: `character(1)`\cr
+#'   Type of the error response. `"text/plain"` by default.
+#' * `encode` :: `function`\cr
+#' Specify how encode response body.
+#'
+#' @section Fields:
+#'
+#' * `content_type` :: `character(1)`\cr
+#'   Type of the error response.
+#' * `encode` :: `function`\cr
+#'   Function to encode response body.
+#'
 #' @section Methods:
-#' \describe{
-#'   \item{\code{$new(content_type = "text/plain", encode = NULL)}}{Factory constructor.
-#'   \describe{
-#'     \item{content_type}{type of the error response. \code{"text/plain"} by default}{
-#'       then RestRserve will try to automatically encode body properly according to \code{content_type} argument
-#'       }
-#'     }
-#'   }
-#' }
-#' @export
+#'
+#' * `set_content_type(content_type)`\cr
+#'   `character(1)` -> `self`\cr
+#'   Set content type of response.
+#'
+#' * `set_encode(encode)`\cr
+#'   `function` -> `self`\cr
+#'   Set encode for the given content type.
+#'
+#' * `error(status_code, body, headers = character(0))`\cr
+#'   `integer(1)`, `raw()` | `character()`, `character()` -> [RestRserveResponse]
+#'   Generate HTTP error response
+#'
+#' @keywords internal
+#'
 HTTPErrorFactory = R6::R6Class(
-  classname = 'HTTPErrorFactory',
+  classname = "HTTPErrorFactory",
   public = list(
     content_type = NULL,
     encode = NULL,
@@ -23,9 +51,11 @@ HTTPErrorFactory = R6::R6Class(
     },
     set_content_type = function(content_type) {
       self$content_type = content_type
+      return(invisible(self))
     },
     set_encode = function(encode) {
       self$encode = encode
+      return(invisible(self))
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = character(0)) {
@@ -152,7 +182,6 @@ HTTPErrorFactory = R6::R6Class(
       private$prepare_response(511L, body, headers)
     }
   ),
-
   private = list(
     prepare_response = function(status_code, body, headers) {
       # default standard message
@@ -160,38 +189,51 @@ HTTPErrorFactory = R6::R6Class(
         #body = paste(status_code, status_codes[[as.character(status_code)]])
         body = list(error = paste(status_code, status_codes[[as.character(status_code)]]))
       }
-      res =
-        RestRserveResponse$new(
-          body = body,
-          content_type = self$content_type,
-          headers = headers,
-          status_code = status_code,
-          encode = self$encode
-        )
+      res = RestRserveResponse$new(
+        body = body,
+        content_type = self$content_type,
+        headers = headers,
+        status_code = status_code,
+        encode = self$encode
+      )
       class(res) = c('HTTPError', class(res))
       res
     }
   )
 )
 
-#' @name raise
 #' @title interrupts request handling
-#' @description interrupts request handling and signals RestRserve to return HTTPError
-#' @param x instance of \code{RestRserveResponse}. Can be created using \link{HTTPError} -
+#'
+#' @description
+#' Interrupts request handling and signals RestRserve to return HTTPError
+#'
+#' @param x instance of [RestRserveResponse]. Can be created using [HTTPError].
 #' see examples.
+#'
 #' @export
+#'
+#' @seealso [HTTPError]
+#'
 #' @examples
-#' caught_http_exception = try(raise(HTTPError$bad_request()), silent = TRUE)
-#' condition = attr(caught_http_exception, 'condition')
+#' # catch exception
+#' res = try(raise(HTTPError$bad_request()), silent = TRUE)
+#' cond = attr(res, "condition")
+#'
 #' # response is a valid RestRserveResponse instace
-#' identical(condition$response$body, "400 Bad Request")
+#' identical(cond$response$body, "400 Bad Request")
+#'
 raise = function(x) {
-  exception = errorCondition('raise', response = x, class = class(x))
+  exception = errorCondition("raise", response = x, class = class(x))
   stop(exception)
 }
 
-#' @name HTTPError
 #' @title HTTPError
-#' @description HTTPError
+#'
+#' @description
+#' Contains [HTTPErrorFactory] class for the exception in the user's code.
+#'
 #' @export
+#'
+#' @seealso [raise] [HTTPErrorFactory]
+#'
 HTTPError = NULL

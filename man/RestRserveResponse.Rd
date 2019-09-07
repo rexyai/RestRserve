@@ -3,43 +3,133 @@
 \docType{data}
 \name{RestRserveResponse}
 \alias{RestRserveResponse}
-\title{Creates RestRserveResponse object (R6 class)}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-RestRserveResponse
-}
+\title{Creates RestRserveResponse object}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveResponse object.
+}
+\section{Construction}{
+\preformatted{RestRserveResponse$new(body = "", content_type = 'text/plain',
+                       headers = NULL, status_code = 200L, encode = NULL)
+}
+}
+
+\section{Fields}{
+
 \itemize{
-\item \code{response = RestRserveResponse$new(body = "{}", content_type = "text/plain", headers = character(0), status_code = 200L)}
-\describe{
-\item{body}{must be a character vector of length one or a raw vector.
+\item \code{content_type} :: \code{character(1)}\cr
+Response body content (media) type. Will be translated to \code{Content-type} header.
+\item \code{body} :: \code{raw()} | \code{character(1)}\cr
+Response body.
 If it is a named character with a name \code{file} or \code{tmpfile}
-then the value is considered as a path to a file and content oh this file is served as body.
-The latter will be deleted once served.}
-\item{content_type}{\code{"text/plain"} must be a character vector of length one}
-\item{encode}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
-then \link{RestRserveApplication} will try to automatically encode body properly according to
-\code{content_type} argument. If you want to process body "as is" then use \code{encode = identity}}
-\item{headers}{\code{character(0)} must be a character vector - the elements will have CRLF appended.
-Neither Content-type nor Content-length may be used.}
-\item{status_code}{\code{200L} must be an integer}
-\item{context}{context is a hash-map (R's hashed environment) which can be used to store any data specific to the app.
-RestRserve itself will not interact with this field. This can be useful
-if you want to pass some data to response middleware.}
+then the value is considered as a path to a file and content oh this file
+is served as body. The latter will be deleted once served.
+\item \code{status_code} :: \code{integer(1)}\cr
+Response status code.
+\item \code{headers} :: \code{named list()}\cr
+Response headers.
+\item \code{cookies} :: \code{named list()}\cr
+Response cookies. Will be translated to \code{Set-Cookie} headers.
+\item \code{context} :: \code{environment()}\cr
+Environment to store any data. Can be used in middlewares.
+\item \code{encode} :: \code{function}\cr
+unction to encode body for specific content
+\item \code{status} :: \code{character(1)}\cr
+Paste together status code and description.
 }
 }
-}
+
 \section{Methods}{
 
-\describe{
-\item{\code{$new(body = "", content_type = "text/plain", headers = character(0),
-  status_code = 200L, encode = NULL)}}{Constructor for RestRserveResponse}
-\item{\code{$set_response(status_code, body = NULL, content_type = self$content_type)}}{ facilitate
-in setting response. If \code{body} is not specified (\code{NULL}),
-provides standard default values for all standard status codes.}
-\item{\code{$set_content_type(content_type = 'text/plain')}}{Sets content type}
+\itemize{
+\item \code{set_content_type(content_type = 'text/plain')}\cr
+\code{character(1)} -> \code{self}\cr
+Set content type for response body.
+\item \code{set_status_code(code)}\cr
+\code{integer(1)} -> \code{self}\cr
+Set status code for response. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Status}{docs on MDN}.
+\item \code{has_header(name)}\cr
+\code{character(1)} -> \code{logical(1)}\cr
+Determine whether or not the response header exists.
+\item \code{get_header(name)}\cr
+\code{character(1)} -> \code{character()}\cr
+Get HTTP response header value.
+\item \code{set_header(name, value)}\cr
+\code{character(1)}, \code{character()} -> \code{self}\cr
+Set HTTP response header. \code{Content-type} and \code{Content-length} headers not
+allowed (use \code{content_type} field instead).
+\item \code{append_header(name, value)}\cr
+\code{character(1)}, \code{character()} -> \code{self}\cr
+Append HTTP response header. If header exists \code{,} separator will be used.
+Don't use this method to set cookie (use \code{set_cookie} method instead).
+\item \code{delete_header(name)}\cr
+\code{character(1)} -> \code{logical(1)}\cr
+Unset HTTP response header.
+\item \code{set_cookie(name, value, expires = NULL, max_age = NULL, domain = NULL, path = NULL, secure = NULL, http_only = NULL)}\cr
+\code{character(1)}, \code{character(1)}, \code{POSIXct(1)}, \code{integer(1)}, \code{character(1)},
+\code{character(1)}, \code{logical(1)}, \code{logical(1)}\cr
+Set cookie. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie}{docs on MDN}.
+\item \code{unset_cookie(name)}\cr
+\code{character(1)} -> \code{logical(1)}\cr
+Unset cookie with given name.
+\item \code{set_date(dtm = Sys.time())}\cr
+\code{POSIXct(1)} -> \code{self}\cr
+Set \code{Date} HTTP header. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date}{docs on MDN}.
+\item \code{unset_date()}\cr
+-> \code{logical(1)}\cr
+Unset \code{Date} HTTP header.
+\item \code{set_body(body)}\cr
+\code{any} -> \code{self}\cr
+Set response body.
+\item \code{set_response(status_code, body = NULL, content_type = self$content_type)}\cr
+\code{integer(1)}, \code{any}, \code{character(1)}\cr
+Set response fields.
+\item \code{to_rserve()}\cr
+-> \code{list()}\cr
+Convert \code{self} object to Rserve compatible structure.
+\href{https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372}{According to} returned list should have the following structure:
+\itemize{
+\item \code{body}: can be a character vector of length one or a raw vector.
+if the character vector is named "file" then the content of a file of
+that name is the body.
+\item \code{content-type}: must be a character vector of length one or NULL
+(if present, else default is \code{"text/plain"}).
+\item \code{headers}: must be a character vector - the elements will have CRLF
+appended and neither \code{Content-type} nor \code{Content-length} may be used.
+\item \code{status-code}: must be an integer if present (default is 200).
+}
 }
 }
 
+\examples{
+# init response
+rs = RestRserveResponse$new()
+# set body media type
+rs$set_content_type("text/plain")
+# set body content
+rs$set_body("OK")
+# set response status code
+rs$set_status_code(200L)
+# convert to Rserve output
+rs$to_rserve()
+
+# init response
+rs = RestRserveResponse$new()
+# static file path
+file_path = system.file("DESCRIPTION", package = "RestRserve")
+# get last file modification timestamp
+file_mtime = file.mtime(file_path)
+# set body
+rs$set_body(c("file" = file_path))
+# set content type
+rs$set_content_type("text/plain")
+# set 'last-modified' header
+rs$set_header("Last-Modified", to_http_date(file_mtime))
+# convert to Rserve output
+rs$to_rserve()
+
+}
+\seealso{
+\link{RestRserveRequest}
+}
 \keyword{datasets}

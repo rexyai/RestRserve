@@ -1,7 +1,48 @@
-#' @name RestRserveRouter
-#' @title Creates RestRserveRouter.
-#' @description Creates RestRserveRouter object.
-#' @format \code{\link{R6Class}} object.
+#' @title Creates RestRserveRouter
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
+#' @description
+#' Creates RestRserveRouter object.
+#'
+#' @section Construction:
+#'
+#' ```
+#' RestRserveRouter$new()
+#' ````
+#'
+#' @section Fields:
+#'
+#' * `paths` :: `character()`\cr
+#'   All added paths as is (with templates placeholders).
+#'
+#' @section Methods:
+#'
+#' * `size()`\cr
+#'   -> `integer(1)`\cr
+#'   Returns number of paths added before.
+#'
+#' * `add_path(path, match = c("exact", "partial", "regex"), id)`\cr
+#'   `character(1)`, `character(1)`, `character(1)` -> \cr
+#'   Add path with their id.
+#'
+#' * `match_path(path, extract_vars = TRUE)`\cr
+#'   `character(1)`, `logical(1)` -> `character(1)` | `NULL`\cr
+#'   Find path within paths added before. Returns `NULL` if path not matched.
+#'
+#' @keywords internal
+#'
+#' @examples
+#' r = RestRserve:::RestRserveRouter$new()
+#' r$add_path("/test", "exact", "testid")
+#' r$add_path("/area", "partial", "areaid")
+#' r$add_path("/template/{variable}", "regex", "templateid")
+#' r$match_path("/test") # testid
+#' r$match_path("/area/entry") # areaid
+#' r$match_path("/template/12345") # templateid
+#' attr(r$match_path("/template/12345"), "path_parameters") # variables values
+#'
 RestRserveRouter = R6::R6Class(
   classname = "RestRserveRouter",
   public = list(
@@ -63,6 +104,7 @@ RestRserveRouter = R6::R6Class(
 
       # Append paths
       self$paths = append(self$paths, setNames(path, match))
+      return(invisible(self))
     },
     match_path = function(path, extract_vars = TRUE) {
       # private$assert_path(path)

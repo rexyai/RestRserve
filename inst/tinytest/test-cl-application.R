@@ -124,7 +124,7 @@ expect_equal(r, list("text", "text/plain", character(0), 200L))
 # Test endpoints method
 a = RestRserveApplication$new()
 f = function(rq, rs) {}
-expect_equal(a$endpoints(), list())
+expect_equal(a$endpoints, list())
 a$add_route("/", "GET", f, "exact")
 a$add_route("/dir", "GET", f, "partial")
 a$add_route("/post", "POST", f, "exact")
@@ -132,4 +132,4 @@ ep = list(
   "POST" = c("exact" = "/post"),
   "GET" = c("exact" = "/", "partial" = "/dir/")
 )
-expect_equal(a$endpoints(), ep)
+expect_equal(a$endpoints, ep)
