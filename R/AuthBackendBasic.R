@@ -112,17 +112,3 @@ AuthBackendBasic = R6::R6Class(
     }
   )
 )
-
-#' @rdname AuthBackendBasic
-#' @usage NULL
-#' @export
-BasicAuthBackend = R6::R6Class( # nocov start
-  "BasicAuthBackend",
-  inherit = AuthBackendBasic,
-  public = list(
-    initialize = function(...) {
-      .Deprecated('AuthBackendBasic', old = 'BasicAuthBackend')
-      super$initialize(...)
-    }
-  )
-) # nocov end

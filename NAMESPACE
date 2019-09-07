@@ -2,8 +2,6 @@
 
 export(AuthBackendBasic)
 export(AuthBackendBearer)
-export(BasicAuthBackend)
-export(BearerAuthBackend)
 export(ContentHandlers)
 export(HTTPError)
 export(Logger)

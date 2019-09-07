@@ -3,7 +3,6 @@
 \docType{data}
 \name{AuthBackendBearer}
 \alias{AuthBackendBearer}
-\alias{BearerAuthBackend}
 \title{Bearer token authorization backend}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{

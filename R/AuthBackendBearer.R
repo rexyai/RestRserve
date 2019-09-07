@@ -86,17 +86,3 @@ AuthBackendBearer = R6::R6Class(
     }
   )
 )
-
-#' @rdname AuthBackendBearer
-#' @usage NULL
-#' @export
-BearerAuthBackend = R6::R6Class( # nocov start
-  "BearerAuthBackend",
-  inherit = AuthBackendBearer,
-  public = list(
-    initialize = function(...) {
-      .Deprecated('AuthBackendBearer', old = 'BearerAuthBackend')
-      super$initialize(...)
-    }
-  )
-) # nocov end

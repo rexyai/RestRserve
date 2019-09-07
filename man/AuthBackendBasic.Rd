@@ -3,7 +3,6 @@
 \docType{data}
 \name{AuthBackendBasic}
 \alias{AuthBackendBasic}
-\alias{BasicAuthBackend}
 \title{Basic authorization backend}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
