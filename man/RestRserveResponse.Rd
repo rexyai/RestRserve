@@ -61,7 +61,7 @@ allowed (use \code{content_type} field instead).
 \item \code{append_header(name, value)}\cr
 \code{character(1)}, \code{character()} -> \code{self}\cr
 Append HTTP response header. If header exists \code{,} separator will be used.
-Don't use this method to set cookie (use \code{set_cookie} method insteead).
+Don't use this method to set cookie (use \code{set_cookie} method instead).
 \item \code{delete_header(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
 Unset HTTP response header.

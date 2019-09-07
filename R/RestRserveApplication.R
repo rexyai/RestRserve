@@ -16,7 +16,7 @@
 #' RestRserveApplication$new(middleware = list(), content_type = "text/plain", ...)
 #' ````
 #'
-#' * `middleware` :: `list([RestRserveMiddleware])`\cr
+#' * `middleware` :: `list` of [RestRserveMiddleware]\cr
 #'   List of middlewares.
 #'
 #' * `content_type` :: `character(1)`\cr
@@ -26,10 +26,11 @@
 #' @section Fields:
 #'
 #' * `logger` :: [Logger]\cr
-#'   Loger object to trace requests process.
+#'   Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
+#'   drop-in replacement. `Logger` and loggers created by `lgr` packages share same syntax.
 #'
 #' * `content_type` :: `chararcter(1)`\cr
-#'   Default response body content tyoe.
+#'   Default response body content type.
 #'
 #' * `HTTPError` :: `HTTPErrorFactory`\cr
 #'   Helper to raise HTTP errors.
@@ -48,7 +49,7 @@
 #'
 #'   Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
 #'
-#'   `match` param defines how route will be processed.
+#'   `match` parameter defines how route will be processed.
 #'
 #'   * `exact` - match route as is. Returns 404 if route is not matched.
 #'
@@ -90,9 +91,9 @@
 #'
 #' * `process_request(request)`\cr
 #'   [RestRserveRequest] -> `list()`\cr
-#'   Process incomming request and generate Rserve compatible answer with
+#'   Process incoming request and generate Rserve compatible answer with
 #'   [RestRserveResponse] `to_rserve()`. Useful for tests your handlers before
-#'   deploy applicaiton.
+#'   deploy application.
 #'
 #' * `run(http_port = 8001L, ..., background = FALSE)`\cr
 #'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr

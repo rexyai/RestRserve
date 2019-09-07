@@ -2,7 +2,7 @@
 % Please edit documentation in R/json.R
 \name{to_json}
 \alias{to_json}
-\title{simple json encoder}
+\title{simple JSON encoder}
 \usage{
 to_json(x, unbox = TRUE)
 }

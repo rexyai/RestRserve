@@ -13,13 +13,13 @@
 #' ````
 #'
 #' * `FUN` :: `function`\cr
-#'   Function to perform authentification.
+#'   Function to perform authentication
 #'
 #' @section Methods:
 #'
 #' * `authenticate(request, response)`\cr
 #'   [RestRserveRequest], [RestRserveResponse] -> `NULL`\cr
-#'   Provide authentication for the given reqiest.
+#'   Provide authentication for the given request.
 #'
 #' @export
 #'

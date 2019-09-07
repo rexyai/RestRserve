@@ -10,7 +10,7 @@ Authors@R: c(
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
   Allows to easily create high-performance HTTP API from R functions. 
-  Provides many small convenient tools like flexible logging, json encoding, 
+  Provides many small convenient tools like flexible logging, JSON encoding, 
   utils for app deployment and management.
 License: GPL (>= 2)
 ByteCompile: true

@@ -14,7 +14,7 @@ Creates AuthBackendBearer class object.
 }
 \itemize{
 \item \code{FUN} :: \code{function}\cr
-Function to perform authentification.
+Function to perform authentication
 }
 }
 
@@ -23,7 +23,7 @@ Function to perform authentification.
 \itemize{
 \item \code{authenticate(request, response)}\cr
 \link{RestRserveRequest}, \link{RestRserveResponse} -> \code{NULL}\cr
-Provide authentication for the given reqiest.
+Provide authentication for the given request.
 }
 }
 

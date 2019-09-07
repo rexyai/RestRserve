@@ -68,7 +68,7 @@
 #' * `append_header(name, value)`\cr
 #'   `character(1)`, `character()` -> `self`\cr
 #'  Append HTTP response header. If header exists `,` separator will be used.
-#'  Don't use this method to set cookie (use `set_cookie` method insteead).
+#'  Don't use this method to set cookie (use `set_cookie` method instead).
 #'
 #' * `delete_header(name)`\cr
 #'   `character(1)` -> `logical(1)`\cr

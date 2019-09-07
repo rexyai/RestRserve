@@ -4,7 +4,7 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Adds verious authorizations to [RestRserveApplication].
+#' Adds various authorizations to [RestRserveApplication].
 #' This class inherits [RestRserveMiddleware].
 #'
 #' @section Construction:
@@ -15,16 +15,16 @@
 #' ````
 #'
 #' * `auth_backend` :: [AuthBackend]\cr
-#'   Authentification backend.
+#'   Authentication backend.
 #'
 #' * `routes` :: `character()`\cr
 #'   Routes paths to protect.
 #'
 #' * `match` :: `character()`\cr
-#'   How routes will be natched: exact or patrial (as prefix).
+#'   How routes will be matched: exact or partial (as prefix).
 #'
 #' * `name` :: `character(1)`\cr
-#'   Midleware name.
+#'   Middleware name.
 #'
 #' @export
 #'

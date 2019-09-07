@@ -1,4 +1,4 @@
-#' @title simple json encoder
+#' @title simple JSON encoder
 #'
 #' @description
 #' Encode R objects as json. Wrapper around `jsonlite::toJSON` with

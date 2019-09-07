@@ -1,10 +1,10 @@
-#' @title Helps to generate http error responces
+#' @title Helps to generate http error responses
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' helps to generate http error responces. See [raise] for example.
+#' helps to generate http error responses See [raise] for example.
 #'
 #' @section Construction:
 #'
@@ -22,7 +22,7 @@
 #' * `content_type` :: `character(1)`\cr
 #'   Type of the error response.
 #' * `encode` :: `function`\cr
-#'   Function to encpode response body.
+#'   Function to encode response body.
 #'
 #' @section Methods:
 #'
@@ -36,7 +36,7 @@
 #'
 #' * `error(status_code, body, headers = character(0))`\cr
 #'   `integer(1)`, `raw()` | `character()`, `character()` -> [RestRserveResponse]
-#'   Generate HTTP error respoonse.
+#'   Generate HTTP error response
 #'
 #' @keywords internal
 #'

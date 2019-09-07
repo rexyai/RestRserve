@@ -14,7 +14,7 @@ Creates AuthBackendBasic class object.
 }
 \itemize{
 \item \code{FUN} :: \code{function}\cr
-Function to perform authentification.
+Function to perform authentication.
 }
 }
 
@@ -23,7 +23,7 @@ Function to perform authentification.
 \itemize{
 \item \code{authenticate(request, response)}\cr
 \link{RestRserveRequest}, \link{RestRserveResponse} -> \code{NULL}\cr
-Provide authentication for the given reqiest.
+Provide authentication for the given request.
 }
 }
 
@@ -33,7 +33,7 @@ user_db = list(
   "user-1" = "password-1",
   "user-2" = "password-2"
 )
-# define authentification handler
+# define authentication handler
 auth_fun = function(user, password) {
   if (is.null(user_db[[user]])) return(FALSE) # not found
   if (!identical(user_db[[user]], password)) return(FALSE) # incorrect

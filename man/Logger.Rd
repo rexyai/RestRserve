@@ -6,7 +6,7 @@
 \title{Simple logging utility}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Ccreates Logger object which can be used for logging with different level of
+Creates Logger object which can be used for logging with different level of
 verbosity. Log messages are in JSON format.
 }
 \section{Construction}{
@@ -43,7 +43,7 @@ logger_name, pid, message.
 Write trace message.
 \item \code{debug(msg, ...)}\cr
 \code{character()}, \code{any} -> \code{character(1)}\cr
-Write dbug message.
+Write debug message.
 \item \code{info(msg, ...)}\cr
 \code{character()}, \code{any} -> \code{character(1)}\cr
 Write info message.

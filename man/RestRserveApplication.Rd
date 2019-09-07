@@ -16,7 +16,7 @@ REST API by allowing to easily register R functions for handling http-requests.
 Constructor for \code{RestRserveApplication}.\preformatted{RestRserveApplication$new(middleware = list(), content_type = "text/plain", ...)
 }
 \itemize{
-\item \code{middleware} :: \code{list([RestRserveMiddleware])}\cr
+\item \code{middleware} :: \code{list} of \link{RestRserveMiddleware}\cr
 List of middlewares.
 \item \code{content_type} :: \code{character(1)}\cr
 Default response body content (media) type. \code{"text/plain"} by default.
@@ -27,9 +27,10 @@ Default response body content (media) type. \code{"text/plain"} by default.
 
 \itemize{
 \item \code{logger} :: \link{Logger}\cr
-Loger object to trace requests process.
+Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
+drop-in replacement. \code{Logger} and loggers created by \code{lgr} packages share same syntax.
 \item \code{content_type} :: \code{chararcter(1)}\cr
-Default response body content tyoe.
+Default response body content type.
 \item \code{HTTPError} :: \code{HTTPErrorFactory}\cr
 Helper to raise HTTP errors.
 \item \code{ContentHandlers} :: \link{ContentHandlersFactory}\cr
@@ -48,7 +49,7 @@ Adds endpoint and register user-supplied R function as a handler.
 
 Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
 
-\code{match} param defines how route will be processed.
+\code{match} parameter defines how route will be processed.
 \itemize{
 \item \code{exact} - match route as is. Returns 404 if route is not matched.
 \item \code{partial} - match route as prefix. Returns 404 if prefix are not matched.
@@ -84,9 +85,9 @@ be set to \code{"application/octet-stream"}.
 Appends middleware to handlers pipeline.
 \item \code{process_request(request)}\cr
 \link{RestRserveRequest} -> \code{list()}\cr
-Process incomming request and generate Rserve compatible answer with
+Process incoming request and generate Rserve compatible answer with
 \link{RestRserveResponse} \code{to_rserve()}. Useful for tests your handlers before
-deploy applicaiton.
+deploy application.
 \item \code{run(http_port = 8001L, ..., background = FALSE)}\cr
 \code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
 Starts RestRserve application from current R session.

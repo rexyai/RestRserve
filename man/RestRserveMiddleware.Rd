@@ -9,9 +9,9 @@
 Creates RestRserveMiddleware object.
 
 RestRserveMiddleware is a very useful concept which allows to perform
-pre-processing of requests and post-processing of responses. Middleware has
+preprocessing of requests and post-processing of responses. Middleware has
 an access to both \code{request} and  \code{response} objects and can modify them.
-This way each request can be checked/modified before passing hadnler and
+This way each request can be checked/modified before passing handler and
 response can be post processed (for example this way we developer can set up
 custom error messages).
 }
@@ -52,7 +52,7 @@ Function which takes 2 arguments - \code{request} and \code{response} objects (c
 
 Function is called after request is processed by handler.
 
-Usually \code{process_response} is used to perform logging, custom error hadnling, etc.
+Usually \code{process_response} is used to perform logging, custom error handling, etc.
 \item \code{name} :: \code{character(1)}\cr
 Middleware name.
 }

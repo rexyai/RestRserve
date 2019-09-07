@@ -13,13 +13,13 @@
 #' ````
 #'
 #' * `FUN` :: `function`\cr
-#'   Function to perform authentification.
+#'   Function to perform authentication.
 #'
 #' @section Methods:
 #'
 #' * `authenticate(request, response)`\cr
 #'   [RestRserveRequest], [RestRserveResponse] -> `NULL`\cr
-#'   Provide authentication for the given reqiest.
+#'   Provide authentication for the given request.
 #'
 #' @references
 #' [RFC7617](https://tools.ietf.org/html/rfc7617)
@@ -37,7 +37,7 @@
 #'   "user-1" = "password-1",
 #'   "user-2" = "password-2"
 #' )
-#' # define authentification handler
+#' # define authentication handler
 #' auth_fun = function(user, password) {
 #'   if (is.null(user_db[[user]])) return(FALSE) # not found
 #'   if (!identical(user_db[[user]], password)) return(FALSE) # incorrect

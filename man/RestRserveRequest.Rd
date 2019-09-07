@@ -19,12 +19,12 @@ Character with requested path. Always starts with \code{/}.
 \item \code{method} :: \code{character(1)}\cr
 Request HTTP method.
 \item \code{query} :: \code{named character()}\cr
-A named character vector with URL decoded query params.
+A named character vector with URL decoded query parameters.
 \item \code{headers} :: \code{raw()} | \code{character(1)}\cr
 Request HTTP headers.
 \item \code{body} :: \code{raw()} | \code{character()}\cr
 Request body. Can be \code{NULL}, raw vector or named character vector for the
-URL encoded form (like a \code{query} param).
+URL encoded form (like a \code{query} parameter).
 \item \code{decode} :: \code{function}\cr
 Function to decode body for the specific content type.
 }
@@ -40,7 +40,7 @@ Request HTTP method.
 \item \code{headers} :: \code{named list()}\cr
 Request headers.
 \item \code{query} :: \code{named list()}\cr
-Request query params.
+Request query parameters.
 \item \code{content_type} :: \code{character(1)}\cr
 Request body content type.
 \item \code{body} :: \code{raw()} | \code{named character()}\cr
@@ -48,11 +48,11 @@ Request body.
 \item \code{cookies} :: \code{named list()}\cr
 Request cookies.
 \item \code{files} :: \code{named list()}\cr
-Structure which contains positions and lengths of files for the mutipart
+Structure which contains positions and lengths of files for the multipart
 body.
 \item \code{path_parameters} :: \code{named list()}\cr
 List of parameters extracted from templated path after routing.
-For example if we have some hadler listening at \code{/job/{job_id}} and we are
+For example if we have some handler listening at \code{/job/{job_id}} and we are
 receiving request at \code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}.
 It is important to understand that \code{path_parameters} will be available
 (not empty) only after request will reach handler.
@@ -68,7 +68,7 @@ argument of the R.
 \item \code{date} :: \code{POSIXct(1)}\cr
 Request \code{Date} header converted to \code{POSIXct}.
 \item \code{accept} :: \code{character()}\cr
-Splitted \code{Accept} request header.
+Split \code{Accept} request header.
 \item \code{accept_json} :: \code{logical(1)}\cr
 Request accepts JSON response.
 \item \code{accept_xml} :: \code{logical(1)}\cr
@@ -84,10 +84,10 @@ Request accepts XML response.
 Get request header by name.
 \item \code{get_param_query(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
-Get request query param by name.
+Get request query parameter by name.
 \item \code{get_param_path(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
-Get templated path param by name.
+Get templated path parameter by name.
 \item \code{get_file(name)}\cr
 \code{character(1)} -> \code{raw()}\cr
 Extract specific file from multipart body.

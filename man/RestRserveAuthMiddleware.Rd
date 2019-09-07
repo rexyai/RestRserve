@@ -6,7 +6,7 @@
 \title{Authorization middleware}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Adds verious authorizations to \link{RestRserveApplication}.
+Adds various authorizations to \link{RestRserveApplication}.
 This class inherits \link{RestRserveMiddleware}.
 }
 \section{Construction}{
@@ -15,13 +15,13 @@ This class inherits \link{RestRserveMiddleware}.
 }
 \itemize{
 \item \code{auth_backend} :: \link{AuthBackend}\cr
-Authentification backend.
+Authentication backend.
 \item \code{routes} :: \code{character()}\cr
 Routes paths to protect.
 \item \code{match} :: \code{character()}\cr
-How routes will be natched: exact or patrial (as prefix).
+How routes will be matched: exact or partial (as prefix).
 \item \code{name} :: \code{character(1)}\cr
-Midleware name.
+Middleware name.
 }
 }
 

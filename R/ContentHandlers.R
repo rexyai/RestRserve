@@ -29,11 +29,11 @@
 #'
 #' * `set_encode(content_type, FUN)`\cr
 #'   `character(1)`, `function` -> `self`\cr
-#'   Set hahndler to encode body for the specific content type.
+#'   Set handler to encode body for the specific content type.
 #'
 #' * `set_decode(content_type, FUN)`\cr
 #'   `character(1)`, `function` -> `self`\cr
-#'   Set hahndler to decode body for the specific content type.
+#'   Set handler to decode body for the specific content type.
 #'
 #' @keywords internal
 #'

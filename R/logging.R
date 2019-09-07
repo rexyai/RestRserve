@@ -4,7 +4,7 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Ccreates Logger object which can be used for logging with different level of
+#' Creates Logger object which can be used for logging with different level of
 #' verbosity. Log messages are in JSON format.
 #'
 #' @section Construction:
@@ -46,7 +46,7 @@
 #'
 #' * `debug(msg, ...)`\cr
 #'   `character()`, `any` -> `character(1)`\cr
-#'   Write dbug message.
+#'   Write debug message.
 #'
 #' * `info(msg, ...)`\cr
 #'   `character()`, `any` -> `character(1)`\cr

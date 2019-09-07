@@ -3,10 +3,10 @@
 \docType{data}
 \name{HTTPErrorFactory}
 \alias{HTTPErrorFactory}
-\title{Helps to generate http error responces}
+\title{Helps to generate http error responses}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-helps to generate http error responces. See \link{raise} for example.
+helps to generate http error responses See \link{raise} for example.
 }
 \section{Construction}{
 \preformatted{HTTPErrorFactory$new(content_type = "text/plain", encode = NULL)
@@ -25,7 +25,7 @@ Specify how encode response body.
 \item \code{content_type} :: \code{character(1)}\cr
 Type of the error response.
 \item \code{encode} :: \code{function}\cr
-Function to encpode response body.
+Function to encode response body.
 }
 }
 
@@ -40,7 +40,7 @@ Set content type of response.
 Set encode for the given content type.
 \item \code{error(status_code, body, headers = character(0))}\cr
 \code{integer(1)}, \code{raw()} | \code{character()}, \code{character()} -> \link{RestRserveResponse}
-Generate HTTP error respoonse.
+Generate HTTP error response
 }
 }
 

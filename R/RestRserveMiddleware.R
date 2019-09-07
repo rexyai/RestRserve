@@ -7,9 +7,9 @@
 #' Creates RestRserveMiddleware object.
 #'
 #' RestRserveMiddleware is a very useful concept which allows to perform
-#' pre-processing of requests and post-processing of responses. Middleware has
+#' preprocessing of requests and post-processing of responses. Middleware has
 #' an access to both `request` and  `response` objects and can modify them.
-#' This way each request can be checked/modified before passing hadnler and
+#' This way each request can be checked/modified before passing handler and
 #' response can be post processed (for example this way we developer can set up
 #' custom error messages).
 #'
@@ -52,7 +52,7 @@
 #'
 #'   Function is called after request is processed by handler.
 #'
-#'   Usually `process_response` is used to perform logging, custom error hadnling, etc.
+#'   Usually `process_response` is used to perform logging, custom error handling, etc.
 #'
 #' * `name` :: `character(1)`\cr
 #'   Middleware name.

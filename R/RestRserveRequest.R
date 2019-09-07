@@ -21,14 +21,14 @@
 #'   Request HTTP method.
 #'
 #' * `query` :: `named character()`\cr
-#'   A named character vector with URL decoded query params.
+#'   A named character vector with URL decoded query parameters.
 #'
 #' * `headers` :: `raw()` | `character(1)`\cr
 #'   Request HTTP headers.
 #'
 #' * `body` :: `raw()` | `character()`\cr
 #'   Request body. Can be `NULL`, raw vector or named character vector for the
-#'   URL encoded form (like a `query` param).
+#'   URL encoded form (like a `query` parameter).
 #'
 #' * `decode` :: `function`\cr
 #'   Function to decode body for the specific content type.
@@ -45,7 +45,7 @@
 #'   Request headers.
 #'
 #' * `query` :: `named list()`\cr
-#'   Request query params.
+#'   Request query parameters.
 #'
 #' * `content_type` :: `character(1)`\cr
 #'   Request body content type.
@@ -57,12 +57,12 @@
 #'   Request cookies.
 #'
 #' * `files` :: `named list()`\cr
-#'   Structure which contains positions and lengths of files for the mutipart
+#'   Structure which contains positions and lengths of files for the multipart
 #'   body.
 #'
 #' * `path_parameters` :: `named list()`\cr
 #'   List of parameters extracted from templated path after routing.
-#'   For example if we have some hadler listening at `/job/{job_id}` and we are
+#'   For example if we have some handler listening at `/job/{job_id}` and we are
 #'   receiving request at `/job/1` then `path_parameters` will be `list(job_id = "1")`.
 #'   It is important to understand that `path_parameters` will be available
 #'   (not empty) only after request will reach handler.
@@ -83,7 +83,7 @@
 #'   Request `Date` header converted to `POSIXct`.
 #'
 #' * `accept` :: `character()`\cr
-#'   Splitted `Accept` request header.
+#'   Split `Accept` request header.
 #'
 #' * `accept_json` :: `logical(1)`\cr
 #'   Request accepts JSON response.
@@ -99,11 +99,11 @@
 #'
 #' * `get_param_query(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
-#'   Get request query param by name.
+#'   Get request query parameter by name.
 #'
 #' * `get_param_path(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
-#'   Get templated path param by name.
+#'   Get templated path parameter by name.
 #'
 #' * `get_file(name)`\cr
 #'   `character(1)` -> `raw()`\cr
