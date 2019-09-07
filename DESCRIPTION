@@ -5,7 +5,7 @@ Version: 0.2.0
 Authors@R: c(
   person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
          comment = c(ORCID = "0000-0001-5413-1506")),
-  person("Artem", "Klevtsov", role="ctb", email="a.a.klevtsov@gmail.com")
+  person("Artem", "Klevtsov", role="aut", email="a.a.klevtsov@gmail.com")
   )
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
