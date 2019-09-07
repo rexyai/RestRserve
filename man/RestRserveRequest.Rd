@@ -3,62 +3,104 @@
 \docType{data}
 \name{RestRserveRequest}
 \alias{RestRserveRequest}
-\title{Creates RestRserveRequest object (R6 class)}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-RestRserveRequest
-}
-\value{
-\code{RestRserveRequest} object - R6 class:
-\describe{
-\item{path}{ = \code{"/somepath"}, always character of length 1}
-\item{method}{ = \code{"GET"}, always character of length 1}
-\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-\item{body}{ = \code{raw(0)}.
-\itemize{
-\item \code{NULL} if the http body is empty or zero length.
-\item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-\item named \code{characeter vector} in the case of a URL encoded form.
-It will have the same shape as the query string (named string vector).
-}
-},
-\item{request_id}{\bold{character}, automatically generated UUID for each request}
-\item{content_type}{\code{""}, always character of length 1}
-\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
-According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
-are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
-},
-\item{path_parameters}{\bold{list()}, list of parameters extracted from templated path after routing.
-For example if we have some hadler listening at \code{/job/{job_id}}} and we are receiving request at
-\code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}. It is important to understand
-that \code{path_parameters} will be available (not empty) only after request will reach handler. This
-effectively means that \code{path_parameters} can be used inside handler and response middleware
-(but not request middleware!)
-}
-}
+\title{Creates RestRserveRequest object}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Called internally for handling incoming requests from Rserve side. Also useful for testing.
+Called internally for handling incoming requests from Rserve side.
+Also useful for testing.
+}
+\section{Construction}{
+\preformatted{RestRserveRequest$new(path = "/", method = "GET", query = NULL,
+                      headers = NULL, body = NULL, decode = NULL)
+}
 \itemize{
-\item \code{response = RestRserveRequest$new(
-  path = "/",
-  method = "GET",
-  query = new.env(parent = emptyenv()),
-  headers = new.env(parent = emptyenv()),
-  body = raw(),
-  content_type = "application/octet-stream")}
-\describe{
-\item{path}{\code{"/somepath"}, always character of length 1}
-\item{method}{\code{"GET"}, always character of length 1}
-\item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-\item{body}{
+\item \code{path} :: \code{character(1)}\cr
+Character with requested path. Always starts with \code{/}.
+\item \code{method} :: \code{character(1)}\cr
+Request HTTP method.
+\item \code{query} :: \code{named character()}\cr
+A named character vector with URL decoded query parameters.
+\item \code{headers} :: \code{raw()} | \code{character(1)}\cr
+Request HTTP headers.
+\item \code{body} :: \code{raw()} | \code{character()}\cr
+Request body. Can be \code{NULL}, raw vector or named character vector for the
+URL encoded form (like a \code{query} parameter).
+\item \code{decode} :: \code{function}\cr
+Function to decode body for the specific content type.
+}
+}
+
+\section{Fields}{
+
 \itemize{
-\item \code{NULL} if the http body is empty or zero length.
-\item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-\item named \code{characeter vector} in the case of a URL encoded form.
-It will have the same shape as the query string (named string vector)}
+\item \code{path} :: \code{character(1)}\cr
+Request path.
+\item \code{method} :: \code{character(1)}\cr
+Request HTTP method.
+\item \code{headers} :: \code{named list()}\cr
+Request headers.
+\item \code{query} :: \code{named list()}\cr
+Request query parameters.
+\item \code{content_type} :: \code{character(1)}\cr
+Request body content type.
+\item \code{body} :: \code{raw()} | \code{named character()}\cr
+Request body.
+\item \code{cookies} :: \code{named list()}\cr
+Request cookies.
+\item \code{files} :: \code{named list()}\cr
+Structure which contains positions and lengths of files for the multipart
+body.
+\item \code{path_parameters} :: \code{named list()}\cr
+List of parameters extracted from templated path after routing.
+For example if we have some handler listening at \code{/job/{job_id}} and we are
+receiving request at \code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}.
+It is important to understand that \code{path_parameters} will be available
+(not empty) only after request will reach handler.
+This effectively means that \code{path_parameters} can be used inside handler
+and response middleware (but not request middleware!).
+\item \code{context} :: \code{environment()}\cr
+Environment to store any data. Can be used in middlewares.
+\item \code{request_id} :: \code{character(1)}\cr
+Automatically generated UUID for each request. Read only.
+\item \code{body_decoded} :: \code{any}\cr
+Body parsed according to the \code{Content-type} request header and \code{decode}
+argument of the R.
+\item \code{date} :: \code{POSIXct(1)}\cr
+Request \code{Date} header converted to \code{POSIXct}.
+\item \code{accept} :: \code{character()}\cr
+Split \code{Accept} request header.
+\item \code{accept_json} :: \code{logical(1)}\cr
+Request accepts JSON response.
+\item \code{accept_xml} :: \code{logical(1)}\cr
+Request accepts XML response.
 }
-\item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
+}
+
+\section{Methods}{
+
+\itemize{
+\item \code{get_header(name)}\cr
+\code{character(1)} -> \code{character(1)}\cr
+Get request header by name.
+\item \code{get_param_query(name)}\cr
+\code{character(1)} -> \code{character(1)}\cr
+Get request query parameter by name.
+\item \code{get_param_path(name)}\cr
+\code{character(1)} -> \code{character(1)}\cr
+Get templated path parameter by name.
+\item \code{get_file(name)}\cr
+\code{character(1)} -> \code{raw()}\cr
+Extract specific file from multipart body.
 }
 }
+
+\examples{
+# init simply request
+rq = RestRserveRequest$new(path = "/")
+rq$method # GET
+
+}
+\seealso{
+\link{RestRserveResponse}
 }
 \keyword{datasets}

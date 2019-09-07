@@ -29,14 +29,21 @@ extract_docstrings_yaml = function(FUN) {
   docstrings
 }
 
-#' @title creates OpenAPI objects
-#' @description Facilitates in building \href{https://www.openapis.org/}{OpenAPI} description document by
+#' @name openapi
+#' @title build OpenAPI objects
+#' @description Facilitates in building [OpenAPI](https://www.openapis.org/) description document by
 #' creating objects described in
-#'  \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md}
-#' @param openapi string, version of open api. For example \code{"3.0.1"}
-#' @param info infoObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}.
-#' See \link{openapi_info}
-#' @param ... other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}
+#'  <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md>
+NULL
+
+
+#' @title creates OpenAPI objects
+#'  <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md>
+#' @param openapi string, version of open api. For example `"3.0.1"`
+#' @param info infoObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject>.
+#' See [openapi_info]
+#' @param ... other parameters - see <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject>
+#' @rdname openapi
 #' @export
 openapi_create = function(openapi = openapi_openapi_version(),
                    info = openapi_info(),
@@ -46,24 +53,25 @@ openapi_create = function(openapi = openapi_openapi_version(),
 }
 
 # https://swagger.io/specification/#fixed-fields-18
-#' @export
 #' @param openapi_version version on openapi
-#' @rdname openapi_create
+#' @rdname openapi
+#' @export
 openapi_openapi_version = function(openapi_version = "3.0.1") {
   checkmate::assert_string(openapi_version, pattern = "[0-9.]+")
   openapi_version
 }
 
 # https://swagger.io/specification/#info-object-19
-#' @export
-#' @details \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}
+
+#' @details <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject>
 #' @param title the title of the application
 #' @param version version of the application
 #' @param description description
 #' @param termsOfService termsOfService of the application
-#' @param contact contact of the maintainer - see \link{openapi_contact}
+#' @param contact contact of the maintainer - see [openapi_contact]
 #' @param license license of the api
-#' @rdname openapi_create
+#' @rdname openapi
+#' @export
 openapi_info = function(title = "RestRserve OpenAPI",
                         version = "1.0",
                         description = NULL,
@@ -90,10 +98,10 @@ openapi_info = function(title = "RestRserve OpenAPI",
   res
 }
 
+#' @param servers serverObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject>
+#' See [openapi_servers]
+#' @rdname openapi
 #' @export
-#' @param servers serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
-#' See \link{openapi_servers}
-#' @rdname openapi_create
 openapi_servers = function(servers = list(openapi_server())) {
   checkmate::assert_list(servers, types = "openapi_server")
 
@@ -103,8 +111,8 @@ openapi_servers = function(servers = list(openapi_server())) {
 
 # https://swagger.io/specification/#serverObject
 #' @param variables  a map between a variable name and its value. The value is used for substitution in the server's URL template.
+#' @rdname openapi
 #' @export
-#' @rdname openapi_create
 openapi_server = function(url = "/",
                           description = NULL,
                           variables = NULL) {
@@ -122,11 +130,11 @@ openapi_server = function(url = "/",
   res
 }
 
-#' @export
 #' @param name name
 #' @param url url
 #' @param email contact email
-#' @rdname openapi_create
+#' @rdname openapi
+#' @export
 openapi_contact = function(name = NULL, url = NULL, email = NULL) {
   checkmate::assert_string(name, null.ok = TRUE)
   checkmate::assert_string(url, pattern = "https?://", null.ok = TRUE)
@@ -147,7 +155,7 @@ openapi_contact = function(name = NULL, url = NULL, email = NULL) {
 }
 
 #' @export
-#' @rdname openapi_create
+#' @rdname openapi
 openapi_license = function(name = NULL, url = NULL) {
   checkmate::assert_string(name, null.ok = TRUE)
   checkmate::assert_string(url, pattern = "https?://", null.ok = TRUE)

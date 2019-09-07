@@ -1,58 +1,129 @@
-#' @name RestRserveRequest
-#' @title Creates RestRserveRequest object (R6 class)
-#' @description Called internally for handling incoming requests from Rserve side. Also useful for testing.
-#' \itemize{
-#' \item \code{response = RestRserveRequest$new(
-#'   path = "/",
-#'   method = "GET",
-#'   query = new.env(parent = emptyenv()),
-#'   headers = new.env(parent = emptyenv()),
-#'   body = raw(),
-#'   content_type = "application/octet-stream")}
-#' \describe{
-#'   \item{path}{\code{"/somepath"}, always character of length 1}
-#'   \item{method}{\code{"GET"}, always character of length 1}
-#'   \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-#'   \item{body}{
-#'     \itemize{
-#'       \item \code{NULL} if the http body is empty or zero length.
-#'       \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-#'       \item named \code{characeter vector} in the case of a URL encoded form.
-#'          It will have the same shape as the query string (named string vector)}
-#'     }
-#'   \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.}
-#' }
-#' }
-#' @return \code{RestRserveRequest} object - R6 class:
-#'    \describe{
-#'       \item{path}{ = \code{"/somepath"}, always character of length 1}
-#'       \item{method}{ = \code{"GET"}, always character of length 1}
-#'       \item{query}{\code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from query parameters.}
-#'       \item{body}{ = \code{raw(0)}.
-#'          \itemize{
-#'             \item \code{NULL} if the http body is empty or zero length.
-#'             \item \code{raw vector} with a "content-type" attribute in all cases except URL encoded form (if specified in the headers)
-#'             \item named \code{characeter vector} in the case of a URL encoded form.
-#'             It will have the same shape as the query string (named string vector).
-#'          }
-#'       },
-#'       \item{request_id}{\bold{character}, automatically generated UUID for each request}
-#'       \item{content_type}{\code{""}, always character of length 1}
-#'       \item{headers}{ \code{as.environment(list("a" = "1", "b" = "2"))}, \bold{environment}, key-value pairs from http-header.
-#'         According to \href{https://www.w3.org/Protocols/rfc2616/rfc2616-sec4.html#sec4.2}{RFC2616} header field names
-#'         are case-insensitive. So in RestRserve \bold{keys are always in lower case}.
-#'       },
-#'       \item{path_parameters}{\bold{list()}, list of parameters extracted from templated path after routing.
-#'         For example if we have some hadler listening at \code{/job/{job_id}}} and we are receiving request at
-#'         \code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}. It is important to understand
-#'         that \code{path_parameters} will be available (not empty) only after request will reach handler. This
-#'         effectively means that \code{path_parameters} can be used inside handler and response middleware
-#'         (but not request middleware!)
-#'    }
+#' @title Creates RestRserveRequest object
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
+#' @description
+#' Called internally for handling incoming requests from Rserve side.
+#' Also useful for testing.
+#'
+#' @section Construction:
+#'
+#' ```
+#' RestRserveRequest$new(path = "/", method = "GET", query = NULL,
+#'                       headers = NULL, body = NULL, decode = NULL)
+#' ````
+#'
+#' * `path` :: `character(1)`\cr
+#'   Character with requested path. Always starts with `/`.
+#'
+#' * `method` :: `character(1)`\cr
+#'   Request HTTP method.
+#'
+#' * `query` :: `named character()`\cr
+#'   A named character vector with URL decoded query parameters.
+#'
+#' * `headers` :: `raw()` | `character(1)`\cr
+#'   Request HTTP headers.
+#'
+#' * `body` :: `raw()` | `character()`\cr
+#'   Request body. Can be `NULL`, raw vector or named character vector for the
+#'   URL encoded form (like a `query` parameter).
+#'
+#' * `decode` :: `function`\cr
+#'   Function to decode body for the specific content type.
+#'
+#' @section  Fields:
+#'
+#' * `path` :: `character(1)`\cr
+#'   Request path.
+#'
+#' * `method` :: `character(1)`\cr
+#'   Request HTTP method.
+#'
+#' * `headers` :: `named list()`\cr
+#'   Request headers.
+#'
+#' * `query` :: `named list()`\cr
+#'   Request query parameters.
+#'
+#' * `content_type` :: `character(1)`\cr
+#'   Request body content type.
+#'
+#' * `body` :: `raw()` | `named character()`\cr
+#'   Request body.
+#'
+#' * `cookies` :: `named list()`\cr
+#'   Request cookies.
+#'
+#' * `files` :: `named list()`\cr
+#'   Structure which contains positions and lengths of files for the multipart
+#'   body.
+#'
+#' * `path_parameters` :: `named list()`\cr
+#'   List of parameters extracted from templated path after routing.
+#'   For example if we have some handler listening at `/job/{job_id}` and we are
+#'   receiving request at `/job/1` then `path_parameters` will be `list(job_id = "1")`.
+#'   It is important to understand that `path_parameters` will be available
+#'   (not empty) only after request will reach handler.
+#'   This effectively means that `path_parameters` can be used inside handler
+#'   and response middleware (but not request middleware!).
+#'
+#' * `context` :: `environment()`\cr
+#'   Environment to store any data. Can be used in middlewares.
+#'
+#' * `request_id` :: `character(1)`\cr
+#'   Automatically generated UUID for each request. Read only.
+#'
+#' * `body_decoded` :: `any`\cr
+#'   Body parsed according to the `Content-type` request header and `decode`
+#'   argument of the R.
+#'
+#' * `date` :: `POSIXct(1)`\cr
+#'   Request `Date` header converted to `POSIXct`.
+#'
+#' * `accept` :: `character()`\cr
+#'   Split `Accept` request header.
+#'
+#' * `accept_json` :: `logical(1)`\cr
+#'   Request accepts JSON response.
+#'
+#' * `accept_xml` :: `logical(1)`\cr
+#'   Request accepts XML response.
+#'
+#' @section Methods:
+#'
+#' * `get_header(name)`\cr
+#'   `character(1)` -> `character(1)`\cr
+#'   Get request header by name.
+#'
+#' * `get_param_query(name)`\cr
+#'   `character(1)` -> `character(1)`\cr
+#'   Get request query parameter by name.
+#'
+#' * `get_param_path(name)`\cr
+#'   `character(1)` -> `character(1)`\cr
+#'   Get templated path parameter by name.
+#'
+#' * `get_file(name)`\cr
+#'   `character(1)` -> `raw()`\cr
+#'   Extract specific file from multipart body.
+#'
 #' @export
+#'
+#' @seealso [RestRserveResponse]
+#'
+#' @examples
+#' # init simply request
+#' rq = RestRserveRequest$new(path = "/")
+#' rq$method # GET
+#'
 RestRserveRequest = R6::R6Class(
   classname = "RestRserveRequest",
   public = list(
+    #---------------------------------
+    # public members
+    #---------------------------------
     path = NULL,
     method = NULL,
     headers = NULL,
@@ -63,35 +134,47 @@ RestRserveRequest = R6::R6Class(
     query = NULL,
     files = NULL,
     path_parameters = NULL,
+    decode = NULL,
+    #---------------------------------
+    # methods
+    #---------------------------------
     initialize = function(path = "/",
                           method = "GET",
                           query = NULL,
                           headers = NULL,
-                          body = NULL
+                          body = NULL,
+                          # content_type = "text/plain",
+                          decode = NULL
                           ) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
         checkmate::assert_string(method)
         checkmate::assert_character(query, null.ok = TRUE)
-        checkmate::assert_raw(headers, null.ok = TRUE)
+        checkmate::assert(
+          checkmate::check_raw(headers, null.ok = TRUE),
+          checkmate::check_string(headers, null.ok = TRUE),
+          combine = "or"
+        )
         checkmate::assert(
           checkmate::check_raw(body, null.ok = TRUE),
           checkmate::check_character(body, null.ok = TRUE),
           combine = "or"
         )
+        checkmate::assert_function(decode, null.ok = TRUE)
       }
 
-      self$headers = new.env(parent = emptyenv())
+      self$headers = list()
       self$context = new.env(parent = emptyenv())
-      self$cookies = new.env(parent = emptyenv())
-      self$query = new.env(parent = emptyenv())
+      self$cookies = list()
+      self$query = list()
       self$path_parameters = list()
-      # parse first
-      private$parse_headers(headers)
+
+      self$decode = decode
+
       private$parse_query(query)
-      # parse after headers
-      private$parse_body(body)
-      # parse after headers
+      private$parse_headers(headers)
+      private$parse_body_and_content_type(body)
+
       private$parse_cookies()
       self$path = path
       # Rserve adds "Request-Method: " key:
@@ -139,6 +222,13 @@ RestRserveRequest = R6::R6Class(
     }
   ),
   active = list(
+    body_decoded = function() {
+      decode = self$decode
+      if (!is.function(decode)) {
+        decode = ContentHandlers$get_decode(self$content_type)
+      }
+      decode(self$body)
+    },
     request_id = function() {
       private$id
     },
@@ -174,13 +264,13 @@ RestRserveRequest = R6::R6Class(
         headers = rawToChar(headers)
       }
       if (is_string(headers)) {
-        self$headers = as.environment(parse_headers(headers))
+        self$headers = parse_headers(headers)
       }
       return(invisible(TRUE))
     },
     parse_cookies = function() {
       if (!is.null(self$headers[["cookie"]])) {
-        self$cookies = as.environment(parse_cookies(self$headers[["cookie"]]))
+        self$cookies = parse_cookies(self$headers[["cookie"]])
       }
       return(invisible(TRUE))
     },
@@ -190,7 +280,7 @@ RestRserveRequest = R6::R6Class(
         res = as.list(query)
         # Omit empty keys and empty values
         res = res[nzchar(names(res)) & nzchar(query)]
-        self$query = as.environment(res)
+        self$query = res
       }
       return(invisible(TRUE))
     },
@@ -230,20 +320,20 @@ RestRserveRequest = R6::R6Class(
         }
       }
       if (length(res$files) > 0L) {
-        self$files = as.environment(res$files)
+        self$files = res$files
       }
       self$body = body
       self$content_type = content_type
       return(invisible(TRUE))
     },
-    parse_body = function(body) {
+    parse_body_and_content_type = function(body) {
       h_ctype = self$headers[["content-type"]]
       b_ctype = attr(body, "content-type")
       if (!is.null(b_ctype)) {
         h_ctype = b_ctype
       }
       if (is.null(h_ctype)) {
-        h_ctype = "application/octet-stream"
+        h_ctype = "text/plain"
       }
       if (is.null(body)) {
         self$body = raw()
@@ -265,3 +355,18 @@ RestRserveRequest = R6::R6Class(
     }
   )
 )
+
+
+# this is workhorse for RestRserve
+# it is assigned to .http.request as per requirements of Rserve for http interface
+http_request = function(url, query, body, headers) {
+  # first parse incoming request
+  request = RestRserveRequest$new(
+    path = url,
+    query = query,
+    body = body,
+    headers = headers
+  )
+  app = .GlobalEnv[["RestRserveApp"]]
+  app$process_request(request)
+}

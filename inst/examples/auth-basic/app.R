@@ -40,7 +40,7 @@ securearea_handler = function(request, response) {
 }
 
 
-## ---- basic authentification ----
+## ---- basic authentication ----
 
 auth_fun = function(user, password) {
   if (is.null(user_db[[user]])) {

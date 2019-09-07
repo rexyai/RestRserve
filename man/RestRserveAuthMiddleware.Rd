@@ -4,11 +4,33 @@
 \name{RestRserveAuthMiddleware}
 \alias{RestRserveAuthMiddleware}
 \title{Authorization middleware}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-RestRserveAuthMiddleware
-}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-adds verious authorizations to \link{RestRserveApplication}
+Adds various authorizations to \link{RestRserveApplication}.
+This class inherits \link{RestRserveMiddleware}.
 }
+\section{Construction}{
+\preformatted{RestRserveAuthMiddleware$new(auth_backend, routes, match = "exact",
+                             name = "AuthMiddleware")
+}
+\itemize{
+\item \code{auth_backend} :: \link{AuthBackend}\cr
+Authentication backend.
+\item \code{routes} :: \code{character()}\cr
+Routes paths to protect.
+\item \code{match} :: \code{character()}\cr
+How routes will be matched: exact or partial (as prefix).
+\item \code{name} :: \code{character(1)}\cr
+Middleware name.
+}
+}
+
+\seealso{
+\link{RestRserveMiddleware} \link{RestRserveApplication}
+
+Other AuthBackend: \code{\link{AuthBackendBasic}},
+  \code{\link{AuthBackendBearer}},
+  \code{\link{AuthBackend}}
+}
+\concept{AuthBackend}
 \keyword{datasets}

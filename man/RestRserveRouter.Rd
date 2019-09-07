@@ -3,12 +3,48 @@
 \docType{data}
 \name{RestRserveRouter}
 \alias{RestRserveRouter}
-\title{Creates RestRserveRouter.}
-\format{\code{\link{R6Class}} object.}
-\usage{
-RestRserveRouter
-}
+\title{Creates RestRserveRouter}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveRouter object.
 }
-\keyword{datasets}
+\section{Construction}{
+\preformatted{RestRserveRouter$new()
+}
+}
+
+\section{Fields}{
+
+\itemize{
+\item \code{paths} :: \code{character()}\cr
+All added paths as is (with templates placeholders).
+}
+}
+
+\section{Methods}{
+
+\itemize{
+\item \code{size()}\cr
+-> \code{integer(1)}\cr
+Returns number of paths added before.
+\item \code{add_path(path, match = c("exact", "partial", "regex"), id)}\cr
+\code{character(1)}, \code{character(1)}, \code{character(1)} -> \cr
+Add path with their id.
+\item \code{match_path(path, extract_vars = TRUE)}\cr
+\code{character(1)}, \code{logical(1)} -> \code{character(1)} | \code{NULL}\cr
+Find path within paths added before. Returns \code{NULL} if path not matched.
+}
+}
+
+\examples{
+r = RestRserve:::RestRserveRouter$new()
+r$add_path("/test", "exact", "testid")
+r$add_path("/area", "partial", "areaid")
+r$add_path("/template/{variable}", "regex", "templateid")
+r$match_path("/test") # testid
+r$match_path("/area/entry") # areaid
+r$match_path("/template/12345") # templateid
+attr(r$match_path("/template/12345"), "path_parameters") # variables values
+
+}
+\keyword{internal}

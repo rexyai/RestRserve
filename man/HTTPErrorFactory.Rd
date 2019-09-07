@@ -3,25 +3,45 @@
 \docType{data}
 \name{HTTPErrorFactory}
 \alias{HTTPErrorFactory}
-\title{helps to generate http error responces}
-\format{An object of class \code{R6ClassGenerator} of length 24.}
-\usage{
-HTTPErrorFactory
-}
+\title{Helps to generate http error responses}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-helps to generate http error responces. See \link{raise} for example.
+helps to generate http error responses See \link{raise} for example.
 }
+\section{Construction}{
+\preformatted{HTTPErrorFactory$new(content_type = "text/plain", encode = NULL)
+}
+\itemize{
+\item \code{content_type} :: \code{character(1)}\cr
+Type of the error response. \code{"text/plain"} by default.
+\item \code{encode} :: \code{function}\cr
+Specify how encode response body.
+}
+}
+
+\section{Fields}{
+
+\itemize{
+\item \code{content_type} :: \code{character(1)}\cr
+Type of the error response.
+\item \code{encode} :: \code{function}\cr
+Function to encode response body.
+}
+}
+
 \section{Methods}{
 
-\describe{
-\item{\code{$new(content_type = "text/plain", serializer = NULL)}}{Factory constructor.
-\describe{
-\item{content_type}{type of the error response. \code{"text/plain"} by default}
-\item{serializer}{\code{NULL} (default) or function. Specify how encode response body. If \code{NULL}
-then RestRserve will try to automatically encode body properly according to \code{content_type} argument}
-}
-}
+\itemize{
+\item \code{set_content_type(content_type)}\cr
+\code{character(1)} -> \code{self}\cr
+Set content type of response.
+\item \code{set_encode(encode)}\cr
+\code{function} -> \code{self}\cr
+Set encode for the given content type.
+\item \code{error(status_code, body, headers = character(0))}\cr
+\code{integer(1)}, \code{raw()} | \code{character()}, \code{character()} -> \link{RestRserveResponse}
+Generate HTTP error response
 }
 }
 
-\keyword{datasets}
+\keyword{internal}

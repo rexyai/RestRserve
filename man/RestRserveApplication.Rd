@@ -4,86 +4,184 @@
 \name{RestRserveApplication}
 \alias{RestRserveApplication}
 \title{Creates RestRserveApplication.}
-\format{\code{\link{R6Class}} object.}
-\usage{
-RestRserveApplication
-}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveApplication object.
-RestRserveApplication converts user-supplied R code into high-performance REST API by
-allowing to easily register R functions for handling http-requests.
+RestRserveApplication converts user-supplied R code into high-performance
+REST API by allowing to easily register R functions for handling http-requests.
 }
+\section{Construction}{
+
+
+Constructor for \code{RestRserveApplication}.\preformatted{RestRserveApplication$new(middleware = list(), content_type = "text/plain", ...)
+}
+\itemize{
+\item \code{middleware} :: \code{list} of \link{RestRserveMiddleware}\cr
+List of middlewares.
+\item \code{content_type} :: \code{character(1)}\cr
+Default response body content (media) type. \code{"text/plain"} by default.
+}
+}
+
 \section{Fields}{
 
-\describe{
-\item{\code{logger}}{\link{Logger} instance. Can be replaced/manipulated with corresponding
-\link{Logger} methods. Alternatively one can use loggers from \code{lgr} package as drop-on replacement.}
-}}
-
-\section{Usage}{
-
-
-\bold{For usage details see Methods, Arguments and Examples sections.}
-
 \itemize{
-\item \code{app = RestRserveApplication$new()}
-\item \code{app$add_route(path = "/echo", method = "GET", FUN =  function(request, response) {
-  response$body = request$query[[1]]
-  response$content_type = "text/plain"
-  })}
-\item \code{app$routes()}
+\item \code{logger} :: \link{Logger}\cr
+Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
+drop-in replacement. \code{Logger} and loggers created by \code{lgr} packages share same syntax.
+\item \code{content_type} :: \code{chararcter(1)}\cr
+Default response body content type.
+\item \code{HTTPError} :: \code{HTTPErrorFactory}\cr
+Helper to raise HTTP errors.
+\item \code{ContentHandlers} :: \link{ContentHandlersFactory}\cr
+Helper to decode request body and encode response body.
+\item \code{endpoints} :: \code{named list()}\cr
+Prints all the registered routes with allowed methods.
 }
 }
 
 \section{Methods}{
 
-\describe{
-\item{\code{$new(middleware = list(),content_type = "text/plain", ...)}}{
-Constructor for RestRserveApplication. Sets \code{middleware} ( list of \link{RestRserveMiddleware})
-and \code{content_type} - default response format.}
-\item{\code{$add_route(path, method, FUN, ...)}}{ Adds endpoint
-and register user-supplied R function as a handler.
-User function \code{FUN} \bold{must} take two arguments: first is \code{request} and second is \code{response}.
-The goal of the user function is to \bold{modify} \code{response} or throw exception (call \code{stop()})).
-Both \code{response} and \code{request} objects modified in-place and internally passed further to
-RestRserve execution pipeline.}
-\item{\code{$add_get(path, FUN, ...)}}{shorthand to \code{add_route} with \code{GET} method }
-\item{\code{$add_post(path, FUN, ...)}}{shorthand to \code{add_route} with \code{POST} method }
-\item{\code{$add_static(path, file_path, content_type = NULL, ...)}}{ adds GET method to serve
-file or directory at \code{file_path}. If \code{content_type = NULL}
-then MIME code \code{content_type}  will be inferred automatically (from file extension).
-If it will be impossible to guess about file type then \code{content_type} will be set to
-\code{"application/octet-stream"}}
-\item{\code{$run(http_port = 8001L, ..., background = FALSE)}}{starts RestRserve application from current R session.
-\code{http_port} - http port for application. Negative values (such as -1) means not to expose plain http.
-\code{...} - key-value pairs of the Rserve configuration. If contains \code{"http.port"} then
-\code{http_port} will be silently replaced with its value.
-\code{background} - whether to try to launch in background process on UNIX systems. Ignored on windows.}
-\item{\code{$call_handler(request)}}{Used internally, usually \bold{users don't need to call it}.
-Calls handler function for a given request.}
-\item{\code{$routes()}}{Lists all registered routes}
-\item{\code{$print_endpoints_summary()}}{Prints all the registered routes with allowed methods}
-\item{\code{$add_openapi(path = "/openapi.yaml", openapi = openapi_create())}}{Adds endpoint
-to serve \href{https://www.openapis.org/}{OpenAPI} description of available methods.}
-\item{\code{$add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
-                              path_swagger_assets = "/__swagger__/",
-                              file_path = tempfile(fileext = ".html"))}}{Adds endpoint to show swagger-ui.}
+\itemize{
+\item \code{add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)}\cr
+\code{character(1)}, \code{character(1)}, \code{character(1)} -> \code{character(1)} \cr
+Adds endpoint and register user-supplied R function as a handler.
+
+Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
+
+\code{match} parameter defines how route will be processed.
+\itemize{
+\item \code{exact} - match route as is. Returns 404 if route is not matched.
+\item \code{partial} - match route as prefix. Returns 404 if prefix are not matched.
+\item \code{regex} - match route as template. Returns 404 if template pattern not matched.
+}
+
+User function \code{FUN} \strong{must} take two arguments: first is \code{request}
+(\link{RestRserveRequest}) and second is \code{response} (\link{RestRserveResponse}).
+
+The goal of the user function is to \strong{modify} \code{response} or throw
+exception (call \code{\link[=raise]{raise()}} or \code{\link[=stop]{stop()}}).
+
+Both \code{response} and \code{request} objects modified in-place and internally
+passed further to RestRserve execution pipeline.
+\item \code{add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)}\cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any}, \code{logical(1)} -> \code{character(1)} \cr
+Shorthand to \code{add_route} with \code{GET} method. With \code{add_head = TRUE} HEAD method
+handlers will be added (with \code{add_head()}).
+\item \code{add_post(path, FUN, match = c("exact", "partial", "regex"), ...)}\cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{character(1)} \cr
+Shorthand to \code{add_route} with \code{POST} method.
+\item \code{add_static(path, file_path, content_type = NULL, ...)}\cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{character(1)} \cr
+Adds GET method to serve file or directory at \code{file_path}.
+
+If \code{content_type = NULL} then MIME code \code{content_type}  will be inferred
+automatically (from file extension).
+
+If it will be impossible to guess about file type then \code{content_type} will
+be set to \code{"application/octet-stream"}.
+\item \code{append_middleware(...)}\cr
+\code{list()} of \link{RestRserveMiddleware} -> \code{integer(1)}\cr
+Appends middleware to handlers pipeline.
+\item \code{process_request(request)}\cr
+\link{RestRserveRequest} -> \code{list()}\cr
+Process incoming request and generate Rserve compatible answer with
+\link{RestRserveResponse} \code{to_rserve()}. Useful for tests your handlers before
+deploy application.
+\item \code{run(http_port = 8001L, ..., background = FALSE)}\cr
+\code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
+Starts RestRserve application from current R session.
+\itemize{
+\item \code{http_port} - http port for application. Negative values (such as -1)
+means not to expose plain http.
+\item \code{...} - key-value pairs of the Rserve configuration. If contains
+\code{"http.port"} then \code{http_port} will be silently replaced with its value.
+\item \code{background} - whether to try to launch in background process on UNIX
+systems. Ignored on windows.
+}
+\item \code{print_endpoints_summary()}\cr
+-> \code{self}\cr
+Prints all the registered routes with allowed methods.
+\item \code{add_openapi(path = "/openapi.yaml", openapi = openapi_create(), file_path = "openapi.yaml")}
+\code{character(1)}, \code{named list()}, \code{character(1)} -> \code{character(1)}\cr
+Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
+available methods.
+\item \code{add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
+\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{character(1)}
+Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
 }
 
-\section{Arguments}{
+\examples{
+# init logger
+lg = Logger$new()
+# set log level for the middleware
+lg$set_log_level("debug")
+# set logger name
+lg$set_name("MW Logger")
+# init middleware to logging
+mw = RestRserveMiddleware$new(
+  process_request = function(rq, rs) {
+    lg$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
+  },
+  process_response = function(rq, rs) {
+    lg$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
+  },
+  name = "logger"
+)
 
-\describe{
-\item{app}{A \code{RestRserveApplication} object}
-\item{path}{\code{character} of length 1. Should be valid path for example \code{'/a/b/c'}.
-If it is named character vector with name equal to \code{"prefix"} then all the endopoints which
-begin with the path will call corresponding handler.}
-\item{method}{\code{character} of length 1. At the moment one of
-\code{("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")}}
-\item{FUN}{\code{function} which \strong{must take 2 arguments - \code{request}, \code{response} objects}.
-See \link{RestRserveRequest} and \link{RestRserveResponse} for details.
-}
-}
-}
+# init application
+app = RestRserveApplication$new(middleware = list(mw))
+# set log level for the app
+app$logger$set_log_level("error")
 
+# define simply request handler
+status_handler = function(rq, rs) {
+  rs$set_body("OK")
+  rs$set_content_type("text/plain")
+  rs$set_status_code(200L)
+}
+# add route
+app$add_get("/status", status_handler, "exact")
+
+# add static file handler
+desc_file = system.file("DESCRIPTION", package = "RestRserve")
+# add route
+app$add_static("/desc", desc_file, "text/plain")
+
+# define say message handler
+say_handler = function(rq, rs) {
+  who = rq$path_parameters[["user"]]
+  msg = rq$query[["message"]]
+  if (is.null(msg)) msg <- "Hello"
+  rs$set_body(paste(who, "say", dQuote(msg)))
+  rs$set_content_type("text/plain")
+  rs$set_status_code(200L)
+}
+# add route
+app$add_get("/say/{user}", say_handler, "regex")
+
+# print endpoint
+app$endpoints
+
+# test app
+# simulate requests
+not_found_rq = RestRserveRequest$new(path = "/no")
+status_rq = RestRserveRequest$new(path = "/status")
+desc_rq = RestRserveRequest$new(path = "/desc")
+say_rq = RestRserveRequest$new(path = "/say/anonym", query = c("message" = "Hola"))
+# process prepared requests
+app$process_request(not_found_rq)
+app$process_request(status_rq)
+app$process_request(desc_rq)
+app$process_request(say_rq)
+
+# run app
+# app$run(8001L)
+
+}
+\seealso{
+\link{HTTPError} \link{ContentHandlers} \link{RestRserveMiddleware}
+\link{RestRserveRequest} \link{RestRserveResponse}
+}
 \keyword{datasets}

@@ -5,12 +5,12 @@ Version: 0.2.0
 Authors@R: c(
   person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
          comment = c(ORCID = "0000-0001-5413-1506")),
-  person("Artem", "Klevtsov", role="ctb", email="a.a.klevtsov@gmail.com")
+  person("Artem", "Klevtsov", role="aut", email="a.a.klevtsov@gmail.com")
   )
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
   Allows to easily create high-performance HTTP API from R functions. 
-  Provides many small convenient tools like flexible logging, json encoding, 
+  Provides many small convenient tools like flexible logging, JSON encoding, 
   utils for app deployment and management.
 License: GPL (>= 2)
 ByteCompile: true
@@ -20,16 +20,16 @@ Imports:
   Rserve (>= 1.7.3),
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
-  checkmate (>= 1.9.3),
+  checkmate (>= 1.9.4),
   mime (>= 0.7),
   Rcpp (>= 1.0.2),
   jsonlite (>= 1.6)
 Suggests:
-  yaml (>= 2.1.14),
-  curl (>= 2.7),
-  testthat (>= 2.0.0), 
-  lgr (>= 0.3.1),
-  lintr
+  yaml (>= 2.2.0),
+  curl (>= 4.0),
+  tinytest (>= 1.0.0), 
+  lgr (>= 0.3.2),
+  lintr (>= 1.0.3)
 LinkingTo: 
   Rcpp
 SystemRequirements: C++11

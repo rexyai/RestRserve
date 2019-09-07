@@ -5,6 +5,26 @@
 
 using namespace Rcpp;
 
+// Cpp_to_http_date
+Rcpp::CharacterVector Cpp_to_http_date(const Rcpp::Datetime& x);
+RcppExport SEXP _RestRserve_Cpp_to_http_date(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< const Rcpp::Datetime& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(Cpp_to_http_date(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// Cpp_from_http_date
+Rcpp::RObject Cpp_from_http_date(const std::string& x);
+RcppExport SEXP _RestRserve_Cpp_from_http_date(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(Cpp_from_http_date(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // format_cookies
 Rcpp::CharacterVector format_cookies(Rcpp::ListOf<Rcpp::List> cookies);
 RcppExport SEXP _RestRserve_format_cookies(SEXP cookiesSEXP) {
@@ -88,6 +108,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_RestRserve_Cpp_to_http_date", (DL_FUNC) &_RestRserve_Cpp_to_http_date, 1},
+    {"_RestRserve_Cpp_from_http_date", (DL_FUNC) &_RestRserve_Cpp_from_http_date, 1},
     {"_RestRserve_format_cookies", (DL_FUNC) &_RestRserve_format_cookies, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
     {"_RestRserve_parse_multipart_boundary", (DL_FUNC) &_RestRserve_parse_multipart_boundary, 1},

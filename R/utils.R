@@ -20,16 +20,6 @@ get_traceback = function(err) {
   list(error = err_msg, call = call_msg, traceback = stack_msg)
 }
 
-#https://stackoverflow.com/a/15139734/1069256
-kill_process_group = function(pid, signal = "TERM") {
-  pgid = system2("ps", sprintf("-o pgid= %d | grep -o '[0-9]*'", pid), stdout = TRUE)
-  tools::pskill(pid)
-  cmd_args = sprintf("-s %s -- -%s", signal, pgid)
-  # message(sprintf("kill %s", cmd_args))
-  system2("kill", cmd_args)
-}
-
-
 guess_mime = function(file_path, content_type = NULL) {
   if (is.null(content_type))
     content_type = mime::guess_type(file_path)
