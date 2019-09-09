@@ -50,7 +50,10 @@ ContentHandlersFactory = R6::R6Class(
         function(x) {
           res = try(
             {
-              x = rawToChar(x)
+              if (is.raw(x)) {
+                x = rawToChar(x)
+              }
+
               jsonlite::fromJSON(x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
             },
             silent = TRUE
@@ -63,7 +66,12 @@ ContentHandlersFactory = R6::R6Class(
         }
       )
       self$set_encode("text/plain", as.character)
-      self$set_decode("text/plain", rawToChar)
+      self$set_decode("text/plain", function(x) {
+        if (is.raw(x)) {
+          x = rawToChar(x)
+        }
+        x
+      })
     },
     set_encode = function(content_type, FUN) {
       if (is.null(self$handlers[[content_type]])) {
@@ -92,12 +100,11 @@ ContentHandlersFactory = R6::R6Class(
     get_decode = function(content_type) {
       if (!is.character(content_type)) {
         msg = "'content-type' header is not set - don't know how to decode the body"
-        raise(HTTPError$internal_server_error(msg))
+        raise(HTTPError$unsupported_media_type(msg))
       }
       decode = self$handlers[[content_type]][["decode"]]
       if (!is.function(decode)) {
-        msg = sprintf("Don't know how to decode '%s' body.", content_type)
-        raise(HTTPError$internal_server_error(msg))
+        raise(HTTPError$unsupported_media_type())
       }
       return(decode)
     },

@@ -3,9 +3,10 @@ if (requireNamespace("tinytest", quietly = TRUE)) {
   set.seed(42)
 
   # run tests (package must be installed)
-  tinytest::test_package(
-    pkgname = "RestRserve",
-    ncpu = getOption("Ncpus", 1L),
-    side_effects = TRUE
-  )
+  tinytest::test_package("RestRserve")
+  # tinytest::test_package(
+  #   pkgname = "RestRserve",
+  #   ncpu = getOption("Ncpus", 1L),
+  #   side_effects = TRUE
+  # )
 }

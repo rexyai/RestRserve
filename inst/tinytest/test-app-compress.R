@@ -15,8 +15,8 @@ expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
 
 # Test compressed content
-h = "Accept-Encoding: gzip"
-rq = RestRserveRequest$new(path = "/hello", headers = charToRaw(h))
+h = list("Accept-Encoding" = "gzip")
+rq = RestRserveRequest$new(path = "/hello", headers = h)
 rs = app$process_request(rq)
 expect_equal(memDecompress(rs[[1]], "gzip", TRUE), "Hello, World!")
 expect_equal(rs[[2]], "text/plain")

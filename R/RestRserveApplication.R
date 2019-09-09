@@ -186,7 +186,7 @@
 #' not_found_rq = RestRserveRequest$new(path = "/no")
 #' status_rq = RestRserveRequest$new(path = "/status")
 #' desc_rq = RestRserveRequest$new(path = "/desc")
-#' say_rq = RestRserveRequest$new(path = "/say/anonym", query = c("message" = "Hola"))
+#' say_rq = RestRserveRequest$new(path = "/say/anonym", query = list("message" = "Hola"))
 #' # process prepared requests
 #' app$process_request(not_found_rq)
 #' app$process_request(status_rq)

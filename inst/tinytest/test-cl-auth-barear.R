@@ -20,7 +20,7 @@ expect_equal(e$response$body, "401 Missing Authorization Header")
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test headers without prefix
-h = c("Authorization: test")
+h = list("Authorization" = "test")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
@@ -31,7 +31,7 @@ expect_equal(e$response$body, "401 Invalid Authorization Header. Must start with
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade with extra token
-h = c("Authorization: bearer")
+h = list("Authorization" = "bearer")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
@@ -42,7 +42,7 @@ expect_equal(e$response$body, "401 Invalid Authorization Header: Token Missing")
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade without token
-h = c("Authorization: bearer token1 token2")
+h = list("Authorization" = "bearer token1 token2")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
@@ -53,13 +53,13 @@ expect_equal(e$response$status_code, 401L)
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test correct token
-h = c("Authorization: Bearer token")
+h = list("Authorization" = "Bearer token")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
 expect_equal(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs), "token")
 
 # Test extract credentials
-h = c("Authorization: Bearer secret")
+h = list("Authorization" = "Bearer secret")
 rq = RestRserveRequest$new(headers = h)
 rs = RestRserveResponse$new()
 expect_equal(obj$.__enclos_env__$private$extract_credentials(rq, rs), "secret")

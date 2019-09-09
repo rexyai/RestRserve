@@ -10,9 +10,15 @@
 #' @section Construction:
 #'
 #' ```
-#' RestRserveRequest$new(path = "/", method = "GET", query = NULL,
-#'                       headers = NULL, body = NULL, decode = NULL)
-#' ````
+#' RestRserveRequest$new(path = "/",
+#'  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
+#'  query = list(),
+#'  headers = list(),
+#'  body = list(),
+#'  cookies = list(),
+#'  content_type = "text/plain",
+#'  decode = NULL)
+#' ```
 #'
 #' * `path` :: `character(1)`\cr
 #'   Character with requested path. Always starts with `/`.
@@ -20,15 +26,23 @@
 #' * `method` :: `character(1)`\cr
 #'   Request HTTP method.
 #'
-#' * `query` :: `named character()`\cr
-#'   A named character vector with URL decoded query parameters.
+#' * `query` :: `named list()`\cr
+#'   A named list with URL decoded query parameters.
 #'
-#' * `headers` :: `raw()` | `character(1)`\cr
-#'   Request HTTP headers.
+#' * `headers` :: `named list()`\cr
+#'   Request HTTP headers represented as named list.
 #'
-#' * `body` :: `raw()` | `character()`\cr
-#'   Request body. Can be `NULL`, raw vector or named character vector for the
-#'   URL encoded form (like a `query` parameter).
+#' * `body` :: `anything` \cr
+#'   Request body. Can be anything and in conjunction with `content_type`
+#'   defines how HTTP body will be represented.
+#'
+#' * `cookies` :: `named list()`\cr
+#'   cookies represented as named list. **Note** that cookies should be provided explicitly -
+#'   they won't be derived from `headers` (in contrast to `from_rserve()` method).
+#'
+#' * `content_type` :: `character(1)`\cr
+#'   HTTP content type. **Note** that `content_type` should be provided explicitly -
+#'   it won't be derived from `headers` (in contrast to `from_rserve()` method).
 #'
 #' * `decode` :: `function`\cr
 #'   Function to decode body for the specific content type.
@@ -93,6 +107,25 @@
 #'
 #' @section Methods:
 #'
+#' * `from_rserve(path = "/", query = NULL, headers = NULL, body = NULL)` :: `function`\cr
+#'
+#'     * `path` :: `character(1)`\cr
+#'       Character with requested path. Always starts with `/`.
+#'
+#'     * `query` :: `named character()`\cr
+#'       A named character vector with URL decoded query parameters.
+#'
+#'     * `headers` :: `raw()` | `character(1)`\cr
+#'       Request HTTP headers.
+#'
+#'     * `body` :: `raw()` | `character()`\cr
+#'       Request body. Can be `NULL`, raw vector or named character vector for the
+#'       URL encoded form (like a `query` parameter).
+#'
+#' * `reset()`\cr
+#'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
+#'    resetting R6 class is much faster then initialize it.
+#'
 #' * `get_header(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get request header by name.
@@ -139,16 +172,59 @@ RestRserveRequest = R6::R6Class(
     # methods
     #---------------------------------
     initialize = function(path = "/",
-                          method = "GET",
-                          query = NULL,
-                          headers = NULL,
+                          method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
+                          query = list(),
+                          headers = list(),
                           body = NULL,
-                          # content_type = "text/plain",
-                          decode = NULL
-                          ) {
+                          cookies = list(),
+                          content_type = "text/plain",
+                          decode = NULL) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(path, pattern = "/.*")
+        checkmate::assert_string(content_type, pattern = ".*/.*")
+        checkmate::check_list(headers)
+        checkmate::check_list(query)
+        checkmate::check_list(cookies)
+        checkmate::assert_function(decode, null.ok = TRUE)
+      }
+      self$path = path
+      self$method = match.arg(method)
+      self$query = setNames(query, tolower(names(query)))
+      self$headers = setNames(headers, tolower(names(headers)))
+      self$body = body
+      self$cookies = setNames(cookies, tolower(names(cookies)))
+      self$content_type = content_type
+      self$decode = decode
+
+      self$path_parameters = list()
+      self$files = list()
+      self$context = new.env(parent = emptyenv())
+
+      private$id = uuid::UUIDgenerate(TRUE)
+    },
+
+    reset = function() {
+      # should reset all the fields which touched during `from_rserve` or `initialize`
+      self$path = "/"
+      self$method = "GET"
+      self$headers = list()
+      self$cookies = list()
+      self$context = new.env(parent = emptyenv())
+      self$content_type = "text/plain"
+      self$body = NULL
+      self$query = list()
+      self$files = list()
+      self$path_parameters = list()
+      self$decode = NULL
+      private$id = uuid::UUIDgenerate(TRUE)
+      invisible(self)
+    },
+
+    from_rserve = function(path = "/", query = NULL, headers = NULL, body = NULL) {
+      # actually we can skip runtime check as inputs from Rserve are guaranteed
+      # but because `from_rserve()` is a public method we will keep checking arguments
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
-        checkmate::assert_string(method)
         checkmate::assert_character(query, null.ok = TRUE)
         checkmate::assert(
           checkmate::check_raw(headers, null.ok = TRUE),
@@ -160,31 +236,20 @@ RestRserveRequest = R6::R6Class(
           checkmate::check_character(body, null.ok = TRUE),
           combine = "or"
         )
-        checkmate::assert_function(decode, null.ok = TRUE)
       }
 
-      self$headers = list()
-      self$context = new.env(parent = emptyenv())
-      self$cookies = list()
-      self$query = list()
-      self$path_parameters = list()
-
-      self$decode = decode
-
+      self$path = path
       private$parse_query(query)
       private$parse_headers(headers)
-      private$parse_body_and_content_type(body)
-
-      private$parse_cookies()
-      self$path = path
       # Rserve adds "Request-Method: " key:
       # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
       # according to the code above we assume that "request-method" is always exists
       self$method = self$headers[["request-method"]]
-      if (is.null(self$method)) {
-        self$method = method
-      }
-      private$id = uuid::UUIDgenerate(TRUE)
+      # remove from headers as this was added by Rserve and wasn't present in original request
+      self$headers[["request-method"]] = NULL
+      private$parse_body_and_content_type(body)
+      private$parse_cookies()
+      invisible(self)
     },
     get_header = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -361,12 +426,14 @@ RestRserveRequest = R6::R6Class(
 # it is assigned to .http.request as per requirements of Rserve for http interface
 http_request = function(url, query, body, headers) {
   # first parse incoming request
-  request = RestRserveRequest$new(
+  # RSERVE_REQUEST$reset()
+  RSERVE_REQUEST = RestRserveRequest$new()
+  RSERVE_REQUEST$from_rserve(
     path = url,
     query = query,
-    body = body,
-    headers = headers
+    headers = headers,
+    body = body
   )
   app = .GlobalEnv[["RestRserveApp"]]
-  app$process_request(request)
+  app$process_request(RSERVE_REQUEST)
 }

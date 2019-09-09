@@ -23,8 +23,8 @@ expect_equal(rs[[3]], "WWW-Authenticate: Basic")
 expect_equal(rs[[4]], 401L)
 
 # Test authorized request with valid token
-h = "Authorization: Bearer valid-token"
-rq = RestRserveRequest$new(path = "/secure", headers = charToRaw(h))
+h = list("Authorization" = "Bearer valid-token")
+rq = RestRserveRequest$new(path = "/secure", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs[[1]], "Hello, World!")
 expect_equal(rs[[2]], "text/plain")
@@ -32,8 +32,8 @@ expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
 
 # Test authorized request with invalid
-h = "Authorization: Bearer invalid-token"
-rq = RestRserveRequest$new(path = "/secure", headers = charToRaw(h))
+h = list("Authorization" = "Bearer invalid-token")
+rq = RestRserveRequest$new(path = "/secure", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs[[1]], "401 Invalid Token")
 expect_equal(rs[[2]], "text/plain")

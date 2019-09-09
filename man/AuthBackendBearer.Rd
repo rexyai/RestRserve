@@ -44,9 +44,9 @@ auth_backend = AuthBackendBearer$new(FUN = auth_fun)
 # define credentials (see RFC)
 token = "valid-token"
 # generate request headers
-h = sprintf("Authorization: Bearer \%s", token)
+h = list("Authorization" = sprintf("Bearer \%s", token))
 # simulate request
-rq = RestRserveRequest$new(path = "/", headers = charToRaw(h))
+rq = RestRserveRequest$new(path = "/", headers = h)
 # init response object
 rs = RestRserveResponse$new()
 # perform authentication

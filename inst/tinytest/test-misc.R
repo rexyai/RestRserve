@@ -53,7 +53,7 @@ answer = http_request(
   url = "/say",
   query = c("hello" = "world"),
   body = NULL,
-  headers = NULL
+  headers = charToRaw('request-method:GET')
 )
 expect_equal(answer[[1]], "world")
 .GlobalEnv[["RestRserveApp"]] = keep
