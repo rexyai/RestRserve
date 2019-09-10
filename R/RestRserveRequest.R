@@ -420,20 +420,3 @@ RestRserveRequest = R6::R6Class(
     }
   )
 )
-
-
-# this is workhorse for RestRserve
-# it is assigned to .http.request as per requirements of Rserve for http interface
-http_request = function(url, query, body, headers) {
-  # first parse incoming request
-  # RSERVE_REQUEST$reset()
-  RSERVE_REQUEST = RestRserveRequest$new()
-  RSERVE_REQUEST$from_rserve(
-    path = url,
-    query = query,
-    headers = headers,
-    body = body
-  )
-  app = .GlobalEnv[["RestRserveApp"]]
-  app$process_request(RSERVE_REQUEST)
-}

@@ -4,7 +4,6 @@
 is_string = RestRserve:::is_string
 is_path = RestRserve:::is_path
 guess_mime = RestRserve:::guess_mime
-http_request = RestRserve:::http_request
 
 # Test is_string
 expect_false(is_string(NULL))
@@ -49,11 +48,4 @@ app$add_get("/say", function(req, res) {
 })
 keep = .GlobalEnv[["RestRserveApp"]]
 .GlobalEnv[["RestRserveApp"]] = app
-answer = http_request(
-  url = "/say",
-  query = c("hello" = "world"),
-  body = NULL,
-  headers = charToRaw('request-method:GET')
-)
-expect_equal(answer[[1]], "world")
 .GlobalEnv[["RestRserveApp"]] = keep
