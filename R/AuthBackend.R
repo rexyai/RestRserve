@@ -59,7 +59,7 @@ AuthBackend = R6::R6Class(
       if (is.null(auth_header)) {
         err = private$HTTPError$unauthorized(
           body = "401 Missing Authorization Header",
-          headers = c("WWW-Authenticate" = "Basic")
+          headers = list("WWW-Authenticate" = "Basic")
         )
         raise(err)
       }
@@ -70,7 +70,7 @@ AuthBackend = R6::R6Class(
       if (auth_prefix != private$auth_header_prefix) {
         err = private$HTTPError$unauthorized(
           body = sprintf("401 Invalid Authorization Header. Must start with \'%s\'", private$auth_header_prefix),
-          headers = c("WWW-Authenticate" = "Basic")
+          headers = list("WWW-Authenticate" = "Basic")
         )
         raise(err)
       }
@@ -78,13 +78,13 @@ AuthBackend = R6::R6Class(
       if (length(parts) == 1L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Token Missing",
-          headers = c("WWW-Authenticate" = "Basic"))
+          headers = list("WWW-Authenticate" = "Basic"))
         )
       }
       if (length(parts) > 2L) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Contains extra content",
-          headers = c("WWW-Authenticate" = "Basic"))
+          headers = list("WWW-Authenticate" = "Basic"))
         )
       }
       parts[[2]]

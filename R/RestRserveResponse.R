@@ -10,7 +10,7 @@
 #'
 #' ```
 #' RestRserveResponse$new(body = "", content_type = 'text/plain',
-#'                        headers = NULL, status_code = 200L, encode = NULL)
+#'                        headers = list_named(), status_code = 200L, encode = NULL)
 #' ````
 #'
 #' @section Fields:
@@ -179,7 +179,7 @@ RestRserveResponse = R6::R6Class(
     },
     reset = function() {
       self$body = ""
-      self$set_content_type("text/plain")
+      self$set_content_type(self$content_type)
       self$headers = list()
       self$status_code = 200L
       self$cookies = list()

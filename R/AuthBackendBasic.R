@@ -73,7 +73,7 @@ AuthBackendBasic = R6::R6Class(
       } else {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Username/Password",
-          headers = c("WWW-Authenticate" = "Basic"))
+          headers = list("WWW-Authenticate" = "Basic"))
         )
       }
     }
@@ -86,7 +86,7 @@ AuthBackendBasic = R6::R6Class(
       if (inherits(token, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Unable to decode credentials",
-          headers = c("WWW-Authenticate" = "Basic"))
+          headers = list("WWW-Authenticate" = "Basic"))
         )
       }
       #-------------------------------------------------------
@@ -95,7 +95,7 @@ AuthBackendBasic = R6::R6Class(
         if (length(result) != 2) {
           raise(private$HTTPError$unauthorized(
             body = "401 Invalid Authorization Header: user-password should be vector of 2",
-            headers = c("WWW-Authenticate" = "Basic"))
+            headers = list("WWW-Authenticate" = "Basic"))
           )
         }
         list(user = result[[1]], password = result[[2]])
@@ -104,7 +104,7 @@ AuthBackendBasic = R6::R6Class(
       if (inherits(result, "try-error")) {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Unable to decode credentials",
-          headers = c("WWW-Authenticate" = "Basic"))
+          headers = list("WWW-Authenticate" = "Basic"))
         )
       }
       #-------------------------------------------------------

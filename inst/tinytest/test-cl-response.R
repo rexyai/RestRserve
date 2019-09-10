@@ -17,20 +17,20 @@ expect_equal(r$status_code, 200L)
 expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 
 # Test parse_headers
-h = c("Test-Header" = "value",
+h = list("Test-Header" = "value",
       "Test-Header2" = "value2")
 r = RestRserveResponse$new(headers = h)
 expect_equal(r$headers[["Test-Header"]], "value")
 expect_equal(r$headers[["Test-Header2"]], "value2")
 
 # Test has_header method
-h = c("Test-Header" = "value")
+h = list("Test-Header" = "value")
 r = RestRserveResponse$new(headers = h)
 expect_false(r$has_header("test"))
 expect_true(r$has_header("Test-Header"))
 
 # Test get_header method
-h = c("Test-Header" = "value")
+h = list("Test-Header" = "value")
 r = RestRserveResponse$new(headers =  h)
 expect_null(r$get_header("test"))
 expect_equal(r$get_header("Test-Header"), "value")

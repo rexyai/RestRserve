@@ -414,6 +414,7 @@ RestRserveApplication = R6::R6Class(
       # dummy response
       response = private$response
       response$reset()
+      response$set_content_type(self$content_type)
 
       request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 

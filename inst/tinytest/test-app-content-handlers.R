@@ -28,11 +28,13 @@ rs = app$process_request(request_rds2)[[1]]
 rs = unserialize(rs)
 expect_equal(rs, list(answer = "rds2"))
 
+HTTPError$set_content_type('application/json')
 request_404 = RestRserveRequest$new(path = "/404")
 rs = app$process_request(request_404)
 expect_equal(rs[[1]], '{"error":"404 Not Found"}')
 expect_equal(rs[[2]], "application/json")
 
+HTTPError$set_content_type('text/plain')
 #---------------
 request_post_json = RestRserveRequest$new(path = "/json",
                                           method = "POST",
