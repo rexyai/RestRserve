@@ -214,7 +214,10 @@ RestRserveApplication = R6::R6Class(
 
       self$logger = Logger$new("info", name = "RestRserveApplication")
       self$content_type = content_type
-      self$HTTPError = HTTPErrorFactory$new(content_type = content_type)
+      self$HTTPError = HTTPError
+
+      private$response = RestRserveResponse$new(content_type = self$content_type)
+
       self$ContentHandlers = ContentHandlers
 
       checkmate::assert_list(middleware)
@@ -285,38 +288,59 @@ RestRserveApplication = R6::R6Class(
         .GlobalEnv[[".http.request"]] = keep_http_request
         .GlobalEnv[["RestRserveApp"]] = keep_RestRserveApp
       })
+
+
+      RSERVE_REQUEST = RestRserveRequest$new()
+      # this is workhorse for RestRserve
+      # it is assigned to .http.request as per requirements of Rserve for http interface
+      http_request = function(url, query, body, headers) {
+        # first parse incoming request
+        RSERVE_REQUEST$reset()
+        RSERVE_REQUEST$from_rserve(
+          path = url,
+          query = query,
+          headers = headers,
+          body = body
+        )
+        self$process_request(RSERVE_REQUEST)
+      }
+
       # temporary modify global environment
-      .GlobalEnv[[".http.request"]] = RestRserve:::http_request
-      .GlobalEnv[["RestRserveApp"]] = self
+      .GlobalEnv[[".http.request"]] = http_request
+
       self$print_endpoints_summary()
+
       if (.Platform$OS.type != "windows" && background) {
-
-        pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)
-        pid = pid[["pid"]]
-
-        if (interactive()) {
-          message(sprintf("Started RestRserve in a BACKGROUND process pid = %d", pid))
-          message(sprintf("You can kill process GROUP with `RestRserve:::kill_process_group(%d)`", pid))
-          message("NOTE that current master process also will be killed")
-        }
-        pid
+        run_mode = 'BACKGROUND'
       } else {
-        if (interactive()) {
-          message(sprintf("Started RestRserve in a FOREGROUND process pid = %d", Sys.getpid()))
-          cmd = sprintf("`kill -- -$(ps -o pgid= %d | grep -o '[0-9]*')`", Sys.getpid())
-          message(paste("You can kill process GROUP with", cmd))
-          message("NOTE that current master process also will be killed")
-        }
+        run_mode = 'FOREGROUND'
+      }
+
+      pid = Sys.getpid()
+      if (run_mode == 'BACKGROUND') {
+        pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)[["pid"]]
+      }
+
+      # print msg now because after `do.call` process will be blocked
+      if (interactive()) {
+        message(sprintf("Started RestRserve in a %s process pid = %d", run_mode, pid))
+        msg = sprintf("You can kill process GROUP with 'kill -TERM -%d'", pid)
+        msg = paste(msg, '(current master process also will be killed)')
+        message(msg)
+      }
+
+      if (run_mode == 'FOREGROUND') {
         do.call(Rserve::run.Rserve, ARGS)
       }
+
+      return(pid)
     },
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
-      endpoints = self$endpoints()
-      if (length(endpoints) == 0) {
+      if (length(self$endpoints) == 0) {
         self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
       }
-      self$logger$info("", context = list(endpoints = endpoints))
+      self$logger$info("", context = list(endpoints = self$endpoints))
       return(invisible(self))
     },
     #------------------------------------------------------------------------
@@ -385,7 +409,12 @@ RestRserveApplication = R6::R6Class(
       return(invisible(length(private$middleware)))
     },
     #------------------------------------------------------------------------
+
     process_request = function(request) {
+      # dummy response
+      response = private$response
+      response$reset()
+
       request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
       self$logger$trace("",
@@ -395,8 +424,6 @@ RestRserveApplication = R6::R6Class(
                                        query = request$query,
                                        headers = request$headers)
       )
-      # dummy response
-      response = RestRserveResponse$new(content_type = self$content_type)
 
       # Call middleware for the request
       mw_ids = as.character(seq_along(private$middleware))
@@ -480,6 +507,7 @@ RestRserveApplication = R6::R6Class(
     handlers = NULL,
     handlers_openapi_definitions = NULL,
     middleware = NULL,
+    response = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
