@@ -49,3 +49,11 @@ app$add_get("/say", function(req, res) {
 keep = .GlobalEnv[["RestRserveApp"]]
 .GlobalEnv[["RestRserveApp"]] = app
 .GlobalEnv[["RestRserveApp"]] = keep
+
+
+expect_equal(names(RestRserve:::list_named()), character(0))
+expect_equal(names(RestRserve:::list_named(1)), "V1")
+expect_equal(names(RestRserve:::list_named(2)), c("V1", "V2"))
+expect_error(RestRserve:::list_named(-1))
+expect_error(RestRserve:::list_named('a'))
+expect_error(RestRserve:::list_named(length = 1, names = c('1', '2')))

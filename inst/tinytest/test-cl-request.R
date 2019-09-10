@@ -167,3 +167,23 @@ expect_null(r$date)
 r$headers[["date"]] = "Sun, 04 Aug 2019 07:17:39 GMT"
 expect_true(inherits(r$date, "POSIXct"))
 expect_equal(as.numeric(r$date), 1564903059)
+
+
+r = RestRserveRequest$new(path = '/a',
+                          method = 'POST',
+                          query = list(a = 'a'),
+                          headers = list(b = 'b'),
+                          body = list('body'),
+                          cookies = list(cookie = 'cookie_1'),
+                          content_type = 'application/json',
+                          decode = identity
+                          )
+r$reset()
+expect_equal(r$path, "/")
+expect_equal(r$method, "GET")
+expect_equal(r$query, list())
+expect_equal(r$headers, list())
+expect_equal(r$body, NULL)
+expect_equal(r$cookies, list())
+expect_equal(r$content_type, "text/plain")
+expect_equal(r$decode, NULL)

@@ -141,3 +141,23 @@ r = RestRserveResponse$new()
 expect_equal(r$status, "200 OK")
 r$set_status_code(400L)
 expect_equal(r$status, "400 Bad Request")
+
+
+
+# Test reset
+rs = RestRserveResponse$new(body = list(a = 'body'),
+                            content_type = 'application/json',
+                            headers = list(h1 = 'h1'),
+                            status_code = 400L,
+                            encode = identity)
+rs$set_cookie(name = 'cookie_name', value = 'cookie_val')
+rs$context[['some_context']] = list(a = 1)
+
+rs$reset()
+expect_equal(rs$body, "")
+expect_equal(rs$content_type, "text/plain")
+expect_equal(rs$headers, list())
+expect_equal(rs$status_code, 200L)
+expect_equal(rs$encode, NULL)
+expect_equal(rs$cookies, list())
+expect_equal(rs$context, new.env(parent = emptyenv()))
