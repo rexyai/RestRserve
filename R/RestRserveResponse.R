@@ -163,12 +163,12 @@ RestRserveResponse = R6::R6Class(
                           headers = list_named(),
                           status_code = 200L,
                           encode = NULL) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-        checkmate::assert_string(content_type, pattern = ".*/.*")
-        checkmate::assert_list(headers, names = "named")
-        checkmate::assert_function(encode, null.ok = TRUE)
-      }
+
+      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+      checkmate::assert_string(content_type, pattern = ".*/.*")
+      checkmate::assert_list(headers, names = "named")
+      checkmate::assert_function(encode, null.ok = TRUE)
+
       self$set_content_type(content_type)
       self$body = body
       self$headers = headers
@@ -179,7 +179,7 @@ RestRserveResponse = R6::R6Class(
     },
     reset = function() {
       self$body = ""
-      self$set_content_type(self$content_type)
+      self$set_content_type("text/plain")
       self$headers = list()
       self$status_code = 200L
       self$cookies = list()
