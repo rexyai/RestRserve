@@ -19,15 +19,11 @@ calc_fib = function(n) {
 
 ## ---- create handler for the HTTP requests ----
 
-err = HTTPErrorFactory$new(
-    content_type = "text/plain",
-    encode = as.character
-)
 
 fib_handler = function(request, response) {
   n = as.integer(request$query[["n"]])
   if (length(n) == 0L || is.na(n)) {
-    raise(err$bad_request())
+    raise(HTTPError$bad_request())
   }
   response$body = as.character(calc_fib(n))
 }
