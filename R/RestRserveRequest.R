@@ -12,7 +12,7 @@
 #' ```
 #' RestRserveRequest$new(path = "/",
 #'  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
-#'  query = list(),
+#'  parameters_query = list(),
 #'  headers = list(),
 #'  body = list(),
 #'  cookies = list(),
@@ -26,7 +26,7 @@
 #' * `method` :: `character(1)`\cr
 #'   Request HTTP method.
 #'
-#' * `query` :: `named list()`\cr
+#' * `parameters_query` :: `named list()`\cr
 #'   A named list with URL decoded query parameters.
 #'
 #' * `headers` :: `named list()`\cr
@@ -58,7 +58,7 @@
 #' * `headers` :: `named list()`\cr
 #'   Request headers.
 #'
-#' * `query` :: `named list()`\cr
+#' * `parameters_query` :: `named list()`\cr
 #'   Request query parameters.
 #'
 #' * `content_type` :: `character(1)`\cr
@@ -107,12 +107,12 @@
 #'
 #' @section Methods:
 #'
-#' * `from_rserve(path = "/", query = NULL, headers = NULL, body = NULL)` :: `function`\cr
+#' * `from_rserve(path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
 #'
 #'     * `path` :: `character(1)`\cr
 #'       Character with requested path. Always starts with `/`.
 #'
-#'     * `query` :: `named character()`\cr
+#'     * `parameters_query` :: `named character()`\cr
 #'       A named character vector with URL decoded query parameters.
 #'
 #'     * `headers` :: `raw()` | `character(1)`\cr
@@ -120,7 +120,7 @@
 #'
 #'     * `body` :: `raw()` | `character()`\cr
 #'       Request body. Can be `NULL`, raw vector or named character vector for the
-#'       URL encoded form (like a `query` parameter).
+#'       URL encoded form (like a `parameters_query` parameter).
 #'
 #' * `reset()`\cr
 #'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
@@ -164,7 +164,7 @@ RestRserveRequest = R6::R6Class(
     context = NULL,
     content_type = NULL,
     body = NULL,
-    query = NULL,
+    parameters_query = NULL,
     files = NULL,
     parameters_path = NULL,
     decode = NULL,
@@ -173,7 +173,7 @@ RestRserveRequest = R6::R6Class(
     #---------------------------------
     initialize = function(path = "/",
                           method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
-                          query = list(),
+                          parameters_query = list(),
                           headers = list(),
                           body = NULL,
                           cookies = list(),
@@ -183,13 +183,13 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(path, pattern = "/.*")
         checkmate::assert_string(content_type, pattern = ".*/.*")
         checkmate::check_list(headers)
-        checkmate::check_list(query)
+        checkmate::check_list(parameters_query)
         checkmate::check_list(cookies)
         checkmate::assert_function(decode, null.ok = TRUE)
       }
       self$path = path
       self$method = match.arg(method)
-      self$query = setNames(query, tolower(names(query)))
+      self$parameters_query = setNames(parameters_query, tolower(names(parameters_query)))
       self$headers = setNames(headers, tolower(names(headers)))
       self$body = body
       self$cookies = setNames(cookies, tolower(names(cookies)))
@@ -212,7 +212,7 @@ RestRserveRequest = R6::R6Class(
       self$context = new.env(parent = emptyenv())
       self$content_type = "text/plain"
       self$body = NULL
-      self$query = list()
+      self$parameters_query = list()
       self$files = list()
       self$parameters_path = list()
       self$decode = NULL
@@ -220,12 +220,12 @@ RestRserveRequest = R6::R6Class(
       invisible(self)
     },
 
-    from_rserve = function(path = "/", query = NULL, headers = NULL, body = NULL) {
+    from_rserve = function(path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
       # actually we can skip runtime check as inputs from Rserve are guaranteed
       # but because `from_rserve()` is a public method we will keep checking arguments
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path)
-        checkmate::assert_character(query, null.ok = TRUE)
+        checkmate::assert_character(parameters_query, null.ok = TRUE)
         checkmate::assert(
           checkmate::check_raw(headers, null.ok = TRUE),
           checkmate::check_string(headers, null.ok = TRUE),
@@ -239,7 +239,7 @@ RestRserveRequest = R6::R6Class(
       }
 
       self$path = path
-      private$parse_query(query)
+      private$parse_query(parameters_query)
       private$parse_headers(headers)
       # Rserve adds "Request-Method: " key:
       # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
@@ -263,7 +263,7 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(name)
       }
       name = tolower(name)
-      return(self$query[[name]])
+      return(self$parameters_query[[name]])
     },
     get_param_path = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -339,13 +339,13 @@ RestRserveRequest = R6::R6Class(
       }
       return(invisible(TRUE))
     },
-    parse_query = function(query) {
-      if (length(query) > 0L) {
+    parse_query = function(parameters_query) {
+      if (length(parameters_query) > 0L) {
         # Named character vector. Query parameters key-value pairs.
-        res = as.list(query)
+        res = as.list(parameters_query)
         # Omit empty keys and empty values
-        res = res[nzchar(names(res)) & nzchar(query)]
-        self$query = res
+        res = res[nzchar(names(res)) & nzchar(parameters_query)]
+        self$parameters_query = res
       }
       return(invisible(TRUE))
     },
@@ -357,9 +357,9 @@ RestRserveRequest = R6::R6Class(
         # FIXME: should overwrite query or appent as attr to body?
         keys = names(values)
         # FIXME: add not exists keys only
-        to_add = which(!keys %in% names(self$query))
+        to_add = which(!keys %in% names(self$parameters_query))
         for (i in to_add) {
-          self$query[[keys[i]]] = values[[i]]
+          self$parameters_query[[keys[i]]] = values[[i]]
         }
         # FIXME: should we encode it?
         values = paste(url_encode(keys), url_encode(values), sep = "=", collapse = "&")
@@ -379,9 +379,9 @@ RestRserveRequest = R6::R6Class(
         values = res$values[nzchar(names(res$values)) & nzchar(res$values)]
         keys = names(values)
         # FIXME: add not exists keys onlly
-        to_add = which(!keys %in% names(self$query))
+        to_add = which(!keys %in% names(self$parameters_query))
         for (i in to_add) {
-          self$query[[keys[i]]] = values[[i]]
+          self$parameters_query[[keys[i]]] = values[[i]]
         }
       }
       if (length(res$files) > 0L) {

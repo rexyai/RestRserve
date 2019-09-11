@@ -15,8 +15,8 @@ expect_equal(r$method, "GET")
 expect_equal(r$path, "/")
 expect_true(inherits(r$headers, "list"))
 expect_equal(length(r$headers), 0L)
-expect_true(inherits(r$query, "list"))
-expect_equal(length(r$query), 0L)
+expect_true(inherits(r$parameters_query, "list"))
+expect_equal(length(r$parameters_query), 0L)
 expect_true(inherits(r$cookies, "list"))
 expect_equal(length(r$cookies), 0L)
 
@@ -77,11 +77,11 @@ expect_equal(r$cookies[["param2"]], "value2")
 q = setNames(c("value1", "value2", "", "value4"),
              c("param1", "", "param3", "param4"))
 r = RestRserveRequest$new()
-r$from_rserve(query = q)
-expect_true(inherits(r$query, "list"))
-expect_equal(length(r$query), 2L)
-expect_equal(r$query[["param1"]], "value1")
-expect_equal(r$query[["param4"]], "value4")
+r$from_rserve(parameters_query = q)
+expect_true(inherits(r$parameters_query, "list"))
+expect_equal(length(r$parameters_query), 2L)
+expect_equal(r$parameters_query[["param1"]], "value1")
+expect_equal(r$parameters_query[["param4"]], "value4")
 
 # Test parse urlencoded form body
 h = charToRaw("Content-type: application/x-www-form-urlencoded")
@@ -89,11 +89,11 @@ b = setNames(c("value1", "value2", "", "value4 and others"),
              c("param1", "", "param3", "param4"))
 r = RestRserveRequest$new()
 r$from_rserve(headers = h, body = b)
-expect_true(inherits(r$query, "list"))
-expect_equal(length(r$query), 2L)
-expect_equal(names(r$query), c("param1", "param4"))
-expect_equal(r$query[["param1"]], "value1")
-expect_equal(r$query[["param4"]], "value4 and others")
+expect_true(inherits(r$parameters_query, "list"))
+expect_equal(length(r$parameters_query), 2L)
+expect_equal(names(r$parameters_query), c("param1", "param4"))
+expect_equal(r$parameters_query[["param1"]], "value1")
+expect_equal(r$parameters_query[["param4"]], "value4 and others")
 expect_equal(rawToChar(r$body), "param1=value1&param4=value4%20and%20others")
 expect_equal(r$content_type, "application/x-www-form-urlencoded")
 
@@ -132,8 +132,8 @@ expect_true(inherits(r$body, "raw"))
 expect_true(inherits(r$files, "list"))
 expect_equal(length(r$files), 1L)
 expect_equivalent(r$get_file("rds"), readBin(tmp_rds, raw(), file.size(tmp_rds)))
-expect_equal(r$query$param1, "value1")
-expect_equal(r$query$param2, "value2")
+expect_equal(r$parameters_query$param1, "value1")
+expect_equal(r$parameters_query$param2, "value2")
 
 # Test get_header method"
 r = RestRserveRequest$new()
@@ -143,7 +143,7 @@ expect_equal(r$get_header("user-agent"), "curl/7.65.3")
 
 # Test get_param_query method
 r = RestRserveRequest$new()
-r$from_rserve(query = c("param" = "value"))
+r$from_rserve(parameters_query = c("param" = "value"))
 expect_null(r$get_param_query("test"))
 expect_equal(r$get_param_query("param"), "value")
 
@@ -171,7 +171,7 @@ expect_equal(as.numeric(r$date), 1564903059)
 
 r = RestRserveRequest$new(path = '/a',
                           method = 'POST',
-                          query = list(a = 'a'),
+                          parameters_query = list(a = 'a'),
                           headers = list(b = 'b'),
                           body = list('body'),
                           cookies = list(cookie = 'cookie_1'),
@@ -181,7 +181,7 @@ r = RestRserveRequest$new(path = '/a',
 r$reset()
 expect_equal(r$path, "/")
 expect_equal(r$method, "GET")
-expect_equal(r$query, list())
+expect_equal(r$parameters_query, list())
 expect_equal(r$headers, list())
 expect_equal(r$body, NULL)
 expect_equal(r$cookies, list())

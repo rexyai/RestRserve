@@ -15,7 +15,7 @@ expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
 
 # Test /hello/query endpoint
-rq = RestRserveRequest$new(path = "/hello/query", query = list("name" = "user"))
+rq = RestRserveRequest$new(path = "/hello/query", parameters_query = list("name" = "user"))
 rs = app$process_request(rq)
 expect_equal(rs[[1]], "Hello, user!")
 expect_equal(rs[[2]], "text/plain")

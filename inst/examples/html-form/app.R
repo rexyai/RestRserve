@@ -44,8 +44,8 @@ form_handler = function(request, response) {
 }
 
 sent_hanlder = function(request, response) {
-  user_name = request$query[["uname"]]
-  num = request$query[["num"]]
+  user_name = request$parameters_query[["uname"]]
+  num = request$parameters_query[["num"]]
 
   doc = tags$html(
     tags$head(

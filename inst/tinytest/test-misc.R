@@ -44,7 +44,7 @@ expect_equal(guess_mime(txt_file, "mytype/text"), "mytype/text")
 # Test http_request
 app = RestRserveApplication$new()
 app$add_get("/say", function(req, res) {
-  res$body = req$query$hello
+  res$body = req$parameters_query$hello
 })
 keep = .GlobalEnv[["RestRserveApp"]]
 .GlobalEnv[["RestRserveApp"]] = app

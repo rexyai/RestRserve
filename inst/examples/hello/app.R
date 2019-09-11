@@ -15,7 +15,7 @@ hello_handler = function(request, response) {
 # handle query parameter
 heelo_query_handler = function(request, response) {
   # user name
-  nm = request$query[["name"]]
+  nm = request$parameters_query[["name"]]
   # default value
   if (is.null(nm)) {
     nm = "anonym"

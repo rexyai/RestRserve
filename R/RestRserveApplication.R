@@ -169,7 +169,7 @@
 #' # define say message handler
 #' say_handler = function(rq, rs) {
 #'   who = rq$parameters_path[["user"]]
-#'   msg = rq$query[["message"]]
+#'   msg = rq$parameters_query[["message"]]
 #'   if (is.null(msg)) msg <- "Hello"
 #'   rs$set_body(paste(who, "say", dQuote(msg)))
 #'   rs$set_content_type("text/plain")
@@ -186,7 +186,7 @@
 #' not_found_rq = RestRserveRequest$new(path = "/no")
 #' status_rq = RestRserveRequest$new(path = "/status")
 #' desc_rq = RestRserveRequest$new(path = "/desc")
-#' say_rq = RestRserveRequest$new(path = "/say/anonym", query = list("message" = "Hola"))
+#' say_rq = RestRserveRequest$new(path = "/say/anonym", parameters_query = list("message" = "Hola"))
 #' # process prepared requests
 #' app$process_request(not_found_rq)
 #' app$process_request(status_rq)
@@ -293,12 +293,12 @@ RestRserveApplication = R6::R6Class(
       RSERVE_REQUEST = RestRserveRequest$new()
       # this is workhorse for RestRserve
       # it is assigned to .http.request as per requirements of Rserve for http interface
-      http_request = function(url, query, body, headers) {
+      http_request = function(url, parameters_query, body, headers) {
         # first parse incoming request
         RSERVE_REQUEST$reset()
         RSERVE_REQUEST$from_rserve(
           path = url,
-          query = query,
+          parameters_query = parameters_query,
           headers = headers,
           body = body
         )
@@ -422,7 +422,7 @@ RestRserveApplication = R6::R6Class(
                         context = list(request_id = request$request_id,
                                        method = request$method,
                                        path = request$path,
-                                       query = request$query,
+                                       parameters_query = request$parameters_query,
                                        headers = request$headers)
       )
 

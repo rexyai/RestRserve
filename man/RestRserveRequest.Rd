@@ -12,7 +12,7 @@ Also useful for testing.
 \section{Construction}{
 \preformatted{RestRserveRequest$new(path = "/",
  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
- query = list(),
+ parameters_query = list(),
  headers = list(),
  body = list(),
  cookies = list(),
@@ -24,7 +24,7 @@ Also useful for testing.
 Character with requested path. Always starts with \code{/}.
 \item \code{method} :: \code{character(1)}\cr
 Request HTTP method.
-\item \code{query} :: \code{named list()}\cr
+\item \code{parameters_query} :: \code{named list()}\cr
 A named list with URL decoded query parameters.
 \item \code{headers} :: \code{named list()}\cr
 Request HTTP headers represented as named list.
@@ -51,7 +51,7 @@ Request path.
 Request HTTP method.
 \item \code{headers} :: \code{named list()}\cr
 Request headers.
-\item \code{query} :: \code{named list()}\cr
+\item \code{parameters_query} :: \code{named list()}\cr
 Request query parameters.
 \item \code{content_type} :: \code{character(1)}\cr
 Request body content type.
@@ -91,17 +91,17 @@ Request accepts XML response.
 \section{Methods}{
 
 \itemize{
-\item \code{from_rserve(path = "/", query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
+\item \code{from_rserve(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
 \itemize{
 \item \code{path} :: \code{character(1)}\cr
 Character with requested path. Always starts with \code{/}.
-\item \code{query} :: \code{named character()}\cr
+\item \code{parameters_query} :: \code{named character()}\cr
 A named character vector with URL decoded query parameters.
 \item \code{headers} :: \code{raw()} | \code{character(1)}\cr
 Request HTTP headers.
 \item \code{body} :: \code{raw()} | \code{character()}\cr
 Request body. Can be \code{NULL}, raw vector or named character vector for the
-URL encoded form (like a \code{query} parameter).
+URL encoded form (like a \code{parameters_query} parameter).
 }
 \item \code{reset()}\cr
 Resets request object. This is not useful for end user, but useful for RestRserve internals -
