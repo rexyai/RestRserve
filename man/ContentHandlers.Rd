@@ -3,15 +3,38 @@
 \docType{data}
 \name{ContentHandlers}
 \alias{ContentHandlers}
-\title{Controls how RestRserve encodes and decodes different content types}
-\format{An object of class \code{RestRserveContentHandler} (inherits from \code{R6}) of length 9.}
-\usage{
-ContentHandlers
-}
+\title{Content handlers collection}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Controls how RestRserve encodes and decodes different content types.
 }
-\seealso{
-\link{ContentHandlersFactory}
+\section{Fields}{
+
+\itemize{
+\item \code{handlers} :: \code{environment()}\cr
+Handlers storage environment.
 }
+}
+
+\section{Methods}{
+
+\itemize{
+\item \code{get_encode(content_type)}\cr
+\code{character(1)} -> \code{function}\cr
+Get encoder function for the specific content type.
+\item \code{get_decode(content_type)}\cr
+\code{character(1)} -> \code{function}\cr
+Get decoder function for the specific content type.
+\item \code{set_encode(content_type, FUN)}\cr
+\code{character(1)}, \code{function} -> \code{self}\cr
+Set handler to encode body for the specific content type.
+\item \code{set_decode(content_type, FUN)}\cr
+\code{character(1)}, \code{function} -> \code{self}\cr
+Set handler to decode body for the specific content type.
+\item \code{reset()}\cr
+-> \code{self}\cr
+Resets all the content handlers to RestRserve defaults
+}
+}
+
 \keyword{datasets}
