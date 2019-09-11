@@ -43,7 +43,7 @@ AuthBackend = R6::R6Class(
     initialize = function(FUN, auth_header_prefix) {
       private$auth_fun = FUN
       private$auth_header_prefix = tolower(auth_header_prefix)
-      private$HTTPError = HTTPErrorFactory$new()
+      private$HTTPError = HTTPError
     },
     authenticate = function() {
       stop("not implemented")
