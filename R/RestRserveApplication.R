@@ -168,7 +168,7 @@
 #'
 #' # define say message handler
 #' say_handler = function(rq, rs) {
-#'   who = rq$path_parameters[["user"]]
+#'   who = rq$parameters_path[["user"]]
 #'   msg = rq$query[["message"]]
 #'   if (is.null(msg)) msg <- "Hello"
 #'   rs$set_body(paste(who, "say", dQuote(msg)))
@@ -452,7 +452,7 @@ RestRserveApplication = R6::R6Class(
 
       # call handler
       if (isTRUE(need_call_handler)) {
-        # as a side effect we will populate request$path_parameters (if any)
+        # as a side effect we will populate request$parameters_path (if any)
         handler_id = private$match_handler(request, response)
 
         # early stop
@@ -582,9 +582,9 @@ RestRserveApplication = R6::R6Class(
       )
       id = router$match_path(request$path)
       # if there are extracted parameters
-      path_parameters = attr(id, 'path_parameters')
-      if (is.list(path_parameters)) {
-        request$path_parameters = path_parameters
+      parameters_path = attr(id, 'parameters_path')
+      if (is.list(parameters_path)) {
+        request$parameters_path = parameters_path
       }
 
       if (is.null(id)) {

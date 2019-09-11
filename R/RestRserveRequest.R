@@ -74,13 +74,13 @@
 #'   Structure which contains positions and lengths of files for the multipart
 #'   body.
 #'
-#' * `path_parameters` :: `named list()`\cr
+#' * `parameters_path` :: `named list()`\cr
 #'   List of parameters extracted from templated path after routing.
 #'   For example if we have some handler listening at `/job/{job_id}` and we are
-#'   receiving request at `/job/1` then `path_parameters` will be `list(job_id = "1")`.
-#'   It is important to understand that `path_parameters` will be available
+#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
+#'   It is important to understand that `parameters_path` will be available
 #'   (not empty) only after request will reach handler.
-#'   This effectively means that `path_parameters` can be used inside handler
+#'   This effectively means that `parameters_path` can be used inside handler
 #'   and response middleware (but not request middleware!).
 #'
 #' * `context` :: `environment()`\cr
@@ -166,7 +166,7 @@ RestRserveRequest = R6::R6Class(
     body = NULL,
     query = NULL,
     files = NULL,
-    path_parameters = NULL,
+    parameters_path = NULL,
     decode = NULL,
     #---------------------------------
     # methods
@@ -196,7 +196,7 @@ RestRserveRequest = R6::R6Class(
       self$content_type = content_type
       self$decode = decode
 
-      self$path_parameters = list()
+      self$parameters_path = list()
       self$files = list()
       self$context = new.env(parent = emptyenv())
 
@@ -214,7 +214,7 @@ RestRserveRequest = R6::R6Class(
       self$body = NULL
       self$query = list()
       self$files = list()
-      self$path_parameters = list()
+      self$parameters_path = list()
       self$decode = NULL
       private$id = uuid::UUIDgenerate(TRUE)
       invisible(self)
@@ -270,7 +270,7 @@ RestRserveRequest = R6::R6Class(
         checkmate::assert_string(name)
       }
       name = tolower(name)
-      return(self$path_parameters[[name]])
+      return(self$parameters_path[[name]])
     },
     get_file = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {

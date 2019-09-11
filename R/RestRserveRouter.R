@@ -41,7 +41,7 @@
 #' r$match_path("/test") # testid
 #' r$match_path("/area/entry") # areaid
 #' r$match_path("/template/12345") # templateid
-#' attr(r$match_path("/template/12345"), "path_parameters") # variables values
+#' attr(r$match_path("/template/12345"), "parameters_path") # variables values
 #'
 RestRserveRouter = R6::R6Class(
   classname = "RestRserveRouter",
@@ -123,7 +123,7 @@ RestRserveRouter = R6::R6Class(
                 res = private$partial[[matched]]$patterns[[pattern]]$id
                 if (isTRUE(extract_vars)) {
                   vars = private$parse_vars(path, private$partial[[matched]]$patterns[[pattern]]$template)
-                  attr(res, "path_parameters") = vars
+                  attr(res, "parameters_path") = vars
                 }
                 return(res)
               }

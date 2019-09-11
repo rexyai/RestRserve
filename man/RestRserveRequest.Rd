@@ -62,13 +62,13 @@ Request cookies.
 \item \code{files} :: \code{named list()}\cr
 Structure which contains positions and lengths of files for the multipart
 body.
-\item \code{path_parameters} :: \code{named list()}\cr
+\item \code{parameters_path} :: \code{named list()}\cr
 List of parameters extracted from templated path after routing.
 For example if we have some handler listening at \code{/job/{job_id}} and we are
-receiving request at \code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}.
-It is important to understand that \code{path_parameters} will be available
+receiving request at \code{/job/1} then \code{parameters_path} will be \code{list(job_id = "1")}.
+It is important to understand that \code{parameters_path} will be available
 (not empty) only after request will reach handler.
-This effectively means that \code{path_parameters} can be used inside handler
+This effectively means that \code{parameters_path} can be used inside handler
 and response middleware (but not request middleware!).
 \item \code{context} :: \code{environment()}\cr
 Environment to store any data. Can be used in middlewares.

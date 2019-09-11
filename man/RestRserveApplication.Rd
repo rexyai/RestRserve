@@ -151,7 +151,7 @@ app$add_static("/desc", desc_file, "text/plain")
 
 # define say message handler
 say_handler = function(rq, rs) {
-  who = rq$path_parameters[["user"]]
+  who = rq$parameters_path[["user"]]
   msg = rq$query[["message"]]
   if (is.null(msg)) msg <- "Hello"
   rs$set_body(paste(who, "say", dQuote(msg)))

@@ -26,7 +26,7 @@ heelo_query_handler = function(request, response) {
 # handle path variable
 hello_path_handler = function(request, response) {
   # user name
-  nm = request$path_parameters[["name"]]
+  nm = request$parameters_path[["name"]]
   response$body = sprintf("Hello, %s!", nm)
 }
 
