@@ -40,24 +40,24 @@
 AuthBackend = R6::R6Class(
   classname = "AuthBackend",
   public = list(
+    HTTPError = NULL,
     initialize = function(FUN, auth_header_prefix) {
       private$auth_fun = FUN
       private$auth_header_prefix = tolower(auth_header_prefix)
-      private$HTTPError = HTTPError
+      self$HTTPError = HTTPError
     },
     authenticate = function() {
       stop("not implemented")
     }
   ),
   private = list(
-    HTTPError = NULL,
     auth_fun = NULL,
     auth_header_prefix = NULL,
     parse_auth_token_from_request = function(request, response) {
       auth_header = request$headers[["authorization"]]
       #--------------------------------------------------------
       if (is.null(auth_header)) {
-        err = private$HTTPError$unauthorized(
+        err = self$HTTPError$unauthorized(
           body = "401 Missing Authorization Header",
           headers = list("WWW-Authenticate" = "Basic")
         )
@@ -68,7 +68,7 @@ AuthBackend = R6::R6Class(
       auth_prefix = tolower(parts[[1]])
       #--------------------------------------------------------
       if (auth_prefix != private$auth_header_prefix) {
-        err = private$HTTPError$unauthorized(
+        err = self$HTTPError$unauthorized(
           body = sprintf("401 Invalid Authorization Header. Must start with \'%s\'", private$auth_header_prefix),
           headers = list("WWW-Authenticate" = "Basic")
         )
@@ -76,13 +76,13 @@ AuthBackend = R6::R6Class(
       }
       #--------------------------------------------------------
       if (length(parts) == 1L) {
-        raise(private$HTTPError$unauthorized(
+        raise(self$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Token Missing",
           headers = list("WWW-Authenticate" = "Basic"))
         )
       }
       if (length(parts) > 2L) {
-        raise(private$HTTPError$unauthorized(
+        raise(self$HTTPError$unauthorized(
           body = "401 Invalid Authorization Header: Contains extra content",
           headers = list("WWW-Authenticate" = "Basic"))
         )
