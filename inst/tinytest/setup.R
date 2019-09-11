@@ -9,6 +9,11 @@ ex_app = function(name) {
   return(app_env[["app"]])
 }
 
+cleanup_app = function() {
+  RestRserve::HTTPError$reset()
+  RestRserve::ContentHandlers$reset()
+}
+
 # genearate multipart binary body
 make_multipart_body = function(params, files) {
   # write character as raw

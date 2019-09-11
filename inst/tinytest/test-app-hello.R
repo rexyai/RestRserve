@@ -37,3 +37,5 @@ expect_equal(rs[[1]], "Hello, user!")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
+
+cleanup_app()

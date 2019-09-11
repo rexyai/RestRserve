@@ -17,3 +17,5 @@ expect_equal(readBin(rs[[1]], raw(), 8), png_sign)
 expect_equal(rs[[2]], "image/png")
 expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
+
+cleanup_app()
