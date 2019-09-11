@@ -53,3 +53,15 @@ decoder = obj$get_decode("application/json")
 body = charToRaw("{\"param\":\"value\"}")
 expect_equal(decoder(body), list("param" = "value"))
 expect_error(decoder(rawToChar("1 = 1")))
+
+# Test predefined JSON decoder when charset is provided
+decoder = obj$get_decode("application/json; charset=utf-8")
+body = charToRaw("{\"param\":\"value\"}")
+expect_equal(decoder(body), list("param" = "value"))
+expect_error(decoder(rawToChar("1 = 1")))
+
+# Test predefined JSON encoder when charset is provided
+encoder = obj$get_encode("application/json; charset=utf-8")
+expect_equal(encoder(list(param = 'value')), "{\"param\":\"value\"}")
+encoder = obj$get_encode("text/plain; charset=utf-8")
+expect_equal(encoder(list(param = 'value')), "value")

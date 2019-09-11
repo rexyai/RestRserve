@@ -86,7 +86,12 @@ ContentHandlersFactory = R6::R6Class(
       }
       encode = self$handlers[[content_type]][["encode"]]
       if (!is.function(encode)) {
-        encode  = as.character
+        # case when charset is provided (for example 'application/json; charset=utf-8')
+        content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
+        encode = self$handlers[[content_type]][["encode"]]
+        if (!is.function(encode)) {
+          encode  = as.character
+        }
       }
       return(encode)
     },
@@ -104,7 +109,12 @@ ContentHandlersFactory = R6::R6Class(
       }
       decode = self$handlers[[content_type]][["decode"]]
       if (!is.function(decode)) {
-        raise(HTTPError$unsupported_media_type())
+        # case when charset is provided (for example 'application/json; charset=utf-8')
+        content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
+        decode = self$handlers[[content_type]][["decode"]]
+        if (!is.function(decode)) {
+          raise(HTTPError$unsupported_media_type())
+        }
       }
       return(decode)
     },
