@@ -1,4 +1,4 @@
-#' @title Creates RestRserveRequest object
+#' @title Creates request object
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.

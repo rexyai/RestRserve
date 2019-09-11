@@ -3,7 +3,7 @@
 \docType{data}
 \name{RestRserveAuthMiddleware}
 \alias{RestRserveAuthMiddleware}
-\title{Authorization middleware}
+\title{Creates authorization middleware object}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Adds various authorizations to \link{RestRserveApplication}.

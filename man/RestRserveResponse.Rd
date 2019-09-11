@@ -3,10 +3,10 @@
 \docType{data}
 \name{RestRserveResponse}
 \alias{RestRserveResponse}
-\title{Creates RestRserveResponse object}
+\title{Creates response object}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Creates RestRserveResponse object.
+Creates response object.
 }
 \section{Construction}{
 \preformatted{RestRserveResponse$new(body = "", content_type = 'text/plain',

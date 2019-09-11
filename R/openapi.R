@@ -30,7 +30,7 @@ extract_docstrings_yaml = function(FUN) {
 }
 
 #' @name openapi
-#' @title build OpenAPI objects
+#' @title Builds OpenAPI objects
 #' @description Facilitates in building [OpenAPI](https://www.openapis.org/) description document by
 #' creating objects described in
 #'  <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md>

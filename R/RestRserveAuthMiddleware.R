@@ -1,4 +1,4 @@
-#' @title Authorization middleware
+#' @title Creates authorization middleware object
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.

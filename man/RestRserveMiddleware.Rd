@@ -3,7 +3,7 @@
 \docType{data}
 \name{RestRserveMiddleware}
 \alias{RestRserveMiddleware}
-\title{Creates RestRserveMiddleware class}
+\title{Creates middleware object}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveMiddleware object.
