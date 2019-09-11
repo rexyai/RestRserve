@@ -1,6 +1,6 @@
 # Test HTTPErrorFactory class
 
-obj = RestRserve:::HTTPErrorFactory$new()
+obj = HTTPError
 
 # Test empty object
 expect_true(inherits(obj, "HTTPErrorFactory"))
@@ -59,3 +59,18 @@ for (err_method in error_methods) {
   target_error = paste(code, target_error)
   expect_equal(resp$body, list(error = target_error))
 }
+
+app = RestRserveApplication$new()
+
+# test set content-type
+obj$set_content_type('application/json')
+expect_equal(obj$content_type, "application/json")
+expect_equal(obj$bad_gateway()$to_rserve()[[2]], "application/json")
+
+# test it is propagated to the app
+expect_equal(app$HTTPError$content_type, 'application/json')
+
+# test reset works
+obj$reset()
+expect_equal(obj$content_type, "text/plain")
+expect_equal(obj$bad_gateway()$to_rserve()[[2]], "text/plain")

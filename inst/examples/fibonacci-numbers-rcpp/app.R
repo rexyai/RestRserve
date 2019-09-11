@@ -27,15 +27,10 @@ double calc_fib_cpp(const int n) {
 
 ## ---- create handler for the HTTP requests ----
 
-err = HTTPErrorFactory$new(
-    content_type = "text/plain",
-    encode = as.character
-)
-
 fib_handler = function(request, response) {
   n = as.integer(request$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) {
-    raise(err$bad_request())
+    raise(HTTPError$bad_request())
   }
   response$body = as.character(calc_fib_cpp(n))
 }

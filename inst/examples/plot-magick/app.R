@@ -10,11 +10,6 @@ library(mime)
 
 ## ---- create handler for the HTTP requests ----
 
-err = HTTPErrorFactory$new(
-  content_type = "text/plain",
-  encode = as.character
-)
-
 magick_handler = function(request, response) {
   img_type = request$parameters_query[["format"]]
   # default type
@@ -22,7 +17,7 @@ magick_handler = function(request, response) {
     img_type = "png"
   }
   if (!img_type %in% c("png", "jpeg", "gif")) {
-    raise(err$bad_request())
+    raise(HTTPError$bad_request())
   }
   img = image_graph(width = 480, height = 480, bg = "white")
   plot(cars)

@@ -31,6 +31,9 @@ Set encode for the given content type.
 \item \code{error(status_code, body, headers = list_named())}\cr
 \code{integer(1)}, \code{raw()} | \code{character()}, \code{named list()} -> \link{RestRserveResponse}
 Generate HTTP error response
+\item \code{reset()}\cr
+-> `self``\cr
+Resets HTTPError to the default RestRserve state
 }
 }
 

@@ -27,6 +27,9 @@
 #' * `error(status_code, body, headers = list_named())`\cr
 #'   `integer(1)`, `raw()` | `character()`, `named list()` -> [RestRserveResponse]
 #'   Generate HTTP error response
+#' * `reset()`\cr
+#'   -> `self``\cr
+#'   Resets HTTPError to the default RestRserve state
 #'
 #' @name HTTPError
 #' @export
@@ -48,6 +51,11 @@ HTTPErrorFactory = R6::R6Class(
     set_encode = function(encode) {
       self$encode = encode
       return(invisible(self))
+    },
+    reset = function() {
+      self$set_content_type("text/plain")
+      self$set_encode(NULL)
+      invisible(self)
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = list_named()) {
