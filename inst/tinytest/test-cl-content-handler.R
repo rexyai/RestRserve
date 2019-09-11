@@ -1,6 +1,8 @@
 # Test HTTPErrorFactory class
 
-obj = RestRserve:::ContentHandlersFactory$new()
+obj = ContentHandlers
+app = RestRserveApplication$new()
+on.exit(obj$reset())
 
 # Test empty object
 expect_true(inherits(obj, "RestRserveContentHandler"))
@@ -29,6 +31,9 @@ expect_true(ct %in% names(obj$handlers))
 expect_equal(obj$get_decode(ct), f)
 expect_equal(obj$handlers[[ct]][["decode"]], f)
 expect_null(obj$handlers[[ct]][["encode"]])
+
+# check modification og the ContentHandlers is global and beign propagated to the RestRserveApplication
+expect_equal(app$ContentHandlers$get_decode(ct), f)
 
 f = function() FALSE
 ct = "custom/type2"
@@ -60,8 +65,32 @@ body = charToRaw("{\"param\":\"value\"}")
 expect_equal(decoder(body), list("param" = "value"))
 expect_error(decoder(rawToChar("1 = 1")))
 
-# Test predefined JSON encoder when charset is provided
-encoder = obj$get_encode("application/json; charset=utf-8")
-expect_equal(encoder(list(param = 'value')), "{\"param\":\"value\"}")
-encoder = obj$get_encode("text/plain; charset=utf-8")
-expect_equal(encoder(list(param = 'value')), "value")
+# Test predefined encoders when charset and that ContentHandlers functions are case insensitive
+for (ct in c("application/json; charset=utf-8", "APPlication/JSON; charset=utf-8")) {
+  encoder = obj$get_encode(ct)
+  expect_equal(encoder(list(param = 'value')), "{\"param\":\"value\"}")
+}
+for (ct in c("text/plain; charset=utf-8", "TEXT/plain; charset=latin1")) {
+  encoder = obj$get_encode(ct)
+  expect_equal(encoder(list(param = 'value')), "value")
+}
+
+# Test argument asserts
+expect_error(obj$get_encode(c("application/json", "text/plain")))
+expect_error(obj$get_encode(1))
+expect_error(obj$get_encode(c(1, 2)))
+expect_error(obj$set_encode("application/json", list()))
+expect_error(obj$set_encode(1, identity))
+
+# Test it throws error for unsupported content types
+expect_error(obj$get_decode('application/json10'))
+err = try(obj$get_decode('application/json10'), silent = TRUE)
+expect_equal(attr(err, 'condition')$response$status_code, 415L)
+
+# Test it throws 500 error for invalid content-type
+err = try(obj$get_encode(25), silent = TRUE)
+expect_equal(attr(err, 'condition')$response$status_code, 500L)
+
+# test reset works
+obj$reset()
+expect_equal(obj, RestRserve:::ContentHandlersFactory$new())
