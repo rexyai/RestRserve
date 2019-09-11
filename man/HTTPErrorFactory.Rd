@@ -38,8 +38,8 @@ Set content type of response.
 \item \code{set_encode(encode)}\cr
 \code{function} -> \code{self}\cr
 Set encode for the given content type.
-\item \code{error(status_code, body, headers = character(0))}\cr
-\code{integer(1)}, \code{raw()} | \code{character()}, \code{character()} -> \link{RestRserveResponse}
+\item \code{error(status_code, body, headers = list_named())}\cr
+\code{integer(1)}, \code{raw()} | \code{character()}, \code{named list()} -> \link{RestRserveResponse}
 Generate HTTP error response
 }
 }

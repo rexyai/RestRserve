@@ -33,7 +33,7 @@ err = HTTPErrorFactory$new(
 )
 
 fib_handler = function(request, response) {
-  n = as.integer(request$query[["n"]])
+  n = as.integer(request$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) {
     raise(err$bad_request())
   }

@@ -44,7 +44,7 @@ r$add_path("/template/{variable}", "regex", "templateid")
 r$match_path("/test") # testid
 r$match_path("/area/entry") # areaid
 r$match_path("/template/12345") # templateid
-attr(r$match_path("/template/12345"), "path_parameters") # variables values
+attr(r$match_path("/template/12345"), "parameters_path") # variables values
 
 }
 \keyword{internal}

@@ -17,20 +17,20 @@ expect_equal(r$status_code, 200L)
 expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
 
 # Test parse_headers
-h = c("Test-Header" = "value",
+h = list("Test-Header" = "value",
       "Test-Header2" = "value2")
 r = RestRserveResponse$new(headers = h)
 expect_equal(r$headers[["Test-Header"]], "value")
 expect_equal(r$headers[["Test-Header2"]], "value2")
 
 # Test has_header method
-h = c("Test-Header" = "value")
+h = list("Test-Header" = "value")
 r = RestRserveResponse$new(headers = h)
 expect_false(r$has_header("test"))
 expect_true(r$has_header("Test-Header"))
 
 # Test get_header method
-h = c("Test-Header" = "value")
+h = list("Test-Header" = "value")
 r = RestRserveResponse$new(headers =  h)
 expect_null(r$get_header("test"))
 expect_equal(r$get_header("Test-Header"), "value")
@@ -141,3 +141,23 @@ r = RestRserveResponse$new()
 expect_equal(r$status, "200 OK")
 r$set_status_code(400L)
 expect_equal(r$status, "400 Bad Request")
+
+
+
+# Test reset
+rs = RestRserveResponse$new(body = list(a = 'body'),
+                            content_type = 'application/json',
+                            headers = list(h1 = 'h1'),
+                            status_code = 400L,
+                            encode = identity)
+rs$set_cookie(name = 'cookie_name', value = 'cookie_val')
+rs$context[['some_context']] = list(a = 1)
+
+rs$reset()
+expect_equal(rs$body, "")
+expect_equal(rs$content_type, "text/plain")
+expect_equal(rs$headers, list())
+expect_equal(rs$status_code, 200L)
+expect_equal(rs$encode, NULL)
+expect_equal(rs$cookies, list())
+expect_equal(rs$context, new.env(parent = emptyenv()))

@@ -1,7 +1,7 @@
 #' @title simple JSON encoder
 #'
 #' @description
-#' Encode R objects as json. Wrapper around `jsonlite::toJSON` with
+#' Encode R objects as JSON. Wrapper around `jsonlite::toJSON` with
 #' default parameters set to following values:
 #' `dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'`.
 #'

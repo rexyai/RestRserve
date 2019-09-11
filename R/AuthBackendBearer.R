@@ -49,9 +49,9 @@
 #' # define credentials (see RFC)
 #' token = "valid-token"
 #' # generate request headers
-#' h = sprintf("Authorization: Bearer %s", token)
+#' h = list("Authorization" = sprintf("Bearer %s", token))
 #' # simulate request
-#' rq = RestRserveRequest$new(path = "/", headers = charToRaw(h))
+#' rq = RestRserveRequest$new(path = "/", headers = h)
 #' # init response object
 #' rs = RestRserveResponse$new()
 #' # perform authentication
@@ -72,7 +72,7 @@ AuthBackendBearer = R6::R6Class(
       } else {
         raise(private$HTTPError$unauthorized(
           body = "401 Invalid Token",
-          headers = c(
+          headers = list(
             "WWW-Authenticate" = "error=\"invalid_token\",error_description=\"Invalid or expired access token\""
           )
         )

@@ -44,7 +44,7 @@ fib_handler = function(request, response) {
   #'           type: string
   #'           example: 5
   #' ---
-  n = as.integer(request$query[["n"]])
+  n = as.integer(request$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) {
     raise(HTTPError$bad_request())
   }

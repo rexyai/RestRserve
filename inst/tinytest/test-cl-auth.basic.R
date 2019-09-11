@@ -22,7 +22,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test headers without prefix
 h = "Authorization: test"
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
@@ -33,7 +34,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade without token
 h = "Authorization: Basic"
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
@@ -44,7 +46,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade with extra token
 h = "Authorization: Basic credits1 credits2"
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
@@ -55,20 +58,23 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test correct token
 h = "Authorization: Basic token"
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 expect_equal(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs), "token")
 
 # Test extract credentials
 h = sprintf("Authorization: Basic %s", jsonlite::base64_enc("usr:pwd"))
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 l = list(user = "usr", password = "pwd")
 expect_equal(obj$.__enclos_env__$private$extract_credentials(rq, rs), l)
 
 # Test incorrect encoded credentials
 h = "Authorization: Basic 111"
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 e = tryCatch(obj$.__enclos_env__$private$extract_credentials(rq, rs),
              error = function(e) e)
@@ -78,7 +84,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test extract credentials
 h = sprintf("Authorization: Basic %s", jsonlite::base64_enc("user"))
-rq = RestRserveRequest$new(headers = h)
+rq = RestRserveRequest$new()
+rq$from_rserve(headers = h)
 rs = RestRserveResponse$new()
 e = tryCatch(obj$.__enclos_env__$private$extract_credentials(rq, rs),
              error = function(e) e)

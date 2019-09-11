@@ -35,7 +35,7 @@ securearea_handler = function(request, response) {
   auth = sub("Basic ", "", auth, fixed = TRUE)
   auth = rawToChar(base64_dec(auth))
   nm = strsplit(auth, ":", TRUE)[[1L]][1L]
-  res = request$path_parameters[["resource"]]
+  res = request$parameters_path[["resource"]]
   response$body = sprintf("Hello, %s! Request resource is '%s'.", nm, res)
 }
 

@@ -53,7 +53,7 @@ openapi_create = function(openapi = openapi_openapi_version(),
 }
 
 # https://swagger.io/specification/#fixed-fields-18
-#' @param openapi_version version on openapi
+#' @param openapi_version version on OpenAPI
 #' @rdname openapi
 #' @export
 openapi_openapi_version = function(openapi_version = "3.0.1") {

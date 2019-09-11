@@ -45,7 +45,7 @@ auth_backend = AuthBackendBasic$new(FUN = auth_fun)
 # define credentials (see RFC)
 creds = jsonlite::base64_enc("user-1:password-1")
 # generate request headers
-h = sprintf("Authorization: Basic \%s", creds)
+h = list("Authorization" = sprintf("Basic \%s", creds))
 # simulate request
 rq = RestRserveRequest$new(path = "/", headers = h)
 # init response object

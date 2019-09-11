@@ -39,7 +39,7 @@ See \link{openapi_servers}}
 
 \item{...}{other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}}
 
-\item{openapi_version}{version on openapi}
+\item{openapi_version}{version on OpenAPI}
 
 \item{title}{the title of the application}
 

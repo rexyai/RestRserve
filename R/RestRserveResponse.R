@@ -10,7 +10,7 @@
 #'
 #' ```
 #' RestRserveResponse$new(body = "", content_type = 'text/plain',
-#'                        headers = NULL, status_code = 200L, encode = NULL)
+#'                        headers = list_named(), status_code = 200L, encode = NULL)
 #' ````
 #'
 #' @section Fields:
@@ -159,27 +159,32 @@ RestRserveResponse = R6::R6Class(
     encode = NULL,
     #------------------------------------------------
     initialize = function(body = "",
-                          content_type = 'text/plain',
-                          headers = NULL,
+                          content_type = "text/plain",
+                          headers = list_named(),
                           status_code = 200L,
                           encode = NULL) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_int(status_code, lower = 100L, upper = 600L)
-        checkmate::assert_string(content_type)
-        checkmate::assert_character(headers, names = "named", null.ok = TRUE)
-        checkmate::assert_function(encode, null.ok = TRUE)
-      }
+
+      checkmate::assert_int(status_code, lower = 100L, upper = 600L)
+      checkmate::assert_string(content_type, pattern = ".*/.*")
+      checkmate::assert_list(headers, names = "named")
+      checkmate::assert_function(encode, null.ok = TRUE)
+
       self$set_content_type(content_type)
       self$body = body
-      if (length(headers) > 0L) {
-        self$headers = as.list(headers)
-      } else {
-        self$headers = list()
-      }
+      self$headers = headers
       self$status_code = as.integer(status_code)
       self$cookies = list()
       self$context = new.env(parent = emptyenv())
       self$encode = encode
+    },
+    reset = function() {
+      self$body = ""
+      self$set_content_type("text/plain")
+      self$headers = list()
+      self$status_code = 200L
+      self$cookies = list()
+      self$context = new.env(parent = emptyenv())
+      self$encode = NULL
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain') {

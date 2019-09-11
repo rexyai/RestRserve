@@ -10,7 +10,7 @@ Creates RestRserveResponse object.
 }
 \section{Construction}{
 \preformatted{RestRserveResponse$new(body = "", content_type = 'text/plain',
-                       headers = NULL, status_code = 200L, encode = NULL)
+                       headers = list_named(), status_code = 200L, encode = NULL)
 }
 }
 

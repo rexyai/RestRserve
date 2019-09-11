@@ -71,7 +71,7 @@ pred_xgb_get = function(request, response) {
 
   # create json in order to be able to re-use create_model_matrix() function
   # just for demonstration - by far not ideal solution!
-  x = strsplit(request$query[["mushrom-properties"]], ";", fixed = TRUE)[[1]]
+  x = strsplit(request$parameters_query[["mushrom-properties"]], ";", fixed = TRUE)[[1]]
   x = strsplit(x, "=", fixed = TRUE)
   x = jsonlite::toJSON (lapply(x, function(z) list(featureName = z[[1]], featureValue = z[[2]])), auto_unbox = TRUE)
   # create feature matrix

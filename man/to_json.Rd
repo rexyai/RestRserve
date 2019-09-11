@@ -13,7 +13,7 @@ to_json(x, unbox = TRUE)
 of a single element}
 }
 \description{
-Encode R objects as json. Wrapper around \code{jsonlite::toJSON} with
+Encode R objects as JSON. Wrapper around \code{jsonlite::toJSON} with
 default parameters set to following values:
 \code{dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'}.
 }

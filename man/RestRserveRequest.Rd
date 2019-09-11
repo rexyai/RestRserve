@@ -10,21 +10,33 @@ Called internally for handling incoming requests from Rserve side.
 Also useful for testing.
 }
 \section{Construction}{
-\preformatted{RestRserveRequest$new(path = "/", method = "GET", query = NULL,
-                      headers = NULL, body = NULL, decode = NULL)
+\preformatted{RestRserveRequest$new(path = "/",
+ method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
+ parameters_query = list(),
+ headers = list(),
+ body = list(),
+ cookies = list(),
+ content_type = "text/plain",
+ decode = NULL)
 }
 \itemize{
 \item \code{path} :: \code{character(1)}\cr
 Character with requested path. Always starts with \code{/}.
 \item \code{method} :: \code{character(1)}\cr
 Request HTTP method.
-\item \code{query} :: \code{named character()}\cr
-A named character vector with URL decoded query parameters.
-\item \code{headers} :: \code{raw()} | \code{character(1)}\cr
-Request HTTP headers.
-\item \code{body} :: \code{raw()} | \code{character()}\cr
-Request body. Can be \code{NULL}, raw vector or named character vector for the
-URL encoded form (like a \code{query} parameter).
+\item \code{parameters_query} :: \code{named list()}\cr
+A named list with URL decoded query parameters.
+\item \code{headers} :: \code{named list()}\cr
+Request HTTP headers represented as named list.
+\item \code{body} :: \code{anything} \cr
+Request body. Can be anything and in conjunction with \code{content_type}
+defines how HTTP body will be represented.
+\item \code{cookies} :: \code{named list()}\cr
+cookies represented as named list. \strong{Note} that cookies should be provided explicitly -
+they won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
+\item \code{content_type} :: \code{character(1)}\cr
+HTTP content type. \strong{Note} that \code{content_type} should be provided explicitly -
+it won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
 \item \code{decode} :: \code{function}\cr
 Function to decode body for the specific content type.
 }
@@ -39,7 +51,7 @@ Request path.
 Request HTTP method.
 \item \code{headers} :: \code{named list()}\cr
 Request headers.
-\item \code{query} :: \code{named list()}\cr
+\item \code{parameters_query} :: \code{named list()}\cr
 Request query parameters.
 \item \code{content_type} :: \code{character(1)}\cr
 Request body content type.
@@ -50,13 +62,13 @@ Request cookies.
 \item \code{files} :: \code{named list()}\cr
 Structure which contains positions and lengths of files for the multipart
 body.
-\item \code{path_parameters} :: \code{named list()}\cr
+\item \code{parameters_path} :: \code{named list()}\cr
 List of parameters extracted from templated path after routing.
 For example if we have some handler listening at \code{/job/{job_id}} and we are
-receiving request at \code{/job/1} then \code{path_parameters} will be \code{list(job_id = "1")}.
-It is important to understand that \code{path_parameters} will be available
+receiving request at \code{/job/1} then \code{parameters_path} will be \code{list(job_id = "1")}.
+It is important to understand that \code{parameters_path} will be available
 (not empty) only after request will reach handler.
-This effectively means that \code{path_parameters} can be used inside handler
+This effectively means that \code{parameters_path} can be used inside handler
 and response middleware (but not request middleware!).
 \item \code{context} :: \code{environment()}\cr
 Environment to store any data. Can be used in middlewares.
@@ -79,6 +91,21 @@ Request accepts XML response.
 \section{Methods}{
 
 \itemize{
+\item \code{from_rserve(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
+\itemize{
+\item \code{path} :: \code{character(1)}\cr
+Character with requested path. Always starts with \code{/}.
+\item \code{parameters_query} :: \code{named character()}\cr
+A named character vector with URL decoded query parameters.
+\item \code{headers} :: \code{raw()} | \code{character(1)}\cr
+Request HTTP headers.
+\item \code{body} :: \code{raw()} | \code{character()}\cr
+Request body. Can be \code{NULL}, raw vector or named character vector for the
+URL encoded form (like a \code{parameters_query} parameter).
+}
+\item \code{reset()}\cr
+Resets request object. This is not useful for end user, but useful for RestRserve internals -
+resetting R6 class is much faster then initialize it.
 \item \code{get_header(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request header by name.

@@ -151,8 +151,8 @@ app$add_static("/desc", desc_file, "text/plain")
 
 # define say message handler
 say_handler = function(rq, rs) {
-  who = rq$path_parameters[["user"]]
-  msg = rq$query[["message"]]
+  who = rq$parameters_path[["user"]]
+  msg = rq$parameters_query[["message"]]
   if (is.null(msg)) msg <- "Hello"
   rs$set_body(paste(who, "say", dQuote(msg)))
   rs$set_content_type("text/plain")
@@ -169,7 +169,7 @@ app$endpoints
 not_found_rq = RestRserveRequest$new(path = "/no")
 status_rq = RestRserveRequest$new(path = "/status")
 desc_rq = RestRserveRequest$new(path = "/desc")
-say_rq = RestRserveRequest$new(path = "/say/anonym", query = c("message" = "Hola"))
+say_rq = RestRserveRequest$new(path = "/say/anonym", parameters_query = list("message" = "Hola"))
 # process prepared requests
 app$process_request(not_found_rq)
 app$process_request(status_rq)

@@ -37,3 +37,17 @@ is_string = function(x) {
 is_path = function(path) {
   is_string(path) && startsWith(path, "/")
 }
+
+list_named = function(length = 0, names = paste0("V", character(length))) {
+  if (!(is.numeric(length) && (length(length) == 1) && is.finite(length)))
+    stop("invalid 'length' argument - should be finite numeric")
+
+  if (length == 0)
+    names = character(0)
+
+  if (!is.character(names) || (length(names) != length))
+    stop("invalid 'names' argument - should be character of size 'length'")
+
+  if (length > 0) names = paste0('V', as.character(seq_len(length)))
+  setNames(vector("list", length), names)
+}

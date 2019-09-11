@@ -16,7 +16,7 @@ err = HTTPErrorFactory$new(
 )
 
 magick_handler = function(request, response) {
-  img_type = request$query[["format"]]
+  img_type = request$parameters_query[["format"]]
   # default type
   if (is.null(img_type)) {
     img_type = "png"

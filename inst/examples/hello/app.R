@@ -15,7 +15,7 @@ hello_handler = function(request, response) {
 # handle query parameter
 heelo_query_handler = function(request, response) {
   # user name
-  nm = request$query[["name"]]
+  nm = request$parameters_query[["name"]]
   # default value
   if (is.null(nm)) {
     nm = "anonym"
@@ -26,7 +26,7 @@ heelo_query_handler = function(request, response) {
 # handle path variable
 hello_path_handler = function(request, response) {
   # user name
-  nm = request$path_parameters[["name"]]
+  nm = request$parameters_path[["name"]]
   response$body = sprintf("Hello, %s!", nm)
 }
 

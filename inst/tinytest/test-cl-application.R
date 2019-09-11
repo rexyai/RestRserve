@@ -110,7 +110,7 @@ r1 = a$.__enclos_env__$private$match_handler(rq1, rs)
 r2 = a$.__enclos_env__$private$match_handler(rq2, rs)
 expect_equal(r1, id1)
 expect_equivalent(r2, id2)
-expect_equal(attr(r2, "path_parameters"), list(var = "value"))
+expect_equal(attr(r2, "parameters_path"), list(var = "value"))
 
 # Test process_request method
 a = RestRserveApplication$new()

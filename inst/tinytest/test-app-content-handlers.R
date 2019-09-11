@@ -28,24 +28,26 @@ rs = app$process_request(request_rds2)[[1]]
 rs = unserialize(rs)
 expect_equal(rs, list(answer = "rds2"))
 
+HTTPError$set_content_type('application/json')
 request_404 = RestRserveRequest$new(path = "/404")
 rs = app$process_request(request_404)
 expect_equal(rs[[1]], '{"error":"404 Not Found"}')
 expect_equal(rs[[2]], "application/json")
 
+HTTPError$set_content_type('text/plain')
 #---------------
-body = charToRaw('{"hello" : "world"}')
-attr(body, 'content-type') = 'application/json'
-request_post_json = RestRserveRequest$new(path = "/json", body = body)
-request_post_json$method = "POST"
+request_post_json = RestRserveRequest$new(path = "/json",
+                                          method = "POST",
+                                          body = charToRaw('{"hello" : "world"}'),
+                                          content_type = 'application/json')
 rs = app$process_request(request_post_json)
 expect_equal(unserialize(rs[[1]]), list(hello = 'world'))
 
 #---------------
-body = charToRaw('{"bad" : json}')
-attr(body, 'content-type') = 'application/json'
-request_post_json = RestRserveRequest$new(path = "/json", body = body)
-request_post_json$method = "POST"
+request_post_json = RestRserveRequest$new(path = "/json",
+                                          method = "POST",
+                                          body = charToRaw('{"bad" : json}'),
+                                          content_type = 'application/json')
 rs = app$process_request(request_post_json)
 err_msg = paste0("lexical error: invalid char in json text.\n",
                  "                              {\"bad\" : json}\n",

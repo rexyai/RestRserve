@@ -22,7 +22,7 @@ err = HTTPErrorFactory$new(
 )
 
 get_handler = function(request, response) {
-  x = as.numeric(request$query[["x"]])
+  x = as.numeric(request$parameters_query[["x"]])
   if (!is.numeric(x) || length(x) != 1L) {
     raise(err$bad_request())
   }
