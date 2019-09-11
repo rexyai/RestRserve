@@ -1,4 +1,4 @@
-#' @title Creates application. RestRserve usage starts from here.
+#' @title Creates application - RestRserve usage starts from here
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.

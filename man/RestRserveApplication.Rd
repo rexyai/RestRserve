@@ -3,7 +3,7 @@
 \docType{data}
 \name{RestRserveApplication}
 \alias{RestRserveApplication}
-\title{Creates application. RestRserve usage starts from here.}
+\title{Creates application - RestRserve usage starts from here}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates RestRserveApplication object.
