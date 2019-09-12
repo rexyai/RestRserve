@@ -52,7 +52,7 @@ list_named = function(length = 0, names = paste0("V", character(length))) {
   setNames(vector("list", length), names)
 }
 
-port_is_open = function(port) {
+port_is_taken = function(port) {
   tryCatch({
     con = suppressWarnings(socketConnection(host = "localhost", port, open = "r"))
     on.exit(close(con))
@@ -67,7 +67,7 @@ find_port = function(tries = 50) {
   min_port = 49152   # min port
   max_port = 65535   # max port
   for (i in seq_len(tries)) {
-    if (!port_is_open(port)) {
+    if (!port_is_taken(port)) {
       return(port)
     }
     port = trunc(runif(1, min_port, max_port))
