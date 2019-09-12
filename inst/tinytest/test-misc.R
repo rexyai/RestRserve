@@ -4,6 +4,8 @@
 is_string = RestRserve:::is_string
 is_path = RestRserve:::is_path
 guess_mime = RestRserve:::guess_mime
+list_named = RestRserve:::list_named
+find_port = RestRserve:::find_port
 
 # Test is_string
 expect_false(is_string(NULL))
@@ -50,10 +52,22 @@ keep = .GlobalEnv[["RestRserveApp"]]
 .GlobalEnv[["RestRserveApp"]] = app
 .GlobalEnv[["RestRserveApp"]] = keep
 
+# Test list_named constructor
+expect_equal(names(list_named()), character(0))
+expect_equal(names(list_named(1)), "V1")
+expect_equal(names(list_named(2)), c("V1", "V2"))
+expect_error(list_named(-1))
+expect_error(list_named('a'))
+expect_error(list_named(length = 1, names = c('1', '2')))
 
-expect_equal(names(RestRserve:::list_named()), character(0))
-expect_equal(names(RestRserve:::list_named(1)), "V1")
-expect_equal(names(RestRserve:::list_named(2)), c("V1", "V2"))
-expect_error(RestRserve:::list_named(-1))
-expect_error(RestRserve:::list_named('a'))
-expect_error(RestRserve:::list_named(length = 1, names = c('1', '2')))
+# Test fined not used TCP port
+expect_equal(find_port(), 6311)
+# Test when port is binned
+if (.Platform$OS.type == "unix") {
+  ps = parallel::mcparallel({
+    socketConnection("localhost", 6311, server = TRUE)
+  })
+  Sys.sleep(0.3) # wait to start process
+  expect_false(find_port() == 6311) # should be not equal default
+  tools::pskill(ps$pid) # kill process
+}

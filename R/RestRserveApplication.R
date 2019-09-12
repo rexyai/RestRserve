@@ -280,6 +280,8 @@ RestRserveApplication = R6::R6Class(
           ARGS[["http.port"]] = http_port
         }
       }
+      # find available port (if default (6311) is busy)
+      ARGS[["port"]] = find_port()
 
       keep_http_request = .GlobalEnv[[".http.request"]]
       keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]

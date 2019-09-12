@@ -51,3 +51,25 @@ list_named = function(length = 0, names = paste0("V", character(length))) {
   if (length > 0) names = paste0('V', as.character(seq_len(length)))
   setNames(vector("list", length), names)
 }
+
+find_port = function(tries = 50) {
+  port_is_open = function(port) {
+    tryCatch({
+      con = suppressWarnings(socketConnection(host = "localhost", port, open = "r"))
+      on.exit(close(con))
+      TRUE
+    },
+    error = function(e) { FALSE }
+    )
+  }
+  port = 6311L       # default Rserve port
+  min_port = 6000L   # min port
+  max_port = 9000L   # max port
+  for (i in seq_len(tries)) {
+    if (!port_is_open(port)) {
+      return(port)
+    }
+    port = trunc(runif(1, min_port, max_port))
+  }
+  return(NULL)
+}
