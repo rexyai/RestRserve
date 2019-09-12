@@ -6,6 +6,7 @@ is_path = RestRserve:::is_path
 guess_mime = RestRserve:::guess_mime
 list_named = RestRserve:::list_named
 find_port = RestRserve:::find_port
+port_is_open = RestRserve:::port_is_open
 
 # Test is_string
 expect_false(is_string(NULL))
@@ -61,6 +62,7 @@ expect_error(list_named('a'))
 expect_error(list_named(length = 1, names = c('1', '2')))
 
 # Test fined not used TCP port
+expect_false(port_is_open(6331))
 expect_equal(find_port(), 6311)
 # Test when port is binned
 if (.Platform$OS.type == "unix") {
