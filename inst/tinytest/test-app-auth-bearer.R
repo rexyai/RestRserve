@@ -39,3 +39,5 @@ expect_equal(rs[[1]], "401 Invalid Token")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], "WWW-Authenticate: error=\"invalid_token\",error_description=\"Invalid or expired access token\"")
 expect_equal(rs[[4]], 401L)
+
+cleanup_app()

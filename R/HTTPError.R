@@ -4,18 +4,8 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' helps to generate http error responses See [raise] for example.
-#'
-#' @section Construction:
-#'
-#' ```
-#' HTTPErrorFactory$new(content_type = "text/plain", encode = NULL)
-#' ```
-#'
-#' * `content_type` :: `character(1)`\cr
-#'   Type of the error response. `"text/plain"` by default.
-#' * `encode` :: `function`\cr
-#' Specify how encode response body.
+#' Helps to generate http error responses See [raise] for example.
+#' Contains [HTTPErrorFactory] class for the exception in the user's code.
 #'
 #' @section Fields:
 #'
@@ -37,9 +27,14 @@
 #' * `error(status_code, body, headers = list_named())`\cr
 #'   `integer(1)`, `raw()` | `character()`, `named list()` -> [RestRserveResponse]
 #'   Generate HTTP error response
+#' * `reset()`\cr
+#'   -> `self``\cr
+#'   Resets HTTPError to the default RestRserve state
 #'
-#' @keywords internal
-#'
+#' @name HTTPError
+#' @export
+HTTPError = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
+
 HTTPErrorFactory = R6::R6Class(
   classname = "HTTPErrorFactory",
   public = list(
@@ -56,6 +51,11 @@ HTTPErrorFactory = R6::R6Class(
     set_encode = function(encode) {
       self$encode = encode
       return(invisible(self))
+    },
+    reset = function() {
+      self$set_content_type("text/plain")
+      self$set_encode(NULL)
+      invisible(self)
     },
     #------------------------------------------------------------------------
     error = function(status_code, body, headers = list_named()) {
@@ -202,10 +202,10 @@ HTTPErrorFactory = R6::R6Class(
   )
 )
 
-#' @title interrupts request handling
+#' @title Interrupts request processing
 #'
 #' @description
-#' Interrupts request handling and signals RestRserve to return HTTPError
+#' Interrupts request processing and signals RestRserve to return HTTPError
 #'
 #' @param x instance of [RestRserveResponse]. Can be created using [HTTPError].
 #' see examples.
@@ -226,14 +226,3 @@ raise = function(x) {
   exception = errorCondition("raise", response = x, class = class(x))
   stop(exception)
 }
-
-#' @title HTTPError
-#'
-#' @description
-#' Contains [HTTPErrorFactory] class for the exception in the user's code.
-#'
-#' @export
-#'
-#' @seealso [raise] [HTTPErrorFactory]
-#'
-HTTPError = NULL

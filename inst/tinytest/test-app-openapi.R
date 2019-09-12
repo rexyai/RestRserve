@@ -32,3 +32,5 @@ expect_true(file.exists(rs[[1]]))
 expect_equal(readChar(rs[[1]], 11), ".swagger-ui")
 expect_equal(rs[[2]], "text/css")
 expect_equal(rs[[4]], 200L)
+
+cleanup_app()

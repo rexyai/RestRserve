@@ -34,7 +34,7 @@ rs = app$process_request(request_404)
 expect_equal(rs[[1]], '{"error":"404 Not Found"}')
 expect_equal(rs[[2]], "application/json")
 
-HTTPError$set_content_type('text/plain')
+HTTPError$reset()
 #---------------
 request_post_json = RestRserveRequest$new(path = "/json",
                                           method = "POST",
@@ -55,3 +55,5 @@ err_msg = paste0("lexical error: invalid char in json text.\n",
 expect_equal(rs[[1]], err_msg)
 expect_equal(rs[[2]], "text/plain")
 #---------------
+
+cleanup_app()

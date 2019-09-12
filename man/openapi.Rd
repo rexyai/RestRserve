@@ -9,7 +9,7 @@
 \alias{openapi_server}
 \alias{openapi_contact}
 \alias{openapi_license}
-\title{build OpenAPI objects}
+\title{Builds OpenAPI objects}
 \usage{
 openapi_create(openapi = openapi_openapi_version(),
   info = openapi_info(), servers = openapi_servers(), ...)

@@ -3,15 +3,38 @@
 \docType{data}
 \name{HTTPError}
 \alias{HTTPError}
-\title{HTTPError}
-\format{An object of class \code{HTTPErrorFactory} (inherits from \code{R6}) of length 38.}
-\usage{
-HTTPError
-}
+\title{Helps to generate http error responses}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
+Helps to generate http error responses See \link{raise} for example.
 Contains \link{HTTPErrorFactory} class for the exception in the user's code.
 }
-\seealso{
-\link{raise} \link{HTTPErrorFactory}
+\section{Fields}{
+
+\itemize{
+\item \code{content_type} :: \code{character(1)}\cr
+Type of the error response.
+\item \code{encode} :: \code{function}\cr
+Function to encode response body.
 }
+}
+
+\section{Methods}{
+
+\itemize{
+\item \code{set_content_type(content_type)}\cr
+\code{character(1)} -> \code{self}\cr
+Set content type of response.
+\item \code{set_encode(encode)}\cr
+\code{function} -> \code{self}\cr
+Set encode for the given content type.
+\item \code{error(status_code, body, headers = list_named())}\cr
+\code{integer(1)}, \code{raw()} | \code{character()}, \code{named list()} -> \link{RestRserveResponse}
+Generate HTTP error response
+\item \code{reset()}\cr
+-> `self``\cr
+Resets HTTPError to the default RestRserve state
+}
+}
+
 \keyword{datasets}

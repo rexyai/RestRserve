@@ -3,7 +3,7 @@
 \docType{data}
 \name{RestRserveRequest}
 \alias{RestRserveRequest}
-\title{Creates RestRserveRequest object}
+\title{Creates request object}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Called internally for handling incoming requests from Rserve side.

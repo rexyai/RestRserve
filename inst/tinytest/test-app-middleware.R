@@ -48,3 +48,5 @@ expect_equal(rs[[1]], "500 Internal Server Error")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 500L)
+
+cleanup_app()

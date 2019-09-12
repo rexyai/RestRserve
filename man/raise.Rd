@@ -2,7 +2,7 @@
 % Please edit documentation in R/HTTPError.R
 \name{raise}
 \alias{raise}
-\title{interrupts request handling}
+\title{Interrupts request processing}
 \usage{
 raise(x)
 }
@@ -11,7 +11,7 @@ raise(x)
 see examples.}
 }
 \description{
-Interrupts request handling and signals RestRserve to return HTTPError
+Interrupts request processing and signals RestRserve to return HTTPError
 }
 \examples{
 # catch exception

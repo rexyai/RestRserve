@@ -16,15 +16,10 @@ rm(x, y)
 
 ## ---- create handler for the HTTP requests ----
 
-err = HTTPErrorFactory$new(
-  content_type = "application/json",
-  encode = to_json
-)
-
 get_handler = function(request, response) {
   x = as.numeric(request$parameters_query[["x"]])
   if (!is.numeric(x) || length(x) != 1L) {
-    raise(err$bad_request())
+    raise(HTTPError$bad_request())
   }
   response$body = predict(model, list(x = x))
 }
@@ -35,7 +30,7 @@ post_handler = function(request, response) {
   is_json = any(grepl("application/json", rq_cnt))
   if (length(rq_body) == 0L || !is_json) {
 
-    raise(err$bad_request())
+    raise(HTTPError$bad_request())
   }
   x = fromJSON(rawToChar(rq_body))
   if (!is.list(x)) {

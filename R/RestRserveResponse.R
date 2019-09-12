@@ -1,10 +1,10 @@
-#' @title Creates RestRserveResponse object
+#' @title Creates response object
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Creates RestRserveResponse object.
+#' Creates response object.
 #'
 #' @section Construction:
 #'

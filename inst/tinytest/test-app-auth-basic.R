@@ -65,3 +65,5 @@ expect_equal(rs[[1]], "404 Not Found")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 404L)
+
+cleanup_app()

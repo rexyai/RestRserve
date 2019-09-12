@@ -30,3 +30,5 @@ rs = app$process_request(rq)
 expect_equal(rs[[1]], "404 Not Found")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[4]], 404L)
+
+cleanup_app()
