@@ -33,7 +33,7 @@ auth_fun = function(token) {
   return(TRUE)
 }
 auth_backend = AuthBackendBearer$new(FUN = auth_fun)
-auth_mw = RestRserveAuthMiddleware$new(
+auth_mw = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
@@ -43,7 +43,7 @@ auth_mw = RestRserveAuthMiddleware$new(
 
 ## ---- create application ----
 
-app = RestRserveApplication$new(
+app = Application$new(
   content_type = "text/plain",
   middleware = list(auth_mw)
 )

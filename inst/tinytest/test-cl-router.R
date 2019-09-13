@@ -1,16 +1,16 @@
-# Test RestRserveRouter class
+# Test Router class
 
 # import functions
-RestRserveRouter = RestRserve:::RestRserveRouter
+Router = RestRserve:::Router
 
 # Test empty object
-r = RestRserveRouter$new()
-expect_true(inherits(r, "RestRserveRouter"))
+r = Router$new()
+expect_true(inherits(r, "Router"))
 expect_equal(r$size(), 0L)
 expect_null(r$paths)
 
 # Test 'exact' path handling
-r = RestRserveRouter$new()
+r = Router$new()
 r$add_path(path = "/test1", match = "exact", id = "1")
 r$add_path(path = "/test2", match = "exact", id = "1")
 r$add_path(path = "/test3/", match = "exact", id = "1")
@@ -31,7 +31,7 @@ v = list(
 expect_equal(l, v)
 
 # Test add 'partial' path handling
-r = RestRserveRouter$new()
+r = Router$new()
 r$add_path(path = "/test1", match = "partial", id = "1")
 r$add_path(path = "/test2", match = "partial", id = "1")
 r$add_path(path = "/test3/", match = "partial", id = "1")
@@ -52,7 +52,7 @@ v = list(
 expect_equal(l, v)
 
 # Test 'regex' path handling
-r = RestRserveRouter$new()
+r = Router$new()
 r$add_path(path = "/test1/{var1}", match = "regex", id = "1")
 r$add_path(path = "/test1/{var1}/{var2}", match = "regex", id = "1")
 r$add_path(path = "/test2/{var1}/{var2}", match = "regex", id = "1")
@@ -83,7 +83,7 @@ v = list(
 expect_equal(l, v)
 
 # Test match_path method
-h = RestRserveRouter$new()
+h = Router$new()
 h$add_path(path = "/test1", match = "exact", id = "1")
 h$add_path(path = "/test2/", match = "partial", id = "2")
 h$add_path(path = "/test2/{var1}", match = "regex", id = "3")
@@ -99,7 +99,7 @@ expect_equal(h$match_path("/test3/test"), "4")
 expect_equivalent(h$match_path("/test3/val1/text/val2"), "5")
 
 # Test extract path variables
-h = RestRserveRouter$new()
+h = Router$new()
 h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
 h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
 a = attr(h$match_path("/test2/1"), "parameters_path")

@@ -7,7 +7,7 @@ library(RestRserve)
 
 ## ---- create application -----
 
-app = RestRserveApplication$new(
+app = Application$new(
   content_type = "text/plain"
 )
 

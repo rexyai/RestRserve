@@ -52,13 +52,13 @@ auth_fun = function(user, password) {
   return(TRUE)
 }
 auth_backend = AuthBackendBasic$new(FUN = auth_fun)
-auth_mw_exact = RestRserveAuthMiddleware$new(
+auth_mw_exact = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
   name = "basic_auth"
 )
-auth_mw_partial = RestRserveAuthMiddleware$new(
+auth_mw_partial = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/securearea",
   match = "partial",
@@ -68,7 +68,7 @@ auth_mw_partial = RestRserveAuthMiddleware$new(
 
 ## ---- create application ----
 
-app = RestRserveApplication$new(
+app = Application$new(
   content_type = "text/plain",
   middleware = list(auth_mw_exact, auth_mw_partial)
 )

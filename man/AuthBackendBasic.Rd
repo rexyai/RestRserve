@@ -21,7 +21,7 @@ Function to perform authentication.
 
 \itemize{
 \item \code{authenticate(request, response)}\cr
-\link{RestRserveRequest}, \link{RestRserveResponse} -> \code{NULL}\cr
+\link{Request}, \link{Response} -> \code{NULL}\cr
 Provide authentication for the given request.
 }
 }
@@ -47,9 +47,9 @@ creds = jsonlite::base64_enc("user-1:password-1")
 # generate request headers
 h = list("Authorization" = sprintf("Basic \%s", creds))
 # simulate request
-rq = RestRserveRequest$new(path = "/", headers = h)
+rq = Request$new(path = "/", headers = h)
 # init response object
-rs = RestRserveResponse$new()
+rs = Response$new()
 # perform authentication
 auth_backend$authenticate(rq, rs) # TRUE
 
@@ -59,11 +59,10 @@ auth_backend$authenticate(rq, rs) # TRUE
 \href{https://en.wikipedia.org/wiki/Basic_access_authentication}{Wikipedia}
 }
 \seealso{
-\link{RestRserveAuthMiddleware} \link{RestRserveRequest} \link{RestRserveResponse}
+\link{AuthMiddleware} \link{Request} \link{Response}
 
 Other AuthBackend: \code{\link{AuthBackendBearer}},
-  \code{\link{AuthBackend}},
-  \code{\link{RestRserveAuthMiddleware}}
+  \code{\link{AuthBackend}}, \code{\link{AuthMiddleware}}
 }
 \concept{AuthBackend}
 \keyword{datasets}
