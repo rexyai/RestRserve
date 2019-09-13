@@ -9,8 +9,11 @@
 #' @section Construction:
 #'
 #' ```
-#' Response$new(body = "", content_type = 'text/plain',
-#'                        headers = list_named(), status_code = 200L, encode = NULL)
+#' Response$new(body = "",
+#'              content_type = 'text/plain',
+#'              headers = list_named(),
+#'              status_code = 200L,
+#'              encode = NULL)
 #' ````
 #'
 #' @section Fields:

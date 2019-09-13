@@ -10,8 +10,7 @@
 #' @section Construction:
 #'
 #' ```
-#' AuthMiddleware$new(auth_backend, routes, match = "exact",
-#'                              name = "AuthMiddleware")
+#' AuthMiddleware$new(auth_backend, routes, match = "exact", name = "AuthMiddleware")
 #' ````
 #'
 #' * `auth_backend` :: [AuthBackend]\cr
@@ -34,7 +33,7 @@
 #' @family AuthBackend
 #'
 AuthMiddleware = R6::R6Class(
-  "AuthMiddleware",
+  classname = "AuthMiddleware",
   inherit = Middleware,
   public = list(
     initialize = function(auth_backend, routes, match = "exact", name = "AuthMiddleware") {

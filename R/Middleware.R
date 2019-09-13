@@ -39,7 +39,7 @@
 #' * `process_request` :: `function`\cr
 #'   Function which takes 2 arguments - `request` and `response` objects (class
 #'   [Request] and [Response] correspondingly) and modify
-#'   `request` and `response` or throw exception using `HTTPError` helper.
+#'   `request` and `response` or throw exception using [HTTPError] helper.
 #'
 #'   Function is called before request is routed to handler.
 #'
@@ -48,7 +48,7 @@
 #' * `process_response` :: `funciotn`\cr
 #'   Function which takes 2 arguments - `request` and `response` objects (class
 #'   [Request] and [Response] correspondingly) and modify
-#'   `request` and `response` or throw exception using `HTTPError` helper.
+#'   `request` and `response` or throw exception using [HTTPError] helper.
 #'
 #'   Function is called after request is processed by handler.
 #'
