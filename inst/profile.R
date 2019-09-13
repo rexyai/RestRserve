@@ -23,7 +23,7 @@ source(app_file)
 
 ## ---- profiling ----
 
-r1 = RestRserveRequest$new(
+r1 = Request$new(
   path = "/hello"
 )
 
@@ -38,7 +38,7 @@ p1 = profvis(
 saveWidget(p1, "prof_hello_ok.html")
 
 
-r2 = RestRserveRequest$new(
+r2 = Request$new(
   path = "/not-found"
 )
 

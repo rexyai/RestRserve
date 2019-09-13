@@ -25,7 +25,7 @@
 #'   Set encode for the given content type.
 #'
 #' * `error(status_code, body, headers = list_named())`\cr
-#'   `integer(1)`, `raw()` | `character()`, `named list()` -> [RestRserveResponse]
+#'   `integer(1)`, `raw()` | `character()`, `named list()` -> [Response]
 #'   Generate HTTP error response
 #' * `reset()`\cr
 #'   -> `self``\cr
@@ -189,7 +189,7 @@ HTTPErrorFactory = R6::R6Class(
         #body = paste(status_code, status_codes[[as.character(status_code)]])
         body = list(error = paste(status_code, status_codes[[as.character(status_code)]]))
       }
-      res = RestRserveResponse$new(
+      res = Response$new(
         body = body,
         content_type = self$content_type,
         headers = headers,
@@ -207,7 +207,7 @@ HTTPErrorFactory = R6::R6Class(
 #' @description
 #' Interrupts request processing and signals RestRserve to return HTTPError
 #'
-#' @param x instance of [RestRserveResponse]. Can be created using [HTTPError].
+#' @param x instance of [Response]. Can be created using [HTTPError].
 #' see examples.
 #'
 #' @export
@@ -219,7 +219,7 @@ HTTPErrorFactory = R6::R6Class(
 #' res = try(raise(HTTPError$bad_request()), silent = TRUE)
 #' cond = attr(res, "condition")
 #'
-#' # response is a valid RestRserveResponse instace
+#' # response is a valid Response instace
 #' identical(cond$response$body, "400 Bad Request")
 #'
 raise = function(x) {

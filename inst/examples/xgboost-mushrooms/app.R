@@ -84,7 +84,7 @@ pred_xgb_get = function(request, response) {
 #------------------------------------------------------------------------------------------
 # create application
 #------------------------------------------------------------------------------------------
-app = RestRserve::RestRserveApplication$new()
+app = RestRserve::Application$new()
 app$add_post(path = "/predict", FUN = pred_xgb_post)
 app$add_get(path = "/predict", FUN = pred_xgb_get)
 app$add_openapi()

@@ -38,7 +38,7 @@ ContentHandlers = NULL # see zzz.R on how RestRserve initializes this object dur
 
 
 ContentHandlersFactory = R6::R6Class(
-  classname = "RestRserveContentHandler",
+  classname = "ContentHandler",
   public = list(
     handlers = NULL,
     initialize = function() {

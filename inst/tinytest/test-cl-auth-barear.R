@@ -9,8 +9,8 @@ expect_equal(obj$.__enclos_env__$private$auth_fun, f)
 expect_equal(obj$.__enclos_env__$private$auth_header_prefix, "bearer")
 
 # Test without Authorization header
-rq = RestRserveRequest$new()
-rs = RestRserveResponse$new()
+rq = Request$new()
+rs = Response$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
@@ -21,8 +21,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test headers without prefix
 h = list("Authorization" = "test")
-rq = RestRserveRequest$new(headers = h)
-rs = RestRserveResponse$new()
+rq = Request$new(headers = h)
+rs = Response$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
@@ -32,8 +32,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade with extra token
 h = list("Authorization" = "bearer")
-rq = RestRserveRequest$new(headers = h)
-rs = RestRserveResponse$new()
+rq = Request$new(headers = h)
+rs = Response$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
@@ -43,8 +43,8 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test heade without token
 h = list("Authorization" = "bearer token1 token2")
-rq = RestRserveRequest$new(headers = h)
-rs = RestRserveResponse$new()
+rq = Request$new(headers = h)
+rs = Response$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
@@ -54,12 +54,12 @@ expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
 
 # Test correct token
 h = list("Authorization" = "Bearer token")
-rq = RestRserveRequest$new(headers = h)
-rs = RestRserveResponse$new()
+rq = Request$new(headers = h)
+rs = Response$new()
 expect_equal(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs), "token")
 
 # Test extract credentials
 h = list("Authorization" = "Bearer secret")
-rq = RestRserveRequest$new(headers = h)
-rs = RestRserveResponse$new()
+rq = Request$new(headers = h)
+rs = Response$new()
 expect_equal(obj$.__enclos_env__$private$extract_credentials(rq, rs), "secret")

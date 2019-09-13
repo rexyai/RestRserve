@@ -10,7 +10,7 @@
 #' @section Construction:
 #'
 #' ```
-#' RestRserveRequest$new(path = "/",
+#' Request$new(path = "/",
 #'  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
 #'  parameters_query = list(),
 #'  headers = list(),
@@ -144,15 +144,15 @@
 #'
 #' @export
 #'
-#' @seealso [RestRserveResponse]
+#' @seealso [Response]
 #'
 #' @examples
 #' # init simply request
-#' rq = RestRserveRequest$new(path = "/")
+#' rq = Request$new(path = "/")
 #' rq$method # GET
 #'
-RestRserveRequest = R6::R6Class(
-  classname = "RestRserveRequest",
+Request = R6::R6Class(
+  classname = "Request",
   public = list(
     #---------------------------------
     # public members

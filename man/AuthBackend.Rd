@@ -37,7 +37,7 @@ This placeholder. It must be implemented in the subclass.
 \seealso{
 Other AuthBackend: \code{\link{AuthBackendBasic}},
   \code{\link{AuthBackendBearer}},
-  \code{\link{RestRserveAuthMiddleware}}
+  \code{\link{AuthMiddleware}}
 }
 \concept{AuthBackend}
 \keyword{internal}

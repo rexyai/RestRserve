@@ -1,15 +1,15 @@
-#' @title Creates RestRserveRouter
+#' @title Creates Router
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Creates RestRserveRouter object.
+#' Creates Router object.
 #'
 #' @section Construction:
 #'
 #' ```
-#' RestRserveRouter$new()
+#' Router$new()
 #' ````
 #'
 #' @section Fields:
@@ -34,7 +34,7 @@
 #' @keywords internal
 #'
 #' @examples
-#' r = RestRserve:::RestRserveRouter$new()
+#' r = RestRserve:::Router$new()
 #' r$add_path("/test", "exact", "testid")
 #' r$add_path("/area", "partial", "areaid")
 #' r$add_path("/template/{variable}", "regex", "templateid")
@@ -43,8 +43,8 @@
 #' r$match_path("/template/12345") # templateid
 #' attr(r$match_path("/template/12345"), "parameters_path") # variables values
 #'
-RestRserveRouter = R6::R6Class(
-  classname = "RestRserveRouter",
+Router = R6::R6Class(
+  classname = "Router",
   public = list(
     paths = NULL,
     initialize = function() {

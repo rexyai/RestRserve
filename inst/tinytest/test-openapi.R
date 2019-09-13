@@ -65,7 +65,7 @@ expect_true(inherits(obj, "openapi_license"))
 expect_equal(obj$name, "Apache 2.0")
 expect_equal(obj$url, "https://www.apache.org/licenses/LICENSE-2.0.html")
 
-# Test RestRserveApplication 'add_openapi' method
+# Test Application 'add_openapi' method
 f1 = function(req, res) {
   #' ----
   #' description: f1
@@ -109,7 +109,7 @@ f5 = function(req, res) {
 }
 
 # Create app
-app = RestRserveApplication$new()
+app = Application$new()
 # Add handlers
 app$add_route(path = "/f1", method = "GET", FUN = f1)
 app$add_route(path = "/f1", method = "POST", FUN = f1)
