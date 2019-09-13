@@ -2,7 +2,7 @@
 
 library(RestRserve)
 
-app = RestRserveApplication$new(content_type = 'application/json')
+app = Application$new(content_type = 'application/json')
 
 app$add_get('/json', function(request, response) {
   response$body = list(answer = 'json')

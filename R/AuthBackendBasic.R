@@ -18,7 +18,7 @@
 #' @section Methods:
 #'
 #' * `authenticate(request, response)`\cr
-#'   [RestRserveRequest], [RestRserveResponse] -> `NULL`\cr
+#'   [Request], [Response] -> `NULL`\cr
 #'   Provide authentication for the given request.
 #'
 #' @references
@@ -27,7 +27,7 @@
 #'
 #' @export
 #'
-#' @seealso [RestRserveAuthMiddleware] [RestRserveRequest] [RestRserveResponse]
+#' @seealso [AuthMiddleware] [Request] [Response]
 #'
 #' @family AuthBackend
 #'
@@ -52,9 +52,9 @@
 #' # generate request headers
 #' h = list("Authorization" = sprintf("Basic %s", creds))
 #' # simulate request
-#' rq = RestRserveRequest$new(path = "/", headers = h)
+#' rq = Request$new(path = "/", headers = h)
 #' # init response object
-#' rs = RestRserveResponse$new()
+#' rs = Response$new()
 #' # perform authentication
 #' auth_backend$authenticate(rq, rs) # TRUE
 #'

@@ -4,9 +4,9 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Creates RestRserveMiddleware object.
+#' Creates Middleware object.
 #'
-#' RestRserveMiddleware is a very useful concept which allows to perform
+#' Middleware is a very useful concept which allows to perform
 #' preprocessing of requests and post-processing of responses. Middleware has
 #' an access to both `request` and  `response` objects and can modify them.
 #' This way each request can be checked/modified before passing handler and
@@ -16,7 +16,7 @@
 #' @section Construction:
 #'
 #' ```
-#' RestRserveMiddleware$new(
+#' Middleware$new(
 #'   process_request  = function(request, response) TRUE,
 #'   process_response = function(request, response) TRUE,
 #'   name = "Middleware"
@@ -38,7 +38,7 @@
 #'
 #' * `process_request` :: `function`\cr
 #'   Function which takes 2 arguments - `request` and `response` objects (class
-#'   [RestRserveRequest] and [RestRserveResponse] correspondingly) and modify
+#'   [Request] and [Response] correspondingly) and modify
 #'   `request` and `response` or throw exception using `HTTPError` helper.
 #'
 #'   Function is called before request is routed to handler.
@@ -47,7 +47,7 @@
 #'
 #' * `process_response` :: `funciotn`\cr
 #'   Function which takes 2 arguments - `request` and `response` objects (class
-#'   [RestRserveRequest] and [RestRserveResponse] correspondingly) and modify
+#'   [Request] and [Response] correspondingly) and modify
 #'   `request` and `response` or throw exception using `HTTPError` helper.
 #'
 #'   Function is called after request is processed by handler.
@@ -59,10 +59,10 @@
 #'
 #' @export
 #'
-#' @seealso [RestRserveRequest] [RestRserveResponse] [RestRserveApplication]
+#' @seealso [Request] [Response] [Application]
 #'
-RestRserveMiddleware = R6::R6Class(
-  classname = "RestRserveMiddleware",
+Middleware = R6::R6Class(
+  classname = "Middleware",
   public = list(
     process_request = NULL,
     process_response = NULL,

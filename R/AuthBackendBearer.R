@@ -18,7 +18,7 @@
 #' @section Methods:
 #'
 #' * `authenticate(request, response)`\cr
-#'   [RestRserveRequest], [RestRserveResponse] -> `NULL`\cr
+#'   [Request], [Response] -> `NULL`\cr
 #'   Provide authentication for the given request.
 #'
 #' @export
@@ -27,7 +27,7 @@
 #' [RFC6750](https://tools.ietf.org/html/rfc6750)
 #' [Specification](https://swagger.io/docs/specification/authentication/bearer-authentication)
 #'
-#' @seealso [RestRserveAuthMiddleware] [RestRserveRequest] [RestRserveResponse]
+#' @seealso [AuthMiddleware] [Request] [Response]
 #'
 #' @family AuthBackend
 #'
@@ -51,9 +51,9 @@
 #' # generate request headers
 #' h = list("Authorization" = sprintf("Bearer %s", token))
 #' # simulate request
-#' rq = RestRserveRequest$new(path = "/", headers = h)
+#' rq = Request$new(path = "/", headers = h)
 #' # init response object
-#' rs = RestRserveResponse$new()
+#' rs = Response$new()
 #' # perform authentication
 #' auth_backend$authenticate(rq, rs) # TRUE
 #'

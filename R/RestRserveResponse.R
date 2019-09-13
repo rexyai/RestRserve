@@ -9,7 +9,7 @@
 #' @section Construction:
 #'
 #' ```
-#' RestRserveResponse$new(body = "", content_type = 'text/plain',
+#' Response$new(body = "", content_type = 'text/plain',
 #'                        headers = list_named(), status_code = 200L, encode = NULL)
 #' ````
 #'
@@ -118,11 +118,11 @@
 #'
 #' @export
 #'
-#' @seealso [RestRserveRequest]
+#' @seealso [Request]
 #'
 #' @examples
 #' # init response
-#' rs = RestRserveResponse$new()
+#' rs = Response$new()
 #' # set body media type
 #' rs$set_content_type("text/plain")
 #' # set body content
@@ -133,7 +133,7 @@
 #' rs$to_rserve()
 #'
 #' # init response
-#' rs = RestRserveResponse$new()
+#' rs = Response$new()
 #' # static file path
 #' file_path = system.file("DESCRIPTION", package = "RestRserve")
 #' # get last file modification timestamp
@@ -147,8 +147,8 @@
 #' # convert to Rserve output
 #' rs$to_rserve()
 #'
-RestRserveResponse = R6::R6Class(
-  classname = "RestRserveResponse",
+Response = R6::R6Class(
+  classname = "Response",
   public = list(
     body = NULL,
     content_type = NULL,

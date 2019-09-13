@@ -21,7 +21,7 @@ Function to perform authentication
 
 \itemize{
 \item \code{authenticate(request, response)}\cr
-\link{RestRserveRequest}, \link{RestRserveResponse} -> \code{NULL}\cr
+\link{Request}, \link{Response} -> \code{NULL}\cr
 Provide authentication for the given request.
 }
 }
@@ -46,9 +46,9 @@ token = "valid-token"
 # generate request headers
 h = list("Authorization" = sprintf("Bearer \%s", token))
 # simulate request
-rq = RestRserveRequest$new(path = "/", headers = h)
+rq = Request$new(path = "/", headers = h)
 # init response object
-rs = RestRserveResponse$new()
+rs = Response$new()
 # perform authentication
 auth_backend$authenticate(rq, rs) # TRUE
 
@@ -58,11 +58,10 @@ auth_backend$authenticate(rq, rs) # TRUE
 \href{https://swagger.io/docs/specification/authentication/bearer-authentication}{Specification}
 }
 \seealso{
-\link{RestRserveAuthMiddleware} \link{RestRserveRequest} \link{RestRserveResponse}
+\link{AuthMiddleware} \link{Request} \link{Response}
 
 Other AuthBackend: \code{\link{AuthBackendBasic}},
-  \code{\link{AuthBackend}},
-  \code{\link{RestRserveAuthMiddleware}}
+  \code{\link{AuthBackend}}, \code{\link{AuthMiddleware}}
 }
 \concept{AuthBackend}
 \keyword{datasets}

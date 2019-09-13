@@ -7,7 +7,7 @@
 raise(x)
 }
 \arguments{
-\item{x}{instance of \link{RestRserveResponse}. Can be created using \link{HTTPError}.
+\item{x}{instance of \link{Response}. Can be created using \link{HTTPError}.
 see examples.}
 }
 \description{
@@ -18,7 +18,7 @@ Interrupts request processing and signals RestRserve to return HTTPError
 res = try(raise(HTTPError$bad_request()), silent = TRUE)
 cond = attr(res, "condition")
 
-# response is a valid RestRserveResponse instace
+# response is a valid Response instace
 identical(cond$response$body, "400 Bad Request")
 
 }

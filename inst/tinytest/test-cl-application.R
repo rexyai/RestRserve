@@ -1,7 +1,7 @@
-# Test RestRserveApplication class
+# Test Application class
 
 # Test empty object
-a = RestRserveApplication$new()
+a = Application$new()
 expect_true(inherits(a$content_type, "character"))
 expect_equal(a$content_type, "text/plain")
 expect_true(inherits(a$HTTPError, "HTTPErrorFactory"))
@@ -18,24 +18,24 @@ expect_equal(a$.__enclos_env__$private$supported_methods,
              c("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"))
 
 # Test empty routes handling
-a = RestRserveApplication$new()
-rq = RestRserveRequest$new()
-rs = RestRserveResponse$new()
+a = Application$new()
+rq = Request$new()
+rs = Response$new()
 expect_null(a$.__enclos_env__$private$match_handler(rq, rs))
 
 # Test app with middleware
-mw = RestRserveMiddleware$new(
+mw = Middleware$new(
   process_request = function(rq, rs) {},
   process_response = function(rq, rs) {}
 )
-a = RestRserveApplication$new(middleware = list(mw))
+a = Application$new(middleware = list(mw))
 expect_equal(length(a$.__enclos_env__$private$middleware), 1L)
 expect_equal(names(a$.__enclos_env__$private$middleware), c("1"))
 expect_equal(a$.__enclos_env__$private$middleware[["1"]], mw)
 
 # Test append_middleware method
-a = RestRserveApplication$new()
-mw = RestRserveMiddleware$new(
+a = Application$new()
+mw = Middleware$new(
   process_request = function(rq, rs) {},
   process_response = function(rq, rs) {}
 )
@@ -46,7 +46,7 @@ expect_equal(names(a$.__enclos_env__$private$middleware), c("1", "2"))
 expect_equal(a$.__enclos_env__$private$middleware[["1"]], mw)
 
 # Test add_route method
-a = RestRserveApplication$new()
+a = Application$new()
 f1 = function(rq, rs) {1}
 f2 = function(rq, rs) {2}
 f3 = function(rq, rs) {3}
@@ -59,7 +59,7 @@ expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
 expect_equal(a$.__enclos_env__$private$handlers[[id3]], f3)
 
 # Test add_get method
-a = RestRserveApplication$new()
+a = Application$new()
 f1 = function(rq, rs) {1}
 f2 = function(rq, rs) {2}
 a$add_get("/test1", f1, "exact", add_head = FALSE)
@@ -70,7 +70,7 @@ expect_equal(a$.__enclos_env__$private$handlers[["2"]], f2) # head method
 expect_equal(a$.__enclos_env__$private$handlers[["3"]], f2)
 
 # Test add_post method
-a = RestRserveApplication$new()
+a = Application$new()
 f1 = function(rq, rs) {1}
 f2 = function(rq, rs) {2}
 id1 = a$add_post("/test1", f1, "exact")
@@ -80,7 +80,7 @@ expect_equal(a$.__enclos_env__$private$handlers[[id1]], f1)
 expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
 
 # Test error on duplicates routes
-a = RestRserveApplication$new()
+a = Application$new()
 f = function(rq, rs) {1}
 a$add_route("/", "GET", f, "exact")
 expect_error(a$add_route("/", "GET", f, "exact"))
@@ -90,20 +90,20 @@ a$add_route("/regex/{var}", "GET", f, match = "regex")
 expect_error(a$add_route("/regex/{var}", "GET", f, match = "regex"))
 
 # est call_handler method
-a = RestRserveApplication$new()
+a = Application$new()
 f = function(rq, rs) {rs$body = list(a = 1)}
-rq = RestRserveRequest$new()
-rs = RestRserveResponse$new()
+rq = Request$new()
+rs = Response$new()
 a$.__enclos_env__$private$call_handler(f, rq, rs)
 expect_equal(rs$body, list(a = 1))
 
 # Test match_handler method
-a = RestRserveApplication$new()
+a = Application$new()
 f1 = function(rq, rs) {1}
 f2 = function(rq, rs) {2}
-rq1 = RestRserveRequest$new(path = "/")
-rq2 = RestRserveRequest$new(path = "/regex/value")
-rs = RestRserveResponse$new()
+rq1 = Request$new(path = "/")
+rq2 = Request$new(path = "/regex/value")
+rs = Response$new()
 id1 = a$add_route("/", "GET", f1, "exact")
 id2 = a$add_route("/regex/{var}", "GET", f2, match = "regex")
 r1 = a$.__enclos_env__$private$match_handler(rq1, rs)
@@ -113,16 +113,16 @@ expect_equivalent(r2, id2)
 expect_equal(attr(r2, "parameters_path"), list(var = "value"))
 
 # Test process_request method
-a = RestRserveApplication$new()
+a = Application$new()
 f = function(rq, rs) {rs$body = "text"}
 a$add_route("/", "GET", f, "exact")
-rq = RestRserveRequest$new(path = "/")
-rs = RestRserveResponse$new()
+rq = Request$new(path = "/")
+rs = Response$new()
 r = a$process_request(rq)
 expect_equal(r, list("text", "text/plain", character(0), 200L))
 
 # Test endpoints method
-a = RestRserveApplication$new()
+a = Application$new()
 f = function(rq, rs) {}
 expect_equal(a$endpoints, list())
 a$add_route("/", "GET", f, "exact")

@@ -1,11 +1,11 @@
 # Test HTTPErrorFactory class
 
 obj = ContentHandlers
-app = RestRserveApplication$new()
+app = Application$new()
 on.exit(obj$reset())
 
 # Test empty object
-expect_true(inherits(obj, "RestRserveContentHandler"))
+expect_true(inherits(obj, "ContentHandler"))
 expect_true(inherits(obj$handlers, "environment"))
 expect_equal(length(obj$handlers), 2L)
 expect_true(inherits(obj$handlers[["text/plain"]], "list"))
@@ -32,7 +32,7 @@ expect_equal(obj$get_decode(ct), f)
 expect_equal(obj$handlers[[ct]][["decode"]], f)
 expect_null(obj$handlers[[ct]][["encode"]])
 
-# check modification og the ContentHandlers is global and beign propagated to the RestRserveApplication
+# check modification og the ContentHandlers is global and beign propagated to the Application
 expect_equal(app$ContentHandlers$get_decode(ct), f)
 
 f = function() FALSE

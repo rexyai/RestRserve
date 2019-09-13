@@ -14,7 +14,7 @@ expect_null(obj$encode)
 
 # Test error method result
 resp = obj$error(500L, "Error text")
-expect_true(inherits(resp, "RestRserveResponse"))
+expect_true(inherits(resp, "Response"))
 expect_equal(obj$content_type, "text/plain")
 expect_equal(resp$body, "Error text")
 expect_equal(resp$status_code, 500L)
@@ -60,7 +60,7 @@ for (err_method in error_methods) {
   expect_equal(resp$body, list(error = target_error))
 }
 
-app = RestRserveApplication$new()
+app = Application$new()
 
 # test set content-type
 obj$set_content_type('application/json')

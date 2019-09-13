@@ -1,11 +1,11 @@
-# Test RestRserveAuthMiddleware class
+# Test AuthMiddleware class
 
-expect_error(RestRserveAuthMiddleware$new())
+expect_error(AuthMiddleware$new())
 
 # Test empty object
 b = AuthBackendBasic$new(function() TRUE)
-obj = RestRserveAuthMiddleware$new(auth_backend = b, routes = "/")
-expect_true(inherits(obj, "RestRserveAuthMiddleware"))
-expect_true(inherits(obj, "RestRserveMiddleware"))
+obj = AuthMiddleware$new(auth_backend = b, routes = "/")
+expect_true(inherits(obj, "AuthMiddleware"))
+expect_true(inherits(obj, "Middleware"))
 expect_equal(obj$.__enclos_env__$private$auth_backend, b)
-expect_error(RestRserveAuthMiddleware$new(b, "/", c("exact", "exact")))
+expect_error(AuthMiddleware$new(b, "/", c("exact", "exact")))

@@ -6,37 +6,37 @@ source("setup.R")
 # import application example
 app = ex_app("content-handlers")
 
-request_json = RestRserveRequest$new(path = "/json")
+request_json = Request$new(path = "/json")
 rs = app$process_request(request_json)[[1]]
 expect_equal(rs, '{"answer":"json"}')
 
-request_text = RestRserveRequest$new(path = "/text")
+request_text = Request$new(path = "/text")
 rs = app$process_request(request_text)[[1]]
 expect_equal(rs, 'text')
 
-request_uct = RestRserveRequest$new(path = "/unknown-content-type")
+request_uct = Request$new(path = "/unknown-content-type")
 rs = app$process_request(request_uct)[[1]]
 expect_true(is.character(rs))
 
-request_rds = RestRserveRequest$new(path = "/rds")
+request_rds = Request$new(path = "/rds")
 rs = app$process_request(request_rds)[[1]]
 rs = unserialize(rs)
 expect_equal(rs, list(answer = "rds"))
 
-request_rds2 = RestRserveRequest$new(path = "/rds2")
+request_rds2 = Request$new(path = "/rds2")
 rs = app$process_request(request_rds2)[[1]]
 rs = unserialize(rs)
 expect_equal(rs, list(answer = "rds2"))
 
 HTTPError$set_content_type('application/json')
-request_404 = RestRserveRequest$new(path = "/404")
+request_404 = Request$new(path = "/404")
 rs = app$process_request(request_404)
 expect_equal(rs[[1]], '{"error":"404 Not Found"}')
 expect_equal(rs[[2]], "application/json")
 
 HTTPError$reset()
 #---------------
-request_post_json = RestRserveRequest$new(path = "/json",
+request_post_json = Request$new(path = "/json",
                                           method = "POST",
                                           body = charToRaw('{"hello" : "world"}'),
                                           content_type = 'application/json')
@@ -44,7 +44,7 @@ rs = app$process_request(request_post_json)
 expect_equal(unserialize(rs[[1]]), list(hello = 'world'))
 
 #---------------
-request_post_json = RestRserveRequest$new(path = "/json",
+request_post_json = Request$new(path = "/json",
                                           method = "POST",
                                           body = charToRaw('{"bad" : json}'),
                                           content_type = 'application/json')

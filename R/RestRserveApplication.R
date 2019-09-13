@@ -4,19 +4,19 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Creates RestRserveApplication object.
-#' RestRserveApplication converts user-supplied R code into high-performance
+#' Creates Application object.
+#' Application converts user-supplied R code into high-performance
 #' REST API by allowing to easily register R functions for handling http-requests.
 #'
 #' @section Construction:
 #'
-#' Constructor for `RestRserveApplication`.
+#' Constructor for `Application`.
 #'
 #' ```
-#' RestRserveApplication$new(middleware = list(), content_type = "text/plain", ...)
+#' Application$new(middleware = list(), content_type = "text/plain", ...)
 #' ````
 #'
-#' * `middleware` :: `list` of [RestRserveMiddleware]\cr
+#' * `middleware` :: `list` of [Middleware]\cr
 #'   List of middlewares.
 #'
 #' * `content_type` :: `character(1)`\cr
@@ -58,7 +58,7 @@
 #'   * `regex` - match route as template. Returns 404 if template pattern not matched.
 #'
 #'   User function `FUN` **must** take two arguments: first is `request`
-#'   ([RestRserveRequest]) and second is `response` ([RestRserveResponse]).
+#'   ([Request]) and second is `response` ([Response]).
 #'
 #'   The goal of the user function is to **modify** `response` or throw
 #'   exception (call [raise()] or [stop()]).
@@ -86,13 +86,13 @@
 #'   be set to `"application/octet-stream"`.
 #'
 #' * `append_middleware(...)`\cr
-#'   `list()` of [RestRserveMiddleware] -> `integer(1)`\cr
+#'   `list()` of [Middleware] -> `integer(1)`\cr
 #'   Appends middleware to handlers pipeline.
 #'
 #' * `process_request(request)`\cr
-#'   [RestRserveRequest] -> `list()`\cr
+#'   [Request] -> `list()`\cr
 #'   Process incoming request and generate Rserve compatible answer with
-#'   [RestRserveResponse] `to_rserve()`. Useful for tests your handlers before
+#'   [Response] `to_rserve()`. Useful for tests your handlers before
 #'   deploy application.
 #'
 #' * `run(http_port = 8001L, ..., background = FALSE)`\cr
@@ -126,8 +126,8 @@
 #'
 #' @export
 #'
-#' @seealso [HTTPError] [ContentHandlers] [RestRserveMiddleware]
-#'          [RestRserveRequest] [RestRserveResponse]
+#' @seealso [HTTPError] [ContentHandlers] [Middleware]
+#'          [Request] [Response]
 #'
 #' @examples
 #' # init logger
@@ -137,7 +137,7 @@
 #' # set logger name
 #' lg$set_name("MW Logger")
 #' # init middleware to logging
-#' mw = RestRserveMiddleware$new(
+#' mw = Middleware$new(
 #'   process_request = function(rq, rs) {
 #'     lg$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
 #'   },
@@ -148,7 +148,7 @@
 #' )
 #'
 #' # init application
-#' app = RestRserveApplication$new(middleware = list(mw))
+#' app = Application$new(middleware = list(mw))
 #' # set log level for the app
 #' app$logger$set_log_level("error")
 #'
@@ -183,10 +183,10 @@
 #'
 #' # test app
 #' # simulate requests
-#' not_found_rq = RestRserveRequest$new(path = "/no")
-#' status_rq = RestRserveRequest$new(path = "/status")
-#' desc_rq = RestRserveRequest$new(path = "/desc")
-#' say_rq = RestRserveRequest$new(path = "/say/anonym", parameters_query = list("message" = "Hola"))
+#' not_found_rq = Request$new(path = "/no")
+#' status_rq = Request$new(path = "/status")
+#' desc_rq = Request$new(path = "/desc")
+#' say_rq = Request$new(path = "/say/anonym", parameters_query = list("message" = "Hola"))
 #' # process prepared requests
 #' app$process_request(not_found_rq)
 #' app$process_request(status_rq)
@@ -196,8 +196,8 @@
 #' # run app
 #' # app$run(8001L)
 #'
-RestRserveApplication = R6::R6Class(
-  classname = "RestRserveApplication",
+Application = R6::R6Class(
+  classname = "Application",
   public = list(
     #------------------------------------------------------------------------
     logger = NULL,
@@ -212,11 +212,11 @@ RestRserveApplication = R6::R6Class(
       private$handlers = new.env(parent = emptyenv())
       private$handlers_openapi_definitions = new.env(parent = emptyenv())
 
-      self$logger = Logger$new("info", name = "RestRserveApplication")
+      self$logger = Logger$new("info", name = "Application")
       self$content_type = content_type
       self$HTTPError = HTTPError
 
-      private$response = RestRserveResponse$new(content_type = self$content_type)
+      private$response = Response$new(content_type = self$content_type)
 
       self$ContentHandlers = ContentHandlers
 
@@ -232,7 +232,7 @@ RestRserveApplication = R6::R6Class(
 
       # Add router if no exists
       if (is.null(private$routes[[method]])) {
-        private$routes[[method]] = RestRserveRouter$new()
+        private$routes[[method]] = Router$new()
       }
       # Generate ID for handler
       id = as.character(length(private$handlers) + 1L)
@@ -298,7 +298,7 @@ RestRserveApplication = R6::R6Class(
       })
 
 
-      RSERVE_REQUEST = RestRserveRequest$new()
+      RSERVE_REQUEST = Request$new()
       # this is workhorse for RestRserve
       # it is assigned to .http.request as per requirements of Rserve for http interface
       http_request = function(url, parameters_query, body, headers) {
@@ -409,7 +409,7 @@ RestRserveApplication = R6::R6Class(
     #------------------------------------------------------------------------
     append_middleware = function(...) {
       mw_list = list(...)
-      checkmate::assert_list(mw_list, types = "RestRserveMiddleware", unique = TRUE)
+      checkmate::assert_list(mw_list, types = "Middleware", unique = TRUE)
       for (mw in mw_list) {
         id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw

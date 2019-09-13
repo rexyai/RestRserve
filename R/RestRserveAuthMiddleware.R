@@ -4,13 +4,13 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Adds various authorizations to [RestRserveApplication].
-#' This class inherits [RestRserveMiddleware].
+#' Adds various authorizations to [Application].
+#' This class inherits [Middleware].
 #'
 #' @section Construction:
 #'
 #' ```
-#' RestRserveAuthMiddleware$new(auth_backend, routes, match = "exact",
+#' AuthMiddleware$new(auth_backend, routes, match = "exact",
 #'                              name = "AuthMiddleware")
 #' ````
 #'
@@ -29,13 +29,13 @@
 #' @export
 #'
 #' @seealso
-#' [RestRserveMiddleware] [RestRserveApplication]
+#' [Middleware] [Application]
 #'
 #' @family AuthBackend
 #'
-RestRserveAuthMiddleware = R6::R6Class(
-  "RestRserveAuthMiddleware",
-  inherit = RestRserveMiddleware,
+AuthMiddleware = R6::R6Class(
+  "AuthMiddleware",
+  inherit = Middleware,
   public = list(
     initialize = function(auth_backend, routes, match = "exact", name = "AuthMiddleware") {
       checkmate::assert_class(auth_backend, "AuthBackend")

@@ -21,7 +21,7 @@ ggplot_handler = function(request, response) {
 
 ## ---- create application -----
 
-app = RestRserveApplication$new(
+app = Application$new(
   content_type = "image/png"
 )
 

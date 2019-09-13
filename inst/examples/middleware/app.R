@@ -19,7 +19,7 @@ stop_handler = function(request, response) {
 
 ## ---- create middleware ----
 
-mw1 = RestRserveMiddleware$new(
+mw1 = Middleware$new(
   process_request = function(request, response) {
     if (request$path == "/temp")
       request$path = "/hello-world"
@@ -28,7 +28,7 @@ mw1 = RestRserveMiddleware$new(
   name = "mw1"
 )
 
-mw2 = RestRserveMiddleware$new(
+mw2 = Middleware$new(
   process_request = function(request, response) { TRUE },
   process_response = function(request, response) {
     if (response$status_code == 500L && startsWith(request$path, "/hello")) {
@@ -39,7 +39,7 @@ mw2 = RestRserveMiddleware$new(
   name = "mw2"
 )
 
-mw3 = RestRserveMiddleware$new(
+mw3 = Middleware$new(
   process_request = function(request, response) {
     if (request$path == "/err-mw-req")
       stop("should be caught by middleware handler and wrapped to error")
@@ -54,7 +54,7 @@ mw3 = RestRserveMiddleware$new(
 
 ## ---- create application -----
 
-app = RestRserveApplication$new(
+app = Application$new(
   content_type = "text/plain",
   middleware = list(mw1, mw2, mw3)
 )
