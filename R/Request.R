@@ -29,6 +29,9 @@
 #' * `parameters_query` :: `named list()`\cr
 #'   A named list with URL decoded query parameters.
 #'
+#' * `parameters_body` :: `named list()`\cr
+#'   A named list with URL decoded body parameters.
+#'
 #' * `headers` :: `named list()`\cr
 #'   Request HTTP headers represented as named list.
 #'
@@ -60,6 +63,9 @@
 #'
 #' * `parameters_query` :: `named list()`\cr
 #'   Request query parameters.
+#'
+#' * `parameters_body` :: `named list()`\cr
+#'   Request body parameters.
 #'
 #' * `content_type` :: `character(1)`\cr
 #'   Request body content type.
@@ -134,6 +140,10 @@
 #'   `character(1)` -> `character(1)`\cr
 #'   Get request query parameter by name.
 #'
+#' * `get_param_body(name)`\cr
+#'   `character(1)` -> `character(1)`\cr
+#'   Get request body parameter by name.
+#'
 #' * `get_param_path(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get templated path parameter by name.
@@ -165,8 +175,9 @@ Request = R6::R6Class(
     content_type = NULL,
     body = NULL,
     parameters_query = NULL,
-    files = NULL,
+    parameters_body = NULL,
     parameters_path = NULL,
+    files = NULL,
     decode = NULL,
     #---------------------------------
     # methods
@@ -174,6 +185,7 @@ Request = R6::R6Class(
     initialize = function(path = "/",
                           method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
                           parameters_query = list(),
+                          parameters_body = list(),
                           headers = list(),
                           body = NULL,
                           cookies = list(),
@@ -190,6 +202,7 @@ Request = R6::R6Class(
       self$path = path
       self$method = match.arg(method)
       self$parameters_query = setNames(parameters_query, tolower(names(parameters_query)))
+      self$parameters_body = setNames(parameters_body, tolower(names(parameters_body)))
       self$headers = setNames(headers, tolower(names(headers)))
       self$body = body
       self$cookies = setNames(cookies, tolower(names(cookies)))
@@ -213,8 +226,9 @@ Request = R6::R6Class(
       self$content_type = "text/plain"
       self$body = NULL
       self$parameters_query = list()
-      self$files = list()
+      self$parameters_body = list()
       self$parameters_path = list()
+      self$files = list()
       self$decode = NULL
       private$id = uuid::UUIDgenerate(TRUE)
       invisible(self)
@@ -265,6 +279,13 @@ Request = R6::R6Class(
       name = tolower(name)
       return(self$parameters_query[[name]])
     },
+    get_param_body = function(name) {
+      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+        checkmate::assert_string(name)
+      }
+      name = tolower(name)
+      return(self$parameters_body[[name]])
+    },
     get_param_path = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
@@ -288,11 +309,15 @@ Request = R6::R6Class(
   ),
   active = list(
     body_decoded = function() {
+      # early stop if body is empty
+      if (length(body) == 0L) {
+        return(self$body)
+      }
       decode = self$decode
       if (!is.function(decode)) {
         decode = ContentHandlers$get_decode(self$content_type)
       }
-      decode(self$body)
+      return(decode(self$body))
     },
     request_id = function() {
       private$id
@@ -353,16 +378,10 @@ Request = R6::R6Class(
       if (length(body) > 0L) {
         # Named character vector. Body parameters key-value pairs.
         # Omit empty keys and empty values
-        values = body[nzchar(names(body)) & nzchar(body)]
-        # FIXME: should overwrite query or appent as attr to body?
-        keys = names(values)
-        # FIXME: add not exists keys only
-        to_add = which(!keys %in% names(self$parameters_query))
-        for (i in to_add) {
-          self$parameters_query[[keys[i]]] = values[[i]]
-        }
-        # FIXME: should we encode it?
-        values = paste(url_encode(keys), url_encode(values), sep = "=", collapse = "&")
+        body = body[nzchar(names(body)) & nzchar(body)]
+        self$parameters_body = as.list(body)
+        keys = names(body)
+        values = paste(url_encode(keys), url_encode(body), sep = "=", collapse = "&")
         body = charToRaw(values)
       } else {
         body = raw()
@@ -376,16 +395,17 @@ Request = R6::R6Class(
       boundary = parse_multipart_boundary(content_type)
       res = parse_multipart_body(body, paste0("--", boundary))
       if (length(res$values) > 0L) {
-        values = res$values[nzchar(names(res$values)) & nzchar(res$values)]
-        keys = names(values)
-        # FIXME: add not exists keys onlly
-        to_add = which(!keys %in% names(self$parameters_query))
-        for (i in to_add) {
-          self$parameters_query[[keys[i]]] = values[[i]]
-        }
+        values = unlist(res$values, use.names = TRUE)
+        values = values[nzchar(names(values)) & nzchar(values)]
+        keys = url_decode(names(values))
+        values = url_decode(values)
+        self$parameters_body[keys] = values
       }
       if (length(res$files) > 0L) {
         self$files = res$files
+        keys = url_decode(names(res$files))
+        values = url_decode(vapply(res$files, "[[", character(1), "filename"))
+        self$parameters_body[keys] = values
       }
       self$body = body
       self$content_type = content_type

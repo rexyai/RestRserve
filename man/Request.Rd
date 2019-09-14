@@ -26,6 +26,8 @@ Character with requested path. Always starts with \code{/}.
 Request HTTP method.
 \item \code{parameters_query} :: \code{named list()}\cr
 A named list with URL decoded query parameters.
+\item \code{parameters_body} :: \code{named list()}\cr
+A named list with URL decoded body parameters.
 \item \code{headers} :: \code{named list()}\cr
 Request HTTP headers represented as named list.
 \item \code{body} :: \code{anything} \cr
@@ -53,6 +55,8 @@ Request HTTP method.
 Request headers.
 \item \code{parameters_query} :: \code{named list()}\cr
 Request query parameters.
+\item \code{parameters_body} :: \code{named list()}\cr
+Request body parameters.
 \item \code{content_type} :: \code{character(1)}\cr
 Request body content type.
 \item \code{body} :: \code{raw()} | \code{named character()}\cr
@@ -112,6 +116,9 @@ Get request header by name.
 \item \code{get_param_query(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request query parameter by name.
+\item \code{get_param_body(name)}\cr
+\code{character(1)} -> \code{character(1)}\cr
+Get request body parameter by name.
 \item \code{get_param_path(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get templated path parameter by name.

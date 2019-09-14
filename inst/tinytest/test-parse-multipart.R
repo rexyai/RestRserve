@@ -37,11 +37,11 @@ params = list(
 )
 # form files
 files = list(
-  "desc_file.txt" = list(
+  "desc_file" = list(
     path = tmp_txt,
     ctype = "plain/text"
   ),
-  "raw_file.bin" = list(
+  "raw_file" = list(
     path = tmp_rds,
     ctype = "application/octet-stream"
   )
@@ -61,15 +61,15 @@ expect_true(inherits(parsed$files, "list"))
 expect_equal(length(parsed$files), 2L)
 
 # Test text file
-expect_equal(parsed$files[["desc_file.txt"]]$filename, basename(tmp_txt))
-expect_equal(parsed$files[["desc_file.txt"]]$content_type, "plain/text")
-expect_equal(parsed$files[["desc_file.txt"]]$length, file.size(tmp_txt))
-expect_identical(get_multipart_file(body, parsed$files[["desc_file.txt"]]),
+expect_equal(parsed$files[["desc_file"]]$filename, basename(tmp_txt))
+expect_equal(parsed$files[["desc_file"]]$content_type, "plain/text")
+expect_equal(parsed$files[["desc_file"]]$length, file.size(tmp_txt))
+expect_identical(get_multipart_file(body, parsed$files[["desc_file"]]),
                  readBin(tmp_txt, raw(), file.size(tmp_txt)))
 
 # Test binary file
-expect_equal(parsed$files[["raw_file.bin"]]$filename, basename(tmp_rds))
-expect_equal(parsed$files[["raw_file.bin"]]$content_type, "application/octet-stream")
-expect_equal(parsed$files[["raw_file.bin"]]$length, file.size(tmp_rds))
-expect_identical(get_multipart_file(body, parsed$files[["raw_file.bin"]]),
+expect_equal(parsed$files[["raw_file"]]$filename, basename(tmp_rds))
+expect_equal(parsed$files[["raw_file"]]$content_type, "application/octet-stream")
+expect_equal(parsed$files[["raw_file"]]$length, file.size(tmp_rds))
+expect_identical(get_multipart_file(body, parsed$files[["raw_file"]]),
                  readBin(tmp_rds, raw(), file.size(tmp_rds)))
