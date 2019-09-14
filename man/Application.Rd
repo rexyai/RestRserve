@@ -33,7 +33,7 @@ drop-in replacement. \code{Logger} and loggers created by \code{lgr} packages sh
 Default response body content type.
 \item \code{HTTPError} :: \code{HTTPErrorFactory}\cr
 Helper to raise HTTP errors.
-\item \code{ContentHandlers} :: \link{ContentHandlersFactory}\cr
+\item \code{ContentHandlers} :: \code{ContentHandler}\cr
 Helper to decode request body and encode response body.
 \item \code{endpoints} :: \code{named list()}\cr
 Prints all the registered routes with allowed methods.

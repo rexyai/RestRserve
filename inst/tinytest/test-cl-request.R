@@ -168,16 +168,17 @@ r$headers[["date"]] = "Sun, 04 Aug 2019 07:17:39 GMT"
 expect_true(inherits(r$date, "POSIXct"))
 expect_equal(as.numeric(r$date), 1564903059)
 
-
-r = Request$new(path = '/a',
-                          method = 'POST',
-                          parameters_query = list(a = 'a'),
-                          headers = list(b = 'b'),
-                          body = list('body'),
-                          cookies = list(cookie = 'cookie_1'),
-                          content_type = 'application/json',
-                          decode = identity
-                          )
+# Test object structure
+r = Request$new(
+  path = '/a',
+  method = 'POST',
+  parameters_query = list(a = 'a'),
+  headers = list(b = 'b'),
+  body = list('body'),
+  cookies = list(cookie = 'cookie_1'),
+  content_type = 'application/json',
+  decode = identity
+)
 r$reset()
 expect_equal(r$path, "/")
 expect_equal(r$method, "GET")

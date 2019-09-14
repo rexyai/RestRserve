@@ -35,7 +35,7 @@
 #' * `HTTPError` :: `HTTPErrorFactory`\cr
 #'   Helper to raise HTTP errors.
 #'
-#' * `ContentHandlers` :: [ContentHandlersFactory]\cr
+#' * `ContentHandlers` :: `ContentHandler`\cr
 #'   Helper to decode request body and encode response body.
 #'
 #' * `endpoints` :: `named list()`\cr

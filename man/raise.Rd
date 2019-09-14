@@ -23,5 +23,5 @@ identical(cond$response$body, "400 Bad Request")
 
 }
 \seealso{
-\link{HTTPError}
+\link{HTTPError} \link{Application}
 }

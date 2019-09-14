@@ -32,7 +32,11 @@
 #' * `reset()`\cr
 #'   -> `self`\cr
 #'   Resets all the content handlers to RestRserve defaults
+#'
+#' @seealso [Application]
+#'
 #' @name ContentHandlers
+#'
 #' @export
 ContentHandlers = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
 
