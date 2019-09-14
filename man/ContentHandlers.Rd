@@ -37,4 +37,7 @@ Resets all the content handlers to RestRserve defaults
 }
 }
 
+\seealso{
+\link{Application}
+}
 \keyword{datasets}
