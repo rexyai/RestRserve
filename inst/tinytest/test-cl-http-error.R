@@ -1,6 +1,7 @@
 # Test HTTPErrorFactory class
 
-obj = HTTPError
+obj = RestRserve:::HTTPErrorFactory$new()
+cl = RestRserve:::HTTPErrorFactory$new()
 
 # Test empty object
 expect_true(inherits(obj, "HTTPErrorFactory"))
@@ -13,11 +14,11 @@ expect_equal(obj$content_type, "text/plain")
 expect_null(obj$encode)
 
 # Test error method result
-resp = obj$error(500L, "Error text")
-expect_true(inherits(resp, "Response"))
+rs = obj$error(500L, "Error text")
+expect_true(inherits(rs, "Response"))
 expect_equal(obj$content_type, "text/plain")
-expect_equal(resp$body, "Error text")
-expect_equal(resp$status_code, 500L)
+expect_equal(rs$body, "Error text")
+expect_equal(rs$status_code, 500L)
 
 error_methods = c(
   'bad_request',
@@ -60,17 +61,12 @@ for (err_method in error_methods) {
   expect_equal(resp$body, list(error = target_error))
 }
 
-app = Application$new()
-
 # test set content-type
-obj$set_content_type('application/json')
+obj$set_content_type("application/json")
+rs = obj$bad_gateway()$to_rserve()
 expect_equal(obj$content_type, "application/json")
-expect_equal(obj$bad_gateway()$to_rserve()[[2]], "application/json")
-
-# test it is propagated to the app
-expect_equal(app$HTTPError$content_type, 'application/json')
+expect_equal(rs[[2]], "application/json")
 
 # test reset works
 obj$reset()
-expect_equal(obj$content_type, "text/plain")
-expect_equal(obj$bad_gateway()$to_rserve()[[2]], "text/plain")
+expect_equal(obj, cl)

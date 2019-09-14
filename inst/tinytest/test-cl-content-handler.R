@@ -1,9 +1,7 @@
 # Test HTTPErrorFactory class
 
-obj = ContentHandlers
+obj = RestRserve:::ContentHandlersFactory$new()
 cl = RestRserve:::ContentHandlersFactory$new()
-app = Application$new()
-on.exit(obj$reset())
 
 # Test empty object
 expect_true(inherits(obj, "ContentHandler"))
@@ -32,9 +30,6 @@ expect_true(ct %in% names(obj$handlers))
 expect_equal(obj$get_decode(ct), f)
 expect_equal(obj$handlers[[ct]][["decode"]], f)
 expect_null(obj$handlers[[ct]][["encode"]])
-
-# check modification og the ContentHandlers is global and beign propagated to the Application
-expect_equal(app$ContentHandlers$get_decode(ct), f)
 
 f = function() FALSE
 ct = "custom/type2"
@@ -94,6 +89,4 @@ expect_equal(attr(err, 'condition')$response$status_code, 500L)
 
 # Test reset method works
 obj$reset()
-if (Sys.getenv("R_COVR") != "true") {
-  expect_equal(obj, cl)
-}
+expect_equal(obj, cl)

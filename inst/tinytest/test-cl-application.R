@@ -133,3 +133,14 @@ ep = list(
   "GET" = c("exact" = "/", "partial" = "/dir/")
 )
 expect_equal(a$endpoints, ep)
+
+# Test global object affects change to the app
+a = Application$new()
+f = function(x) { TRUE }
+ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
+HTTPError$set_content_type("application/json")
+expect_equal(a$ContentHandlers$get_decode("custom/type"), f)
+expect_equal(a$HTTPError$content_type, "application/json")
+
+ContentHandlers$reset()
+HTTPError$reset()
