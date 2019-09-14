@@ -1,5 +1,6 @@
 # Test HTTPErrorFactory class
 
+# Test class directly for the coverage stats
 obj = RestRserve:::ContentHandlersFactory$new()
 cl = RestRserve:::ContentHandlersFactory$new()
 
