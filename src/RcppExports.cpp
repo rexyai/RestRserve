@@ -45,6 +45,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// parse_cookies
+Rcpp::List parse_cookies(Rcpp::CharacterVector x);
+RcppExport SEXP _RestRserve_parse_cookies(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_cookies(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// parse_headers
+Rcpp::List parse_headers(const char* headers);
+RcppExport SEXP _RestRserve_parse_headers(SEXP headersSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< const char* >::type headers(headersSEXP);
+    rcpp_result_gen = Rcpp::wrap(parse_headers(headers));
+    return rcpp_result_gen;
+END_RCPP
+}
 // parse_multipart_boundary
 std::string parse_multipart_boundary(const std::string& content_type);
 RcppExport SEXP _RestRserve_parse_multipart_boundary(SEXP content_typeSEXP) {
@@ -63,26 +83,6 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Rcpp::RawVector >::type body(bodySEXP);
     Rcpp::traits::input_parameter< const char* >::type boundary(boundarySEXP);
     rcpp_result_gen = Rcpp::wrap(parse_multipart_body(body, boundary));
-    return rcpp_result_gen;
-END_RCPP
-}
-// parse_cookies
-Rcpp::List parse_cookies(Rcpp::CharacterVector x);
-RcppExport SEXP _RestRserve_parse_cookies(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_cookies(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// parse_headers
-Rcpp::List parse_headers(const char* headers);
-RcppExport SEXP _RestRserve_parse_headers(SEXP headersSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::traits::input_parameter< const char* >::type headers(headersSEXP);
-    rcpp_result_gen = Rcpp::wrap(parse_headers(headers));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -112,10 +112,10 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_Cpp_from_http_date", (DL_FUNC) &_RestRserve_Cpp_from_http_date, 1},
     {"_RestRserve_format_cookies", (DL_FUNC) &_RestRserve_format_cookies, 1},
     {"_RestRserve_format_headers", (DL_FUNC) &_RestRserve_format_headers, 1},
-    {"_RestRserve_parse_multipart_boundary", (DL_FUNC) &_RestRserve_parse_multipart_boundary, 1},
-    {"_RestRserve_parse_multipart_body", (DL_FUNC) &_RestRserve_parse_multipart_body, 2},
     {"_RestRserve_parse_cookies", (DL_FUNC) &_RestRserve_parse_cookies, 1},
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},
+    {"_RestRserve_parse_multipart_boundary", (DL_FUNC) &_RestRserve_parse_multipart_boundary, 1},
+    {"_RestRserve_parse_multipart_body", (DL_FUNC) &_RestRserve_parse_multipart_body, 2},
     {"_RestRserve_url_decode", (DL_FUNC) &_RestRserve_url_decode, 1},
     {"_RestRserve_url_encode", (DL_FUNC) &_RestRserve_url_encode, 1},
     {NULL, NULL, 0}
