@@ -5,7 +5,7 @@
 #'
 #' @description
 #' Helps to generate http error responses See [raise] for example.
-#' Contains [HTTPErrorFactory] class for the exception in the user's code.
+#' Contains `HTTPErrorFactory` class for the exception in the user's code.
 #'
 #' @section Fields:
 #'
@@ -31,7 +31,10 @@
 #'   -> `self``\cr
 #'   Resets HTTPError to the default RestRserve state
 #'
+#' @seealso [Application]
+#'
 #' @name HTTPError
+#'
 #' @export
 HTTPError = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
 
@@ -212,7 +215,7 @@ HTTPErrorFactory = R6::R6Class(
 #'
 #' @export
 #'
-#' @seealso [HTTPError]
+#' @seealso [HTTPError] [Application]
 #'
 #' @examples
 #' # catch exception

@@ -7,7 +7,7 @@
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Helps to generate http error responses See \link{raise} for example.
-Contains \link{HTTPErrorFactory} class for the exception in the user's code.
+Contains \code{HTTPErrorFactory} class for the exception in the user's code.
 }
 \section{Fields}{
 
@@ -37,4 +37,7 @@ Resets HTTPError to the default RestRserve state
 }
 }
 
+\seealso{
+\link{Application}
+}
 \keyword{datasets}
