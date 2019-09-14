@@ -1,6 +1,7 @@
 # Test HTTPErrorFactory class
 
 obj = ContentHandlers
+cl = RestRserve:::ContentHandlersFactory$new()
 app = Application$new()
 on.exit(obj$reset())
 
@@ -91,6 +92,8 @@ expect_equal(attr(err, 'condition')$response$status_code, 415L)
 err = try(obj$get_encode(25), silent = TRUE)
 expect_equal(attr(err, 'condition')$response$status_code, 500L)
 
-# test reset works
+# Test reset method works
 obj$reset()
-expect_equal(obj, RestRserve:::ContentHandlersFactory$new())
+if (Sys.getenv("R_COVR") != "true") {
+  expect_equal(obj, cl)
+}
