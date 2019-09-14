@@ -5,7 +5,7 @@
 #'
 #' @description
 #' Helps to generate http error responses See [raise] for example.
-#' Contains `HTTPErrorFactory` class for the exception in the user's code.
+#' Contains `RestRserve:::HTTPErrorFactory` class for the exception in the user's code.
 #'
 #' @section Fields:
 #'
