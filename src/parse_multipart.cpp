@@ -124,10 +124,14 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
   // find boundary string
   sv_size_t block_start_pos = body_sv.find(boundary, 0);
   if (block_start_pos == nonstd::string_view::npos) {
-    return R_NilValue;
+    Rcpp::stop("Boundary string not found.");
+  }
+  // find second boundary string
+  sv_size_t block_end_pos = body_sv.find(boundary, block_start_pos);
+  if (block_end_pos == nonstd::string_view::npos) {
+    Rcpp::stop("Boundary string at the end block not found.");
   }
   // define end block
-  sv_size_t block_end_pos = nonstd::string_view::npos;
   while (block_start_pos != nonstd::string_view::npos) {
     // offset boundary string
     block_start_pos += boundary_n;
@@ -135,14 +139,15 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     block_start_pos += eol_n;
     // find end of block
     block_end_pos = body_sv.find(boundary, block_start_pos);
+    // if block is valid
     if (block_end_pos != nonstd::string_view::npos) {
       auto block_size = block_end_pos - block_start_pos;
       nonstd::string_view block = body_sv.substr(block_start_pos, block_size);
       MultipartItem tmp = parse_multipart_block(block, block_start_pos);
       if (tmp.second.inherits("form_file")) {
-        form_files.insert(tmp);
+          form_files.insert(tmp);
       } else {
-        form_values.insert(tmp);
+          form_values.insert(tmp);
       }
     }
     // std::string_view block = body_sv.substr(start_pos + boundary_n + 2);
