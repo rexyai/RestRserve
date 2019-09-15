@@ -110,6 +110,8 @@
 #'     * `body`: can be a character vector of length one or a raw vector.
 #'       if the character vector is named "file" then the content of a file of
 #'       that name is the body.
+#'       If the character vector is named "tmpfile" then the content of a
+#'       temporary file of that name is the body.
 #'
 #'     * `content-type`: must be a character vector of length one or NULL
 #'       (if present, else default is `"text/plain"`).
@@ -326,7 +328,17 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     to_rserve = function() {
-      headers = private$prepare_headers()
+      # prepare headers
+      if (length(self$headers) > 0L) {
+        headers = format_headers(as.list(self$headers))
+        if (length(self$cookies) > 0L) {
+          headers = paste(headers, fornat_cookies(as.list(self$cookies)), sep = "\r\n")
+        }
+      } else {
+        headers = character(0)
+      }
+
+      # prepare body
       if (is_string(self$body)) {
         body_name = names(self$body)
         if (isTRUE(body_name == "file")) {
@@ -336,15 +348,14 @@ Response = R6::R6Class(
           return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
         }
       }
-
-      if (!is.function(self$encode)) {
-        body = self$body
-      } else {
-        body = self$encode(self$body)
-      }
-
       if (length(body) == 0L) {
         body = raw()
+      } else {
+        if (!is.function(self$encode)) {
+          body = self$body
+        } else {
+          body = self$encode(self$body)
+        }
       }
 
       return(list(body, self$content_type, headers, self$status_code))
@@ -354,19 +365,6 @@ Response = R6::R6Class(
     status = function() {
       code = as.character(self$status_code)
       res = paste(code, status_codes[[code]])
-      return(res)
-    }
-  ),
-  private = list(
-    prepare_headers = function() {
-      if (length(self$headers) > 0L) {
-        res = format_headers(as.list(self$headers))
-        if (length(self$cookies) > 0L) {
-          res = paste(res, fornat_cookies(as.list(self$cookies)), sep = "\r\n")
-        }
-      } else {
-        res = character(0)
-      }
       return(res)
     }
   )
