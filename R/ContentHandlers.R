@@ -31,7 +31,11 @@
 #'
 #' * `reset()`\cr
 #'   -> `self`\cr
-#'   Resets all the content handlers to RestRserve defaults
+#'   Resets all the content handlers to RestRserve defaults.
+#'
+#' * `to_list`\cr
+#'   -> `list`\cr
+#'   Convert handlers to list.
 #'
 #' @seealso [Application]
 #'
@@ -60,13 +64,10 @@ ContentHandlersFactory = R6::R6Class(
       return(invisible(self))
     },
     get_encode = function(content_type) {
-
-      if (!is.character(content_type) || length(content_type) != 1) {
-        raise(HTTPError$internal_server_error(body = list(error = "can't encode the body - invalid 'content_type'")))
+      if (!is_string(content_type)) {
+        raise(HTTPError$internal_server_error(body = list(error = "Can't encode the body - invalid 'content_type'")))
       }
-
       content_type = tolower(content_type)
-
       encode = self$handlers[[content_type]][["encode"]]
       if (!is.function(encode)) {
         # case when charset is provided (for example 'application/json; charset=utf-8')
@@ -90,11 +91,19 @@ ContentHandlersFactory = R6::R6Class(
       return(invisible(self))
     },
     get_decode = function(content_type) {
-      if (!is.character(content_type) || length(content_type) != 1) {
+      if (!is_string(content_type)) {
         msg = "'content-type' header is not set/invalid - don't know how to decode the body"
         raise(HTTPError$unsupported_media_type(msg))
       }
       content_type = tolower(content_type)
+      # ignore content types (exact match)
+      if (content_type %in% private$ingore$equal) {
+        return(identity)
+      }
+      # ignore content types (prefix match)
+      if (any(startsWith(content_type, private$ignore$prefix))) {
+        return(identity)
+      }
       decode = self$handlers[[content_type]][["decode"]]
       if (!is.function(decode)) {
         # case when charset is provided (for example 'application/json; charset=utf-8')
@@ -112,35 +121,41 @@ ContentHandlersFactory = R6::R6Class(
     reset = function() {
       self$handlers = new.env(parent = emptyenv())
 
+      # set default encoders
       self$set_encode("application/json", to_json)
+      self$set_encode("text/plain", to_string)
+
+      # set default decoders
       self$set_decode(
         "application/json",
         function(x) {
-          res = try(
-            {
-              if (is.raw(x)) {
-                x = rawToChar(x)
-              }
-
-              jsonlite::fromJSON(x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
-            },
-            silent = TRUE
-          )
+          res = try(from_json(x), silent = TRUE)
           if (inherits(res, "try-error")) {
             raise(HTTPError$bad_request(body = attributes(res)$condition$message))
-          } else {
-            return(res)
           }
+          return(res)
         }
       )
-      self$set_encode("text/plain", as.character)
       self$set_decode("text/plain", function(x) {
         if (is.raw(x)) {
-          x = rawToChar(x)
+          x = try(rawToChar(x), silent = TRUE)
+          if (inherits(x, "try-error")) {
+            raise(HTTPError$bad_request(body = attributes(x)$condition$message))
+          }
         }
-        x
+        return(x)
       })
       return(invisible(self))
     }
+  ),
+  private = list(
+    ignore = list(
+      equal = c(
+        "application/x-www-form-urlencoded"
+      ),
+      prefix = c(
+        "multipart/form-data"
+      )
+    )
   )
 )
