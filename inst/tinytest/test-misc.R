@@ -7,6 +7,8 @@ guess_mime = RestRserve:::guess_mime
 list_named = RestRserve:::list_named
 find_port = RestRserve:::find_port
 port_is_taken = RestRserve:::port_is_taken
+to_string = RestRserve:::to_string
+from_json = RestRserve:::from_json
 
 # Test is_string
 expect_false(is_string(NULL))
@@ -27,6 +29,14 @@ expect_false(is_path(character(1)))
 expect_false(is_path(""))
 expect_true(is_path("/"))
 expect_true(is_path("/abc/abc"))
+
+# Test to_string
+expect_equal(to_string(list(a = "test")), "test")
+expect_equal(to_string(charToRaw("test")), "test")
+
+# Test from_json
+expect_equal(from_json("{\"field\": 1}"), list(field = 1))
+expect_equal(from_json(charToRaw("{\"field\": 1}")), list(field = 1))
 
 # Test guess_mime
 txt_file = system.file("DESCRIPTION", package = "RestRserve")
