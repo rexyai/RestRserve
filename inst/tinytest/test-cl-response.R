@@ -123,9 +123,15 @@ r$set_body("{status: ok}")
 r$set_content_type("applicaiton/json")
 r$set_status_code(200L)
 r$set_header("Custom-Header", "text")
+r$set_cookie(name = "param", "value")
 body = "{status: ok}"
 cont = "applicaiton/json"
-headers = "Date: Fri, 02 Aug 2019 15:36:13 GMT\r\nCustom-Header: text"
+headers = paste(
+  "Date: Fri, 02 Aug 2019 15:36:13 GMT",
+  "Custom-Header: text",
+  "Set-Cookie: param=value",
+  sep = "\r\n"
+)
 status = 200L
 expect_equal(r$to_rserve(), list(body, cont, headers, status))
 

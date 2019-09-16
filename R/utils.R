@@ -38,6 +38,21 @@ is_path = function(path) {
   is_string(path) && startsWith(path, "/")
 }
 
+to_string = function(x) {
+  if (is.raw(x)) {
+    x = rawToChar(x)
+  }
+  paste(as.character(x), collapse = "\n")
+}
+
+from_json = function(x) {
+  if (is.raw(x)) {
+    x = rawToChar(x)
+  }
+  jsonlite::fromJSON(txt = x, simplifyVector = TRUE,
+                     simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+}
+
 list_named = function(length = 0, names = paste0("V", character(length))) {
   if (!(is.numeric(length) && (length(length) == 1) && is.finite(length)))
     stop("invalid 'length' argument - should be finite numeric")

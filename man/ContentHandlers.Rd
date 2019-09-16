@@ -33,7 +33,10 @@ Set handler to encode body for the specific content type.
 Set handler to decode body for the specific content type.
 \item \code{reset()}\cr
 -> \code{self}\cr
-Resets all the content handlers to RestRserve defaults
+Resets all the content handlers to RestRserve defaults.
+\item \code{to_list}\cr
+-> \code{list}\cr
+Convert handlers to list.
 }
 }
 
