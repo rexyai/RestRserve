@@ -63,7 +63,7 @@ app$add_post(
 
 ## ---- register content handlers -----
 
-allowed_types = c("application/jpeg", "application/jpeg")
+allowed_types = c("application/jpeg", "application/png")
 for (type in allowed_types) {
   ContentHandlers$set_decode(type, identity)
 }
