@@ -332,7 +332,7 @@ Response = R6::R6Class(
       if (length(self$headers) > 0L) {
         headers = format_headers(as.list(self$headers))
         if (length(self$cookies) > 0L) {
-          headers = paste(headers, fornat_cookies(as.list(self$cookies)), sep = "\r\n")
+          headers = paste(headers, format_cookies(as.list(self$cookies)), sep = "\r\n")
         }
       } else {
         headers = character(0)
