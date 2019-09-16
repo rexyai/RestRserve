@@ -61,7 +61,7 @@ app$add_post(
 
 ## ---- register content handlers -----
 
-allowwed_types = paste0("application/", c("jpeg", "png"))
+allowwed_types = paste("application", c("jpeg", "png"), sep = "/")
 for (type in allowwed_types) {
   ContentHandlers$set_decode(type, identity)
 }
