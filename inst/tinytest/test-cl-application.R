@@ -21,7 +21,10 @@ expect_equal(a$.__enclos_env__$private$supported_methods,
 a = Application$new()
 rq = Request$new()
 rs = Response$new()
-expect_null(a$.__enclos_env__$private$match_handler(rq, rs))
+status = try(a$.__enclos_env__$private$match_handler(rq, rs), silent = TRUE)
+status = attr(status, 'condition')
+status = status$response
+expect_equal(status$body, list(error = "405 Method Not Allowed"))
 
 # Test app with middleware
 mw = Middleware$new(
@@ -94,7 +97,7 @@ a = Application$new()
 f = function(rq, rs) {rs$body = list(a = 1)}
 rq = Request$new()
 rs = Response$new()
-a$.__enclos_env__$private$call_handler(f, rq, rs)
+a$.__enclos_env__$private$eval_with_error_handling(f(rq, rs))
 expect_equal(rs$body, list(a = 1))
 
 # Test match_handler method

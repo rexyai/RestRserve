@@ -31,4 +31,11 @@ expect_equal(rs[[1]], "404 Not Found")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[4]], 404L)
 
+# Test 405
+# rq = Request$new(path = "/dir/hello.txt", method = "POST")
+# rs = app$process_request(rq)
+# expect_equal(rs[[1]], "405 Method Not Allowed")
+# expect_equal(rs[[2]], "text/plain")
+# expect_equal(rs[[4]], 405L)
+
 cleanup_app()
