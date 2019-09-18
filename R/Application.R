@@ -89,8 +89,8 @@
 #'   `list()` of [Middleware] -> `integer(1)`\cr
 #'   Appends middleware to handlers pipeline.
 #'
-#' * `process_request()`\cr
-#'    -> `list()`\cr
+#' * `process_request(request)`\cr
+#'   [Request] -> `list()`\cr
 #'   Process incoming request and generate Rserve compatible answer with
 #'   [Response] `to_rserve()`. Useful for tests your handlers before
 #'   deploy application.
@@ -399,16 +399,12 @@ Application = R6::R6Class(
       return(invisible(length(private$middleware)))
     },
     #------------------------------------------------------------------------
-    #process_request = function(request = private$request, response = private$response) {
-    process_request = function(request) {
+    process_request = function(request = private$request) {
+      response = private$response
 
       private$eval_with_error_handling({
-
-        response = private$response
         response$reset()
         response$set_content_type(self$content_type)
-
-        # dummy response
         request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
         self$logger$trace(
