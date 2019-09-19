@@ -31,7 +31,7 @@ mw1 = Middleware$new(
 mw2 = Middleware$new(
   process_request = function(request, response) { TRUE },
   process_response = function(request, response) {
-    if (response$status_code == 500L && startsWith(request$path, "/hello")) {
+    if (isTRUE(response$status_code == 500L && startsWith(request$path, "/hello"))) {
       response$body = paste("Custom 500 from mw2")
       response$set_content_type("text/plain")
     }

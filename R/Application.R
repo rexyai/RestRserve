@@ -217,6 +217,7 @@ Application = R6::R6Class(
       self$HTTPError = HTTPError
 
       private$response = Response$new(content_type = self$content_type)
+      private$request = Request$new()
 
       self$ContentHandlers = ContentHandlers
 
@@ -290,31 +291,12 @@ Application = R6::R6Class(
       }
 
       keep_http_request = .GlobalEnv[[".http.request"]]
-      keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]
       # restore global environment on exit
       on.exit({
         .GlobalEnv[[".http.request"]] = keep_http_request
-        .GlobalEnv[["RestRserveApp"]] = keep_RestRserveApp
       })
-
-
-      RSERVE_REQUEST = Request$new()
-      # this is workhorse for RestRserve
-      # it is assigned to .http.request as per requirements of Rserve for http interface
-      http_request = function(url, parameters_query, body, headers) {
-        # first parse incoming request
-        RSERVE_REQUEST$reset()
-        RSERVE_REQUEST$from_rserve(
-          path = url,
-          parameters_query = parameters_query,
-          headers = headers,
-          body = body
-        )
-        self$process_request(RSERVE_REQUEST)
-      }
-
       # temporary modify global environment
-      .GlobalEnv[[".http.request"]] = http_request
+      .GlobalEnv[[".http.request"]] = private$.http.request
 
       self$print_endpoints_summary()
 
@@ -346,7 +328,7 @@ Application = R6::R6Class(
     #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if (length(self$endpoints) == 0) {
-        self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
+        self$logger$warn("", context = "'Application' doesn't have any endpoints")
       }
       self$logger$info("", context = list(endpoints = self$endpoints))
       return(invisible(self))
@@ -417,92 +399,91 @@ Application = R6::R6Class(
       return(invisible(length(private$middleware)))
     },
     #------------------------------------------------------------------------
-
-    process_request = function(request) {
-      # dummy response
+    process_request = function(request = private$request) {
       response = private$response
-      response$reset()
-      response$set_content_type(self$content_type)
 
-      request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
+      private$eval_with_error_handling({
+        response$reset()
+        response$set_content_type(self$content_type)
+        request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
-      self$logger$trace("",
-                        context = list(request_id = request$request_id,
-                                       method = request$method,
-                                       path = request$path,
-                                       parameters_query = request$parameters_query,
-                                       headers = request$headers)
-      )
-
-      # Call middleware for the request
-      mw_ids = as.character(seq_along(private$middleware))
-      mw_called = new.env(parent = emptyenv())
-      mw_flag = "process_request"
-      need_call_handler = TRUE
-
-      for (id in mw_ids) {
-        mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace("",
-                          context = list(request_id = request$request_id,
-                                         middleware = mw_name,
-                                         message = sprintf("call %s middleware", mw_flag))
-        )
-        FUN = private$middleware[[id]][[mw_flag]]
-        mw_status = private$call_handler(FUN, request, response)
-        # FIXME: move after break if last no need
-        mw_called[[id]] = TRUE
-        # break loop on error
-        if (!isTRUE(mw_status)) {
-          need_call_handler = FALSE
-          break
-        }
-      }
-
-      # call handler
-      if (isTRUE(need_call_handler)) {
-        # as a side effect we will populate request$parameters_path (if any)
-        handler_id = private$match_handler(request, response)
-
-        # early stop
-        if (is.null(handler_id)) {
-          response = self$HTTPError$not_found()
-        } else {
-          handler_fun = private$handlers[[handler_id]]
-          self$logger$trace("",
-                            context = list(
-                              request_id = request$request_id,
-                              message = sprintf("call handler '%s'", handler_id)
-                            )
+        self$logger$trace(
+          "",
+          context = list(
+            request_id = request$request_id,
+            method = request$method,
+            path = request$path,
+            parameters_query = request$parameters_query,
+            headers = request$headers
           )
-          private$call_handler(handler_fun, request, response)
-        }
-      }
-
-      # call middleware for the response
-      mw_flag = "process_response"
-      # call in reverse order
-      for (id in rev(names(mw_called))) {
-        mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace("",
-                          context = list(request_id = request$request_id,
-                                         middleware = mw_name,
-                                         message = sprintf("call %s middleware", mw_flag))
         )
-        FUN = private$middleware[[id]][[mw_flag]]
-        mw_status = private$call_handler(FUN, request, response)
-        # FIXME: should we break loop
-        # break loop on error
-        if (!isTRUE(mw_status)) {
-          break
+
+        # Call middleware for the request
+        mw_ids = as.character(seq_along(private$middleware))
+        # mw_called = new.env(parent = emptyenv())
+        mw_called = list()
+        mw_flag = "process_request"
+        need_call_handler = TRUE
+
+        for (id in mw_ids) {
+          mw_name = private$middleware[[id]][["name"]]
+          self$logger$trace(
+            "",
+            context = list(
+              request_id = request$request_id,
+              middleware = mw_name,
+              message = sprintf("call %s middleware", mw_flag)
+            )
+          )
+          FUN = private$middleware[[id]][[mw_flag]]
+          mw_status = private$eval_with_error_handling(FUN(request, response))
+          # FIXME: move after break if last no need
+          mw_called[[id]] = id
+          # break loop on error
+          if (!isTRUE(mw_status)) {
+            need_call_handler = FALSE
+            break
+          }
         }
-      }
+        # call handler
+        if (isTRUE(need_call_handler)) {
+          private$eval_with_error_handling({
+            # as a side effect we will populate request$parameters_path (if any)
+            handler_id = private$match_handler(request, response)
+            FUN = private$handlers[[handler_id]]
+            self$logger$trace(
+              "",
+              context = list(
+                request_id = request$request_id,
+                message = sprintf("call handler '%s'", handler_id)
+              )
+            )
+            FUN(request, response)
+          })
+        }
+        # call middleware for the response
+        mw_flag = "process_response"
+        # call in reverse order
+        for (id in rev(mw_called)) {
+          mw_name = private$middleware[[id]][["name"]]
+          self$logger$trace(
+            "",
+            context = list(
+              request_id = request$request_id,
+              middleware = mw_name,
+              message = sprintf("call %s middleware", mw_flag)
+            )
+          )
+          FUN = private$middleware[[id]][[mw_flag]]
+          mw_status = private$eval_with_error_handling(FUN(request, response))
+        }
 
-      # this means that response wants RestRerveApplication to select
-      # how to encode automatically
-      if (!is.function(response$encode)) {
-        response$encode = self$ContentHandlers$get_encode(response$content_type)
-      }
-
+        # this means that response wants RestRerveApplication to select
+        # how to encode automatically
+        if (!is.function(response$encode)) {
+          response$encode = self$ContentHandlers$get_encode(response$content_type)
+        }
+      })
       return(response$to_rserve())
     }
   ),
@@ -517,6 +498,7 @@ Application = R6::R6Class(
     handlers_openapi_definitions = NULL,
     middleware = NULL,
     response = NULL,
+    request = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -569,19 +551,12 @@ Application = R6::R6Class(
     match_handler = function(request, response) {
       # Early stop if no routes for this method
       router = private$routes[[request$method]]
-      if (is.null(router)) {
+      if (is.null(router) || router$size() == 0L) {
         self$logger$trace("",
           context = list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
-        return(NULL)
-      }
-      if (router$size() == 0L) {
-        self$logger$trace("",
-          context = list(request_id = request$request_id,
-               message = sprintf("no handlers registered for the method '%s'", request$method))
-        )
-        return(NULL)
+        raise(self$HTTPError$method_not_allowed())
       }
       # Get handler UID
       self$logger$trace("",
@@ -589,12 +564,6 @@ Application = R6::R6Class(
              message = sprintf("try to match requested path '%s'", request$path))
       )
       id = router$match_path(request$path)
-      # if there are extracted parameters
-      parameters_path = attr(id, 'parameters_path')
-      if (is.list(parameters_path)) {
-        request$parameters_path = parameters_path
-      }
-
       if (is.null(id)) {
         self$logger$trace("",
           context = list(
@@ -602,48 +571,63 @@ Application = R6::R6Class(
             message = "requested path not matched"
           )
         )
-        return(NULL)
+        raise(self$HTTPError$not_found())
       }
+
       self$logger$trace("",
         context = list(
           request_id = request$request_id,
           message = "requested path matched"
         )
       )
+      # if there are extracted parameters
+      parameters_path = attr(id, 'parameters_path')
+      if (is.list(parameters_path)) {
+        request$parameters_path = parameters_path
+      }
       return(id)
     },
     #------------------------------------------------------------------------
-    call_handler = function(FUN, request, response) {
-      status = try_capture_stack(FUN(request, response))
+    eval_with_error_handling = function(expr) {
+      x = try_capture_stack(expr)
       success = TRUE
-      if (inherits(status, 'simpleError')) {
+      if (inherits(x, "simpleError")) {
         # means UNHANDLED exception in middleware
-        self$logger$error("",
+        self$logger$error(
+          "",
           context = list(
-            request_id = request$request_id,
-            message = get_traceback(status)
+            request_id = private$request$request_id,
+            message = get_traceback(x)
           )
         )
-        status = self$HTTPError$internal_server_error()
+        x = try_capture_stack(raise(self$HTTPError$internal_server_error()))
+      }
+      # FIXME - need to find a way to assign private$response
+      # now it works only by assigning field by field
+      if (inherits(x, "HTTPError")) {
+        private$response$body = x$response$body
+        private$response$content_type = x$response$content_type
+        private$response$headers = x$response$headers
+        private$response$status_code = x$response$status_code
         success = FALSE
       }
-      if (inherits(status, 'HTTPError')) {
-        # raise result
-        if (is.list(status) && !is.null(status$response)) {
-          status = status$response
-        }
-        # Copy fields to response
-        response$body = status$body
-        response$content_type = status$content_type
-        response$headers = status$headers
-        response$status_code = status$status_code
-        response$context = status$context
-        success = FALSE
-      }
-
       return(success)
     },
     #------------------------------------------------------------------------
+
+    # this is workhorse for RestRserve
+    # it is assigned to .http.request as per requirements of Rserve for http interface
+    .http.request = function(url, parameters_query, body, headers) {
+      # first parse incoming request
+      private$request$reset()
+      private$request$from_rserve(
+        path = url,
+        parameters_query = parameters_query,
+        headers = headers,
+        body = body
+      )
+      self$process_request(private$request)
+    },
     get_openapi_paths = function() {
       if (!requireNamespace("yaml", quietly = TRUE)) {
         stop("please install 'yaml' package first")
