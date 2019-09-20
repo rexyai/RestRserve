@@ -44,7 +44,7 @@
 #' @section  Methods:
 #'
 #' * `add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint and register user-supplied R function as a handler.
 #'
 #'   Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
@@ -67,16 +67,16 @@
 #'   passed further to RestRserve execution pipeline.
 #'
 #' * `add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `GET` method. With `add_head = TRUE` HEAD method
 #'   handlers will be added (with `add_head()`).
 #'
 #' * `add_post(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `POST` method.
 #'
 #' * `add_static(path, file_path, content_type = NULL, ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Adds GET method to serve file or directory at `file_path`.
 #'
 #'   If `content_type = NULL` then MIME code `content_type`  will be inferred
@@ -86,7 +86,7 @@
 #'   be set to `"application/octet-stream"`.
 #'
 #' * `append_middleware(...)`\cr
-#'   `list()` of [Middleware] -> `integer(1)`\cr
+#'   `list()` of [Middleware] -> `invisible(self)` - [Application] \cr
 #'   Appends middleware to handlers pipeline.
 #'
 #' * `process_request(request)`\cr
@@ -109,18 +109,18 @@
 #'     systems. Ignored on windows.
 #'
 #' * `print_endpoints_summary()`\cr
-#'   -> `self`\cr
+#'   -> `invisible(self)` - [Application] \cr
 #'   Prints all the registered routes with allowed methods.
 #'
 #' * `add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")`
-#'   `character(1)`, `named list()`, `character(1)` -> `character(1)`\cr
+#'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
 #'   available methods.
 #'
 #' * `add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
 #'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
 #'                   file_path = "swagger-ui.html")`\cr
-#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `character(1)`
+#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
 #'
 #' @export
@@ -130,25 +130,26 @@
 #'
 #' @examples
 #' # init logger
-#' lg = Logger$new()
+#' app_logger = Logger$new()
 #' # set log level for the middleware
-#' lg$set_log_level("debug")
+#' app_logger$set_log_level("debug")
 #' # set logger name
-#' lg$set_name("MW Logger")
+#' app_logger$set_name("MW Logger")
 #' # init middleware to logging
 #' mw = Middleware$new(
 #'   process_request = function(rq, rs) {
-#'     lg$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
+#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
 #'   },
 #'   process_response = function(rq, rs) {
-#'     lg$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
+#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
 #'   },
-#'   name = "logger"
+#'   name = "awesome-app-logger"
 #' )
 #'
 #' # init application
 #' app = Application$new(middleware = list(mw))
-#' # set log level for the app
+#'
+#' # set internal log level
 #' app$logger$set_log_level("error")
 #'
 #' # define simply request handler
@@ -236,7 +237,7 @@ Application = R6::R6Class(
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
       private$handlers[[id]] = compiler::cmpfun(FUN)
-      invisible(id)
+      return(invisible(self))
     },
     #------------------------------------------------------------------------
     add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {
@@ -244,13 +245,16 @@ Application = R6::R6Class(
         self$add_route(path, "HEAD", FUN, match, ...)
       }
       self$add_route(path, "GET", FUN, match, ...)
+      return(invisible(self))
     },
     add_post = function(path, FUN, match = c("exact", "partial", "regex"), ...) {
       self$add_route(path, "POST", FUN, match, ...)
+      return(invisible(self))
     },
     add_static = function(path, file_path, content_type = NULL, ...) {
       handler = private$static_handler(url_path = path, file_path = file_path, content_type = content_type)
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
+      return(invisible(self))
     },
     run = function(http_port = 8001L, ..., background = FALSE) {
       checkmate::assert_int(http_port)
@@ -312,24 +316,25 @@ Application = R6::R6Class(
       return(invisible(self))
     },
     add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
-      checkmate::assert_string(file_path)
+      checkmate::assert_string(path, pattern = "/.*")
       file_path = path.expand(file_path)
+      checkmate::assert_file_exists(file_path, extension = c("yaml", "yml", "json"))
 
-      file_dir = dirname(file_path)
-      if (!dir.exists(file_dir)) {
-        dir.create(file_dir, recursive = TRUE)
-      }
+      content_type = switch(
+        tools::file_ext(file_path),
+        json = "application/json",
+        "application/x-yaml" # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
+      )
 
-      # when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
-      # for now use  "application/x-yaml":
-      # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
-      self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml")
-      return(invisible(file_path))
+      self$add_static(path = path, file_path = file_path, content_type = content_type)
+      return(invisible(self))
     },
     add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
-      checkmate::assert_string(file_path, pattern = "^/")
+      # check openapi defenition is already added
+      checkmate::assert_choice(path_openapi, self$endpoints$GET[names(self$endpoints$GET) == "exact"])
+      checkmate::assert_string(file_path)
       checkmate::assert_string(path_swagger_assets, pattern = "^/")
       checkmate::assert_flag(use_cdn)
       file_path = path.expand(file_path)
@@ -352,7 +357,7 @@ Application = R6::R6Class(
       }
       writeLines(html, file_path)
       self$add_static(path, file_path, "text/html")
-      return(invisible(file_path))
+      return(invisible(self))
     },
     append_middleware = function(...) {
       mw_list = list(...)
@@ -361,7 +366,7 @@ Application = R6::R6Class(
         id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw
       }
-      return(invisible(length(private$middleware)))
+      return(invisible(self))
     },
     process_request = function(request = private$request) {
       response = private$response

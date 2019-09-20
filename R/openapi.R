@@ -1,3 +1,4 @@
+# nocov startr
 # parses user function and extracts openapi docstrings
 extract_docstrings_yaml = function(FUN) {
   checkmate::assert_function(FUN)
@@ -172,3 +173,4 @@ openapi_license = function(name = NULL, url = NULL) {
   class(res) = "openapi_license"
   res
 }
+# nocov end

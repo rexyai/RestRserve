@@ -44,7 +44,7 @@ Prints all the registered routes with allowed methods.
 
 \itemize{
 \item \code{add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)}\cr
-\code{character(1)}, \code{character(1)}, \code{character(1)} -> \code{character(1)} \cr
+\code{character(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint and register user-supplied R function as a handler.
 
 Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
@@ -65,14 +65,14 @@ exception (call \code{\link[=raise]{raise()}} or \code{\link[=stop]{stop()}}).
 Both \code{response} and \code{request} objects modified in-place and internally
 passed further to RestRserve execution pipeline.
 \item \code{add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)}\cr
-\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any}, \code{logical(1)} -> \code{character(1)} \cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any}, \code{logical(1)} -> \code{invisible(self)} - \link{Application} \cr
 Shorthand to \code{add_route} with \code{GET} method. With \code{add_head = TRUE} HEAD method
 handlers will be added (with \code{add_head()}).
 \item \code{add_post(path, FUN, match = c("exact", "partial", "regex"), ...)}\cr
-\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{character(1)} \cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{invisible(self)} - \link{Application} \cr
 Shorthand to \code{add_route} with \code{POST} method.
 \item \code{add_static(path, file_path, content_type = NULL, ...)}\cr
-\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{character(1)} \cr
+\code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{invisible(self)} - \link{Application} \cr
 Adds GET method to serve file or directory at \code{file_path}.
 
 If \code{content_type = NULL} then MIME code \code{content_type}  will be inferred
@@ -81,7 +81,7 @@ automatically (from file extension).
 If it will be impossible to guess about file type then \code{content_type} will
 be set to \code{"application/octet-stream"}.
 \item \code{append_middleware(...)}\cr
-\code{list()} of \link{Middleware} -> \code{integer(1)}\cr
+\code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \code{process_request(request)}\cr
 \link{Request} -> \code{list()}\cr
@@ -100,39 +100,40 @@ means not to expose plain http.
 systems. Ignored on windows.
 }
 \item \code{print_endpoints_summary()}\cr
--> \code{self}\cr
+-> \code{invisible(self)} - \link{Application} \cr
 Prints all the registered routes with allowed methods.
 \item \code{add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")}
-\code{character(1)}, \code{named list()}, \code{character(1)} -> \code{character(1)}\cr
+\code{character(1)}, \code{named list()}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.
 \item \code{add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
-\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{character(1)}
+\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
 }
 
 \examples{
 # init logger
-lg = Logger$new()
+app_logger = Logger$new()
 # set log level for the middleware
-lg$set_log_level("debug")
+app_logger$set_log_level("debug")
 # set logger name
-lg$set_name("MW Logger")
+app_logger$set_name("MW Logger")
 # init middleware to logging
 mw = Middleware$new(
   process_request = function(rq, rs) {
-    lg$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
+    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
   },
   process_response = function(rq, rs) {
-    lg$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
+    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
   },
-  name = "logger"
+  name = "awesome-app-logger"
 )
 
 # init application
 app = Application$new(middleware = list(mw))
-# set log level for the app
+
+# set internal log level
 app$logger$set_log_level("error")
 
 # define simply request handler
