@@ -69,3 +69,4 @@ creating objects described in
 \details{
 \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}
 }
+\keyword{internal}

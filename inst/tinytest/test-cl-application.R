@@ -8,8 +8,6 @@ expect_true(inherits(a$HTTPError, "HTTPErrorFactory"))
 expect_true(inherits(a$logger, "Logger"))
 expect_true(inherits(a$.__enclos_env__$private$handlers, "environment"))
 expect_equal(length(a$.__enclos_env__$private$handlers), 0L)
-expect_true(inherits(a$.__enclos_env__$private$handlers_openapi_definitions, "environment"))
-expect_equal(length(a$.__enclos_env__$private$handlers_openapi_definitions), 0L)
 expect_true(inherits(a$.__enclos_env__$private$middleware, "environment"))
 expect_equal(length(a$.__enclos_env__$private$middleware), 0L)
 expect_true(inherits(a$.__enclos_env__$private$routes, "environment"))
@@ -53,13 +51,13 @@ a = Application$new()
 f1 = function(rq, rs) {1}
 f2 = function(rq, rs) {2}
 f3 = function(rq, rs) {3}
-id1 = a$add_route("/", "GET", f1, "exact")
-id2 = a$add_route("/test1", "GET", f2, "exact")
-id3 = a$add_route("/test1", "POST", f3, "exact")
+a$add_route("/", "GET", f1, "exact")
+a$add_route("/test1", "GET", f2, "exact")
+a$add_route("/test1", "POST", f3, "exact")
 expect_equal(length(a$.__enclos_env__$private$handlers), 3L)
-expect_equal(a$.__enclos_env__$private$handlers[[id1]], f1)
-expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
-expect_equal(a$.__enclos_env__$private$handlers[[id3]], f3)
+expect_equal(a$.__enclos_env__$private$handlers[["1"]], f1)
+expect_equal(a$.__enclos_env__$private$handlers[["2"]], f2)
+expect_equal(a$.__enclos_env__$private$handlers[["3"]], f3)
 
 # Test add_get method
 a = Application$new()
@@ -79,8 +77,8 @@ f2 = function(rq, rs) {2}
 id1 = a$add_post("/test1", f1, "exact")
 id2 = a$add_post("/test2", f2, "exact")
 expect_equal(length(a$.__enclos_env__$private$handlers), 2L)
-expect_equal(a$.__enclos_env__$private$handlers[[id1]], f1)
-expect_equal(a$.__enclos_env__$private$handlers[[id2]], f2)
+expect_equal(a$.__enclos_env__$private$handlers[["1"]], f1)
+expect_equal(a$.__enclos_env__$private$handlers[["2"]], f2)
 
 # Test error on duplicates routes
 a = Application$new()
@@ -107,12 +105,12 @@ f2 = function(rq, rs) {2}
 rq1 = Request$new(path = "/")
 rq2 = Request$new(path = "/regex/value")
 rs = Response$new()
-id1 = a$add_route("/", "GET", f1, "exact")
-id2 = a$add_route("/regex/{var}", "GET", f2, match = "regex")
+a$add_route("/", "GET", f1, "exact")
+a$add_route("/regex/{var}", "GET", f2, match = "regex")
 r1 = a$.__enclos_env__$private$match_handler(rq1, rs)
 r2 = a$.__enclos_env__$private$match_handler(rq2, rs)
-expect_equal(r1, id1)
-expect_equivalent(r2, id2)
+expect_equal(r1, "1")
+expect_equivalent(r2, "2")
 expect_equal(attr(r2, "parameters_path"), list(var = "value"))
 
 # Test process_request method
@@ -144,6 +142,14 @@ ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
 HTTPError$set_content_type("application/json")
 expect_equal(a$ContentHandlers$get_decode("custom/type"), f)
 expect_equal(a$HTTPError$content_type, "application/json")
+
+
+# test swagger-ui can be added only after openapi was added
+a = Application$new()
+expect_error(a$add_swagger_ui())
+dummy_openapi = tempfile(fileext = ".yaml")
+writeLines("dummy", dummy_openapi)
+expect_true(inherits(a$add_openapi(file_path = dummy_openapi), "Application"))
 
 # Reset global objects state
 ContentHandlers$reset()

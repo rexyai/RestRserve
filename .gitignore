@@ -11,5 +11,4 @@
 tmp/*
 inst/prof_*.html
 inst/examples/ssl/cert/*
-openapi.yaml
 RestRserve*.tar.gz
