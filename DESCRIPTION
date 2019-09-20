@@ -25,7 +25,6 @@ Imports:
   Rcpp (>= 1.0.2),
   jsonlite (>= 1.6)
 Suggests:
-  yaml (>= 2.2.0),
   curl (>= 4.0),
   tinytest (>= 1.0.0), 
   lgr (>= 0.3.2),
