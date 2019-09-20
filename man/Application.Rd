@@ -102,7 +102,7 @@ systems. Ignored on windows.
 \item \code{print_endpoints_summary()}\cr
 -> \code{self}\cr
 Prints all the registered routes with allowed methods.
-\item \code{add_openapi(path = "/openapi.yaml", openapi = openapi_create(), file_path = "openapi.yaml")}
+\item \code{add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")}
 \code{character(1)}, \code{named list()}, \code{character(1)} -> \code{character(1)}\cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.

@@ -112,8 +112,7 @@
 #'   -> `self`\cr
 #'   Prints all the registered routes with allowed methods.
 #'
-#' * `add_openapi(path = "/openapi.yaml", openapi = openapi_create(),
-#'                file_path = "openapi.yaml")`
+#' * `add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")`
 #'   `character(1)`, `named list()`, `character(1)` -> `character(1)`\cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
 #'   available methods.
@@ -199,18 +198,14 @@
 Application = R6::R6Class(
   classname = "Application",
   public = list(
-    #------------------------------------------------------------------------
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
     ContentHandlers = NULL,
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(),
-                          content_type = "text/plain",
-                          ...) {
+    initialize = function(middleware = list(), content_type = "text/plain", ...) {
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
-      private$handlers_openapi_definitions = new.env(parent = emptyenv())
 
       self$logger = Logger$new("info", name = "Application")
       self$content_type = content_type
@@ -225,7 +220,6 @@ Application = R6::R6Class(
       private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
     },
-    #------------------------------------------------------------------------
     add_route = function(path, method, FUN, match = c("exact", "partial", "regex"), ...) {
       checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
       checkmate::assert_choice(method, private$supported_methods)
@@ -242,18 +236,6 @@ Application = R6::R6Class(
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
       private$handlers[[id]] = compiler::cmpfun(FUN)
-
-      # try to parse functions and find openapi definitions
-      openapi_definition_lines = extract_docstrings_yaml(FUN)
-      # openapi_definition_lines = character(0) means
-      # - there are no openapi definitions
-      if (length(openapi_definition_lines) > 0) {
-        if (is.null(private$handlers_openapi_definitions[[path]])) {
-          private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
-        }
-        private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
-      }
-
       invisible(id)
     },
     #------------------------------------------------------------------------
@@ -263,16 +245,13 @@ Application = R6::R6Class(
       }
       self$add_route(path, "GET", FUN, match, ...)
     },
-    #------------------------------------------------------------------------
     add_post = function(path, FUN, match = c("exact", "partial", "regex"), ...) {
       self$add_route(path, "POST", FUN, match, ...)
     },
-    #------------------------------------------------------------------------
     add_static = function(path, file_path, content_type = NULL, ...) {
       handler = private$static_handler(url_path = path, file_path = file_path, content_type = content_type)
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
     },
-    #------------------------------------------------------------------------
     run = function(http_port = 8001L, ..., background = FALSE) {
       checkmate::assert_int(http_port)
       ARGS = list(...)
@@ -325,7 +304,6 @@ Application = R6::R6Class(
 
       return(pid)
     },
-    #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if (length(self$endpoints) == 0) {
         self$logger$warn("", context = "'Application' doesn't have any endpoints")
@@ -333,35 +311,23 @@ Application = R6::R6Class(
       self$logger$info("", context = list(endpoints = self$endpoints))
       return(invisible(self))
     },
-    #------------------------------------------------------------------------
-    add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
-                           file_path = "openapi.yaml") {
+    add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
       checkmate::assert_string(file_path)
       file_path = path.expand(file_path)
-
-      if (!requireNamespace("yaml", quietly = TRUE)) {
-        stop("please install 'yaml' package")
-      }
 
       file_dir = dirname(file_path)
       if (!dir.exists(file_dir)) {
         dir.create(file_dir, recursive = TRUE)
       }
 
-      openapi = c(openapi, list(paths = private$get_openapi_paths()))
-
-      yaml::write_yaml(openapi, file = file_path)
-      # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
+      # when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
       # for now use  "application/x-yaml":
       # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
       self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml")
       return(invisible(file_path))
     },
-    #------------------------------------------------------------------------
-    add_swagger_ui = function(path = "/swagger",
-                              path_openapi = "/openapi.yaml",
-                              use_cdn = TRUE,
-                              path_swagger_assets = "/__swagger__/",
+    add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
+                              use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
       checkmate::assert_string(file_path, pattern = "^/")
       checkmate::assert_string(path_swagger_assets, pattern = "^/")
@@ -388,7 +354,6 @@ Application = R6::R6Class(
       self$add_static(path, file_path, "text/html")
       return(invisible(file_path))
     },
-    #------------------------------------------------------------------------
     append_middleware = function(...) {
       mw_list = list(...)
       checkmate::assert_list(mw_list, types = "Middleware", unique = TRUE)
@@ -398,10 +363,8 @@ Application = R6::R6Class(
       }
       return(invisible(length(private$middleware)))
     },
-    #------------------------------------------------------------------------
     process_request = function(request = private$request) {
       response = private$response
-
       private$eval_with_error_handling({
         response$reset()
         response$set_content_type(self$content_type)
@@ -495,7 +458,6 @@ Application = R6::R6Class(
   private = list(
     routes = NULL,
     handlers = NULL,
-    handlers_openapi_definitions = NULL,
     middleware = NULL,
     response = NULL,
     request = NULL,
@@ -627,16 +589,6 @@ Application = R6::R6Class(
         body = body
       )
       self$process_request(private$request)
-    },
-    get_openapi_paths = function() {
-      if (!requireNamespace("yaml", quietly = TRUE)) {
-        stop("please install 'yaml' package first")
-      }
-      eapply(private$handlers_openapi_definitions, function(p) {
-        eapply(p, function(m) {
-          m = enc2utf8(paste(m, collapse = "\n"))
-          yaml::read_yaml(text = m)
-        })
-      })
-    })
+    }
+  )
 )
