@@ -7,30 +7,30 @@ source("setup.R")
 app = ex_app("content-handlers")
 
 request_json = Request$new(path = "/json")
-rs = app$process_request(request_json)[[1]]
-expect_equal(rs, '{"answer":"json"}')
+rs = app$process_request(request_json)$to_rserve()
+expect_equal(rs[[1]], '{"answer":"json"}')
 
 request_text = Request$new(path = "/text")
-rs = app$process_request(request_text)[[1]]
-expect_equal(rs, 'text')
+rs = app$process_request(request_text)$to_rserve()
+expect_equal(rs[[1]], 'text')
 
 request_uct = Request$new(path = "/unknown-content-type")
-rs = app$process_request(request_uct)[[1]]
-expect_true(is.character(rs))
+rs = app$process_request(request_uct)$to_rserve()
+expect_true(is.character(rs[[1]]))
 
 request_rds = Request$new(path = "/rds")
-rs = app$process_request(request_rds)[[1]]
-rs = unserialize(rs)
+rs = app$process_request(request_rds)$to_rserve()
+rs = unserialize(rs[[1]])
 expect_equal(rs, list(answer = "rds"))
 
 request_rds2 = Request$new(path = "/rds2")
-rs = app$process_request(request_rds2)[[1]]
-rs = unserialize(rs)
+rs = app$process_request(request_rds2)$to_rserve()
+rs = unserialize(rs[[1]])
 expect_equal(rs, list(answer = "rds2"))
 
 HTTPError$set_content_type("application/json")
 request_404 = Request$new(path = "/404")
-rs = app$process_request(request_404)
+rs = app$process_request(request_404)$to_rserve()
 expect_equal(rs[[1]], "{\"error\":\"404 Not Found\"}")
 expect_equal(rs[[2]], "application/json")
 
@@ -42,7 +42,7 @@ rq = Request$new(
   body = charToRaw("{\"hello\" : \"world\"}"),
   content_type = "application/json"
 )
-rs = app$process_request(rq)
+rs = app$process_request(rq)$to_rserve()
 expect_equal(unserialize(rs[[1]]), list(hello = "world"))
 
 # Test decode invalid JSON decode
@@ -52,7 +52,7 @@ rq = Request$new(
   body = charToRaw("{\"bad\" : json}"),
   content_type = "application/json"
 )
-rs = app$process_request(rq)
+rs = app$process_request(rq)$to_rserve()
 err_msg = paste0("lexical error: invalid char in json text.\n",
                  "                              {\"bad\" : json}\n",
                  "                     (right here) ------^\n")
