@@ -8,7 +8,7 @@ library(RestRserve)
 
 # function to calc Fibonacci numbers
 calc_fib = function(n) {
-  if (n < 0L) stop("n should be >= 0")
+  if (n < 0L) raise(HTTPError$bad_request("n should be >= 0"))
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
@@ -19,44 +19,18 @@ calc_fib = function(n) {
 
 ## ---- create handler for the HTTP requests ----
 
-
-HTTPError$set_encode(as.character)
-HTTPError$set_content_type("text/plain")
-
-
 fib_handler = function(request, response) {
-  #' ---
-  #' description: Calculates Fibonacci number
-  #' parameters:
-  #'   - name: "n"
-  #'     description: "x for Fibonnacci number"
-  #'     in: query
-  #'     schema:
-  #'       type: integer
-  #'     example: 10
-  #'     required: true
-  #' responses:
-  #'   200:
-  #'     description: API response
-  #'     content:
-  #'       text/plain:
-  #'         schema:
-  #'           type: string
-  #'           example: 5
-  #' ---
   n = as.integer(request$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) {
     raise(HTTPError$bad_request())
   }
-  response$body = as.character(calc_fib(n))
+  response$body = calc_fib(n)
 }
 
 
 ## ---- create application -----
 
-app = Application$new(
-  content_type = "text/plain"
-)
+app = Application$new()
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -65,11 +39,9 @@ app$add_get(
   path = "/fib",
   FUN = fib_handler
 )
-
 app$add_openapi(
   path = "/openapi.yaml",
-  openapi = openapi_create(),
-  file_path = tempfile(fileext = ".yaml")
+  file_path = "openapi.yaml"
 )
 
 # see details on https://swagger.io/tools/swagger-ui/

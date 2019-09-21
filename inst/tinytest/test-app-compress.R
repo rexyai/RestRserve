@@ -8,7 +8,7 @@ app = ex_app("compression")
 
 # Test uncompressed content
 rq = Request$new(path = "/hello")
-rs = app$process_request(rq)
+rs = app$process_request(rq)$to_rserve()
 expect_equal(rs[[1]], "Hello, World!")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
@@ -17,7 +17,7 @@ expect_equal(rs[[4]], 200L)
 # Test compressed content
 h = list("Accept-Encoding" = "gzip")
 rq = Request$new(path = "/hello", headers = h)
-rs = app$process_request(rq)
+rs = app$process_request(rq)$to_rserve()
 expect_equal(memDecompress(rs[[1]], "gzip", TRUE), "Hello, World!")
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], "Content-encoding: gzip")

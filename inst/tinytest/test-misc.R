@@ -59,9 +59,6 @@ app = Application$new()
 app$add_get("/say", function(req, res) {
   res$body = req$parameters_query$hello
 })
-keep = .GlobalEnv[["RestRserveApp"]]
-.GlobalEnv[["RestRserveApp"]] = app
-.GlobalEnv[["RestRserveApp"]] = keep
 
 # Test list_named constructor
 expect_equal(names(list_named()), character(0))

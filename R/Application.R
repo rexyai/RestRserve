@@ -44,7 +44,7 @@
 #' @section  Methods:
 #'
 #' * `add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint and register user-supplied R function as a handler.
 #'
 #'   Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
@@ -67,16 +67,16 @@
 #'   passed further to RestRserve execution pipeline.
 #'
 #' * `add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `GET` method. With `add_head = TRUE` HEAD method
 #'   handlers will be added (with `add_head()`).
 #'
 #' * `add_post(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `POST` method.
 #'
 #' * `add_static(path, file_path, content_type = NULL, ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `character(1)` \cr
+#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Adds GET method to serve file or directory at `file_path`.
 #'
 #'   If `content_type = NULL` then MIME code `content_type`  will be inferred
@@ -86,7 +86,7 @@
 #'   be set to `"application/octet-stream"`.
 #'
 #' * `append_middleware(...)`\cr
-#'   `list()` of [Middleware] -> `integer(1)`\cr
+#'   `list()` of [Middleware] -> `invisible(self)` - [Application] \cr
 #'   Appends middleware to handlers pipeline.
 #'
 #' * `process_request(request)`\cr
@@ -109,19 +109,18 @@
 #'     systems. Ignored on windows.
 #'
 #' * `print_endpoints_summary()`\cr
-#'   -> `self`\cr
+#'   -> `invisible(self)` - [Application] \cr
 #'   Prints all the registered routes with allowed methods.
 #'
-#' * `add_openapi(path = "/openapi.yaml", openapi = openapi_create(),
-#'                file_path = "openapi.yaml")`
-#'   `character(1)`, `named list()`, `character(1)` -> `character(1)`\cr
+#' * `add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")`
+#'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
 #'   available methods.
 #'
 #' * `add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
 #'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
 #'                   file_path = "swagger-ui.html")`\cr
-#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `character(1)`
+#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
 #'
 #' @export
@@ -131,25 +130,26 @@
 #'
 #' @examples
 #' # init logger
-#' lg = Logger$new()
+#' app_logger = Logger$new()
 #' # set log level for the middleware
-#' lg$set_log_level("debug")
+#' app_logger$set_log_level("debug")
 #' # set logger name
-#' lg$set_name("MW Logger")
+#' app_logger$set_name("MW Logger")
 #' # init middleware to logging
 #' mw = Middleware$new(
 #'   process_request = function(rq, rs) {
-#'     lg$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
+#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
 #'   },
 #'   process_response = function(rq, rs) {
-#'     lg$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
+#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
 #'   },
-#'   name = "logger"
+#'   name = "awesome-app-logger"
 #' )
 #'
 #' # init application
 #' app = Application$new(middleware = list(mw))
-#' # set log level for the app
+#'
+#' # set internal log level
 #' app$logger$set_log_level("error")
 #'
 #' # define simply request handler
@@ -199,24 +199,21 @@
 Application = R6::R6Class(
   classname = "Application",
   public = list(
-    #------------------------------------------------------------------------
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
     ContentHandlers = NULL,
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(),
-                          content_type = "text/plain",
-                          ...) {
+    initialize = function(middleware = list(), content_type = "text/plain", ...) {
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
-      private$handlers_openapi_definitions = new.env(parent = emptyenv())
 
       self$logger = Logger$new("info", name = "Application")
       self$content_type = content_type
       self$HTTPError = HTTPError
 
       private$response = Response$new(content_type = self$content_type)
+      private$request = Request$new()
 
       self$ContentHandlers = ContentHandlers
 
@@ -224,7 +221,6 @@ Application = R6::R6Class(
       private$middleware = new.env(parent = emptyenv())
       do.call(self$append_middleware, middleware)
     },
-    #------------------------------------------------------------------------
     add_route = function(path, method, FUN, match = c("exact", "partial", "regex"), ...) {
       checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
       checkmate::assert_choice(method, private$supported_methods)
@@ -241,19 +237,7 @@ Application = R6::R6Class(
       private$routes[[method]]$add_path(path, match, id)
       # Add handler
       private$handlers[[id]] = compiler::cmpfun(FUN)
-
-      # try to parse functions and find openapi definitions
-      openapi_definition_lines = extract_docstrings_yaml(FUN)
-      # openapi_definition_lines = character(0) means
-      # - there are no openapi definitions
-      if (length(openapi_definition_lines) > 0) {
-        if (is.null(private$handlers_openapi_definitions[[path]])) {
-          private$handlers_openapi_definitions[[path]] = new.env(parent = emptyenv())
-        }
-        private$handlers_openapi_definitions[[path]][[tolower(method)]] = openapi_definition_lines
-      }
-
-      invisible(id)
+      return(invisible(self))
     },
     #------------------------------------------------------------------------
     add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {
@@ -261,17 +245,17 @@ Application = R6::R6Class(
         self$add_route(path, "HEAD", FUN, match, ...)
       }
       self$add_route(path, "GET", FUN, match, ...)
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
     add_post = function(path, FUN, match = c("exact", "partial", "regex"), ...) {
       self$add_route(path, "POST", FUN, match, ...)
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
     add_static = function(path, file_path, content_type = NULL, ...) {
       handler = private$static_handler(url_path = path, file_path = file_path, content_type = content_type)
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
     run = function(http_port = 8001L, ..., background = FALSE) {
       checkmate::assert_int(http_port)
       ARGS = list(...)
@@ -290,31 +274,12 @@ Application = R6::R6Class(
       }
 
       keep_http_request = .GlobalEnv[[".http.request"]]
-      keep_RestRserveApp = .GlobalEnv[["RestRserveApp"]]
       # restore global environment on exit
       on.exit({
         .GlobalEnv[[".http.request"]] = keep_http_request
-        .GlobalEnv[["RestRserveApp"]] = keep_RestRserveApp
       })
-
-
-      RSERVE_REQUEST = Request$new()
-      # this is workhorse for RestRserve
-      # it is assigned to .http.request as per requirements of Rserve for http interface
-      http_request = function(url, parameters_query, body, headers) {
-        # first parse incoming request
-        RSERVE_REQUEST$reset()
-        RSERVE_REQUEST$from_rserve(
-          path = url,
-          parameters_query = parameters_query,
-          headers = headers,
-          body = body
-        )
-        self$process_request(RSERVE_REQUEST)
-      }
-
       # temporary modify global environment
-      .GlobalEnv[[".http.request"]] = http_request
+      .GlobalEnv[[".http.request"]] = private$.http.request
 
       self$print_endpoints_summary()
 
@@ -343,45 +308,33 @@ Application = R6::R6Class(
 
       return(pid)
     },
-    #------------------------------------------------------------------------
     print_endpoints_summary = function() {
       if (length(self$endpoints) == 0) {
-        self$logger$warn("", context = "'RestRserveApp' doesn't have any endpoints")
+        self$logger$warn("", context = "'Application' doesn't have any endpoints")
       }
       self$logger$info("", context = list(endpoints = self$endpoints))
       return(invisible(self))
     },
-    #------------------------------------------------------------------------
-    add_openapi = function(path = "/openapi.yaml", openapi = openapi_create(),
-                           file_path = "openapi.yaml") {
-      checkmate::assert_string(file_path)
+    add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
+      checkmate::assert_string(path, pattern = "/.*")
       file_path = path.expand(file_path)
+      checkmate::assert_file_exists(file_path, extension = c("yaml", "yml", "json"))
 
-      if (!requireNamespace("yaml", quietly = TRUE)) {
-        stop("please install 'yaml' package")
-      }
+      content_type = switch(
+        tools::file_ext(file_path),
+        json = "application/json",
+        "application/x-yaml" # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
+      )
 
-      file_dir = dirname(file_path)
-      if (!dir.exists(file_dir)) {
-        dir.create(file_dir, recursive = TRUE)
-      }
-
-      openapi = c(openapi, list(paths = private$get_openapi_paths()))
-
-      yaml::write_yaml(openapi, file = file_path)
-      # FIXME when http://www.iana.org/assignments/media-types/media-types.xhtml will be updated
-      # for now use  "application/x-yaml":
-      # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
-      self$add_static(path = path, file_path = file_path, content_type = "application/x-yaml")
-      return(invisible(file_path))
+      self$add_static(path = path, file_path = file_path, content_type = content_type)
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
-    add_swagger_ui = function(path = "/swagger",
-                              path_openapi = "/openapi.yaml",
-                              use_cdn = TRUE,
-                              path_swagger_assets = "/__swagger__/",
+    add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
+                              use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
-      checkmate::assert_string(file_path, pattern = "^/")
+      # check openapi defenition is already added
+      checkmate::assert_choice(path_openapi, self$endpoints$GET[names(self$endpoints$GET) == "exact"])
+      checkmate::assert_string(file_path)
       checkmate::assert_string(path_swagger_assets, pattern = "^/")
       checkmate::assert_flag(use_cdn)
       file_path = path.expand(file_path)
@@ -404,9 +357,8 @@ Application = R6::R6Class(
       }
       writeLines(html, file_path)
       self$add_static(path, file_path, "text/html")
-      return(invisible(file_path))
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
     append_middleware = function(...) {
       mw_list = list(...)
       checkmate::assert_list(mw_list, types = "Middleware", unique = TRUE)
@@ -414,96 +366,93 @@ Application = R6::R6Class(
         id = as.character(length(private$middleware) + 1L)
         private$middleware[[id]] = mw
       }
-      return(invisible(length(private$middleware)))
+      return(invisible(self))
     },
-    #------------------------------------------------------------------------
-
-    process_request = function(request) {
-      # dummy response
+    process_request = function(request = private$request) {
       response = private$response
-      response$reset()
-      response$set_content_type(self$content_type)
+      private$eval_with_error_handling({
+        response$reset()
+        response$set_content_type(self$content_type)
+        request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
-      request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
-
-      self$logger$trace("",
-                        context = list(request_id = request$request_id,
-                                       method = request$method,
-                                       path = request$path,
-                                       parameters_query = request$parameters_query,
-                                       headers = request$headers)
-      )
-
-      # Call middleware for the request
-      mw_ids = as.character(seq_along(private$middleware))
-      mw_called = new.env(parent = emptyenv())
-      mw_flag = "process_request"
-      need_call_handler = TRUE
-
-      for (id in mw_ids) {
-        mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace("",
-                          context = list(request_id = request$request_id,
-                                         middleware = mw_name,
-                                         message = sprintf("call %s middleware", mw_flag))
-        )
-        FUN = private$middleware[[id]][[mw_flag]]
-        mw_status = private$call_handler(FUN, request, response)
-        # FIXME: move after break if last no need
-        mw_called[[id]] = TRUE
-        # break loop on error
-        if (!isTRUE(mw_status)) {
-          need_call_handler = FALSE
-          break
-        }
-      }
-
-      # call handler
-      if (isTRUE(need_call_handler)) {
-        # as a side effect we will populate request$parameters_path (if any)
-        handler_id = private$match_handler(request, response)
-
-        # early stop
-        if (is.null(handler_id)) {
-          response = self$HTTPError$not_found()
-        } else {
-          handler_fun = private$handlers[[handler_id]]
-          self$logger$trace("",
-                            context = list(
-                              request_id = request$request_id,
-                              message = sprintf("call handler '%s'", handler_id)
-                            )
+        self$logger$trace(
+          "",
+          context = list(
+            request_id = request$request_id,
+            method = request$method,
+            path = request$path,
+            parameters_query = request$parameters_query,
+            headers = request$headers
           )
-          private$call_handler(handler_fun, request, response)
-        }
-      }
-
-      # call middleware for the response
-      mw_flag = "process_response"
-      # call in reverse order
-      for (id in rev(names(mw_called))) {
-        mw_name = private$middleware[[id]][["name"]]
-        self$logger$trace("",
-                          context = list(request_id = request$request_id,
-                                         middleware = mw_name,
-                                         message = sprintf("call %s middleware", mw_flag))
         )
-        FUN = private$middleware[[id]][[mw_flag]]
-        mw_status = private$call_handler(FUN, request, response)
-        # FIXME: should we break loop
-        # break loop on error
-        if (!isTRUE(mw_status)) {
-          break
+
+        # Call middleware for the request
+        mw_ids = as.character(seq_along(private$middleware))
+        # mw_called = new.env(parent = emptyenv())
+        mw_called = list()
+        mw_flag = "process_request"
+        need_call_handler = TRUE
+
+        for (id in mw_ids) {
+          mw_name = private$middleware[[id]][["name"]]
+          self$logger$trace(
+            "",
+            context = list(
+              request_id = request$request_id,
+              middleware = mw_name,
+              message = sprintf("call %s middleware", mw_flag)
+            )
+          )
+          FUN = private$middleware[[id]][[mw_flag]]
+          mw_status = private$eval_with_error_handling(FUN(request, response))
+          # FIXME: move after break if last no need
+          mw_called[[id]] = id
+          # break loop on error
+          if (!isTRUE(mw_status)) {
+            need_call_handler = FALSE
+            break
+          }
         }
-      }
+        # call handler
+        if (isTRUE(need_call_handler)) {
+          private$eval_with_error_handling({
+            # as a side effect we will populate request$parameters_path (if any)
+            handler_id = private$match_handler(request, response)
+            FUN = private$handlers[[handler_id]]
+            self$logger$trace(
+              "",
+              context = list(
+                request_id = request$request_id,
+                message = sprintf("call handler '%s'", handler_id)
+              )
+            )
+            FUN(request, response)
+          })
+        }
+        # call middleware for the response
+        mw_flag = "process_response"
+        # call in reverse order
+        for (id in rev(mw_called)) {
+          mw_name = private$middleware[[id]][["name"]]
+          self$logger$trace(
+            "",
+            context = list(
+              request_id = request$request_id,
+              middleware = mw_name,
+              message = sprintf("call %s middleware", mw_flag)
+            )
+          )
+          FUN = private$middleware[[id]][[mw_flag]]
+          mw_status = private$eval_with_error_handling(FUN(request, response))
+        }
 
-      # this means that response wants RestRerveApplication to select
-      # how to encode automatically
-      if (!is.function(response$encode)) {
-        response$encode = self$ContentHandlers$get_encode(response$content_type)
-      }
-
-      return(response$to_rserve())
+        # this means that response wants RestRerveApplication to select
+        # how to encode automatically
+        if (!is.function(response$encode)) {
+          response$encode = self$ContentHandlers$get_encode(response$content_type)
+        }
+      })
+      return(response)
     }
   ),
   active = list(
@@ -514,9 +463,9 @@ Application = R6::R6Class(
   private = list(
     routes = NULL,
     handlers = NULL,
-    handlers_openapi_definitions = NULL,
     middleware = NULL,
     response = NULL,
+    request = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -569,19 +518,12 @@ Application = R6::R6Class(
     match_handler = function(request, response) {
       # Early stop if no routes for this method
       router = private$routes[[request$method]]
-      if (is.null(router)) {
+      if (is.null(router) || router$size() == 0L) {
         self$logger$trace("",
           context = list(request_id = request$request_id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
-        return(NULL)
-      }
-      if (router$size() == 0L) {
-        self$logger$trace("",
-          context = list(request_id = request$request_id,
-               message = sprintf("no handlers registered for the method '%s'", request$method))
-        )
-        return(NULL)
+        raise(self$HTTPError$method_not_allowed())
       }
       # Get handler UID
       self$logger$trace("",
@@ -589,12 +531,6 @@ Application = R6::R6Class(
              message = sprintf("try to match requested path '%s'", request$path))
       )
       id = router$match_path(request$path)
-      # if there are extracted parameters
-      parameters_path = attr(id, 'parameters_path')
-      if (is.list(parameters_path)) {
-        request$parameters_path = parameters_path
-      }
-
       if (is.null(id)) {
         self$logger$trace("",
           context = list(
@@ -602,57 +538,62 @@ Application = R6::R6Class(
             message = "requested path not matched"
           )
         )
-        return(NULL)
+        raise(self$HTTPError$not_found())
       }
+
       self$logger$trace("",
         context = list(
           request_id = request$request_id,
           message = "requested path matched"
         )
       )
+      # if there are extracted parameters
+      parameters_path = attr(id, 'parameters_path')
+      if (is.list(parameters_path)) {
+        request$parameters_path = parameters_path
+      }
       return(id)
     },
     #------------------------------------------------------------------------
-    call_handler = function(FUN, request, response) {
-      status = try_capture_stack(FUN(request, response))
+    eval_with_error_handling = function(expr) {
+      x = try_capture_stack(expr)
       success = TRUE
-      if (inherits(status, 'simpleError')) {
+      if (inherits(x, "simpleError")) {
         # means UNHANDLED exception in middleware
-        self$logger$error("",
+        self$logger$error(
+          "",
           context = list(
-            request_id = request$request_id,
-            message = get_traceback(status)
+            request_id = private$request$request_id,
+            message = get_traceback(x)
           )
         )
-        status = self$HTTPError$internal_server_error()
+        x = try_capture_stack(raise(self$HTTPError$internal_server_error()))
+      }
+      # FIXME - need to find a way to assign private$response
+      # now it works only by assigning field by field
+      if (inherits(x, "HTTPError")) {
+        private$response$body = x$response$body
+        private$response$content_type = x$response$content_type
+        private$response$headers = x$response$headers
+        private$response$status_code = x$response$status_code
         success = FALSE
       }
-      if (inherits(status, 'HTTPError')) {
-        # raise result
-        if (is.list(status) && !is.null(status$response)) {
-          status = status$response
-        }
-        # Copy fields to response
-        response$body = status$body
-        response$content_type = status$content_type
-        response$headers = status$headers
-        response$status_code = status$status_code
-        response$context = status$context
-        success = FALSE
-      }
-
       return(success)
     },
     #------------------------------------------------------------------------
-    get_openapi_paths = function() {
-      if (!requireNamespace("yaml", quietly = TRUE)) {
-        stop("please install 'yaml' package first")
-      }
-      eapply(private$handlers_openapi_definitions, function(p) {
-        eapply(p, function(m) {
-          m = enc2utf8(paste(m, collapse = "\n"))
-          yaml::read_yaml(text = m)
-        })
-      })
-    })
+
+    # this is workhorse for RestRserve
+    # it is assigned to .http.request as per requirements of Rserve for http interface
+    .http.request = function(url, parameters_query, body, headers) {
+      # first parse incoming request
+      private$request$reset()
+      private$request$from_rserve(
+        path = url,
+        parameters_query = parameters_query,
+        headers = headers,
+        body = body
+      )
+      self$process_request(private$request)$to_rserve()
+    }
+  )
 )
