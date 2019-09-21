@@ -160,6 +160,12 @@ expect_null(r$get_param_body("test"))
 expect_equal(r$get_param_body("param1"), "value1")
 expect_equal(r$get_param_body("param4"), "value4 and others")
 
+# Test get_param_path method
+r = Request$new()
+r$parameters_path = list("param" = "value")
+expect_null(r$get_param_path("unknown"))
+expect_equal(r$get_param_path("param"), "value")
+
 # Test accept method
 r = Request$new()
 r$from_rserve(

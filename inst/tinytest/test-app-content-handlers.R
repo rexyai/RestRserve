@@ -1,4 +1,4 @@
-# Test app 'Hello, World!'
+# Test app "Hello, World!"
 
 # source helpsers
 source("setup.R")
@@ -8,11 +8,11 @@ app = ex_app("content-handlers")
 
 request_json = Request$new(path = "/json")
 rs = app$process_request(request_json)$to_rserve()
-expect_equal(rs[[1]], '{"answer":"json"}')
+expect_equal(rs[[1]], "{\"answer\":\"json\"}")
 
 request_text = Request$new(path = "/text")
 rs = app$process_request(request_text)$to_rserve()
-expect_equal(rs[[1]], 'text')
+expect_equal(rs[[1]], "text")
 
 request_uct = Request$new(path = "/unknown-content-type")
 rs = app$process_request(request_uct)$to_rserve()

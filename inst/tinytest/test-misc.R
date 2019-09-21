@@ -72,6 +72,7 @@ expect_error(list_named(length = 1, names = c('1', '2')))
 rserve_port = 6311
 expect_false(port_is_taken(rserve_port))
 expect_equal(find_port(), rserve_port)
+
 # Test when port is binned
 if (.Platform$OS.type == "unix") {
   ps = parallel::mcparallel({

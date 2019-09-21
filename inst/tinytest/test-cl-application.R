@@ -112,6 +112,9 @@ r2 = a$.__enclos_env__$private$match_handler(rq2, rs)
 expect_equal(r1, "1")
 expect_equivalent(r2, "2")
 expect_equal(attr(r2, "parameters_path"), list(var = "value"))
+# match_handler also to add parameters_path to request
+expect_equal(rq2$parameters_path, list(var = "value"))
+expect_equal(rq2$get_param_path("var"), "value")
 
 # Test process_request method
 a = Application$new()
@@ -154,3 +157,24 @@ expect_true(inherits(a$add_openapi(file_path = dummy_openapi), "Application"))
 # Reset global objects state
 ContentHandlers$reset()
 HTTPError$reset()
+
+# Test that Application can run
+if (.Platform$OS.type == "unix") {
+  ps = parallel::mcparallel({
+    app = Application$new()
+    app$add_get(
+      path = "/status",
+      FUN = function(request, response) {
+        response$body = "OK!"
+      },
+      match = "exact"
+    )
+    app$run(http_port = 65003)
+  })
+  Sys.sleep(0.5) # wait to start process
+  con = url("http://127.0.0.1:65003/status")
+  ans = readLines(con, n = 1L, warn = FALSE)
+  close(con)
+  expect_equal(ans, "OK!")
+  tools::pskill(ps$pid) # kill process
+}
