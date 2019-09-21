@@ -452,7 +452,7 @@ Application = R6::R6Class(
           response$encode = self$ContentHandlers$get_encode(response$content_type)
         }
       })
-      return(response$to_rserve())
+      return(response)
     }
   ),
   active = list(
@@ -593,7 +593,7 @@ Application = R6::R6Class(
         headers = headers,
         body = body
       )
-      self$process_request(private$request)
+      self$process_request(private$request)$to_rserve()
     }
   )
 )
