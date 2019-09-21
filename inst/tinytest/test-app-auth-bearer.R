@@ -37,7 +37,9 @@ rq = Request$new(path = "/secure", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs$body, "401 Invalid Token")
 expect_equal(rs$content_type, "text/plain")
+# nolint start
 expect_equal(rs$headers, list("WWW-Authenticate" = "error=\"invalid_token\",error_description=\"Invalid or expired access token\""))
+# nolint end
 expect_equal(rs$status_code, 401L)
 
 cleanup_app()
