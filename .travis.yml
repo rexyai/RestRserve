@@ -44,13 +44,10 @@ before_install:
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc${VER} 60 --slave /usr/bin/g++ g++ /usr/bin/g++${VER}
   - sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran${VER} 60
 
-after_script:
-  - R CMD INSTALL $PKG_TARBALL
-  - Rscript -e 'lintr::lint_package()'
-
 after_success:
   - Rscript -e 'covr::codecov()'
-  - R CMD INSTALL .
+  - R CMD INSTALL $PKG_TARBALL
+  - Rscript -e 'lintr::lint_package()'
   - Rscript -e 'pkgdown::build_site()'
 
 deploy:
