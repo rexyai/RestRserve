@@ -127,7 +127,7 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     Rcpp::stop("Boundary string not found.");
   }
   // find second boundary string
-  sv_size_t block_end_pos = body_sv.find(boundary, block_start_pos);
+  sv_size_t block_end_pos = body_sv.find(boundary, block_start_pos + 1);
   if (block_end_pos == nonstd::string_view::npos) {
     Rcpp::stop("Boundary string at the end block not found.");
   }
