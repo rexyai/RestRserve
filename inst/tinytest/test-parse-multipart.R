@@ -22,6 +22,10 @@ expect_equal(parse_multipart_boundary(ctype), boundary)
 expect_error(parse_multipart_body(NULL, NULL))
 expect_error(parse_multipart_body(NA_character_, NA_character_))
 expect_error(parse_multipart_body("", ""))
+expect_error(parse_multipart_body(charToRaw("body string"), "test"),
+             "Boundary string not found.")
+expect_error(parse_multipart_body(charToRaw("test\r\nbody string"), "test"),
+             "Boundary string at the end block not found.")
 expect_equal(parse_multipart_body(raw(), character(1)), list())
 
 # Test parse_multipart_body

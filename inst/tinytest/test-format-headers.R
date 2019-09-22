@@ -6,9 +6,12 @@ format_headers = RestRserve:::format_headers
 # Empty object
 expect_equal(format_headers(NULL), "")
 expect_equal(format_headers(list()), "")
+expect_equal(format_headers(list(a = "")), "")
+expect_equal(format_headers(list(a = character(0))), "")
 expect_error(format_headers(""))
 expect_error(format_headers(NA))
 expect_error(format_headers(list("")))
+expect_error(format_headers(list(a = NULL)))
 
 # Test headers
 h = list(

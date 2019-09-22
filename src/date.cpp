@@ -5,7 +5,7 @@
 #include <sstream>
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::CharacterVector Cpp_to_http_date(const Rcpp::Datetime& x) {
+Rcpp::RObject Cpp_to_http_date(const Rcpp::Datetime& x) {
   if (x.is_na()) {
     return R_NilValue;
   }
@@ -15,7 +15,7 @@ Rcpp::CharacterVector Cpp_to_http_date(const Rcpp::Datetime& x) {
   std::tm tm = *std::gmtime(&s);
   static const char* fmt = "%a, %d %b %Y %T GMT";
   ss << std::put_time(&tm, fmt);
-  return ss.str();
+  return Rcpp::wrap(ss.str());
 }
 
 // [[Rcpp::export(rng=false)]]
