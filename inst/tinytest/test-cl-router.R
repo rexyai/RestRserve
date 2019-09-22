@@ -78,7 +78,7 @@ v = list(
   "/test1/([^/]+)/([^/]+)/?$" = list(
     "id" = "1",
     template = "/test1/{var1}/{var2}"
-    ),
+  ),
   "/test1/([^/]+)/?$" = list(
     "id" = "1",
     template = "/test1/{var1}"
