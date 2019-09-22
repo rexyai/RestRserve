@@ -115,25 +115,64 @@ expect_equal(r$cookies[["param"]], list(name = "param", value = "value"))
 r$unset_cookie("param")
 expect_null(r$cookies[["param"]])
 
-# Test to_rserve method
+# Test to_rserve method with empty response
 r = Response$new()
-expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
+rs = r$to_rserve()
+expect_equal(rs[[1]], "")
+expect_equal(rs[[2]], "text/plain")
+expect_equal(rs[[3]], character(0))
+expect_equal(rs[[4]], 200L)
+
+# Test to_rserve method with empty response
+r = Response$new()
+r$set_body(raw())
+rs = r$to_rserve()
+expect_equal(rs[[1]], raw())
+expect_equal(rs[[2]], "text/plain")
+expect_equal(rs[[3]], character(0))
+expect_equal(rs[[4]], 200L)
+
+# Test to_rserve method with complex response
+r = Response$new()
 r$set_date(.POSIXct(1564760173, tz = "GMT"))
 r$set_body("{status: ok}")
 r$set_content_type("applicaiton/json")
 r$set_status_code(200L)
 r$set_header("Custom-Header", "text")
 r$set_cookie(name = "param", "value")
-body = "{status: ok}"
-cont = "applicaiton/json"
-headers = paste(
+h = paste(
   "Date: Fri, 02 Aug 2019 15:36:13 GMT",
   "Custom-Header: text",
   "Set-Cookie: param=value",
   sep = "\r\n"
 )
-status = 200L
-expect_equal(r$to_rserve(), list(body, cont, headers, status))
+rs = r$to_rserve()
+expect_equal(rs[[1]], "{status: ok}")
+expect_equal(rs[[2]], "applicaiton/json")
+expect_equal(rs[[3]], h)
+expect_equal(rs[[4]], 200L)
+
+# Test to_rserve with static file body
+r = Response$new()
+tmp = tempfile(fileext = ".html")
+r$set_body(c("file" = tmp))
+r$set_content_type("text/html")
+rs = r$to_rserve()
+expect_equal(rs[[1]], list(file = tmp))
+expect_equal(rs[[2]], "text/html")
+expect_equal(rs[[3]], character(0))
+expect_equal(rs[[4]], 200L)
+
+# Test to_rserve with static file body
+r = Response$new()
+tmp = tempfile(fileext = ".html")
+r$set_body(c("tmpfile" = tmp))
+r$set_content_type("text/html")
+rs = r$to_rserve()
+expect_equal(rs[[1]], list(tmpfile = tmp))
+expect_equal(rs[[2]], "text/html")
+expect_equal(rs[[3]], character(0))
+expect_equal(rs[[4]], 200L)
 
 # Test set_response method
 r = Response$new()

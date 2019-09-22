@@ -65,15 +65,24 @@ p = c(
   "partial" = "/test2/"
 )
 expect_equal(r$paths, p)
-expect_error(r$add_path(path = "/test1/{var1}", match = "regex", id = "1"), "Regex already exists.")
+expect_error(r$add_path(path = "/test1/{var1}", match = "regex", id = "1"),
+             "Regex already exists.")
+expect_error(r$add_path(path = "/", match = "regex", id = "1"),
+             "Can't detect variables.")
 expect_true(r$.__enclos_env__$private$partial[["/test1/"]]$regex)
 expect_true(r$.__enclos_env__$private$partial[["/test2/"]]$regex)
 expect_false(r$.__enclos_env__$private$partial[["/test1/"]]$prefix)
 expect_true(r$.__enclos_env__$private$partial[["/test2/"]]$prefix)
 l = as.list(r$.__enclos_env__$private$partial[["/test1/"]]$patterns)
 v = list(
-  "/test1/([^/]+)/([^/]+)/?$" = list("id" = "1", template = "/test1/{var1}/{var2}"),
-  "/test1/([^/]+)/?$" = list("id" = "1", template = "/test1/{var1}")
+  "/test1/([^/]+)/([^/]+)/?$" = list(
+    "id" = "1",
+    template = "/test1/{var1}/{var2}"
+  ),
+  "/test1/([^/]+)/?$" = list(
+    "id" = "1",
+    template = "/test1/{var1}"
+  )
 )
 expect_equal(l, v)
 l = as.list(r$.__enclos_env__$private$partial[["/test2/"]]$patterns)
