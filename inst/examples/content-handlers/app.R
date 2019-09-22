@@ -1,5 +1,6 @@
 #!/usr/bin/env Rscript
 
+
 ## ---- load packages ----
 
 library(RestRserve)
@@ -41,14 +42,17 @@ app$add_get("/rds2", function(request, response) {
   response$body = serialize(list(answer = "rds2"), NULL)
 })
 
-# Note that new content handler can be registered at any time before application start
-ContentHandlers$set_encode("application/rds2", identity)
-ContentHandlers$set_encode("application/rds", identity)
-
 app$add_post("/json", function(request, response) {
   response$content_type = "application/rds"
   response$body = serialize(request$body_decoded, NULL)
 })
+
+
+## ---- register custom content handlers ----
+
+# Note that new content handler can be registered at any time before application start
+ContentHandlers$set_encode("application/rds2", identity)
+ContentHandlers$set_encode("application/rds", identity)
 
 
 ## ---- start application ----

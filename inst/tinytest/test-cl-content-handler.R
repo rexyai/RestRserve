@@ -18,7 +18,7 @@ expect_true(inherits(obj$handlers[["text/plain"]]$decode, "function"))
 expect_true(inherits(obj$list(), "list"))
 expect_equal(names(obj$list()), c("application/json", "text/plain"))
 
-# Test unknown handkers
+# Test unknown handlers
 e = tryCatch(obj$get_decode("unknown"), error = function(e) e)
 expect_error(obj$get_decode("unknown"))
 expect_true(inherits(e, "HTTPError"))
@@ -71,6 +71,12 @@ for (ct in c("text/plain; charset=utf-8", "TEXT/plain; charset=latin1")) {
   encoder = obj$get_encode(ct)
   expect_equal(encoder(list(param = 'value')), "value")
 }
+
+# Test predefined text decoder
+decoder = obj$get_decode("text/plain")
+b = "Test!!!"
+expect_equal(decoder(b), b)
+expect_equal(decoder(charToRaw(b)), b)
 
 # Test argument asserts for decode
 expect_error(obj$get_decode(c("application/json", "text/plain")))
