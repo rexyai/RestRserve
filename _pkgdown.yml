@@ -1,0 +1,8 @@
+authors:
+  Dmitriy Selivanov:
+    href: http://dsnotes.com
+  Artem Klevtsov:
+    href: null
+destination: docs
+development:
+  mode: devel

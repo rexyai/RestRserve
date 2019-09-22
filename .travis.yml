@@ -31,6 +31,7 @@ addons:
 r_packages:
   - covr
   - lintr
+  - pkgdown
 
 before_install:
   - mkdir -p ~/.R && touch ~/.R/Makevars
@@ -49,3 +50,14 @@ after_script:
 
 after_success:
   - Rscript -e 'covr::codecov()'
+  - R CMD INSTALL .
+  - Rscript -e 'pkgdown::build_site()'
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  keep_history: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  on:
+    branch: dev
