@@ -341,11 +341,8 @@ Response = R6::R6Class(
       # prepare body
       if (is_string(self$body)) {
         body_name = names(self$body)
-        if (isTRUE(body_name == "file")) {
-          return(list("file" = self$body, self$content_type, headers, self$status_code))
-        }
-        if (isTRUE(body_name == "tmpfile")) {
-          return(list("tmpfile" = self$body, self$content_type, headers, self$status_code))
+        if (isTRUE(body_name %in% c("file", "tmpfile"))) {
+          return(list(as.list(self$body), self$content_type, headers, self$status_code))
         }
       }
       if (length(body) == 0L) {
