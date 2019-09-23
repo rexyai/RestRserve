@@ -20,11 +20,11 @@ Depends:
 Imports:
   Rcpp (>= 1.0.2),
   Rserve (>= 1.7.3),
-  R6,
-  uuid,
-  checkmate,
-  mime,
-  jsonlite
+  R6 (>= 2.4.0),
+  uuid (>= 0.1-2),
+  checkmate (>= 1.9.4),
+  mime (>= 0.7),
+  jsonlite (>= 1.6)
 Suggests:
   tinytest (>= 1.0.0),
   lgr (>= 0.3.2),
