@@ -187,6 +187,18 @@ expect_equal(r$status, "200 OK")
 r$set_status_code(400L)
 expect_equal(r$status, "400 Bad Request")
 
+# Test print method
+rs = Response$new(
+  body = "0",
+  content_type = "application/json",
+  headers = list(
+    "Last-Modified" = to_http_date(Sys.time()),
+    "Custom-field" = "value"
+  ),
+  status_code = 200
+)
+expect_silent(print(rs))
+
 # Test reset method
 rs = Response$new(
   body = list(a = 'body'),
