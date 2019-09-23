@@ -6,7 +6,7 @@ ex_dir = system.file("examples", package = "RestRserve")
 rserve_app = file.path(ex_dir, "00-rserve", "app.R")
 restrserve_app = file.path(ex_dir, "01-hello-world", "app.R")
 wrk_bin = Sys.which("wrk")
-wrk_args = c("-c 100", "-d 30s", "-t 4", "http://127.0.0.1:8001/hello")
+wrk_args = c("-c 100", "-d 30s", "-t 4", "http://127.0.0.1:8080/hello")
 if (!nzchar(wrk_bin)) {
   stop("'wrk' not found.", call. = FALSE)
 }

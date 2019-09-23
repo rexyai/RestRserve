@@ -71,4 +71,4 @@ for (type in allowed_types) {
 
 ## ---- start application ----
 
-# app$run(http_port = 8001)
+# app$run(http_port = 8080)
