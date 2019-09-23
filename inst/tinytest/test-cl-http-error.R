@@ -64,9 +64,12 @@ for (err_method in error_methods) {
 
 # test set content-type
 obj$set_content_type("application/json")
-rs = obj$bad_gateway()$to_rserve()
+rs = obj$bad_gateway()
 expect_equal(obj$content_type, "application/json")
-expect_equal(rs[[2]], "application/json")
+expect_equal(rs$content_type, "application/json")
+
+# fails with 500 because rs$encode = NULL
+expect_equal(rs$to_rserve()[[1]], "500 Internal Server Error (body is not character or raw)")
 
 # test reset works
 obj$reset()

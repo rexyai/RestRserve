@@ -94,7 +94,7 @@
 #'   Process incoming request and generate [Response] object.
 #'   Useful for tests your handlers before deploy application.
 #'
-#' * `run(http_port = 8001L, ..., background = FALSE)`\cr
+#' * `run(http_port = 8080, ..., background = FALSE)`\cr
 #'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
 #'   Starts RestRserve application from current R session.
 #'
@@ -189,7 +189,7 @@
 #' app$process_request(say_rq)
 #'
 #' # run app
-#' # app$run(8001L)
+#' # app$run(8080)
 #'
 Application = R6::R6Class(
   classname = "Application",
@@ -251,7 +251,7 @@ Application = R6::R6Class(
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
       return(invisible(self))
     },
-    run = function(http_port = 8001L, ..., background = FALSE) {
+    run = function(http_port = 8080, ..., background = FALSE) {
       checkmate::assert_int(http_port)
       ARGS = list(...)
       if (http_port > 0L) {

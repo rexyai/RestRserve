@@ -3,9 +3,7 @@
 # Test empty object
 r = Response$new()
 expect_true(inherits(r, "Response"))
-expect_true(inherits(r$body, "character"))
-expect_equal(length(r$body), 1L)
-expect_equal(r$body, "")
+expect_equal(r$body, NULL)
 expect_equal(r$content_type, "text/plain")
 expect_true(inherits(r$context, "environment"))
 expect_true(inherits(r$headers, "list"))
@@ -14,7 +12,7 @@ expect_null(r$encode)
 expect_true(inherits(r$status_code, "integer"))
 expect_equal(length(r$status_code), 1L)
 expect_equal(r$status_code, 200L)
-expect_equal(r$to_rserve(), list("", "text/plain", character(0), 200L))
+expect_equal(r$to_rserve(), list(raw(), "text/plain", character(0), 200L))
 
 # Test parse_headers
 h = list("Test-Header" = "value",
@@ -118,7 +116,7 @@ expect_null(r$cookies[["param"]])
 # Test to_rserve method with empty response
 r = Response$new()
 rs = r$to_rserve()
-expect_equal(rs[[1]], "")
+expect_equal(rs[[1]], raw())
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
 expect_equal(rs[[4]], 200L)
@@ -211,7 +209,7 @@ rs$set_cookie(name = 'cookie_name', value = 'cookie_val')
 rs$context[['some_context']] = list(a = 1)
 
 rs$reset()
-expect_equal(rs$body, "")
+expect_equal(rs$body, NULL)
 expect_equal(rs$content_type, "text/plain")
 expect_equal(rs$headers, list())
 expect_equal(rs$status_code, 200L)

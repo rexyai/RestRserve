@@ -87,7 +87,7 @@ Appends middleware to handlers pipeline.
 \link{Request} -> \link{Response}\cr
 Process incoming request and generate \link{Response} object.
 Useful for tests your handlers before deploy application.
-\item \code{run(http_port = 8001L, ..., background = FALSE)}\cr
+\item \code{run(http_port = 8080, ..., background = FALSE)}\cr
 \code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
 Starts RestRserve application from current R session.
 \itemize{
@@ -174,7 +174,7 @@ app$process_request(desc_rq)
 app$process_request(say_rq)
 
 # run app
-# app$run(8001L)
+# app$run(8080)
 
 }
 \seealso{

@@ -40,7 +40,7 @@ if (any(!file.exists(ssl_files))) {
 app$run(
   # http_port <= 0 means not allow plain http interface
   http_port = -1,
-  https.port = 8002,
+  https.port = 8443,
   port = 6313,
   # you may need also put public keys (CA certs) provided by Certificate Authority (CA)
   # "tls.ca" = normalizePath("cert/server.ca"),
