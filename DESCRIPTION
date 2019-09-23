@@ -1,6 +1,10 @@
 Package: RestRserve
 Type: Package
 Title: High-Performance Web Server for Building Microservices and App Backends 
+Description: 
+  Allows to easily create high-performance HTTP API from R functions. 
+  Provides many small convenient tools like flexible logging, JSON encoding, 
+  utils for app deployment and management.
 Version: 0.2.0
 Authors@R: c(
   person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
@@ -9,10 +13,8 @@ Authors@R: c(
          comment = c(ORCID = "0000-0003-0492-6647"))
   )
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
-Description: 
-  Allows to easily create high-performance HTTP API from R functions. 
-  Provides many small convenient tools like flexible logging, JSON encoding, 
-  utils for app deployment and management.
+URL: http://restrserve.org/
+BugReports: https://github.com/dselivanov/RestRserve/issues
 License: GPL (>= 2)
 ByteCompile: true
 Depends: 
