@@ -123,7 +123,7 @@
 #'
 #' @export
 #'
-#' @seealso [Request]
+#' @seealso [Request] [Application]
 #'
 #' @examples
 #' # init response
@@ -134,8 +134,8 @@
 #' rs$set_body("OK")
 #' # set response status code
 #' rs$set_status_code(200L)
-#' # convert to Rserve output
-#' rs$to_rserve()
+#' # print response
+#' rs
 #'
 #' # init response
 #' rs = Response$new()
@@ -147,10 +147,12 @@
 #' rs$set_body(c("file" = file_path))
 #' # set content type
 #' rs$set_content_type("text/plain")
+#' # set current timestamp
+#' rs$set_date()
 #' # set 'last-modified' header
 #' rs$set_header("Last-Modified", to_http_date(file_mtime))
-#' # convert to Rserve output
-#' rs$to_rserve()
+#' # print response
+#' rs
 #'
 Response = R6::R6Class(
   classname = "Response",
@@ -356,6 +358,24 @@ Response = R6::R6Class(
       }
 
       return(list(body, self$content_type, headers, self$status_code))
+    },
+    print = function() {
+      cat("<RestRserve Response>")
+      cat("\n")
+      cat("  status code:", self$status)
+      cat("\n")
+      cat("  content-type:", self$content_type)
+      cat("\n")
+      if (length(self$headers) > 0L) {
+        cat("  <Headers>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$headers), as.character(self$headers)), sep = "")
+      }
+      if (length(self$cookie) > 0L) {
+        cat("  <Cookie>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$cookie), as.character(self$cookie)), sep = "")
+      }
     }
   ),
   active = list(

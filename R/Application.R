@@ -90,10 +90,9 @@
 #'   Appends middleware to handlers pipeline.
 #'
 #' * `process_request(request)`\cr
-#'   [Request] -> `list()`\cr
-#'   Process incoming request and generate Rserve compatible answer with
-#'   [Response] `to_rserve()`. Useful for tests your handlers before
-#'   deploy application.
+#'   [Request] -> [Response]\cr
+#'   Process incoming request and generate [Response] object.
+#'   Useful for tests your handlers before deploy application.
 #'
 #' * `run(http_port = 8001L, ..., background = FALSE)`\cr
 #'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
@@ -178,8 +177,8 @@
 #' # add route
 #' app$add_get("/say/{user}", say_handler, "regex")
 #'
-#' # print endpoint
-#' app$endpoints
+#' # print application info
+#' app
 #'
 #' # test app
 #' # simulate requests
@@ -307,6 +306,35 @@ Application = R6::R6Class(
       }
 
       return(pid)
+    },
+    print = function() {
+      cat("<RestRserve Application>")
+      cat("\n")
+      mw = private$middleware
+      if (length(mw) > 0L) {
+        cat("  <Middleware>")
+        cat("\n")
+        for (m in names(mw)) {
+          cat("    ", m, ".", sep = "")
+          if (!identical(mw[[m]]$process_request, TRUE)) {
+            cat(" [request]")
+          }
+          if (!identical(mw[[m]]$process_response, TRUE)) {
+            cat( "[response]")
+          }
+          cat(":", mw[[m]]$name)
+          cat("\n")
+        }
+      }
+      ep = self$endpoints
+      if (length(ep) > 0L) {
+        cat("  <Endpoints>")
+        cat("\n")
+        for (m in names(ep)) {
+          cat(sprintf("    %s [%s]: %s\n", m, names(ep[[m]]), ep[[m]]), sep = "")
+        }
+      }
+      return(invisible(self))
     },
     print_endpoints_summary = function() {
       if (length(self$endpoints) == 0) {

@@ -29,7 +29,7 @@ Default response body content (media) type. \code{"text/plain"} by default.
 \item \code{logger} :: \link{Logger}\cr
 Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
 drop-in replacement. \code{Logger} and loggers created by \code{lgr} packages share same syntax.
-\item \code{content_type} :: \code{chararcter(1)}\cr
+\item \code{content_type} :: \code{character(1)}\cr
 Default response body content type.
 \item \code{HTTPError} :: \code{HTTPErrorFactory}\cr
 Helper to raise HTTP errors.
@@ -84,10 +84,9 @@ be set to \code{"application/octet-stream"}.
 \code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \code{process_request(request)}\cr
-\link{Request} -> \code{list()}\cr
-Process incoming request and generate Rserve compatible answer with
-\link{Response} \code{to_rserve()}. Useful for tests your handlers before
-deploy application.
+\link{Request} -> \link{Response}\cr
+Process incoming request and generate \link{Response} object.
+Useful for tests your handlers before deploy application.
 \item \code{run(http_port = 8001L, ..., background = FALSE)}\cr
 \code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
 Starts RestRserve application from current R session.
@@ -162,8 +161,8 @@ say_handler = function(rq, rs) {
 # add route
 app$add_get("/say/{user}", say_handler, "regex")
 
-# print endpoint
-app$endpoints
+# print application info
+app
 
 # test app
 # simulate requests
