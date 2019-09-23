@@ -163,11 +163,12 @@ Response = R6::R6Class(
     context = NULL,
     encode = NULL,
     #------------------------------------------------
-    initialize = function(body = "",
+    initialize = function(body = NULL,
                           content_type = "text/plain",
-                          headers = list_named(),
+                          headers = structure(list(), names = character(0)),
                           status_code = 200L,
-                          encode = NULL) {
+                          encode = NULL,
+                          ...) {
 
       checkmate::assert_int(status_code, lower = 100L, upper = 600L)
       checkmate::assert_string(content_type, pattern = ".*/.*")
@@ -183,7 +184,7 @@ Response = R6::R6Class(
       self$encode = encode
     },
     reset = function() {
-      self$body = ""
+      self$body = NULL
       self$set_content_type("text/plain")
       self$headers = list()
       self$status_code = 200L
@@ -328,6 +329,7 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     to_rserve = function() {
+      body = self$body
       # prepare headers
       if (length(self$headers) > 0L) {
         headers = format_headers(as.list(self$headers))
@@ -339,23 +341,24 @@ Response = R6::R6Class(
       }
 
       # prepare body
-      if (is_string(self$body)) {
-        body_name = names(self$body)
+      if (is_string(body)) {
+        body_name = names(body)
         if (isTRUE(body_name %in% c("file", "tmpfile"))) {
-          return(list(as.list(self$body), self$content_type, headers, self$status_code))
+          return(list(as.list(body), self$content_type, headers, self$status_code))
         }
       }
-      if (length(body) == 0L) {
+      if (is.null(body)) {
         body = raw()
       } else {
-        if (!is.function(self$encode)) {
-          body = self$body
-        } else {
-          body = self$encode(self$body)
+        if (is.function(self$encode)) {
+          body = self$encode(body)
         }
       }
-
-      return(list(body, self$content_type, headers, self$status_code))
+      if (isTRUE(is.raw(body) || is.character(body))) {
+        return(list(body, self$content_type, headers, self$status_code))
+      } else {
+        return(list("500 Internal Server Error (body is not character or raw)", "text/plain", headers, 500L))
+      }
     }
   ),
   active = list(

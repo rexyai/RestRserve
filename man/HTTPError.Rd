@@ -28,8 +28,10 @@ Set content type of response.
 \item \code{set_encode(encode)}\cr
 \code{function} -> \code{self}\cr
 Set encode for the given content type.
-\item \code{error(status_code, body, headers = list_named())}\cr
-\code{integer(1)}, \code{raw()} | \code{character()}, \code{named list()} -> \link{Response}
+\item \code{error(status_code, body, ...)}\cr
+\code{integer(1)}, \code{raw()} | \code{character()}, \code{...} -> \link{Response}
+\code{...} - additional named arguments which will be pased to \code{Response$new(...)}.
+\code{headers} may be particularly useful.
 Generate HTTP error response
 \item \code{reset()}\cr
 -> `self``\cr

@@ -24,8 +24,10 @@
 #'   `function` -> `self`\cr
 #'   Set encode for the given content type.
 #'
-#' * `error(status_code, body, headers = list_named())`\cr
-#'   `integer(1)`, `raw()` | `character()`, `named list()` -> [Response]
+#' * `error(status_code, body, ...)`\cr
+#'   `integer(1)`, `raw()` | `character()`, `...` -> [Response]
+#'   `...` - additional named arguments which will be pased to `Response$new(...)`.
+#'   `headers` may be particularly useful.
 #'   Generate HTTP error response
 #' * `reset()`\cr
 #'   -> `self``\cr
@@ -61,143 +63,151 @@ HTTPErrorFactory = R6::R6Class(
       invisible(self)
     },
     #------------------------------------------------------------------------
-    error = function(status_code, body, headers = list_named()) {
-      private$prepare_response(status_code, body, headers)
+    error = function(status_code, body = NULL, ...) {
+      private$prepare_response(status_code, body = body, ...)
     },
     #------------------------------------------------------------------------
-    bad_request = function(body = NULL, headers = list_named()) {
-      private$prepare_response(400L, body, headers)
+    bad_request = function(...) {
+      private$prepare_response(400L, ...)
     },
     #------------------------------------------------------------------------
-    unauthorized = function(body = NULL, headers = list_named()) {
-      private$prepare_response(401L, body, headers)
+    unauthorized = function(...) {
+      private$prepare_response(401L, ...)
     },
     #------------------------------------------------------------------------
-    forbidden = function(body = NULL, headers = list_named()) {
-      private$prepare_response(403L, body, headers)
+    forbidden = function(...) {
+      private$prepare_response(403L, ...)
     },
     #------------------------------------------------------------------------
-    not_found = function(body = NULL, headers = list_named()) {
-      private$prepare_response(404L, body, headers)
+    not_found = function(...) {
+      private$prepare_response(404L, ...)
     },
     #------------------------------------------------------------------------
-    method_not_allowed = function(body = NULL, headers = list_named()) {
-      private$prepare_response(405L, body, headers)
+    method_not_allowed = function(...) {
+      private$prepare_response(405L, ...)
     },
     #------------------------------------------------------------------------
-    not_acceptable = function(body = NULL, headers = list_named()) {
-      private$prepare_response(406L, body, headers)
+    not_acceptable = function(...) {
+      private$prepare_response(406L, ...)
     },
     #------------------------------------------------------------------------
-    conflict = function(body = NULL, headers = list_named()) {
-      private$prepare_response(409L, body, headers)
+    conflict = function(...) {
+      private$prepare_response(409L, ...)
     },
     #------------------------------------------------------------------------
-    gone = function(body = NULL, headers = list_named()) {
-      private$prepare_response(410L, body, headers)
+    gone = function(...) {
+      private$prepare_response(410L, ...)
     },
     #------------------------------------------------------------------------
-    length_required = function(body = NULL, headers = list_named()) {
-      private$prepare_response(411L, body, headers)
+    length_required = function(...) {
+      private$prepare_response(411L, ...)
     },
     #------------------------------------------------------------------------
-    precondition_failed = function(body = NULL, headers = list_named()) {
-      private$prepare_response(412L, body, headers)
+    precondition_failed = function(...) {
+      private$prepare_response(412L, ...)
     },
     #------------------------------------------------------------------------
-    payload_too_large = function(body = NULL, headers = list_named()) {
-      private$prepare_response(413L, body, headers)
+    payload_too_large = function(...) {
+      private$prepare_response(413L, ...)
     },
     #------------------------------------------------------------------------
-    uri_too_long = function(body = NULL, headers = list_named()) {
-      private$prepare_response(414L, body, headers)
+    uri_too_long = function(...) {
+      private$prepare_response(414L, ...)
     },
     #------------------------------------------------------------------------
-    unsupported_media_type = function(body = NULL, headers = list_named()) {
-      private$prepare_response(415L, body, headers)
+    unsupported_media_type = function(...) {
+      private$prepare_response(415L, ...)
     },
     #------------------------------------------------------------------------
-    range_not_satisfiable = function(body = NULL, headers = list_named()) {
-      private$prepare_response(416L, body, headers)
+    range_not_satisfiable = function(...) {
+      private$prepare_response(416L, ...)
     },
     #------------------------------------------------------------------------
-    unprocessable_entity = function(body = NULL, headers = list_named()) {
-      private$prepare_response(417L, body, headers)
+    unprocessable_entity = function(...) {
+      private$prepare_response(417L, ...)
     },
     #------------------------------------------------------------------------
-    locked = function(body = NULL, headers = list_named()) {
-      private$prepare_response(423L, body, headers)
+    locked = function(...) {
+      private$prepare_response(423L, ...)
     },
     #------------------------------------------------------------------------
-    failed_dependency = function(body = NULL, headers = list_named()) {
-      private$prepare_response(424L, body, headers)
+    failed_dependency = function(...) {
+      private$prepare_response(424L, ...)
     },
     #------------------------------------------------------------------------
-    precondition_required = function(body = NULL, headers = list_named()) {
-      private$prepare_response(428L, body, headers)
+    precondition_required = function(...) {
+      private$prepare_response(428L, ...)
     },
     #------------------------------------------------------------------------
-    too_many_requests = function(body = NULL, headers = list_named()) {
-      private$prepare_response(429L, body, headers)
+    too_many_requests = function(...) {
+      private$prepare_response(429L, ...)
     },
     #------------------------------------------------------------------------
-    request_header_fields_too_large = function(body = NULL, headers = list_named()) {
-      private$prepare_response(431L, body, headers)
+    request_header_fields_too_large = function(...) {
+      private$prepare_response(431L, ...)
     },
     #------------------------------------------------------------------------
-    unavailable_for_legal_reasons = function(body = NULL, headers = list_named()) {
-      private$prepare_response(451L, body, headers)
+    unavailable_for_legal_reasons = function(...) {
+      private$prepare_response(451L, ...)
     },
     #------------------------------------------------------------------------
-    internal_server_error = function(body = NULL, headers = list_named()) {
-      private$prepare_response(500L, body, headers)
+    internal_server_error = function(...) {
+      private$prepare_response(500L, ...)
     },
     #------------------------------------------------------------------------
-    not_implemented = function(body = NULL, headers = list_named()) {
-      private$prepare_response(501L, body, headers)
+    not_implemented = function(...) {
+      private$prepare_response(501L, ...)
     },
     #------------------------------------------------------------------------
-    bad_gateway = function(body = NULL, headers = list_named()) {
-      private$prepare_response(502L, body, headers)
+    bad_gateway = function(...) {
+      private$prepare_response(502L, ...)
     },
     #------------------------------------------------------------------------
-    service_unavailable = function(body = NULL, headers = list_named()) {
-      private$prepare_response(503L, body, headers)
+    service_unavailable = function(...) {
+      private$prepare_response(503L, ...)
     },
     #------------------------------------------------------------------------
-    gateway_timeout = function(body = NULL, headers = list_named()) {
-      private$prepare_response(504L, body, headers)
+    gateway_timeout = function(...) {
+      private$prepare_response(504L, ...)
     },
     #------------------------------------------------------------------------
-    version_not_supported = function(body = NULL, headers = list_named()) {
-      private$prepare_response(505L, body, headers)
+    version_not_supported = function(...) {
+      private$prepare_response(505L, ...)
     },
     #------------------------------------------------------------------------
-    insufficient_storage = function(body = NULL, headers = list_named()) {
-      private$prepare_response(507L, body, headers)
+    insufficient_storage = function(...) {
+      private$prepare_response(507L, ...)
     },
     #------------------------------------------------------------------------
-    loop_detected = function(body = NULL, headers = list_named()) {
-      private$prepare_response(508L, body, headers)
+    loop_detected = function(...) {
+      private$prepare_response(508L, ...)
     },
     #------------------------------------------------------------------------
-    network_authentication_required = function(body = NULL, headers = list_named()) {
-      private$prepare_response(511L, body, headers)
+    network_authentication_required = function(...) {
+      private$prepare_response(511L, ...)
     }
   ),
   private = list(
-    prepare_response = function(status_code, body, headers) {
+    prepare_response = function(status_code, ...) {
       # default standard message
-      if (is.null(body)) {
-        #body = paste(status_code, status_codes[[as.character(status_code)]])
+      ARGS = list(...)
+      if (hasArg(body)) {
+        body = ARGS[["body"]]
+      } else {
         body = list(error = paste(status_code, status_codes[[as.character(status_code)]]))
       }
-      res = Response$new(
-        body = body,
-        content_type = self$content_type,
-        headers = headers,
-        status_code = status_code,
-        encode = self$encode
+      ARGS[["body"]] = NULL
+      res = do.call(
+        Response$new,
+        c(
+          list(
+            body = body,
+            content_type = self$content_type,
+            status_code = status_code,
+            encode = self$encode
+          ),
+          ARGS
+        )
       )
       class(res) = c('HTTPError', class(res))
       res
