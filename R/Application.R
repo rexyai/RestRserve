@@ -29,7 +29,7 @@
 #'   Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
 #'   drop-in replacement. `Logger` and loggers created by `lgr` packages share same syntax.
 #'
-#' * `content_type` :: `chararcter(1)`\cr
+#' * `content_type` :: `character(1)`\cr
 #'   Default response body content type.
 #'
 #' * `HTTPError` :: `HTTPErrorFactory`\cr
