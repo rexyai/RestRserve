@@ -98,9 +98,6 @@ means not to expose plain http.
 \item \code{background} - whether to try to launch in background process on UNIX
 systems. Ignored on windows.
 }
-\item \code{print_endpoints_summary()}\cr
--> \code{invisible(self)} - \link{Application} \cr
-Prints all the registered routes with allowed methods.
 \item \code{add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")}
 \code{character(1)}, \code{named list()}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
