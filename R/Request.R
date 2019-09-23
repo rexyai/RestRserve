@@ -371,7 +371,8 @@ Request = R6::R6Class(
         cat("  <Body Files>")
         cat("\n")
         for (m in name(self$files)) {
-          cat(sprintf("    %s [%s]: %s\n", self$files[[m]]$content_type, self$files[[m]]$length, self$files[[m]]$filename), sep = "")
+          cat(sprintf("    %s [%s]: %s\n", self$files[[m]]$content_type,
+                      self$files[[m]]$length, self$files[[m]]$filename), sep = "")
         }
       }
       return(invisible(self))
