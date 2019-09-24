@@ -4,7 +4,7 @@
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Helps to generate http error responses See [raise] for example.
+#' Helps to generate http error responses.
 #' Contains `RestRserve:::HTTPErrorFactory` class for the exception in the user's code.
 #'
 #' @section Fields:
@@ -30,14 +30,15 @@
 #'   `headers` may be particularly useful.
 #'   Generate HTTP error response
 #' * `reset()`\cr
-#'   -> `self``\cr
-#'   Resets HTTPError to the default RestRserve state
+#'   -> `self` \cr
+#'   Resets `HTTPError` to the default RestRserve state.
 #'
-#' @seealso [Application]
+#' @seealso [raise] [Application]
 #'
 #' @name HTTPError
 #'
 #' @export
+#'
 HTTPError = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
 
 HTTPErrorFactory = R6::R6Class(
@@ -231,9 +232,8 @@ HTTPErrorFactory = R6::R6Class(
 #' # catch exception
 #' res = try(raise(HTTPError$bad_request()), silent = TRUE)
 #' cond = attr(res, "condition")
-#'
 #' # response is a valid Response instace
-#' identical(cond$response$body, "400 Bad Request")
+#' identical(cond$response$body$error, "400 Bad Request")
 #'
 raise = function(x) {
   exception = errorCondition("raise", response = x, class = class(x))

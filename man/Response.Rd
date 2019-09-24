@@ -70,7 +70,7 @@ Don't use this method to set cookie (use \code{set_cookie} method instead).
 Unset HTTP response header.
 \item \code{set_cookie(name, value, expires = NULL, max_age = NULL, domain = NULL, path = NULL, secure = NULL, http_only = NULL)}\cr
 \code{character(1)}, \code{character(1)}, \code{POSIXct(1)}, \code{integer(1)}, \code{character(1)},
-\code{character(1)}, \code{logical(1)}, \code{logical(1)}\cr
+\code{character(1)}, \code{logical(1)}, \code{logical(1)} -> \code{self}\cr
 Set cookie. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie}{docs on MDN}.
 \item \code{unset_cookie(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
@@ -85,7 +85,7 @@ Unset \code{Date} HTTP header.
 \code{any} -> \code{self}\cr
 Set response body.
 \item \code{set_response(status_code, body = NULL, content_type = self$content_type)}\cr
-\code{integer(1)}, \code{any}, \code{character(1)}\cr
+\code{integer(1)}, \code{any}, \code{character(1)} -> \code{self}\cr
 Set response fields.
 \item \code{to_rserve()}\cr
 -> \code{list()}\cr
