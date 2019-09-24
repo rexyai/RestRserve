@@ -3,6 +3,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/dselivanov/RestRserve.svg?branch=dev)](https://travis-ci.org/dselivanov/RestRserve)
 [![codecov](https://codecov.io/gh/dselivanov/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/dselivanov/RestRserve/branch/dev)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 **RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
 
@@ -35,7 +36,7 @@ app$run(http_port = 8080)
 
 Now you can type `http://localhost:8080/hello` in your favourite browser and see (surprisingly!) *Hello from RestRserve*.
 
-Please follow [quick start article on http://restrserve.org/](http://restrserve.org/quick-start.html) for more details.
+Please follow [quick start article on http://restrserve.org/](./articles/quick-start.html) for more details.
 
 ## Features
 
