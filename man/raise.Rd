@@ -17,9 +17,8 @@ Interrupts request processing and signals RestRserve to return HTTPError
 # catch exception
 res = try(raise(HTTPError$bad_request()), silent = TRUE)
 cond = attr(res, "condition")
-
 # response is a valid Response instace
-identical(cond$response$body, "400 Bad Request")
+identical(cond$response$body$error, "400 Bad Request")
 
 }
 \seealso{

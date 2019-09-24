@@ -80,7 +80,7 @@
 #' * `set_cookie(name, value, expires = NULL, max_age = NULL, domain = NULL,
 #'               path = NULL, secure = NULL, http_only = NULL)`\cr
 #'   `character(1)`, `character(1)`, `POSIXct(1)`, `integer(1)`, `character(1)`,
-#'   `character(1)`, `logical(1)`, `logical(1)`\cr
+#'   `character(1)`, `logical(1)`, `logical(1)` -> `self`\cr
 #'   Set cookie. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
 #'
 #' * `unset_cookie(name)`\cr
@@ -100,7 +100,7 @@
 #'   Set response body.
 #'
 #' * `set_response(status_code, body = NULL, content_type = self$content_type)`\cr
-#'   `integer(1)`, `any`, `character(1)`\cr
+#'   `integer(1)`, `any`, `character(1)` -> `self`\cr
 #'   Set response fields.
 #'
 #' * `to_rserve()`\cr
