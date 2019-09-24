@@ -21,67 +21,67 @@
 #'  decode = NULL)
 #' ```
 #'
-#' * `path` :: `character(1)`\cr
+#' * **`path`** :: `character(1)`\cr
 #'   Character with requested path. Always starts with `/`.
 #'
-#' * `method` :: `character(1)`\cr
+#' * **`method`** :: `character(1)`\cr
 #'   Request HTTP method.
 #'
-#' * `parameters_query` :: `named list()`\cr
+#' * **`parameters_query`** :: `named list()`\cr
 #'   A named list with URL decoded query parameters.
 #'
-#' * `parameters_body` :: `named list()`\cr
+#' * **`parameters_body`** :: `named list()`\cr
 #'   A named list with URL decoded body parameters.
 #'
-#' * `headers` :: `named list()`\cr
+#' * **`headers`** :: `named list()`\cr
 #'   Request HTTP headers represented as named list.
 #'
-#' * `body` :: `anything` \cr
+#' * **`body`** :: `anything` \cr
 #'   Request body. Can be anything and in conjunction with `content_type`
 #'   defines how HTTP body will be represented.
 #'
-#' * `cookies` :: `named list()`\cr
+#' * **`cookies`** :: `named list()`\cr
 #'   cookies represented as named list. **Note** that cookies should be provided explicitly -
 #'   they won't be derived from `headers` (in contrast to `from_rserve()` method).
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   HTTP content type. **Note** that `content_type` should be provided explicitly -
 #'   it won't be derived from `headers` (in contrast to `from_rserve()` method).
 #'
-#' * `decode` :: `function`\cr
+#' * **`decode`** :: `function`\cr
 #'   Function to decode body for the specific content type.
 #'
 #' @section  Fields:
 #'
-#' * `path` :: `character(1)`\cr
+#' * **`path`** :: `character(1)`\cr
 #'   Request path.
 #'
-#' * `method` :: `character(1)`\cr
+#' * **`method`** :: `character(1)`\cr
 #'   Request HTTP method.
 #'
-#' * `headers` :: `named list()`\cr
+#' * **`headers`** :: `named list()`\cr
 #'   Request headers.
 #'
-#' * `parameters_query` :: `named list()`\cr
+#' * **`parameters_query`** :: `named list()`\cr
 #'   Request query parameters.
 #'
-#' * `parameters_body` :: `named list()`\cr
+#' * **`parameters_body`** :: `named list()`\cr
 #'   Request body parameters.
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   Request body content type.
 #'
-#' * `body` :: `raw()` | `named character()`\cr
+#' * **`body`** :: `raw()` | `named character()`\cr
 #'   Request body.
 #'
-#' * `cookies` :: `named list()`\cr
+#' * **`cookies`** :: `named list()`\cr
 #'   Request cookies.
 #'
-#' * `files` :: `named list()`\cr
+#' * **`files`** :: `named list()`\cr
 #'   Structure which contains positions and lengths of files for the multipart
 #'   body.
 #'
-#' * `parameters_path` :: `named list()`\cr
+#' * **`parameters_path`** :: `named list()`\cr
 #'   List of parameters extracted from templated path after routing.
 #'   For example if we have some handler listening at `/job/{job_id}` and we are
 #'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
@@ -90,31 +90,31 @@
 #'   This effectively means that `parameters_path` can be used inside handler
 #'   and response middleware (but not request middleware!).
 #'
-#' * `context` :: `environment()`\cr
+#' * **`context`** :: `environment()`\cr
 #'   Environment to store any data. Can be used in middlewares.
 #'
-#' * `request_id` :: `character(1)`\cr
+#' * **`request_id`** :: `character(1)`\cr
 #'   Automatically generated UUID for each request. Read only.
 #'
-#' * `body_decoded` :: `any`\cr
+#' * **`body_decoded`** :: `any`\cr
 #'   Body parsed according to the `Content-type` request header and `decode`
 #'   argument of the R.
 #'
-#' * `date` :: `POSIXct(1)`\cr
+#' * **`date`** :: `POSIXct(1)`\cr
 #'   Request `Date` header converted to `POSIXct`.
 #'
-#' * `accept` :: `character()`\cr
+#' * **`accept`** :: `character()`\cr
 #'   Split `Accept` request header.
 #'
-#' * `accept_json` :: `logical(1)`\cr
+#' * **`accept_json`** :: `logical(1)`\cr
 #'   Request accepts JSON response.
 #'
-#' * `accept_xml` :: `logical(1)`\cr
+#' * **`accept_xml`** :: `logical(1)`\cr
 #'   Request accepts XML response.
 #'
 #' @section Methods:
 #'
-#' * `from_rserve(path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
+#' * **`from_rserve`**`(path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
 #'
 #'     * `path` :: `character(1)`\cr
 #'       Character with requested path. Always starts with `/`.
@@ -129,27 +129,27 @@
 #'       Request body. Can be `NULL`, raw vector or named character vector for the
 #'       URL encoded form (like a `parameters_query` parameter).
 #'
-#' * `reset()`\cr
+#' * **`reset`**`()`\cr
 #'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
 #'    resetting R6 class is much faster then initialize it.
 #'
-#' * `get_header(name)`\cr
+#' * **`get_header`**`(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get request header by name.
 #'
-#' * `get_param_query(name)`\cr
+#' * **`get_param_query`**`(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get request query parameter by name.
 #'
-#' * `get_param_body(name)`\cr
+#' * **`get_param_body`**`(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get request body parameter by name.
 #'
-#' * `get_param_path(name)`\cr
+#' * **`get_param_path`**`(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
 #'   Get templated path parameter by name.
 #'
-#' * `get_file(name)`\cr
+#' * **`get_file`**`(name)`\cr
 #'   `character(1)` -> `raw()`\cr
 #'   Extract specific file from multipart body.
 #'

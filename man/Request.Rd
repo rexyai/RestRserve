@@ -21,26 +21,26 @@ Also useful for testing.
  decode = NULL)
 }
 \itemize{
-\item \code{path} :: \code{character(1)}\cr
+\item \strong{\code{path}} :: \code{character(1)}\cr
 Character with requested path. Always starts with \code{/}.
-\item \code{method} :: \code{character(1)}\cr
+\item \strong{\code{method}} :: \code{character(1)}\cr
 Request HTTP method.
-\item \code{parameters_query} :: \code{named list()}\cr
+\item \strong{\code{parameters_query}} :: \code{named list()}\cr
 A named list with URL decoded query parameters.
-\item \code{parameters_body} :: \code{named list()}\cr
+\item \strong{\code{parameters_body}} :: \code{named list()}\cr
 A named list with URL decoded body parameters.
-\item \code{headers} :: \code{named list()}\cr
+\item \strong{\code{headers}} :: \code{named list()}\cr
 Request HTTP headers represented as named list.
-\item \code{body} :: \code{anything} \cr
+\item \strong{\code{body}} :: \code{anything} \cr
 Request body. Can be anything and in conjunction with \code{content_type}
 defines how HTTP body will be represented.
-\item \code{cookies} :: \code{named list()}\cr
+\item \strong{\code{cookies}} :: \code{named list()}\cr
 cookies represented as named list. \strong{Note} that cookies should be provided explicitly -
 they won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
-\item \code{content_type} :: \code{character(1)}\cr
+\item \strong{\code{content_type}} :: \code{character(1)}\cr
 HTTP content type. \strong{Note} that \code{content_type} should be provided explicitly -
 it won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
-\item \code{decode} :: \code{function}\cr
+\item \strong{\code{decode}} :: \code{function}\cr
 Function to decode body for the specific content type.
 }
 }
@@ -48,26 +48,26 @@ Function to decode body for the specific content type.
 \section{Fields}{
 
 \itemize{
-\item \code{path} :: \code{character(1)}\cr
+\item \strong{\code{path}} :: \code{character(1)}\cr
 Request path.
-\item \code{method} :: \code{character(1)}\cr
+\item \strong{\code{method}} :: \code{character(1)}\cr
 Request HTTP method.
-\item \code{headers} :: \code{named list()}\cr
+\item \strong{\code{headers}} :: \code{named list()}\cr
 Request headers.
-\item \code{parameters_query} :: \code{named list()}\cr
+\item \strong{\code{parameters_query}} :: \code{named list()}\cr
 Request query parameters.
-\item \code{parameters_body} :: \code{named list()}\cr
+\item \strong{\code{parameters_body}} :: \code{named list()}\cr
 Request body parameters.
-\item \code{content_type} :: \code{character(1)}\cr
+\item \strong{\code{content_type}} :: \code{character(1)}\cr
 Request body content type.
-\item \code{body} :: \code{raw()} | \code{named character()}\cr
+\item \strong{\code{body}} :: \code{raw()} | \code{named character()}\cr
 Request body.
-\item \code{cookies} :: \code{named list()}\cr
+\item \strong{\code{cookies}} :: \code{named list()}\cr
 Request cookies.
-\item \code{files} :: \code{named list()}\cr
+\item \strong{\code{files}} :: \code{named list()}\cr
 Structure which contains positions and lengths of files for the multipart
 body.
-\item \code{parameters_path} :: \code{named list()}\cr
+\item \strong{\code{parameters_path}} :: \code{named list()}\cr
 List of parameters extracted from templated path after routing.
 For example if we have some handler listening at \code{/job/{job_id}} and we are
 receiving request at \code{/job/1} then \code{parameters_path} will be \code{list(job_id = "1")}.
@@ -75,20 +75,20 @@ It is important to understand that \code{parameters_path} will be available
 (not empty) only after request will reach handler.
 This effectively means that \code{parameters_path} can be used inside handler
 and response middleware (but not request middleware!).
-\item \code{context} :: \code{environment()}\cr
+\item \strong{\code{context}} :: \code{environment()}\cr
 Environment to store any data. Can be used in middlewares.
-\item \code{request_id} :: \code{character(1)}\cr
+\item \strong{\code{request_id}} :: \code{character(1)}\cr
 Automatically generated UUID for each request. Read only.
-\item \code{body_decoded} :: \code{any}\cr
+\item \strong{\code{body_decoded}} :: \code{any}\cr
 Body parsed according to the \code{Content-type} request header and \code{decode}
 argument of the R.
-\item \code{date} :: \code{POSIXct(1)}\cr
+\item \strong{\code{date}} :: \code{POSIXct(1)}\cr
 Request \code{Date} header converted to \code{POSIXct}.
-\item \code{accept} :: \code{character()}\cr
+\item \strong{\code{accept}} :: \code{character()}\cr
 Split \code{Accept} request header.
-\item \code{accept_json} :: \code{logical(1)}\cr
+\item \strong{\code{accept_json}} :: \code{logical(1)}\cr
 Request accepts JSON response.
-\item \code{accept_xml} :: \code{logical(1)}\cr
+\item \strong{\code{accept_xml}} :: \code{logical(1)}\cr
 Request accepts XML response.
 }
 }
@@ -96,7 +96,7 @@ Request accepts XML response.
 \section{Methods}{
 
 \itemize{
-\item \code{from_rserve(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
+\item \strong{\code{from_rserve}}\code{(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
 \itemize{
 \item \code{path} :: \code{character(1)}\cr
 Character with requested path. Always starts with \code{/}.
@@ -108,22 +108,22 @@ Request HTTP headers.
 Request body. Can be \code{NULL}, raw vector or named character vector for the
 URL encoded form (like a \code{parameters_query} parameter).
 }
-\item \code{reset()}\cr
+\item \strong{\code{reset}}\code{()}\cr
 Resets request object. This is not useful for end user, but useful for RestRserve internals -
 resetting R6 class is much faster then initialize it.
-\item \code{get_header(name)}\cr
+\item \strong{\code{get_header}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request header by name.
-\item \code{get_param_query(name)}\cr
+\item \strong{\code{get_param_query}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request query parameter by name.
-\item \code{get_param_body(name)}\cr
+\item \strong{\code{get_param_body}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request body parameter by name.
-\item \code{get_param_path(name)}\cr
+\item \strong{\code{get_param_path}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get templated path parameter by name.
-\item \code{get_file(name)}\cr
+\item \strong{\code{get_file}}\code{(name)}\cr
 \code{character(1)} -> \code{raw()}\cr
 Extract specific file from multipart body.
 }
