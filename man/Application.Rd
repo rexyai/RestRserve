@@ -7,8 +7,8 @@
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Creates Application object.
-Application converts user-supplied R code into high-performance
-REST API by allowing to easily register R functions for handling http-requests.
+Application provides an interface for building high-performance
+REST API by registering R functions as handlers http requests.
 }
 \section{Construction}{
 
@@ -16,26 +16,31 @@ REST API by allowing to easily register R functions for handling http-requests.
 Constructor for \code{Application}.\preformatted{Application$new(middleware = list(), content_type = "text/plain", ...)
 }
 \itemize{
-\item \code{middleware} :: \code{list} of \link{Middleware}\cr
+\item \strong{\code{middleware}} :: \code{list} of \link{Middleware}\cr
 List of middlewares.
-\item \code{content_type} :: \code{character(1)}\cr
+\item \strong{\code{content_type}} :: \code{character(1)}\cr
 Default response body content (media) type. \code{"text/plain"} by default.
+\item \strong{\code{...}} \cr
+Not used at the moment
 }
 }
 
 \section{Fields}{
 
 \itemize{
-\item \code{logger} :: \link{Logger}\cr
-Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
-drop-in replacement. \code{Logger} and loggers created by \code{lgr} packages share same syntax.
-\item \code{content_type} :: \code{character(1)}\cr
+\item \strong{\code{logger}} :: \link{Logger}\cr
+Logger object which records events during request processing.
+Alternatively user can use loggers from lgr package as a
+drop-in replacement - \code{Logger} methods and loggers created by \code{lgr} share function signatures.
+\item \strong{\code{content_type}} :: \code{character(1)}\cr
 Default response body content type.
-\item \code{HTTPError} :: \code{HTTPErrorFactory}\cr
-Helper to raise HTTP errors.
-\item \code{ContentHandlers} :: \code{ContentHandler}\cr
+\item \strong{\code{HTTPError}} :: \code{HTTPErrorFactory}\cr
+Class which raises HTTP errors. Global \link{HTTPError} is used by default. In theory
+user can replace it with his own class (see \code{RestRserve:::HTTPErrorFactory}). However we believe
+in the majority of the cases using \link{HTTPError} will be enough.
+\item \strong{\code{ContentHandlers}} :: \code{ContentHandler}\cr
 Helper to decode request body and encode response body.
-\item \code{endpoints} :: \code{named list()}\cr
+\item \strong{\code{endpoints}} :: \code{named list()}\cr
 Prints all the registered routes with allowed methods.
 }
 }
@@ -43,7 +48,7 @@ Prints all the registered routes with allowed methods.
 \section{Methods}{
 
 \itemize{
-\item \code{add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)}\cr
+\item \strong{\code{add_route}}\code{(path, method, FUN, match = c("exact", "partial", "regex"), ...)}\cr
 \code{character(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint and register user-supplied R function as a handler.
 
@@ -64,14 +69,14 @@ exception (call \code{\link[=raise]{raise()}} or \code{\link[=stop]{stop()}}).
 
 Both \code{response} and \code{request} objects modified in-place and internally
 passed further to RestRserve execution pipeline.
-\item \code{add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)}\cr
+\item \strong{\code{add_get}}\code{(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)}\cr
 \code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any}, \code{logical(1)} -> \code{invisible(self)} - \link{Application} \cr
 Shorthand to \code{add_route} with \code{GET} method. With \code{add_head = TRUE} HEAD method
 handlers will be added (with \code{add_head()}).
-\item \code{add_post(path, FUN, match = c("exact", "partial", "regex"), ...)}\cr
+\item \strong{\code{add_post}}\code{(path, FUN, match = c("exact", "partial", "regex"), ...)}\cr
 \code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{invisible(self)} - \link{Application} \cr
 Shorthand to \code{add_route} with \code{POST} method.
-\item \code{add_static(path, file_path, content_type = NULL, ...)}\cr
+\item \strong{\code{add_static}}\code{(path, file_path, content_type = NULL, ...)}\cr
 \code{character(1)}, \code{character(1)}, \code{character(1)}, \code{any} -> \code{invisible(self)} - \link{Application} \cr
 Adds GET method to serve file or directory at \code{file_path}.
 
@@ -80,14 +85,14 @@ automatically (from file extension).
 
 If it will be impossible to guess about file type then \code{content_type} will
 be set to \code{"application/octet-stream"}.
-\item \code{append_middleware(...)}\cr
+\item \strong{\code{append_middleware}}\code{(...)}\cr
 \code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
-\item \code{process_request(request)}\cr
+\item \strong{\code{process_request}}\code{(request)}\cr
 \link{Request} -> \link{Response}\cr
 Process incoming request and generate \link{Response} object.
 Useful for tests your handlers before deploy application.
-\item \code{run(http_port = 8080, ..., background = FALSE)}\cr
+\item \strong{\code{run}}\code{(http_port = 8080, ..., background = FALSE)}\cr
 \code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
 Starts RestRserve application from current R session.
 \itemize{
@@ -98,11 +103,11 @@ means not to expose plain http.
 \item \code{background} - whether to try to launch in background process on UNIX
 systems. Ignored on windows.
 }
-\item \code{add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")}
+\item \strong{\code{add_openapi}}\code{(path = "/openapi.yaml", file_path = "openapi.yaml")}
 \code{character(1)}, \code{named list()}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.
-\item \code{add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
+\item \strong{\code{add_swagger_ui}}\code{(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
 \code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
