@@ -13,7 +13,7 @@ Authors@R: c(
          comment = c(ORCID = "0000-0003-0492-6647"))
   )
 Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
-URL: http://restrserve.org/
+URL: http://restrserve.org
 BugReports: https://github.com/dselivanov/RestRserve/issues
 License: GPL (>= 2)
 ByteCompile: true

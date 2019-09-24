@@ -1,10 +1,10 @@
-**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
+# RestRserve
 
 [![Travis-CI Build Status](https://travis-ci.org/dselivanov/RestRserve.svg?branch=dev)](https://travis-ci.org/dselivanov/RestRserve)
 [![codecov](https://codecov.io/gh/dselivanov/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/dselivanov/RestRserve/branch/dev)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
-## RestRserve
+**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
 
 [RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance microservices and app backends**. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits for that should go to [Simon Urbanek](https://github.com/s-u)).
 
