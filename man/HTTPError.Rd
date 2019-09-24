@@ -6,7 +6,7 @@
 \title{Helps to generate http error responses}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Helps to generate http error responses See \link{raise} for example.
+Helps to generate http error responses.
 Contains \code{RestRserve:::HTTPErrorFactory} class for the exception in the user's code.
 }
 \section{Fields}{
@@ -34,12 +34,12 @@ Set encode for the given content type.
 \code{headers} may be particularly useful.
 Generate HTTP error response
 \item \code{reset()}\cr
--> `self``\cr
-Resets HTTPError to the default RestRserve state
+-> \code{self} \cr
+Resets \code{HTTPError} to the default RestRserve state.
 }
 }
 
 \seealso{
-\link{Application}
+\link{raise} \link{Application}
 }
 \keyword{datasets}
