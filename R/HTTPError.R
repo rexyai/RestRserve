@@ -1,44 +1,185 @@
+error_methods = c(
+  'bad_request',
+  'unauthorized',
+  'forbidden',
+  'not_found',
+  'method_not_allowed',
+  'not_acceptable',
+  'conflict',
+  'gone',
+  'length_required',
+  'precondition_failed',
+  'payload_too_large',
+  'uri_too_long',
+  'unsupported_media_type',
+  'range_not_satisfiable',
+  'unprocessable_entity',
+  'locked',
+  'failed_dependency',
+  'precondition_required',
+  'too_many_requests',
+  'request_header_fields_too_large',
+  'unavailable_for_legal_reasons',
+  'internal_server_error',
+  'not_implemented',
+  'bad_gateway',
+  'service_unavailable',
+  'gateway_timeout',
+  'version_not_supported',
+  'insufficient_storage',
+  'loop_detected',
+  'network_authentication_required'
+)
+
+# snippet below generates markdown HTTPError docs:
+# md = paste(error_methods, collapse = "`**`(...)`\\cr\n#'   `...` -> `[Response]`\\cr\n#' Generates corresponding http error.\n#' * **`")
+# cat(md)
+
 #' @title Helps to generate http error responses
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Helps to generate http error responses.
-#' Contains `RestRserve:::HTTPErrorFactory` class for the exception in the user's code.
+#' **Global Object** which holds functions to raise common http error responses.
+#' Most of the time this class is used jointly with [raise]. \cr
+#' For example calling
+#' `raise(HTTPError$bad_request(body = "request is invalid"))` from any place in the user code will
+#' interrupt request processing and return response with status code = 404 and body = "request is invalid".
 #'
 #' @section Fields:
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   Type of the error response.
-#' * `encode` :: `function`\cr
+#' * **`encode`** :: `function`\cr
 #'   Function to encode response body.
 #'
 #' @section Methods:
 #'
-#' * `set_content_type(content_type)`\cr
+#' * **`set_content_type`**`(content_type)`\cr
 #'   `character(1)` -> `self`\cr
-#'   Set content type of response.
+#'   Set content type of response.\cr
+#'   **NOTE** that modifying [HTTPError] (for example with `HTTPError$set_content_type("application/json")`)
+#'   will have global impact on RestRserve functionality.
+#'   By default `HTTPError` is used by [Application] in order to produce http errors (404, 500, etc).
+#'   Hence changing `HTTPError` with `$set_content_type()` will impact not only user code,
+#'   but also the errors format produced by RestRserve. Same holds for `$set_encode()` method below.
 #'
-#' * `set_encode(encode)`\cr
+#' * **`set_encode`**`(encode)`\cr
 #'   `function` -> `self`\cr
 #'   Set encode for the given content type.
 #'
-#' * `error(status_code, body, ...)`\cr
-#'   `integer(1)`, `raw()` | `character()`, `...` -> [Response]
+#' * **`error`**`(status_code, body, ...)`\cr
+#'   `integer(1)`, `raw()` | `character()`, `...` -> [Response]\cr
 #'   `...` - additional named arguments which will be pased to `Response$new(...)`.
-#'   `headers` may be particularly useful.
-#'   Generate HTTP error response
-#' * `reset()`\cr
+#'   `headers` may be particularly useful.\cr
+#'   Generate HTTP error response with a given status code and body
+#' * **`reset`**`()`\cr
 #'   -> `self` \cr
 #'   Resets `HTTPError` to the default RestRserve state.
+#' * **`bad_request`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`unauthorized`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`forbidden`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`not_found`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`method_not_allowed`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`not_acceptable`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`conflict`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`gone`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`length_required`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`precondition_failed`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`payload_too_large`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`uri_too_long`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`unsupported_media_type`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`range_not_satisfiable`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`unprocessable_entity`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`locked`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`failed_dependency`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`precondition_required`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`too_many_requests`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`request_header_fields_too_large`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`unavailable_for_legal_reasons`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`internal_server_error`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`not_implemented`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`bad_gateway`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`service_unavailable`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`gateway_timeout`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`version_not_supported`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`insufficient_storage`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`loop_detected`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#' Generates corresponding http error.
+#' * **`network_authentication_required`**`(...)`\cr
+#'   `...` -> `[Response]`\cr
+#'   Generates corresponding http error.\cr
 #'
 #' @seealso [raise] [Application]
 #'
 #' @name HTTPError
 #'
+#' @examples
+#' check_list = function(x) {
+#'   if (!is.list(x)) raise(HTTPError$bad_request())
+#'   invisible(TRUE)
+#' }
+#' check_list(list())
+#' try(check_list(1), silent = TRUE)
 #' @export
-#'
 HTTPError = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
 
 HTTPErrorFactory = R6::R6Class(

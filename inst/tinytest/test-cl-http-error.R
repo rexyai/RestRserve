@@ -21,40 +21,7 @@ expect_equal(obj$content_type, "text/plain")
 expect_equal(rs$body, "Error text")
 expect_equal(rs$status_code, 500L)
 
-error_methods = c(
-  'bad_request',
-  'unauthorized',
-  'forbidden',
-  'not_found',
-  'method_not_allowed',
-  'not_acceptable',
-  'conflict',
-  'gone',
-  'length_required',
-  'precondition_failed',
-  'payload_too_large',
-  'uri_too_long',
-  'unsupported_media_type',
-  'range_not_satisfiable',
-  'unprocessable_entity',
-  'locked',
-  'failed_dependency',
-  'precondition_required',
-  'too_many_requests',
-  'request_header_fields_too_large',
-  'unavailable_for_legal_reasons',
-  'internal_server_error',
-  'not_implemented',
-  'bad_gateway',
-  'service_unavailable',
-  'gateway_timeout',
-  'version_not_supported',
-  'insufficient_storage',
-  'loop_detected',
-  'network_authentication_required'
-)
-
-for (err_method in error_methods) {
+for (err_method in RestRserve:::error_methods) {
   resp = obj[[err_method]]()
   code = as.character(resp$status_code)
   target_error = RestRserve:::status_codes[[code]]
@@ -74,3 +41,6 @@ expect_equal(rs$to_rserve()[[1]], "500 Internal Server Error (body is not charac
 # test reset works
 obj$reset()
 expect_equal(obj, cl)
+
+# snippet below generates markdown HTTPError docs:
+# paste(error_methods, collapse = "**`(...)`\\cr\n#' `...` -> `[Response]`\\cr\n#' Generates corresponding http error.\\cr\n#' * **`")
