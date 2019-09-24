@@ -58,3 +58,4 @@ deploy:
   local_dir: docs
   on:
     branch: dev
+    repo: dselivanov/RestRserve
