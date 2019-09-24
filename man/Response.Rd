@@ -20,24 +20,24 @@ Creates response object.
 \section{Fields}{
 
 \itemize{
-\item \code{content_type} :: \code{character(1)}\cr
+\item \strong{\code{content_type}} :: \code{character(1)}\cr
 Response body content (media) type. Will be translated to \code{Content-type} header.
-\item \code{body} :: \code{raw()} | \code{character(1)}\cr
+\item \strong{\code{body}} :: \code{raw()} | \code{character(1)}\cr
 Response body.
 If it is a named character with a name \code{file} or \code{tmpfile}
 then the value is considered as a path to a file and content oh this file
 is served as body. The latter will be deleted once served.
-\item \code{status_code} :: \code{integer(1)}\cr
+\item \strong{\code{status_code}} :: \code{integer(1)}\cr
 Response status code.
-\item \code{headers} :: \code{named list()}\cr
+\item \strong{\code{headers}} :: \code{named list()}\cr
 Response headers.
-\item \code{cookies} :: \code{named list()}\cr
+\item \strong{\code{cookies}} :: \code{named list()}\cr
 Response cookies. Will be translated to \code{Set-Cookie} headers.
-\item \code{context} :: \code{environment()}\cr
+\item \strong{\code{context}} :: \code{environment()}\cr
 Environment to store any data. Can be used in middlewares.
-\item \code{encode} :: \code{function}\cr
+\item \strong{\code{encode}} :: \code{function}\cr
 unction to encode body for specific content
-\item \code{status} :: \code{character(1)}\cr
+\item \strong{\code{status}} :: \code{character(1)}\cr
 Paste together status code and description.
 }
 }
@@ -45,49 +45,49 @@ Paste together status code and description.
 \section{Methods}{
 
 \itemize{
-\item \code{set_content_type(content_type = 'text/plain')}\cr
+\item \strong{\code{set_content_type}}\code{(content_type = 'text/plain')}\cr
 \code{character(1)} -> \code{self}\cr
 Set content type for response body.
-\item \code{set_status_code(code)}\cr
+\item \strong{\code{set_status_code}}\code{(code)}\cr
 \code{integer(1)} -> \code{self}\cr
 Set status code for response. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Status}{docs on MDN}.
-\item \code{has_header(name)}\cr
+\item \strong{\code{has_header}}\code{(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
 Determine whether or not the response header exists.
-\item \code{get_header(name)}\cr
+\item \strong{\code{get_header}}\code{(name)}\cr
 \code{character(1)} -> \code{character()}\cr
 Get HTTP response header value.
-\item \code{set_header(name, value)}\cr
+\item \strong{\code{set_header}}\code{(name, value)}\cr
 \code{character(1)}, \code{character()} -> \code{self}\cr
 Set HTTP response header. \code{Content-type} and \code{Content-length} headers not
 allowed (use \code{content_type} field instead).
-\item \code{append_header(name, value)}\cr
+\item \strong{\code{append_header}}\code{(name, value)}\cr
 \code{character(1)}, \code{character()} -> \code{self}\cr
 Append HTTP response header. If header exists \code{,} separator will be used.
 Don't use this method to set cookie (use \code{set_cookie} method instead).
-\item \code{delete_header(name)}\cr
+\item \strong{\code{delete_header}}\code{(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
 Unset HTTP response header.
-\item \code{set_cookie(name, value, expires = NULL, max_age = NULL, domain = NULL, path = NULL, secure = NULL, http_only = NULL)}\cr
+\item \strong{\code{set_cookie}}\code{(name, value, expires = NULL, max_age = NULL, domain = NULL, path = NULL, secure = NULL, http_only = NULL)}\cr
 \code{character(1)}, \code{character(1)}, \code{POSIXct(1)}, \code{integer(1)}, \code{character(1)},
 \code{character(1)}, \code{logical(1)}, \code{logical(1)} -> \code{self}\cr
 Set cookie. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie}{docs on MDN}.
-\item \code{unset_cookie(name)}\cr
+\item \strong{\code{unset_cookie}}\code{(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
 Unset cookie with given name.
-\item \code{set_date(dtm = Sys.time())}\cr
+\item \strong{\code{set_date}}\code{(dtm = Sys.time())}\cr
 \code{POSIXct(1)} -> \code{self}\cr
 Set \code{Date} HTTP header. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date}{docs on MDN}.
-\item \code{unset_date()}\cr
+\item \strong{\code{unset_date}}\code{()}\cr
 -> \code{logical(1)}\cr
 Unset \code{Date} HTTP header.
-\item \code{set_body(body)}\cr
+\item \strong{\code{set_body}}\code{(body)}\cr
 \code{any} -> \code{self}\cr
 Set response body.
-\item \code{set_response(status_code, body = NULL, content_type = self$content_type)}\cr
+\item \strong{\code{set_response}}\code{(status_code, body = NULL, content_type = self$content_type)}\cr
 \code{integer(1)}, \code{any}, \code{character(1)} -> \code{self}\cr
 Set response fields.
-\item \code{to_rserve()}\cr
+\item \strong{\code{to_rserve}}\code{()}\cr
 -> \code{list()}\cr
 Convert \code{self} object to Rserve compatible structure.
 \href{https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372}{According to} returned list should have the following structure:

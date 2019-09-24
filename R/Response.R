@@ -18,92 +18,92 @@
 #'
 #' @section Fields:
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   Response body content (media) type. Will be translated to `Content-type` header.
 #'
-#' * `body` :: `raw()` | `character(1)`\cr
+#' * **`body`** :: `raw()` | `character(1)`\cr
 #'   Response body.
 #'   If it is a named character with a name `file` or `tmpfile`
 #'   then the value is considered as a path to a file and content oh this file
 #'   is served as body. The latter will be deleted once served.
 #'
-#' * `status_code` :: `integer(1)`\cr
+#' * **`status_code`** :: `integer(1)`\cr
 #'   Response status code.
 #'
-#' * `headers` :: `named list()`\cr
+#' * **`headers`** :: `named list()`\cr
 #'   Response headers.
 #'
-#' * `cookies` :: `named list()`\cr
+#' * **`cookies`** :: `named list()`\cr
 #'   Response cookies. Will be translated to `Set-Cookie` headers.
 #'
-#' * `context` :: `environment()`\cr
+#' * **`context`** :: `environment()`\cr
 #'   Environment to store any data. Can be used in middlewares.
 #'
-#' * `encode` :: `function`\cr
+#' * **`encode`** :: `function`\cr
 #'   unction to encode body for specific content
 #'
-#' * `status` :: `character(1)`\cr
+#' * **`status`** :: `character(1)`\cr
 #'   Paste together status code and description.
 #'
 #' @section Methods:
 #'
-#' * `set_content_type(content_type = 'text/plain')`\cr
+#' * **`set_content_type`**`(content_type = 'text/plain')`\cr
 #'   `character(1)` -> `self`\cr
 #'   Set content type for response body.
 #'
-#' * `set_status_code(code)`\cr
+#' * **`set_status_code`**`(code)`\cr
 #'   `integer(1)` -> `self`\cr
 #'   Set status code for response. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
 #'
-#' * `has_header(name)`\cr
+#' * **`has_header`**`(name)`\cr
 #'   `character(1)` -> `logical(1)`\cr
 #'   Determine whether or not the response header exists.
 #'
-#' * `get_header(name)`\cr
+#' * **`get_header`**`(name)`\cr
 #'   `character(1)` -> `character()`\cr
 #'   Get HTTP response header value.
 #'
-#' * `set_header(name, value)`\cr
+#' * **`set_header`**`(name, value)`\cr
 #'   `character(1)`, `character()` -> `self`\cr
 #'   Set HTTP response header. `Content-type` and `Content-length` headers not
 #'   allowed (use `content_type` field instead).
 #'
-#' * `append_header(name, value)`\cr
+#' * **`append_header`**`(name, value)`\cr
 #'   `character(1)`, `character()` -> `self`\cr
 #'  Append HTTP response header. If header exists `,` separator will be used.
 #'  Don't use this method to set cookie (use `set_cookie` method instead).
 #'
-#' * `delete_header(name)`\cr
+#' * **`delete_header`**`(name)`\cr
 #'   `character(1)` -> `logical(1)`\cr
 #'   Unset HTTP response header.
 #'
-#' * `set_cookie(name, value, expires = NULL, max_age = NULL, domain = NULL,
+#' * **`set_cookie`**`(name, value, expires = NULL, max_age = NULL, domain = NULL,
 #'               path = NULL, secure = NULL, http_only = NULL)`\cr
 #'   `character(1)`, `character(1)`, `POSIXct(1)`, `integer(1)`, `character(1)`,
 #'   `character(1)`, `logical(1)`, `logical(1)` -> `self`\cr
 #'   Set cookie. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
 #'
-#' * `unset_cookie(name)`\cr
+#' * **`unset_cookie`**`(name)`\cr
 #'   `character(1)` -> `logical(1)`\cr
 #'   Unset cookie with given name.
 #'
-#' * `set_date(dtm = Sys.time())`\cr
+#' * **`set_date`**`(dtm = Sys.time())`\cr
 #'   `POSIXct(1)` -> `self`\cr
 #'   Set `Date` HTTP header. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date).
 #'
-#' * `unset_date()`\cr
+#' * **`unset_date`**`()`\cr
 #'   -> `logical(1)`\cr
 #'   Unset `Date` HTTP header.
 #'
-#' * `set_body(body)`\cr
+#' * **`set_body`**`(body)`\cr
 #'   `any` -> `self`\cr
 #'   Set response body.
 #'
-#' * `set_response(status_code, body = NULL, content_type = self$content_type)`\cr
+#' * **`set_response`**`(status_code, body = NULL, content_type = self$content_type)`\cr
 #'   `integer(1)`, `any`, `character(1)` -> `self`\cr
 #'   Set response fields.
 #'
-#' * `to_rserve()`\cr
+#' * **`to_rserve`**`()`\cr
 #'   -> `list()`\cr
 #'   Convert `self` object to Rserve compatible structure.
 #'   [According to](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) returned list should have the following structure:
