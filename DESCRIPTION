@@ -7,16 +7,20 @@ Description:
   utils for app deployment and management.
 Version: 0.2.0
 Authors@R: c(
-  person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
+  person(given = "Dmitriy",
+         family = "Selivanov",
+         role = c("aut", "cre", "cph"),
+         email = "selivanov.dmitriy@gmail.com", 
          comment = c(ORCID = "0000-0001-5413-1506")),
-  person("Artem", "Klevtsov", role="aut", email="a.a.klevtsov@gmail.com",
+  person(given = "Artem",
+         family = "Klevtsov",
+         role = "aut",
+         email = "a.a.klevtsov@gmail.com",
          comment = c(ORCID = "0000-0003-0492-6647"))
   )
-Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
-URL: http://restrserve.org
+URL: http://restrserve.org, https://github.com/dselivanov/RestRserve
 BugReports: https://github.com/dselivanov/RestRserve/issues
 License: GPL (>= 2)
-ByteCompile: true
 Depends: 
   R (>= 3.6.0)
 Imports:
@@ -38,6 +42,7 @@ Suggests:
 LinkingTo: 
   Rcpp
 SystemRequirements: C++11
+ByteCompile: true
 KeepSource: true
 Encoding: UTF-8
 LazyData: true
