@@ -1,34 +1,40 @@
 Package: RestRserve
 Type: Package
 Title: High-Performance Web Server for Building Microservices and App Backends 
-Version: 0.2.0
-Authors@R: c(
-  person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
-         comment = c(ORCID = "0000-0001-5413-1506")),
-  person("Artem", "Klevtsov", role="aut", email="a.a.klevtsov@gmail.com")
-  )
-Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
 Description: 
   Allows to easily create high-performance HTTP API from R functions. 
   Provides many small convenient tools like flexible logging, JSON encoding, 
   utils for app deployment and management.
+Version: 0.2.0
+Authors@R: c(
+  person("Dmitriy", "Selivanov", role=c("aut", "cre", "cph"), email="selivanov.dmitriy@gmail.com", 
+         comment = c(ORCID = "0000-0001-5413-1506")),
+  person("Artem", "Klevtsov", role="aut", email="a.a.klevtsov@gmail.com",
+         comment = c(ORCID = "0000-0003-0492-6647"))
+  )
+Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
+URL: http://restrserve.org/
+BugReports: https://github.com/dselivanov/RestRserve/issues
 License: GPL (>= 2)
 ByteCompile: true
 Depends: 
   R (>= 3.6.0)
-Imports: 
+Imports:
+  Rcpp (>= 1.0.2),
   Rserve (>= 1.7.3),
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
   checkmate (>= 1.9.4),
   mime (>= 0.7),
-  Rcpp (>= 1.0.2),
   jsonlite (>= 1.6)
 Suggests:
-  curl (>= 4.0),
-  tinytest (>= 1.0.0), 
+  tinytest (>= 1.0.0),
   lgr (>= 0.3.2),
-  lintr (>= 1.0.3)
+  lintr,
+  knitr,
+  rmarkdown,
+  curl,
+  sys
 LinkingTo: 
   Rcpp
 SystemRequirements: C++11
@@ -37,3 +43,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
 RoxygenNote: 6.1.1
+VignetteBuilder: knitr

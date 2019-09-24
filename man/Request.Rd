@@ -13,6 +13,7 @@ Also useful for testing.
 \preformatted{Request$new(path = "/",
  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
  parameters_query = list(),
+ parameters_body = list(),
  headers = list(),
  body = list(),
  cookies = list(),
@@ -130,11 +131,35 @@ Extract specific file from multipart body.
 
 \examples{
 # init simply request
-rq = Request$new(path = "/")
-rq$method # GET
+rq = Request$new(
+  path = "/",
+  parameters_query = list(
+    "param1" = "value1",
+    "param2" = "value2"
+  ),
+  headers = list(
+    "Content-encoding" = "identity",
+    "Custom-field" = "value"
+  ),
+  cookies = list(
+    "sessionId" = "1"
+  )
+)
+# get request UUID
+rq$request_id
+# get content accept
+rq$accept
+# get request content type
+rq$content_type
+# get header by name (lower case)
+rq$get_header("custom-field")
+# get query param by name
+rq$get_param_query("param1")
+# print request
+rq
 
 }
 \seealso{
-\link{Response}
+\link{Response} \link{Application}
 }
 \keyword{datasets}

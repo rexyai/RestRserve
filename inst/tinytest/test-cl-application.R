@@ -154,6 +154,19 @@ dummy_openapi = tempfile(fileext = ".yaml")
 writeLines("dummy", dummy_openapi)
 expect_true(inherits(a$add_openapi(file_path = dummy_openapi), "Application"))
 
+# Test print method
+a = Application$new()
+expect_silent(print(a))
+f1 = function(rq, rs) {1}
+a$add_route("/", "GET", f1, "exact")
+expect_silent(print(a))
+mw = Middleware$new(
+  process_request = function(rq, rs) {},
+  process_response = function(rq, rs) {}
+)
+a$append_middleware(mw)
+expect_silent(print(a))
+
 # Reset global objects state
 ContentHandlers$reset()
 HTTPError$reset()

@@ -13,6 +13,7 @@
 #' Request$new(path = "/",
 #'  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
 #'  parameters_query = list(),
+#'  parameters_body = list(),
 #'  headers = list(),
 #'  body = list(),
 #'  cookies = list(),
@@ -154,12 +155,36 @@
 #'
 #' @export
 #'
-#' @seealso [Response]
+#' @seealso [Response] [Application]
 #'
 #' @examples
 #' # init simply request
-#' rq = Request$new(path = "/")
-#' rq$method # GET
+#' rq = Request$new(
+#'   path = "/",
+#'   parameters_query = list(
+#'     "param1" = "value1",
+#'     "param2" = "value2"
+#'   ),
+#'   headers = list(
+#'     "Content-encoding" = "identity",
+#'     "Custom-field" = "value"
+#'   ),
+#'   cookies = list(
+#'     "sessionId" = "1"
+#'   )
+#' )
+#' # get request UUID
+#' rq$request_id
+#' # get content accept
+#' rq$accept
+#' # get request content type
+#' rq$content_type
+#' # get header by name (lower case)
+#' rq$get_header("custom-field")
+#' # get query param by name
+#' rq$get_param_query("param1")
+#' # print request
+#' rq
 #'
 Request = R6::R6Class(
   classname = "Request",
@@ -305,6 +330,52 @@ Request = R6::R6Class(
       attr(res, "filname") = self$files[[name]]$filename
       attr(res, "content-type") = self$files[[name]]$content_type
       return(res)
+    },
+    print = function() {
+      cat("<RestRserve Request>")
+      cat("\n")
+      cat("  method:", self$method)
+      cat("\n")
+      cat("  path:", self$path)
+      cat("\n")
+      cat("  accept:", self$accept)
+      cat("\n")
+      cat("  content-type:", self$content_type)
+      cat("\n")
+      if (length(self$parameters_query) > 0L) {
+        cat("  <Query Parameters>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$parameters_query), as.character(self$parameters_query)), sep = "")
+      }
+      if (length(self$parameters_body) > 0L) {
+        cat("  <Body Parameters>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$parameters_body), as.character(self$parameters_body)), sep = "")
+      }
+      if (length(self$parameters_path) > 0L) {
+        cat("  <Path Parameters>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$parameters_path), as.character(self$parameters_path)), sep = "")
+      }
+      if (length(self$headers) > 0L) {
+        cat("  <Headers>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$headers), as.character(self$headers)), sep = "")
+      }
+      if (length(self$cookies) > 0L) {
+        cat("  <Cookies>")
+        cat("\n")
+        cat(sprintf("    %s: %s\n", names(self$cookies), as.character(self$cookies)), sep = "")
+      }
+      if (length(self$file) > 0L) {
+        cat("  <Body Files>")
+        cat("\n")
+        for (m in name(self$files)) {
+          cat(sprintf("    %s [%s]: %s\n", self$files[[m]]$content_type,
+                      self$files[[m]]$length, self$files[[m]]$filename), sep = "")
+        }
+      }
+      return(invisible(self))
     }
   ),
   active = list(

@@ -84,10 +84,9 @@ be set to \code{"application/octet-stream"}.
 \code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \code{process_request(request)}\cr
-\link{Request} -> \code{list()}\cr
-Process incoming request and generate Rserve compatible answer with
-\link{Response} \code{to_rserve()}. Useful for tests your handlers before
-deploy application.
+\link{Request} -> \link{Response}\cr
+Process incoming request and generate \link{Response} object.
+Useful for tests your handlers before deploy application.
 \item \code{run(http_port = 8080, ..., background = FALSE)}\cr
 \code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
 Starts RestRserve application from current R session.
@@ -99,9 +98,6 @@ means not to expose plain http.
 \item \code{background} - whether to try to launch in background process on UNIX
 systems. Ignored on windows.
 }
-\item \code{print_endpoints_summary()}\cr
--> \code{invisible(self)} - \link{Application} \cr
-Prints all the registered routes with allowed methods.
 \item \code{add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")}
 \code{character(1)}, \code{named list()}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
@@ -162,8 +158,8 @@ say_handler = function(rq, rs) {
 # add route
 app$add_get("/say/{user}", say_handler, "regex")
 
-# print endpoint
-app$endpoints
+# print application info
+app
 
 # test app
 # simulate requests

@@ -90,10 +90,9 @@
 #'   Appends middleware to handlers pipeline.
 #'
 #' * `process_request(request)`\cr
-#'   [Request] -> `list()`\cr
-#'   Process incoming request and generate Rserve compatible answer with
-#'   [Response] `to_rserve()`. Useful for tests your handlers before
-#'   deploy application.
+#'   [Request] -> [Response]\cr
+#'   Process incoming request and generate [Response] object.
+#'   Useful for tests your handlers before deploy application.
 #'
 #' * `run(http_port = 8080, ..., background = FALSE)`\cr
 #'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
@@ -107,10 +106,6 @@
 #'
 #'   * `background` - whether to try to launch in background process on UNIX
 #'     systems. Ignored on windows.
-#'
-#' * `print_endpoints_summary()`\cr
-#'   -> `invisible(self)` - [Application] \cr
-#'   Prints all the registered routes with allowed methods.
 #'
 #' * `add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")`
 #'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
@@ -178,8 +173,8 @@
 #' # add route
 #' app$add_get("/say/{user}", say_handler, "regex")
 #'
-#' # print endpoint
-#' app$endpoints
+#' # print application info
+#' app
 #'
 #' # test app
 #' # simulate requests
@@ -281,13 +276,17 @@ Application = R6::R6Class(
       # temporary modify global environment
       .GlobalEnv[[".http.request"]] = private$.http.request
 
-      self$print_endpoints_summary()
-
       if (.Platform$OS.type != "windows" && background) {
         run_mode = 'BACKGROUND'
       } else {
         run_mode = 'FOREGROUND'
       }
+
+      # print endpoints summary
+      if (length(self$endpoints) == 0) {
+        self$logger$warn("", context = "'Application' doesn't have any endpoints")
+      }
+      self$logger$info("", context = list(endpoints = self$endpoints))
 
       pid = Sys.getpid()
       if (run_mode == 'BACKGROUND') {
@@ -307,13 +306,6 @@ Application = R6::R6Class(
       }
 
       return(pid)
-    },
-    print_endpoints_summary = function() {
-      if (length(self$endpoints) == 0) {
-        self$logger$warn("", context = "'Application' doesn't have any endpoints")
-      }
-      self$logger$info("", context = list(endpoints = self$endpoints))
-      return(invisible(self))
     },
     add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
       checkmate::assert_string(path, pattern = "/.*")
@@ -453,6 +445,35 @@ Application = R6::R6Class(
         }
       })
       return(response)
+    },
+    print = function() {
+      cat("<RestRserve Application>")
+      cat("\n")
+      mw = private$middleware
+      if (length(mw) > 0L) {
+        cat("  <Middlewares>")
+        cat("\n")
+        for (m in names(mw)) {
+          cat("    ", m, ".", sep = "")
+          if (!identical(mw[[m]]$process_request, TRUE)) {
+            cat(" [request]")
+          }
+          if (!identical(mw[[m]]$process_response, TRUE)) {
+            cat( "[response]")
+          }
+          cat(":", mw[[m]]$name)
+          cat("\n")
+        }
+      }
+      ep = self$endpoints
+      if (length(ep) > 0L) {
+        cat("  <Endpoints>")
+        cat("\n")
+        for (m in names(ep)) {
+          cat(sprintf("    %s [%s]: %s\n", m, names(ep[[m]]), ep[[m]]), sep = "")
+        }
+      }
+      return(invisible(self))
     }
   ),
   active = list(

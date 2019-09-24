@@ -115,8 +115,8 @@ rs$set_content_type("text/plain")
 rs$set_body("OK")
 # set response status code
 rs$set_status_code(200L)
-# convert to Rserve output
-rs$to_rserve()
+# print response
+rs
 
 # init response
 rs = Response$new()
@@ -128,13 +128,15 @@ file_mtime = file.mtime(file_path)
 rs$set_body(c("file" = file_path))
 # set content type
 rs$set_content_type("text/plain")
+# set current timestamp
+rs$set_date()
 # set 'last-modified' header
 rs$set_header("Last-Modified", to_http_date(file_mtime))
-# convert to Rserve output
-rs$to_rserve()
+# print response
+rs
 
 }
 \seealso{
-\link{Request}
+\link{Request} \link{Application}
 }
 \keyword{datasets}
