@@ -9,3 +9,4 @@ CONTRIBUTING.md
 ^\.lintr$
 ^\.travis\.yml$
 ^\.openapi\.yaml$
+^pkgdown$

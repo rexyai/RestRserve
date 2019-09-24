@@ -1,0 +1,158 @@
+---
+title: "Quick Start Guide"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Quick Start Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r, include = FALSE}
+run_bg <- function(expr) {
+  args = c("--vanilla", "-q")
+  expr_c = deparse(substitute(expr))
+  expr_c <- paste(expr_c, collapse = "\n")
+  pid = sys::r_background(c(args, "-e", expr_c), std_out = TRUE, std_err = TRUE)
+  return(pid)
+}
+```
+
+## Steps
+
+### 0. Dependencies
+
+```{r}
+library(RestRserve)
+```
+
+### 1. Define core functions
+
+
+```{r}
+calc_fib = function(n) {
+  if (n < 0L) stop("n should be >= 0")
+  if (n == 0L) return(0L)
+  if (n == 1L || n == 2L) return(1L)
+  x = rep(1L, n)
+  for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
+  x[[n]]
+}
+```
+
+### 2. Define request handler
+
+```{r}
+fib_handler = function(request, response) {
+  n = as.integer(request$parameters_query[["n"]])
+  if (length(n) == 0L || is.na(n)) {
+    raise(HTTPError$bad_request())
+  }
+  response$set_body(as.character(calc_fib(n)))
+  response$set_content_type("text/plain")
+}
+```
+
+### 3. Create application instance
+
+```{r}
+app = Application$new()
+```
+
+### 4. Regiester endpoints with handlers
+
+```{r}
+app$add_get(path = "/fib", FUN = fib_handler)
+```
+
+### 5. Test endpoints
+
+```{r}
+rq = Request$new(path = "/fib", parameters_query = c(n = 10))
+rs = app$process_request(rq)
+cat("Response status:", rs$status)
+cat("Response body:", rs$body)
+```
+
+### 6. Add OpenAPI desciption and Swagger UI
+
+```yaml
+openapi: 3.0.1
+info:
+  title: RestRserve OpenAPI
+  version: '1.0'
+servers:
+  - url: /
+paths:
+  /fib:
+    get:
+      description: Calculates Fibonacci number
+      parameters:
+        - name: "n"
+          description: "x for Fibonnacci number"
+          in: query
+          schema:
+            type: integer
+          example: 10
+          required: true
+      responses:
+        200:
+          description: API response
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 5
+        400:
+          description: Bad Request
+```
+
+```{r}
+yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
+app$add_openapi(path = "/openapi.yaml", file_path = yaml_file)
+app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE)
+```
+
+### 7. Start
+
+```{r eval = FALSE}
+app$run(http_port = 8001)
+```
+
+```{r echo = FALSE, eval = FALSE}
+pid = run_bg({
+  library(RestRserve)
+  calc_fib = function(n) {
+    if (n < 0L) stop("n should be >= 0")
+    if (n == 0L) return(0L)
+    if (n == 1L || n == 2L) return(1L)
+    x = rep(1L, n)
+    for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
+    x[[n]]
+  }
+  
+  fib_handler = function(request, response) {
+    n = as.integer(request$parameters_query[["n"]])
+    if (length(n) == 0L || is.na(n)) {
+      raise(HTTPError$bad_request())
+    }
+    response$set_body(as.character(calc_fib(n)))
+    response$set_content_type("text/plain")
+  }
+  
+  app = RestRserve::Application$new()
+  app$add_get(path = "/fib", FUN = fib_handler)
+  yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
+  app$add_openapi(path = "/openapi.yaml", file_path = yaml_file)
+  app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE)
+  app$run(http_port = 8001)
+})
+tools::pskill(pid)
+```
+

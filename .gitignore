@@ -12,3 +12,5 @@ tmp/*
 inst/prof_*.html
 inst/examples/ssl/cert/*
 RestRserve*.tar.gz
+docs/
+inst/doc

@@ -31,6 +31,7 @@ addons:
 r_packages:
   - covr
   - lintr
+  - pkgdown
 
 before_install:
   - mkdir -p ~/.R && touch ~/.R/Makevars
@@ -43,9 +44,17 @@ before_install:
   - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc${VER} 60 --slave /usr/bin/g++ g++ /usr/bin/g++${VER}
   - sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran${VER} 60
 
-after_script:
-  - R CMD INSTALL $PKG_TARBALL
-  - Rscript -e 'lintr::lint_package()'
-
 after_success:
   - Rscript -e 'covr::codecov()'
+  - R CMD INSTALL $PKG_TARBALL
+  - Rscript -e 'lintr::lint_package()'
+  - Rscript -e 'pkgdown::build_site()'
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  keep_history: true
+  github_token: $GITHUB_TOKEN
+  local_dir: docs
+  on:
+    branch: dev
