@@ -15,7 +15,7 @@ rs = Response$new()
 expect_error(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs))
 e = tryCatch(obj$.__enclos_env__$private$parse_auth_token_from_request(rq, rs),
              error = function(e) e)
-expect_true(inherits(e, "HTTPError"))
+expect_true(inherits(e, "HTTPErrorRaise"))
 expect_equal(e$response$status_code, 401L)
 expect_equal(e$response$body, "401 Missing Authorization Header")
 expect_equal(e$response$headers[["WWW-Authenticate"]], "Basic")
