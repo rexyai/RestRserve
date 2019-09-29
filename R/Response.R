@@ -346,7 +346,8 @@ Response = R6::R6Class(
       if (is_string(body)) {
         body_name = names(body)
         if (isTRUE(body_name %in% c("file", "tmpfile"))) {
-          return(list(body, self$content_type, headers, self$status_code))
+          # NOTE there is no call to self$encode() - we are serving files "as is"
+          return(c(as.list(body), list(self$content_type, headers, self$status_code)))
         }
       }
       if (is.null(body)) {
