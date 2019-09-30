@@ -5,8 +5,8 @@
 #'
 #' @description
 #' Creates Application object.
-#' Application converts user-supplied R code into high-performance
-#' REST API by allowing to easily register R functions for handling http-requests.
+#' Application provides an interface for building high-performance
+#' REST API by registering R functions as handlers http requests.
 #'
 #' @section Construction:
 #'
@@ -16,34 +16,39 @@
 #' Application$new(middleware = list(), content_type = "text/plain", ...)
 #' ````
 #'
-#' * `middleware` :: `list` of [Middleware]\cr
+#' * **`middleware`** :: `list` of [Middleware]\cr
 #'   List of middlewares.
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   Default response body content (media) type. `"text/plain"` by default.
 #'
+#' * **`...`** \cr
+#'   Not used at the moment
 #'
 #' @section Fields:
 #'
-#' * `logger` :: [Logger]\cr
-#'   Logger object to trace requests process. Alternatively one can use loggers from lgr package as a
-#'   drop-in replacement. `Logger` and loggers created by `lgr` packages share same syntax.
+#' * **`logger`** :: [Logger]\cr
+#'   Logger object which records events during request processing.
+#'   Alternatively user can use loggers from lgr package as a
+#'   drop-in replacement - `Logger` methods and loggers created by `lgr` share function signatures.
 #'
-#' * `content_type` :: `character(1)`\cr
+#' * **`content_type`** :: `character(1)`\cr
 #'   Default response body content type.
 #'
-#' * `HTTPError` :: `HTTPErrorFactory`\cr
-#'   Helper to raise HTTP errors.
+#' * **`HTTPError`** :: `HTTPErrorFactory`\cr
+#'   Class which raises HTTP errors. Global [HTTPError] is used by default. In theory
+#'   user can replace it with his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
+#'   in the majority of the cases using [HTTPError] will be enough.
 #'
-#' * `ContentHandlers` :: `ContentHandler`\cr
+#' * **`ContentHandlers`** :: `ContentHandler`\cr
 #'   Helper to decode request body and encode response body.
 #'
-#' * `endpoints` :: `named list()`\cr
+#' * **`endpoints`** :: `named list()`\cr
 #'   Prints all the registered routes with allowed methods.
 #'
 #' @section  Methods:
 #'
-#' * `add_route(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
+#' * **`add_route`**`(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
 #'   `character(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint and register user-supplied R function as a handler.
 #'
@@ -66,16 +71,16 @@
 #'   Both `response` and `request` objects modified in-place and internally
 #'   passed further to RestRserve execution pipeline.
 #'
-#' * `add_get(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
+#' * **`add_get`**`(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
 #'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `GET` method. With `add_head = TRUE` HEAD method
 #'   handlers will be added (with `add_head()`).
 #'
-#' * `add_post(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
+#' * **`add_post`**`(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
 #'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Shorthand to `add_route` with `POST` method.
 #'
-#' * `add_static(path, file_path, content_type = NULL, ...)`\cr
+#' * **`add_static`**`(path, file_path, content_type = NULL, ...)`\cr
 #'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
 #'   Adds GET method to serve file or directory at `file_path`.
 #'
@@ -85,16 +90,16 @@
 #'   If it will be impossible to guess about file type then `content_type` will
 #'   be set to `"application/octet-stream"`.
 #'
-#' * `append_middleware(...)`\cr
+#' * **`append_middleware`**`(...)`\cr
 #'   `list()` of [Middleware] -> `invisible(self)` - [Application] \cr
 #'   Appends middleware to handlers pipeline.
 #'
-#' * `process_request(request)`\cr
+#' * **`process_request`**`(request)`\cr
 #'   [Request] -> [Response]\cr
 #'   Process incoming request and generate [Response] object.
 #'   Useful for tests your handlers before deploy application.
 #'
-#' * `run(http_port = 8080, ..., background = FALSE)`\cr
+#' * **`run`**`(http_port = 8080, ..., background = FALSE)`\cr
 #'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
 #'   Starts RestRserve application from current R session.
 #'
@@ -107,12 +112,12 @@
 #'   * `background` - whether to try to launch in background process on UNIX
 #'     systems. Ignored on windows.
 #'
-#' * `add_openapi(path = "/openapi.yaml", file_path = "openapi.yaml")`
+#' * **`add_openapi`**`(path = "/openapi.yaml", file_path = "openapi.yaml")`
 #'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
 #'   available methods.
 #'
-#' * `add_swagger_ui(path = "/swagger", path_openapi = "/openapi.yaml",
+#' * **`add_swagger_ui`**`(path = "/swagger", path_openapi = "/openapi.yaml",
 #'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
 #'                   file_path = "swagger-ui.html")`\cr
 #'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
