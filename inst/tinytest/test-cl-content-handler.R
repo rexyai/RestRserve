@@ -21,7 +21,7 @@ expect_equal(names(obj$list()), c("application/json", "text/plain"))
 # Test unknown handlers
 e = tryCatch(obj$get_decode("unknown"), error = function(e) e)
 expect_error(obj$get_decode("unknown"))
-expect_true(inherits(e, "HTTPError"))
+expect_true(inherits(e, "HTTPErrorRaise"))
 expect_equal(obj$get_encode("unknown"), as.character)
 
 f = function() TRUE

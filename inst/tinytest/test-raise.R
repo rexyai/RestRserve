@@ -4,7 +4,7 @@
 h = HTTPError
 e = tryCatch(raise(h$not_found()), error = function(e) e)
 expect_error(raise(h))
-expect_true(inherits(e, "HTTPError"))
+expect_true(inherits(e, "HTTPErrorRaise"))
 expect_true(inherits(e, "error"))
 expect_true(inherits(e, "condition"))
 expect_true(is.list(e))

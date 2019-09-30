@@ -1,2 +1,6 @@
 destination: docs
 url: http://restrserve.org
+authors:
+  rexy.ai:
+      href: https://rexy.ai
+      html: <a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/rexy-logo.svg" height="48" alt="rexy.ai"></a>

@@ -377,6 +377,6 @@ HTTPErrorFactory = R6::R6Class(
 #' identical(cond$response$body$error, "400 Bad Request")
 #'
 raise = function(x) {
-  exception = errorCondition("raise", response = x, class = class(x))
+  exception = errorCondition("raise", response = x, class = "HTTPErrorRaise")
   stop(exception)
 }

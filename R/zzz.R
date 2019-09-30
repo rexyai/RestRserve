@@ -10,23 +10,15 @@
 #' @importFrom Rcpp sourceCpp
 #' @useDynLib RestRserve, .registration=TRUE
 .onAttach = function(libname, pkgname) { # nocov start
-  # make it TRUE because only this way comments inside functions can be printed during
-  # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
-  # docstrings inside fucntions
-  options("keep.source" = TRUE)
-  runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
-  runtime_asserts = isTRUE(as.logical(runtime_asserts))
-  options("RestRserve_RuntimeAsserts" = runtime_asserts)
-
   recent_rserve = as.numeric_version("1.8.6")
-  cur_rserve = utils::packageVersion("Rserve")
+  current_rserve = utils::packageVersion("Rserve")
   if (interactive()) {
     msg = paste("RestRserve is still work in progress",
                 "- while we try hard to have stable API expect some breaking changes.")
     packageStartupMessage(msg)
-    if (cur_rserve < recent_rserve) {
+    if (current_rserve < recent_rserve) {
       packageStartupMessage(
-        sprintf("Rserve version %s detected", cur_rserve), "\n",
+        sprintf("Rserve version %s detected", current_rserve), "\n",
         "While it should work we recommend to install more recent version",
         sprintf("(>= %s) from R-Forge:", recent_rserve), "\n",
         "`install.packages('Rserve',,'http://www.rforge.net/')`"
@@ -40,6 +32,15 @@
 } # nocov end
 
 .onLoad = function(...) { # nocov start
+  # make it TRUE because only this way comments inside functions can be printed during
+  # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
+  # docstrings inside fucntions
+  # options("keep.source" = TRUE)
+
+  runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
+  runtime_asserts = isTRUE(as.logical(runtime_asserts))
+  options("RestRserve_RuntimeAsserts" = runtime_asserts)
+
   assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
   assign('ContentHandlers', ContentHandlersFactory$new(), envir = parent.env(environment()))
 } # nocov end

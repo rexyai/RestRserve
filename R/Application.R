@@ -385,7 +385,6 @@ Application = R6::R6Class(
 
         # Call middleware for the request
         mw_ids = as.character(seq_along(private$middleware))
-        # mw_called = new.env(parent = emptyenv())
         mw_called = list()
         mw_flag = "process_request"
         need_call_handler = TRUE
@@ -584,24 +583,27 @@ Application = R6::R6Class(
     eval_with_error_handling = function(expr) {
       x = try_capture_stack(expr)
       success = TRUE
-      if (inherits(x, "simpleError")) {
-        # means UNHANDLED exception in middleware
-        self$logger$error(
-          "",
-          context = list(
-            request_id = private$request$request_id,
-            message = get_traceback(x)
+      if (inherits(x, "HTTPErrorRaise")) {
+        # HTTPError response
+        x = x$response
+      } else {
+        if (inherits(x, "simpleError")) {
+          # means UNHANDLED exception in middleware
+          self$logger$error(
+            "",
+            context = list(
+              request_id = private$request$request_id,
+              message = get_traceback(x)
+            )
           )
-        )
-        x = try_capture_stack(raise(self$HTTPError$internal_server_error()))
+          x = self$HTTPError$internal_server_error()
+        }
       }
-      # FIXME - need to find a way to assign private$response
-      # now it works only by assigning field by field
       if (inherits(x, "HTTPError")) {
-        private$response$body = x$response$body
-        private$response$content_type = x$response$content_type
-        private$response$headers = x$response$headers
-        private$response$status_code = x$response$status_code
+        presp = private$response
+        for (p in c("body", "content_type", "headers", "status_code")) {
+          presp[[p]] = x[[p]]
+        }
         success = FALSE
       }
       return(success)
