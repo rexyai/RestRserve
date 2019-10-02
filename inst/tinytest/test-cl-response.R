@@ -93,7 +93,7 @@ expect_equal(r$to_rserve()[[1]], to_json(list()))
 # Test set_date method
 r = Response$new()
 r$set_date(.POSIXct(1564760173, tz = "GMT"))
-expect_equal(r$get_header("Date"), "Fri, 02 Aug 2019 15:36:13 GMT")
+expect_equal(r$get_header("Date"), structure("Fri, 02 Aug 2019 15:36:13 GMT", class = "HTTPDate"))
 
 # Test unset_date method
 r = Response$new()
@@ -192,7 +192,7 @@ rs = Response$new(
   body = "0",
   content_type = "application/json",
   headers = list(
-    "Last-Modified" = to_http_date(Sys.time()),
+    "Last-Modified" = as(Sys.time(), "HTTPDate"),
     "Custom-field" = "value"
   ),
   status_code = 200

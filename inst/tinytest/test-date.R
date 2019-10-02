@@ -2,15 +2,15 @@
 
 # Objects
 t = .POSIXct(1564760173, tz = "GMT")
-s = "Fri, 02 Aug 2019 15:36:13 GMT"
+s = structure("Fri, 02 Aug 2019 15:36:13 GMT", class = "HTTPDate")
 
 # Parse date
-expect_error(from_http_date("test"), "Parse date string failed.")
-expect_null(from_http_date(NULL))
-expect_equal(from_http_date(s), t)
+expect_error(as("test", "POSIXct"))
+expect_null(as(NULL, "POSIXct"))
+expect_equal(as(s, "POSIXct"), t)
 
 # Format date
-expect_null(to_http_date(NULL))
-expect_null(to_http_date(NA))
-expect_equal(to_http_date(t), s)
-expect_equal(to_http_date(0), "Thu, 01 Jan 1970 00:00:00 GMT")
+expect_null(as(NULL, "HTTPDate"))
+expect_null(as(NA_real_, "HTTPDate"))
+expect_equal(as(t, "HTTPDate"), s)
+expect_equal(as(0, "HTTPDate"), structure("Thu, 01 Jan 1970 00:00:00 GMT", class = "HTTPDate"))

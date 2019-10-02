@@ -26,6 +26,7 @@ License: GPL (>= 2)
 Depends: 
   R (>= 3.6.0)
 Imports:
+  methods,
   Rcpp (>= 1.0.2),
   Rserve (>= 1.7.3),
   R6 (>= 2.4.0),

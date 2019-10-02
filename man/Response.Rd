@@ -131,7 +131,7 @@ rs$set_content_type("text/plain")
 # set current timestamp
 rs$set_date()
 # set 'last-modified' header
-rs$set_header("Last-Modified", to_http_date(file_mtime))
+rs$set_header("Last-Modified", as(file_mtime, "HTTPDate"))
 # print response
 rs
 

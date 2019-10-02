@@ -150,7 +150,7 @@
 #' # set current timestamp
 #' rs$set_date()
 #' # set 'last-modified' header
-#' rs$set_header("Last-Modified", to_http_date(file_mtime))
+#' rs$set_header("Last-Modified", as(file_mtime, "HTTPDate"))
 #' # print response
 #' rs
 #'
@@ -265,7 +265,7 @@ Response = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_posixct(dtm, null.ok = TRUE)
       }
-      res = to_http_date(dtm)
+      res = as(dtm, "HTTPDate")
       self$headers[["Date"]] = res
       return(invisible(self))
     },
@@ -290,7 +290,7 @@ Response = R6::R6Class(
       cookie = list(
         name = name,
         value = value,
-        expires = to_http_date(expires),
+        expires = as(expires, "HTTPDate"),
         max_age = max_age,
         domain = domain,
         path = path,
