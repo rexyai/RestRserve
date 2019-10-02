@@ -106,7 +106,8 @@
 #' * **`to_rserve`**`()`\cr
 #'   -> `list()`\cr
 #'   Convert `self` object to Rserve compatible structure.
-#'   [According to](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) returned list should have the following structure:
+#'   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
+#'   returned list should have the following structure:
 #'     * `body`: can be a character vector of length one or a raw vector.
 #'       if the character vector is named "file" then the content of a file of
 #'       that name is the body.

@@ -90,7 +90,8 @@ Set response fields.
 \item \strong{\code{to_rserve}}\code{()}\cr
 -> \code{list()}\cr
 Convert \code{self} object to Rserve compatible structure.
-\href{https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372}{According to} returned list should have the following structure:
+\href{https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372}{According to http.c in Rserve} # nolint
+returned list should have the following structure:
 \itemize{
 \item \code{body}: can be a character vector of length one or a raw vector.
 if the character vector is named "file" then the content of a file of
