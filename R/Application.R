@@ -120,7 +120,8 @@
 #' * **`add_swagger_ui`**`(path = "/swagger", path_openapi = "/openapi.yaml",
 #'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
 #'                   file_path = "swagger-ui.html")`\cr
-#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
+#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` ->
+#'   `invisible(self)` - [Application] \cr
 #'   Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
 #'
 #' @export
@@ -463,7 +464,7 @@ Application = R6::R6Class(
             cat(" [request]")
           }
           if (!identical(mw[[m]]$process_response, TRUE)) {
-            cat( "[response]")
+            cat("[response]")
           }
           cat(":", mw[[m]]$name)
           cat("\n")
@@ -600,9 +601,8 @@ Application = R6::R6Class(
         }
       }
       if (inherits(x, "HTTPError")) {
-        presp = private$response
-        for (p in c("body", "content_type", "headers", "status_code")) {
-          presp[[p]] = x[[p]]
+        for (field in c("body", "content_type", "headers", "status_code")) {
+          private$response[[field]] = x[[field]]
         }
         success = FALSE
       }

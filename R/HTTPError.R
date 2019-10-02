@@ -32,7 +32,12 @@ error_methods = c(
 )
 
 # snippet below generates markdown HTTPError docs:
-# md = paste(error_methods, collapse = "`**`(...)`\\cr\n#'   `...` -> `[Response]`\\cr\n#' Generates corresponding http error.\n#' * **`")
+# clps = paste0(
+#   "`**`(...)`\\cr\n",
+#   "#'   `...` -> `[Response]`\\cr\n",
+#   "#' Generates corresponding http error.\n",
+#   "#' * **`")
+# md = paste(error_methods, collapse = clps)
 # cat(md)
 
 #' @title Helps to generate http error responses

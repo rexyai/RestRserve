@@ -394,7 +394,9 @@ Request = R6::R6Class(
       private$id
     },
     date = function() {
-      return(from_http_date(self$headers[["date"]]))
+      dt = self$headers[["date"]]
+      if (is.character(dt)) dt = structure(dt, class = "HTTPDate")
+      return(as(dt, "POSIXct"))
     },
     accept = function() {
       res = "*/*"

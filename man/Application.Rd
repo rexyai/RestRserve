@@ -108,7 +108,8 @@ systems. Ignored on windows.
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.
 \item \strong{\code{add_swagger_ui}}\code{(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
-\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
+\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} ->
+\code{invisible(self)} - \link{Application} \cr
 Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
 }

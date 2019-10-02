@@ -106,7 +106,8 @@
 #' * **`to_rserve`**`()`\cr
 #'   -> `list()`\cr
 #'   Convert `self` object to Rserve compatible structure.
-#'   [According to](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) returned list should have the following structure:
+#'   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
+#'   returned list should have the following structure:
 #'     * `body`: can be a character vector of length one or a raw vector.
 #'       if the character vector is named "file" then the content of a file of
 #'       that name is the body.
@@ -150,7 +151,7 @@
 #' # set current timestamp
 #' rs$set_date()
 #' # set 'last-modified' header
-#' rs$set_header("Last-Modified", to_http_date(file_mtime))
+#' rs$set_header("Last-Modified", as(file_mtime, "HTTPDate"))
 #' # print response
 #' rs
 #'
@@ -265,7 +266,7 @@ Response = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_posixct(dtm, null.ok = TRUE)
       }
-      res = to_http_date(dtm)
+      res = as(dtm, "HTTPDate")
       self$headers[["Date"]] = res
       return(invisible(self))
     },
@@ -290,7 +291,7 @@ Response = R6::R6Class(
       cookie = list(
         name = name,
         value = value,
-        expires = to_http_date(expires),
+        expires = as(expires, "HTTPDate"),
         max_age = max_age,
         domain = domain,
         path = path,

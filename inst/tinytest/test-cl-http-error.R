@@ -41,6 +41,3 @@ expect_equal(rs$to_rserve()[[1]], "500 Internal Server Error (body is not charac
 # test reset works
 obj$reset()
 expect_equal(obj, cl)
-
-# snippet below generates markdown HTTPError docs:
-# paste(error_methods, collapse = "**`(...)`\\cr\n#' `...` -> `[Response]`\\cr\n#' Generates corresponding http error.\\cr\n#' * **`")

@@ -1,3 +1,4 @@
+#' @import methods
 #' @importFrom R6 R6Class
 #' @importFrom uuid UUIDgenerate
 #' @importFrom mime guess_type
