@@ -19,7 +19,7 @@ custom error messages).
 \preformatted{Middleware$new(
   process_request  = function(request, response) TRUE,
   process_response = function(request, response) TRUE,
-  name = "Middleware"
+  id = "Middleware"
 )
 }
 \itemize{
@@ -29,8 +29,8 @@ Modify \code{request} or \code{response} objects or  throw exception using
 \item \code{process_response} :: \code{function}\cr
 Modify \code{request} or \code{response} objects or  throw exception using
 \code{[HTTPError]} helper. This function evaluate after router handler called.
-\item \code{name} :: \code{character(1)}\cr
-Middleware name.
+\item \code{id} :: \code{character(1)}\cr
+Middleware id
 }
 }
 
@@ -53,8 +53,8 @@ Function which takes 2 arguments - \code{request} and \code{response} objects (c
 Function is called after request is processed by handler.
 
 Usually \code{process_response} is used to perform logging, custom error handling, etc.
-\item \code{name} :: \code{character(1)}\cr
-Middleware name.
+\item \code{id} :: \code{character(1)}\cr
+Middleware id
 }
 }
 

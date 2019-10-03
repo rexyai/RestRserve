@@ -37,7 +37,7 @@ auth_mw = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
-  name = "bearer_auth"
+  id = "bearer_auth"
 )
 
 

@@ -10,7 +10,7 @@ Adds various authorizations to \link{Application}.
 This class inherits \link{Middleware}.
 }
 \section{Construction}{
-\preformatted{AuthMiddleware$new(auth_backend, routes, match = "exact", name = "AuthMiddleware")
+\preformatted{AuthMiddleware$new(auth_backend, routes, match = "exact", id = "AuthMiddleware")
 }
 \itemize{
 \item \code{auth_backend} :: \link{AuthBackend}\cr
@@ -19,8 +19,8 @@ Authentication backend.
 Routes paths to protect.
 \item \code{match} :: \code{character()}\cr
 How routes will be matched: exact or partial (as prefix).
-\item \code{name} :: \code{character(1)}\cr
-Middleware name.
+\item \code{id} :: \code{character(1)}\cr
+Middleware id
 }
 }
 

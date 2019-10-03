@@ -85,8 +85,8 @@ automatically (from file extension).
 
 If it will be impossible to guess about file type then \code{content_type} will
 be set to \code{"application/octet-stream"}.
-\item \strong{\code{append_middleware}}\code{(...)}\cr
-\code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
+\item \strong{\code{append_middleware}}\code{(mw)}\cr
+\link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \strong{\code{process_request}}\code{(request)}\cr
 \link{Request} -> \link{Response}\cr
@@ -129,7 +129,7 @@ mw = Middleware$new(
   process_response = function(rq, rs) {
     app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$id, rs$status))
   },
-  name = "awesome-app-logger"
+  id = "awesome-app-logger"
 )
 
 # init application
