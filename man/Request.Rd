@@ -36,10 +36,10 @@ Request body. Can be anything and in conjunction with \code{content_type}
 defines how HTTP body will be represented.
 \item \strong{\code{cookies}} :: \code{named list()}\cr
 cookies represented as named list. \strong{Note} that cookies should be provided explicitly -
-they won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
+they won't be derived from \code{headers}.
 \item \strong{\code{content_type}} :: \code{character(1)}\cr
 HTTP content type. \strong{Note} that \code{content_type} should be provided explicitly -
-it won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
+it won't be derived from \code{headers}.
 \item \strong{\code{decode}} :: \code{function}\cr
 Function to decode body for the specific content type.
 }
@@ -96,18 +96,6 @@ Request accepts XML response.
 \section{Methods}{
 
 \itemize{
-\item \strong{\code{from_rserve}}\code{(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
-\itemize{
-\item \code{path} :: \code{character(1)}\cr
-Character with requested path. Always starts with \code{/}.
-\item \code{parameters_query} :: \code{named character()}\cr
-A named character vector with URL decoded query parameters.
-\item \code{headers} :: \code{raw()} | \code{character(1)}\cr
-Request HTTP headers.
-\item \code{body} :: \code{raw()} | \code{character()}\cr
-Request body. Can be \code{NULL}, raw vector or named character vector for the
-URL encoded form (like a \code{parameters_query} parameter).
-}
 \item \strong{\code{reset}}\code{()}\cr
 Resets request object. This is not useful for end user, but useful for RestRserve internals -
 resetting R6 class is much faster then initialize it.

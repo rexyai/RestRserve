@@ -615,7 +615,8 @@ Application = R6::R6Class(
     .http.request = function(url, parameters_query, body, headers) {
       # first parse incoming request
       private$request$reset()
-      private$request$from_rserve(
+      from_rserve(
+        private$request,
         path = url,
         parameters_query = parameters_query,
         headers = headers,
