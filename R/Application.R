@@ -622,7 +622,7 @@ Application = R6::R6Class(
         headers = headers,
         body = body
       )
-      self$process_request(private$request)$to_rserve()
+      to_rserve(self$process_request(private$request))
     }
   )
 )

@@ -122,7 +122,7 @@ f = function(rq, rs) {rs$body = "text"}
 a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
-r = a$process_request(rq)$to_rserve()
+r = RestRserve:::to_rserve(a$process_request(rq))
 expect_equal(r, list("text", "text/plain", character(0), 200L))
 
 # Test endpoints method
