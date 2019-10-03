@@ -139,10 +139,10 @@
 #' # init middleware to logging
 #' mw = Middleware$new(
 #'   process_request = function(rq, rs) {
-#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
+#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$id, rq$path))
 #'   },
 #'   process_response = function(rq, rs) {
-#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
+#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$id, rs$status))
 #'   },
 #'   name = "awesome-app-logger"
 #' )
@@ -376,7 +376,7 @@ Application = R6::R6Class(
         self$logger$trace(
           "",
           context = list(
-            request_id = request$request_id,
+            request_id = request$id,
             method = request$method,
             path = request$path,
             parameters_query = request$parameters_query,
@@ -395,7 +395,7 @@ Application = R6::R6Class(
           self$logger$trace(
             "",
             context = list(
-              request_id = request$request_id,
+              request_id = request$id,
               middleware = mw_name,
               message = sprintf("call %s middleware", mw_flag)
             )
@@ -419,7 +419,7 @@ Application = R6::R6Class(
             self$logger$trace(
               "",
               context = list(
-                request_id = request$request_id,
+                request_id = request$id,
                 message = sprintf("call handler '%s'", handler_id)
               )
             )
@@ -434,7 +434,7 @@ Application = R6::R6Class(
           self$logger$trace(
             "",
             context = list(
-              request_id = request$request_id,
+              request_id = request$id,
               middleware = mw_name,
               message = sprintf("call %s middleware", mw_flag)
             )
@@ -546,21 +546,21 @@ Application = R6::R6Class(
       router = private$routes[[request$method]]
       if (is.null(router) || router$size() == 0L) {
         self$logger$trace("",
-          context = list(request_id = request$request_id,
+          context = list(request_id = request$id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
         raise(self$HTTPError$method_not_allowed())
       }
       # Get handler UID
       self$logger$trace("",
-        context = list(request_id = request$request_id,
+        context = list(request_id = request$id,
              message = sprintf("try to match requested path '%s'", request$path))
       )
       id = router$match_path(request$path)
       if (is.null(id)) {
         self$logger$trace("",
           context = list(
-            request_id = request$request_id,
+            request_id = request$id,
             message = "requested path not matched"
           )
         )
@@ -569,7 +569,7 @@ Application = R6::R6Class(
 
       self$logger$trace("",
         context = list(
-          request_id = request$request_id,
+          request_id = request$id,
           message = "requested path matched"
         )
       )
@@ -593,7 +593,7 @@ Application = R6::R6Class(
           self$logger$error(
             "",
             context = list(
-              request_id = private$request$request_id,
+              request_id = private$request$id,
               message = get_traceback(x)
             )
           )

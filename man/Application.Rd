@@ -124,10 +124,10 @@ app_logger$set_name("MW Logger")
 # init middleware to logging
 mw = Middleware$new(
   process_request = function(rq, rs) {
-    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
+    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$id, rq$path))
   },
   process_response = function(rq, rs) {
-    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
+    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$id, rs$status))
   },
   name = "awesome-app-logger"
 )

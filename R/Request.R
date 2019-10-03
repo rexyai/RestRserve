@@ -18,7 +18,8 @@
 #'  body = list(),
 #'  cookies = list(),
 #'  content_type = "text/plain",
-#'  decode = NULL)
+#'  decode = NULL,
+#'  ...)
 #' ```
 #'
 #' * **`path`** :: `character(1)`\cr
@@ -26,6 +27,15 @@
 #'
 #' * **`method`** :: `character(1)`\cr
 #'   Request HTTP method.
+#'
+#' * **`parameters_path`** :: `named list()`\cr
+#'   List of parameters extracted from templated path after routing.
+#'   For example if we have some handler listening at `/job/{job_id}` and we are
+#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
+#'   It is important to understand that `parameters_path` will be available
+#'   (not empty) only after request will reach handler.
+#'   This effectively means that `parameters_path` can be used inside handler
+#'   and response middleware (but not request middleware!).
 #'
 #' * **`parameters_query`** :: `named list()`\cr
 #'   A named list with URL decoded query parameters.
@@ -81,19 +91,10 @@
 #'   Structure which contains positions and lengths of files for the multipart
 #'   body.
 #'
-#' * **`parameters_path`** :: `named list()`\cr
-#'   List of parameters extracted from templated path after routing.
-#'   For example if we have some handler listening at `/job/{job_id}` and we are
-#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
-#'   It is important to understand that `parameters_path` will be available
-#'   (not empty) only after request will reach handler.
-#'   This effectively means that `parameters_path` can be used inside handler
-#'   and response middleware (but not request middleware!).
-#'
 #' * **`context`** :: `environment()`\cr
 #'   Environment to store any data. Can be used in middlewares.
 #'
-#' * **`request_id`** :: `character(1)`\cr
+#' * **`id`** :: `character(1)`\cr
 #'   Automatically generated UUID for each request. Read only.
 #'
 #' * **`body_decoded`** :: `any`\cr
@@ -159,7 +160,7 @@
 #'   )
 #' )
 #' # get request UUID
-#' rq$request_id
+#' rq$id
 #' # get content accept
 #' rq$accept
 #' # get request content type
@@ -200,7 +201,8 @@ Request = R6::R6Class(
                           body = NULL,
                           cookies = list(),
                           content_type = "text/plain",
-                          decode = NULL) {
+                          decode = NULL,
+                          ...) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path, pattern = "/.*")
         checkmate::assert_string(content_type, pattern = ".*/.*")
@@ -223,7 +225,7 @@ Request = R6::R6Class(
       self$files = list()
       self$context = new.env(parent = emptyenv())
 
-      private$id = uuid::UUIDgenerate(TRUE)
+      private$request_id = uuid::UUIDgenerate(TRUE)
     },
 
     reset = function() {
@@ -240,7 +242,7 @@ Request = R6::R6Class(
       self$parameters_path = list()
       self$files = list()
       self$decode = NULL
-      private$id = uuid::UUIDgenerate(TRUE)
+      private$request_id = uuid::UUIDgenerate(TRUE)
       invisible(self)
     },
     get_header = function(name) {
@@ -343,8 +345,8 @@ Request = R6::R6Class(
       }
       return(decode(self$body))
     },
-    request_id = function() {
-      private$id
+    id = function() {
+      private$request_id
     },
     date = function() {
       dt = self$headers[["date"]]
@@ -374,7 +376,7 @@ Request = R6::R6Class(
     }
   ),
   private = list(
-    id = NULL
+    request_id = NULL
   )
 )
 
@@ -429,6 +431,7 @@ rserve_parse_query = function(parameters_query, request) {
   request$parameters_query = res
   invisible(request)
 }
+
 rserve_parse_headers = function(headers, request) {
 
   if (is.raw(headers)) {
@@ -492,6 +495,7 @@ rserve_parse_cookies = function(request) {
 #     * `body` :: `raw()` | `character()`\cr
 #       Request body. Can be `NULL`, raw vector or named character vector for the
 #       URL encoded form (like a `parameters_query` parameter).
+
 from_rserve = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
   # actually we can skip runtime check as inputs from Rserve are guaranteed
   if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
