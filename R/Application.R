@@ -41,7 +41,7 @@
 #'   in the majority of the cases using [HTTPError] will be enough.
 #'
 #' * **`ContentHandlers`** :: `ContentHandler`\cr
-#'   Helper to decode request body and encode response body.
+#'   Helper to decode request body and encode response body. Global [ContentHandlers] is used by default.
 #'
 #' * **`endpoints`** :: `named list()`\cr
 #'   Prints all the registered routes with allowed methods.

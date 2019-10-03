@@ -37,7 +37,8 @@ and response middleware (but not request middleware!).
 \item \strong{\code{parameters_query}} :: \code{named list()}\cr
 A named list with URL decoded query parameters.
 \item \strong{\code{parameters_body}} :: \code{named list()}\cr
-A named list with URL decoded body parameters.
+A named list with URL decoded body parameters. This field is helpful when request is
+a urlencoded form or a multipart form.
 \item \strong{\code{headers}} :: \code{named list()}\cr
 Request HTTP headers represented as named list.
 \item \strong{\code{body}} :: \code{anything} \cr

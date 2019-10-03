@@ -41,7 +41,8 @@
 #'   A named list with URL decoded query parameters.
 #'
 #' * **`parameters_body`** :: `named list()`\cr
-#'   A named list with URL decoded body parameters.
+#'   A named list with URL decoded body parameters. This field is helpful when request is
+#'   a urlencoded form or a multipart form.
 #'
 #' * **`headers`** :: `named list()`\cr
 #'   Request HTTP headers represented as named list.
