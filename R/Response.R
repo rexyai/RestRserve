@@ -312,39 +312,6 @@ Response = R6::R6Class(
       self$content_type = content_type
       return(invisible(self))
     },
-    # to_rserve = function() {
-    #   body = self$body
-    #   # prepare headers
-    #   if (length(self$headers) > 0L) {
-    #     headers = format_headers(as.list(self$headers))
-    #     if (length(self$cookies) > 0L) {
-    #       headers = paste(headers, format_cookies(as.list(self$cookies)), sep = "\r\n")
-    #     }
-    #   } else {
-    #     headers = character(0)
-    #   }
-    #
-    #   # prepare body
-    #   if (is_string(body)) {
-    #     body_name = names(body)
-    #     if (isTRUE(body_name %in% c("file", "tmpfile"))) {
-    #       # NOTE there is no call to self$encode() - we are serving files "as is"
-    #       return(c(as.list(body), list(self$content_type, headers, self$status_code)))
-    #     }
-    #   }
-    #   if (is.null(body)) {
-    #     body = raw()
-    #   } else {
-    #     if (is.function(self$encode)) {
-    #       body = self$encode(body)
-    #     }
-    #   }
-    #   if (isTRUE(is.raw(body) || is.character(body))) {
-    #     return(list(body, self$content_type, headers, self$status_code))
-    #   } else {
-    #     return(list("500 Internal Server Error (body is not character or raw)", "text/plain", headers, 500L))
-    #   }
-    # },
     print = function() {
       cat("<RestRserve Response>")
       cat("\n")
