@@ -56,13 +56,13 @@ auth_mw_exact = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
-  name = "basic_auth"
+  id = "basic_auth"
 )
 auth_mw_partial = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/securearea",
   match = "partial",
-  name = "basic_auth"
+  id = "basic_auth"
 )
 
 

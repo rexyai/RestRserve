@@ -87,23 +87,6 @@ Set response body.
 \item \strong{\code{set_response}}\code{(status_code, body = NULL, content_type = self$content_type)}\cr
 \code{integer(1)}, \code{any}, \code{character(1)} -> \code{self}\cr
 Set response fields.
-\item \strong{\code{to_rserve}}\code{()}\cr
--> \code{list()}\cr
-Convert \code{self} object to Rserve compatible structure.
-\href{https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372}{According to http.c in Rserve} # nolint
-returned list should have the following structure:
-\itemize{
-\item \code{body}: can be a character vector of length one or a raw vector.
-if the character vector is named "file" then the content of a file of
-that name is the body.
-If the character vector is named "tmpfile" then the content of a
-temporary file of that name is the body.
-\item \code{content-type}: must be a character vector of length one or NULL
-(if present, else default is \code{"text/plain"}).
-\item \code{headers}: must be a character vector - the elements will have CRLF
-appended and neither \code{Content-type} nor \code{Content-length} may be used.
-\item \code{status-code}: must be an integer if present (default is 200).
-}
 }
 }
 

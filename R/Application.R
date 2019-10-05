@@ -41,7 +41,7 @@
 #'   in the majority of the cases using [HTTPError] will be enough.
 #'
 #' * **`ContentHandlers`** :: `ContentHandler`\cr
-#'   Helper to decode request body and encode response body.
+#'   Helper to decode request body and encode response body. Global [ContentHandlers] is used by default.
 #'
 #' * **`endpoints`** :: `named list()`\cr
 #'   Prints all the registered routes with allowed methods.
@@ -90,8 +90,8 @@
 #'   If it will be impossible to guess about file type then `content_type` will
 #'   be set to `"application/octet-stream"`.
 #'
-#' * **`append_middleware`**`(...)`\cr
-#'   `list()` of [Middleware] -> `invisible(self)` - [Application] \cr
+#' * **`append_middleware`**`(mw)`\cr
+#'   [Middleware] -> `invisible(self)` - [Application] \cr
 #'   Appends middleware to handlers pipeline.
 #'
 #' * **`process_request`**`(request)`\cr
@@ -139,12 +139,12 @@
 #' # init middleware to logging
 #' mw = Middleware$new(
 #'   process_request = function(rq, rs) {
-#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$request_id, rq$path))
+#'     app_logger$info(sprintf("Incomming request (id %s): %s", rq$id, rq$path))
 #'   },
 #'   process_response = function(rq, rs) {
-#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$request_id, rs$status))
+#'     app_logger$info(sprintf("Outgoing response (id %s): %s", rq$id, rs$status))
 #'   },
-#'   name = "awesome-app-logger"
+#'   id = "awesome-app-logger"
 #' )
 #'
 #' # init application
@@ -218,9 +218,14 @@ Application = R6::R6Class(
 
       self$ContentHandlers = ContentHandlers
 
-      checkmate::assert_list(middleware)
-      private$middleware = new.env(parent = emptyenv())
-      do.call(self$append_middleware, middleware)
+      checkmate::assert_list(middleware, types = "Middleware", unique = TRUE)
+      private$middleware = list()
+
+      for (mw in middleware) {
+        self$append_middleware(mw)
+      }
+
+      return(invisible(self))
     },
     add_route = function(path, method, FUN, match = c("exact", "partial", "regex"), ...) {
       checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
@@ -357,13 +362,9 @@ Application = R6::R6Class(
       self$add_static(path, file_path, "text/html")
       return(invisible(self))
     },
-    append_middleware = function(...) {
-      mw_list = list(...)
-      checkmate::assert_list(mw_list, types = "Middleware", unique = TRUE)
-      for (mw in mw_list) {
-        id = as.character(length(private$middleware) + 1L)
-        private$middleware[[id]] = mw
-      }
+    append_middleware = function(mw) {
+      checkmate::assert_r6(mw, classes = "Middleware")
+      private$middleware = append(private$middleware, mw)
       return(invisible(self))
     },
     process_request = function(request = private$request) {
@@ -376,7 +377,7 @@ Application = R6::R6Class(
         self$logger$trace(
           "",
           context = list(
-            request_id = request$request_id,
+            request_id = request$id,
             method = request$method,
             path = request$path,
             parameters_query = request$parameters_query,
@@ -385,18 +386,17 @@ Application = R6::R6Class(
         )
 
         # Call middleware for the request
-        mw_ids = as.character(seq_along(private$middleware))
         mw_called = list()
         mw_flag = "process_request"
         need_call_handler = TRUE
 
-        for (id in mw_ids) {
-          mw_name = private$middleware[[id]][["name"]]
+        for (id in seq_along(private$middleware)) {
+          mw_id = private$middleware[[id]][["id"]]
           self$logger$trace(
             "",
             context = list(
-              request_id = request$request_id,
-              middleware = mw_name,
+              request_id = request$id,
+              middleware = mw_id,
               message = sprintf("call %s middleware", mw_flag)
             )
           )
@@ -419,7 +419,7 @@ Application = R6::R6Class(
             self$logger$trace(
               "",
               context = list(
-                request_id = request$request_id,
+                request_id = request$id,
                 message = sprintf("call handler '%s'", handler_id)
               )
             )
@@ -430,12 +430,12 @@ Application = R6::R6Class(
         mw_flag = "process_response"
         # call in reverse order
         for (id in rev(mw_called)) {
-          mw_name = private$middleware[[id]][["name"]]
+          mw_id = private$middleware[[id]][["id"]]
           self$logger$trace(
             "",
             context = list(
-              request_id = request$request_id,
-              middleware = mw_name,
+              request_id = request$id,
+              middleware = mw_id,
               message = sprintf("call %s middleware", mw_flag)
             )
           )
@@ -458,15 +458,14 @@ Application = R6::R6Class(
       if (length(mw) > 0L) {
         cat("  <Middlewares>")
         cat("\n")
-        for (m in names(mw)) {
-          cat("    ", m, ".", sep = "")
-          if (!identical(mw[[m]]$process_request, TRUE)) {
+        for (m in mw) {
+          if (!identical(m$process_request, TRUE)) {
             cat(" [request]")
           }
-          if (!identical(mw[[m]]$process_response, TRUE)) {
+          if (!identical(m$process_response, TRUE)) {
             cat("[response]")
           }
-          cat(":", mw[[m]]$name)
+          cat(":", m$id)
           cat("\n")
         }
       }
@@ -546,21 +545,21 @@ Application = R6::R6Class(
       router = private$routes[[request$method]]
       if (is.null(router) || router$size() == 0L) {
         self$logger$trace("",
-          context = list(request_id = request$request_id,
+          context = list(request_id = request$id,
                message = sprintf("no handlers registered for the method '%s'", request$method))
         )
         raise(self$HTTPError$method_not_allowed())
       }
       # Get handler UID
       self$logger$trace("",
-        context = list(request_id = request$request_id,
+        context = list(request_id = request$id,
              message = sprintf("try to match requested path '%s'", request$path))
       )
       id = router$match_path(request$path)
       if (is.null(id)) {
         self$logger$trace("",
           context = list(
-            request_id = request$request_id,
+            request_id = request$id,
             message = "requested path not matched"
           )
         )
@@ -569,7 +568,7 @@ Application = R6::R6Class(
 
       self$logger$trace("",
         context = list(
-          request_id = request$request_id,
+          request_id = request$id,
           message = "requested path matched"
         )
       )
@@ -593,7 +592,7 @@ Application = R6::R6Class(
           self$logger$error(
             "",
             context = list(
-              request_id = private$request$request_id,
+              request_id = private$request$id,
               message = get_traceback(x)
             )
           )
@@ -615,13 +614,14 @@ Application = R6::R6Class(
     .http.request = function(url, parameters_query, body, headers) {
       # first parse incoming request
       private$request$reset()
-      private$request$from_rserve(
+      from_rserve(
+        private$request,
         path = url,
         parameters_query = parameters_query,
         headers = headers,
         body = body
       )
-      self$process_request(private$request)$to_rserve()
+      to_rserve(self$process_request(private$request))
     }
   )
 )

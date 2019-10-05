@@ -103,25 +103,6 @@
 #'   `integer(1)`, `any`, `character(1)` -> `self`\cr
 #'   Set response fields.
 #'
-#' * **`to_rserve`**`()`\cr
-#'   -> `list()`\cr
-#'   Convert `self` object to Rserve compatible structure.
-#'   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
-#'   returned list should have the following structure:
-#'     * `body`: can be a character vector of length one or a raw vector.
-#'       if the character vector is named "file" then the content of a file of
-#'       that name is the body.
-#'       If the character vector is named "tmpfile" then the content of a
-#'       temporary file of that name is the body.
-#'
-#'     * `content-type`: must be a character vector of length one or NULL
-#'       (if present, else default is `"text/plain"`).
-#'
-#'     * `headers`: must be a character vector - the elements will have CRLF
-#'       appended and neither `Content-type` nor `Content-length` may be used.
-#'
-#'     * `status-code`: must be an integer if present (default is 200).
-#'
 #' @export
 #'
 #' @seealso [Request] [Application]
@@ -331,39 +312,6 @@ Response = R6::R6Class(
       self$content_type = content_type
       return(invisible(self))
     },
-    to_rserve = function() {
-      body = self$body
-      # prepare headers
-      if (length(self$headers) > 0L) {
-        headers = format_headers(as.list(self$headers))
-        if (length(self$cookies) > 0L) {
-          headers = paste(headers, format_cookies(as.list(self$cookies)), sep = "\r\n")
-        }
-      } else {
-        headers = character(0)
-      }
-
-      # prepare body
-      if (is_string(body)) {
-        body_name = names(body)
-        if (isTRUE(body_name %in% c("file", "tmpfile"))) {
-          # NOTE there is no call to self$encode() - we are serving files "as is"
-          return(c(as.list(body), list(self$content_type, headers, self$status_code)))
-        }
-      }
-      if (is.null(body)) {
-        body = raw()
-      } else {
-        if (is.function(self$encode)) {
-          body = self$encode(body)
-        }
-      }
-      if (isTRUE(is.raw(body) || is.character(body))) {
-        return(list(body, self$content_type, headers, self$status_code))
-      } else {
-        return(list("500 Internal Server Error (body is not character or raw)", "text/plain", headers, 500L))
-      }
-    },
     print = function() {
       cat("<RestRserve Response>")
       cat("\n")
@@ -391,3 +339,56 @@ Response = R6::R6Class(
     }
   )
 )
+
+
+# * **`to_rserve`**`()`\cr
+#   -> `list()`\cr
+#   Convert `self` object to Rserve compatible structure.
+#   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
+#   returned list should have the following structure:
+#     * `body`: can be a character vector of length one or a raw vector.
+#       if the character vector is named "file" then the content of a file of
+#       that name is the body.
+#       If the character vector is named "tmpfile" then the content of a
+#       temporary file of that name is the body.
+#
+#     * `content-type`: must be a character vector of length one or NULL
+#       (if present, else default is `"text/plain"`).
+#
+#     * `headers`: must be a character vector - the elements will have CRLF
+#       appended and neither `Content-type` nor `Content-length` may be used.
+#
+#     * `status-code`: must be an integer if present (default is 200).
+to_rserve = function(response) {
+  body = response$body
+  # prepare headers
+  if (length(response$headers) > 0L) {
+    headers = format_headers(as.list(response$headers))
+    if (length(response$cookies) > 0L) {
+      headers = paste(headers, format_cookies(as.list(response$cookies)), sep = "\r\n")
+    }
+  } else {
+    headers = character(0)
+  }
+
+  # prepare body
+  if (is_string(body)) {
+    body_name = names(body)
+    if (isTRUE(body_name %in% c("file", "tmpfile"))) {
+      # NOTE there is no call to response$encode() - we are serving files "as is"
+      return(c(as.list(body), list(response$content_type, headers, response$status_code)))
+    }
+  }
+  if (is.null(body)) {
+    body = raw()
+  } else {
+    if (is.function(response$encode)) {
+      body = response$encode(body)
+    }
+  }
+  if (isTRUE(is.raw(body) || is.character(body))) {
+    return(list(body, response$content_type, headers, response$status_code))
+  } else {
+    return(list("500 Internal Server Error (body is not character or raw)", "text/plain", headers, 500L))
+  }
+}

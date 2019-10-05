@@ -8,7 +8,7 @@ expect_true(inherits(a$HTTPError, "HTTPErrorFactory"))
 expect_true(inherits(a$logger, "Logger"))
 expect_true(inherits(a$.__enclos_env__$private$handlers, "environment"))
 expect_equal(length(a$.__enclos_env__$private$handlers), 0L)
-expect_true(inherits(a$.__enclos_env__$private$middleware, "environment"))
+expect_true(inherits(a$.__enclos_env__$private$middleware, "list"))
 expect_equal(length(a$.__enclos_env__$private$middleware), 0L)
 expect_true(inherits(a$.__enclos_env__$private$routes, "environment"))
 expect_equal(length(a$.__enclos_env__$private$routes), 0L)
@@ -31,20 +31,25 @@ mw = Middleware$new(
 )
 a = Application$new(middleware = list(mw))
 expect_equal(length(a$.__enclos_env__$private$middleware), 1L)
-expect_equal(names(a$.__enclos_env__$private$middleware), c("1"))
-expect_equal(a$.__enclos_env__$private$middleware[["1"]], mw)
+expect_equal(a$.__enclos_env__$private$middleware[[1]], mw)
 
 # Test append_middleware method
 a = Application$new()
-mw = Middleware$new(
+mw1 = Middleware$new(
   process_request = function(rq, rs) {},
   process_response = function(rq, rs) {}
 )
-a$append_middleware(mw)
-a$append_middleware(mw)
+a$append_middleware(mw1)
+
+mw2 = Middleware$new(
+  process_request = function(rq, rs) {TRUE},
+  process_response = function(rq, rs) {TRUE}
+)
+a$append_middleware(mw2)
+
 expect_equal(length(a$.__enclos_env__$private$middleware), 2L)
-expect_equal(names(a$.__enclos_env__$private$middleware), c("1", "2"))
-expect_equal(a$.__enclos_env__$private$middleware[["1"]], mw)
+expect_equal(a$.__enclos_env__$private$middleware[[1]], mw1)
+expect_equal(a$.__enclos_env__$private$middleware[[2]], mw2)
 
 # Test add_route method
 a = Application$new()
@@ -122,7 +127,7 @@ f = function(rq, rs) {rs$body = "text"}
 a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
-r = a$process_request(rq)$to_rserve()
+r = RestRserve:::to_rserve(a$process_request(rq))
 expect_equal(r, list("text", "text/plain", character(0), 200L))
 
 # Test endpoints method

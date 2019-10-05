@@ -39,7 +39,7 @@ Class which raises HTTP errors. Global \link{HTTPError} is used by default. In t
 user can replace it with his own class (see \code{RestRserve:::HTTPErrorFactory}). However we believe
 in the majority of the cases using \link{HTTPError} will be enough.
 \item \strong{\code{ContentHandlers}} :: \code{ContentHandler}\cr
-Helper to decode request body and encode response body.
+Helper to decode request body and encode response body. Global \link{ContentHandlers} is used by default.
 \item \strong{\code{endpoints}} :: \code{named list()}\cr
 Prints all the registered routes with allowed methods.
 }
@@ -85,8 +85,8 @@ automatically (from file extension).
 
 If it will be impossible to guess about file type then \code{content_type} will
 be set to \code{"application/octet-stream"}.
-\item \strong{\code{append_middleware}}\code{(...)}\cr
-\code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
+\item \strong{\code{append_middleware}}\code{(mw)}\cr
+\link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \strong{\code{process_request}}\code{(request)}\cr
 \link{Request} -> \link{Response}\cr
@@ -124,12 +124,12 @@ app_logger$set_name("MW Logger")
 # init middleware to logging
 mw = Middleware$new(
   process_request = function(rq, rs) {
-    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
+    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$id, rq$path))
   },
   process_response = function(rq, rs) {
-    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
+    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$id, rs$status))
   },
-  name = "awesome-app-logger"
+  id = "awesome-app-logger"
 )
 
 # init application

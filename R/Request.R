@@ -18,7 +18,8 @@
 #'  body = list(),
 #'  cookies = list(),
 #'  content_type = "text/plain",
-#'  decode = NULL)
+#'  decode = NULL,
+#'  ...)
 #' ```
 #'
 #' * **`path`** :: `character(1)`\cr
@@ -27,11 +28,21 @@
 #' * **`method`** :: `character(1)`\cr
 #'   Request HTTP method.
 #'
+#' * **`parameters_path`** :: `named list()`\cr
+#'   List of parameters extracted from templated path after routing.
+#'   For example if we have some handler listening at `/job/{job_id}` and we are
+#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
+#'   It is important to understand that `parameters_path` will be available
+#'   (not empty) only after request will reach handler.
+#'   This effectively means that `parameters_path` can be used inside handler
+#'   and response middleware (but not request middleware!).
+#'
 #' * **`parameters_query`** :: `named list()`\cr
 #'   A named list with URL decoded query parameters.
 #'
 #' * **`parameters_body`** :: `named list()`\cr
-#'   A named list with URL decoded body parameters.
+#'   A named list with URL decoded body parameters. This field is helpful when request is
+#'   a urlencoded form or a multipart form.
 #'
 #' * **`headers`** :: `named list()`\cr
 #'   Request HTTP headers represented as named list.
@@ -42,11 +53,11 @@
 #'
 #' * **`cookies`** :: `named list()`\cr
 #'   cookies represented as named list. **Note** that cookies should be provided explicitly -
-#'   they won't be derived from `headers` (in contrast to `from_rserve()` method).
+#'   they won't be derived from `headers`.
 #'
 #' * **`content_type`** :: `character(1)`\cr
 #'   HTTP content type. **Note** that `content_type` should be provided explicitly -
-#'   it won't be derived from `headers` (in contrast to `from_rserve()` method).
+#'   it won't be derived from `headers`.
 #'
 #' * **`decode`** :: `function`\cr
 #'   Function to decode body for the specific content type.
@@ -81,19 +92,10 @@
 #'   Structure which contains positions and lengths of files for the multipart
 #'   body.
 #'
-#' * **`parameters_path`** :: `named list()`\cr
-#'   List of parameters extracted from templated path after routing.
-#'   For example if we have some handler listening at `/job/{job_id}` and we are
-#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
-#'   It is important to understand that `parameters_path` will be available
-#'   (not empty) only after request will reach handler.
-#'   This effectively means that `parameters_path` can be used inside handler
-#'   and response middleware (but not request middleware!).
-#'
 #' * **`context`** :: `environment()`\cr
 #'   Environment to store any data. Can be used in middlewares.
 #'
-#' * **`request_id`** :: `character(1)`\cr
+#' * **`id`** :: `character(1)`\cr
 #'   Automatically generated UUID for each request. Read only.
 #'
 #' * **`body_decoded`** :: `any`\cr
@@ -113,21 +115,6 @@
 #'   Request accepts XML response.
 #'
 #' @section Methods:
-#'
-#' * **`from_rserve`**`(path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
-#'
-#'     * `path` :: `character(1)`\cr
-#'       Character with requested path. Always starts with `/`.
-#'
-#'     * `parameters_query` :: `named character()`\cr
-#'       A named character vector with URL decoded query parameters.
-#'
-#'     * `headers` :: `raw()` | `character(1)`\cr
-#'       Request HTTP headers.
-#'
-#'     * `body` :: `raw()` | `character()`\cr
-#'       Request body. Can be `NULL`, raw vector or named character vector for the
-#'       URL encoded form (like a `parameters_query` parameter).
 #'
 #' * **`reset`**`()`\cr
 #'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
@@ -174,7 +161,7 @@
 #'   )
 #' )
 #' # get request UUID
-#' rq$request_id
+#' rq$id
 #' # get content accept
 #' rq$accept
 #' # get request content type
@@ -215,7 +202,8 @@ Request = R6::R6Class(
                           body = NULL,
                           cookies = list(),
                           content_type = "text/plain",
-                          decode = NULL) {
+                          decode = NULL,
+                          ...) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path, pattern = "/.*")
         checkmate::assert_string(content_type, pattern = ".*/.*")
@@ -238,7 +226,7 @@ Request = R6::R6Class(
       self$files = list()
       self$context = new.env(parent = emptyenv())
 
-      private$id = uuid::UUIDgenerate(TRUE)
+      private$request_id = uuid::UUIDgenerate(TRUE)
     },
 
     reset = function() {
@@ -255,39 +243,7 @@ Request = R6::R6Class(
       self$parameters_path = list()
       self$files = list()
       self$decode = NULL
-      private$id = uuid::UUIDgenerate(TRUE)
-      invisible(self)
-    },
-
-    from_rserve = function(path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
-      # actually we can skip runtime check as inputs from Rserve are guaranteed
-      # but because `from_rserve()` is a public method we will keep checking arguments
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
-        checkmate::assert_string(path)
-        checkmate::assert_character(parameters_query, null.ok = TRUE)
-        checkmate::assert(
-          checkmate::check_raw(headers, null.ok = TRUE),
-          checkmate::check_string(headers, null.ok = TRUE),
-          combine = "or"
-        )
-        checkmate::assert(
-          checkmate::check_raw(body, null.ok = TRUE),
-          checkmate::check_character(body, null.ok = TRUE),
-          combine = "or"
-        )
-      }
-
-      self$path = path
-      private$parse_query(parameters_query)
-      private$parse_headers(headers)
-      # Rserve adds "Request-Method: " key:
-      # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
-      # according to the code above we assume that "request-method" is always exists
-      self$method = self$headers[["request-method"]]
-      # remove from headers as this was added by Rserve and wasn't present in original request
-      self$headers[["request-method"]] = NULL
-      private$parse_body_and_content_type(body)
-      private$parse_cookies()
+      private$request_id = uuid::UUIDgenerate(TRUE)
       invisible(self)
     },
     get_header = function(name) {
@@ -390,8 +346,8 @@ Request = R6::R6Class(
       }
       return(decode(self$body))
     },
-    request_id = function() {
-      private$id
+    id = function() {
+      private$request_id
     },
     date = function() {
       dt = self$headers[["date"]]
@@ -421,95 +377,155 @@ Request = R6::R6Class(
     }
   ),
   private = list(
-    id = NULL,
-    parse_headers = function(headers) {
-      if (is.raw(headers)) {
-        headers = rawToChar(headers)
-      }
-      if (is_string(headers)) {
-        self$headers = parse_headers(headers)
-      }
-      return(invisible(TRUE))
-    },
-    parse_cookies = function() {
-      if (!is.null(self$headers[["cookie"]])) {
-        self$cookies = parse_cookies(self$headers[["cookie"]])
-      }
-      return(invisible(TRUE))
-    },
-    parse_query = function(parameters_query) {
-      if (length(parameters_query) > 0L) {
-        # Named character vector. Query parameters key-value pairs.
-        res = as.list(parameters_query)
-        # Omit empty keys and empty values
-        res = res[nzchar(names(res)) & nzchar(parameters_query)]
-        self$parameters_query = res
-      }
-      return(invisible(TRUE))
-    },
-    parse_form_urlencoded = function(body) {
-      if (length(body) > 0L) {
-        # Named character vector. Body parameters key-value pairs.
-        # Omit empty keys and empty values
-        body = body[nzchar(names(body)) & nzchar(body)]
-        self$parameters_body = as.list(body)
-        keys = names(body)
-        values = paste(url_encode(keys), url_encode(body), sep = "=", collapse = "&")
-        body = charToRaw(values)
-      } else {
-        body = raw()
-      }
-      self$body = body
-      self$content_type = "application/x-www-form-urlencoded"
-      return(invisible(TRUE))
-    },
-    parse_form_multipart = function(body) {
-      content_type = attr(body, "content-type")
-      boundary = parse_multipart_boundary(content_type)
-      res = parse_multipart_body(body, paste0("--", boundary))
-      if (length(res$values) > 0L) {
-        values = unlist(res$values, use.names = TRUE)
-        values = values[nzchar(names(values)) & nzchar(values)]
-        keys = url_decode(names(values))
-        values = url_decode(values)
-        self$parameters_body[keys] = values
-      }
-      if (length(res$files) > 0L) {
-        self$files = res$files
-        keys = url_decode(names(res$files))
-        values = url_decode(vapply(res$files, "[[", character(1), "filename"))
-        self$parameters_body[keys] = values
-      }
-      self$body = body
-      self$content_type = content_type
-      return(invisible(TRUE))
-    },
-    parse_body_and_content_type = function(body) {
-      h_ctype = self$headers[["content-type"]]
-      b_ctype = attr(body, "content-type")
-      if (!is.null(b_ctype)) {
-        h_ctype = b_ctype
-      }
-      if (is.null(h_ctype)) {
-        h_ctype = "text/plain"
-      }
-      if (is.null(body)) {
-        self$body = raw()
-        self$content_type = h_ctype
-      } else if (!is.raw(body)) {
-        # parse form
-        if (h_ctype == "application/x-www-form-urlencoded") {
-          return(private$parse_form_urlencoded(body))
-        }
-      } else {
-        if (startsWith(h_ctype, "multipart/form-data")) {
-          return(private$parse_form_multipart(body))
-        } else {
-          self$body = body
-          self$content_type = h_ctype
-        }
-      }
-      return(invisible(TRUE))
-    }
+    request_id = NULL
   )
 )
+
+
+parse_form_urlencoded = function(body, request) {
+  if (length(body) > 0L) {
+    # Named character vector. Body parameters key-value pairs.
+    # Omit empty keys and empty values
+    body = body[nzchar(names(body)) & nzchar(body)]
+    request$parameters_body = as.list(body)
+    keys = names(body)
+    values = paste(url_encode(keys), url_encode(body), sep = "=", collapse = "&")
+    body = charToRaw(values)
+  } else {
+    body = raw()
+  }
+  request$body = body
+  request$content_type = "application/x-www-form-urlencoded"
+  return(request)
+}
+
+parse_form_multipart = function(body, request) {
+  content_type = attr(body, "content-type")
+  boundary = parse_multipart_boundary(content_type)
+  res = parse_multipart_body(body, paste0("--", boundary))
+  if (length(res$values) > 0L) {
+    values = unlist(res$values, use.names = TRUE)
+    values = values[nzchar(names(values)) & nzchar(values)]
+    keys = url_decode(names(values))
+    values = url_decode(values)
+    request$parameters_body[keys] = values
+  }
+  if (length(res$files) > 0L) {
+    request$files = res$files
+    keys = url_decode(names(res$files))
+    values = url_decode(vapply(res$files, "[[", character(1), "filename"))
+    request$parameters_body[keys] = values
+  }
+  request$body = body
+  request$content_type = content_type
+  return(request)
+}
+
+rserve_parse_query = function(parameters_query, request) {
+  res = structure(list(), names = character())
+  if (length(parameters_query) > 0L) {
+    # Named character vector. Query parameters key-value pairs.
+    res = as.list(parameters_query)
+    # Omit empty keys and empty values
+    res = res[nzchar(names(res)) & nzchar(parameters_query)]
+  }
+  request$parameters_query = res
+  invisible(request)
+}
+
+rserve_parse_headers = function(headers, request) {
+
+  if (is.raw(headers)) {
+    headers = rawToChar(headers)
+  }
+
+  if (is_string(headers)) {
+    headers = parse_headers(headers)
+  }
+
+  request$headers = headers
+  invisible(request)
+}
+
+rserve_parse_body_and_content_type = function(body, request) {
+  h_ctype = request$headers[["content-type"]]
+  b_ctype = attr(body, "content-type")
+  if (!is.null(b_ctype)) {
+    h_ctype = b_ctype
+  }
+  if (is.null(h_ctype)) {
+    h_ctype = "text/plain"
+  }
+  if (is.null(body)) {
+    request$body = raw()
+    request$content_type = h_ctype
+  } else if (!is.raw(body)) {
+    # parse form
+    if (h_ctype == "application/x-www-form-urlencoded") {
+      return(parse_form_urlencoded(body, request))
+    }
+  } else {
+    if (startsWith(h_ctype, "multipart/form-data")) {
+      return(parse_form_multipart(body, request))
+    } else {
+      request$body = body
+      request$content_type = h_ctype
+    }
+  }
+  invisible(request)
+}
+
+rserve_parse_cookies = function(request) {
+  if (!is.null(request$headers[["cookie"]])) {
+    request$cookies = parse_cookies(request$headers[["cookie"]])
+  }
+  invisible(request)
+}
+
+# * **`from_rserve`**`(path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
+#
+#     * `path` :: `character(1)`\cr
+#       Character with requested path. Always starts with `/`.
+#
+#     * `parameters_query` :: `named character()`\cr
+#       A named character vector with URL decoded query parameters.
+#
+#     * `headers` :: `raw()` | `character(1)`\cr
+#       Request HTTP headers.
+#
+#     * `body` :: `raw()` | `character()`\cr
+#       Request body. Can be `NULL`, raw vector or named character vector for the
+#       URL encoded form (like a `parameters_query` parameter).
+
+from_rserve = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
+  # actually we can skip runtime check as inputs from Rserve are guaranteed
+  if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+    checkmate::assert_string(path)
+    checkmate::assert_character(parameters_query, null.ok = TRUE)
+    checkmate::assert(
+      checkmate::check_raw(headers, null.ok = TRUE),
+      checkmate::check_string(headers, null.ok = TRUE),
+      combine = "or"
+    )
+    checkmate::assert(
+      checkmate::check_raw(body, null.ok = TRUE),
+      checkmate::check_character(body, null.ok = TRUE),
+      combine = "or"
+    )
+  }
+
+  request$path = path
+  rserve_parse_query(parameters_query, request)
+  rserve_parse_headers(headers, request)
+  # Rserve adds "Request-Method: " key:
+  # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
+  # according to the code above we assume that "request-method" is always exists
+  request$method = request$headers[["request-method"]]
+  # remove from headers as this was added by Rserve and wasn't present in original request
+  request$headers[["request-method"]] = NULL
+
+  rserve_parse_body_and_content_type(body, request)
+  rserve_parse_cookies(request)
+
+  invisible(request)
+}
