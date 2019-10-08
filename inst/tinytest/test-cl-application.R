@@ -127,7 +127,8 @@ f = function(rq, rs) {rs$body = "text"}
 a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
-r = RestRserve:::to_rserve(a$process_request(rq))
+backend = RestRserve:::BackendRserve$new()
+r = backend$response_to_backend(a$process_request(rq))
 expect_equal(r, list("text", "text/plain", character(0), 200L))
 
 # Test endpoints method

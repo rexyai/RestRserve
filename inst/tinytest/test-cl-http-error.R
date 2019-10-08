@@ -35,8 +35,9 @@ rs = obj$bad_gateway()
 expect_equal(obj$content_type, "application/json")
 expect_equal(rs$content_type, "application/json")
 
+backend = RestRserve:::BackendRserve$new()
 # fails with 500 because rs$encode = NULL
-expect_equal(RestRserve:::to_rserve(rs)[[1]], "500 Internal Server Error (body is not character or raw)")
+expect_equal(backend$response_to_backend(rs)[[1]], "500 Internal Server Error (body is not character or raw)")
 
 # test reset works
 obj$reset()
