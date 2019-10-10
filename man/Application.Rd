@@ -169,7 +169,7 @@ app$process_request(say_rq)
 
 # run app
 # backend = BackendRserve$new()
-# backend$run(app, 8080)
+# backend$start(app, 8080)
 
 }
 \seealso{

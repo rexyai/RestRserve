@@ -11,7 +11,7 @@
 #' ```
 #' Response$new(body = "",
 #'              content_type = 'text/plain',
-#'              headers = list_named(),
+#'              headers = structure(list(), names = character(0)),
 #'              status_code = 200L,
 #'              encode = NULL)
 #' ````
