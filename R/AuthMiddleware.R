@@ -54,10 +54,9 @@ AuthMiddleware = R6::R6Class(
 
       self$process_request = function(request, response) {
         prefixes_mask = match == "partial"
-        if (any(!prefixes_mask) && request$path %in% routes[!prefixes_mask])
+        if ((request$path %in% routes[!prefixes_mask]) || any(startsWith(request$path, routes[prefixes_mask]))) {
           return(private$auth_backend$authenticate(request, response))
-        if (any(prefixes_mask) && startsWith(request$path, routes[prefixes_mask]))
-          return(private$auth_backend$authenticate(request, response))
+        }
       }
 
       self$process_response = function(request, response) {
