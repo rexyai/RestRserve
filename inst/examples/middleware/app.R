@@ -74,5 +74,5 @@ app$add_get(
 
 
 ## ---- start application ----
-
-# app$run(http_port = 8080)
+backend = BackendRserve$new()
+# backend$start(app, http_port = 8080)

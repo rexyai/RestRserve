@@ -89,4 +89,6 @@ app$add_post(path = "/predict", FUN = pred_xgb_post)
 app$add_get(path = "/predict", FUN = pred_xgb_get)
 app$add_openapi()
 app$add_swagger_ui("/")
-app$run(8080)
+
+backend = BackendRserve$new()
+backend$start(app, 8080)

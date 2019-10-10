@@ -64,5 +64,6 @@ app$add_post(
 
 
 ## ---- start application ----
+backend = BackendRserve$new()
 
-# app$run(http_port = 8080)
+# backend$start(app, http_port = 8080)

@@ -1,5 +1,7 @@
 # Test Application class
 
+backend = RestRserve:::BackendRserve$new()
+
 # Test empty object
 a = Application$new()
 expect_true(inherits(a$content_type, "character"))
@@ -127,8 +129,8 @@ f = function(rq, rs) {rs$body = "text"}
 a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
-backend = RestRserve:::BackendRserve$new()
-r = backend$response_to_backend(a$process_request(rq))
+
+r = backend$convert_response(a$process_request(rq))
 expect_equal(r, list("text", "text/plain", character(0), 200L))
 
 # Test endpoints method
@@ -188,7 +190,8 @@ if (.Platform$OS.type == "unix") {
       },
       match = "exact"
     )
-    app$run(http_port = 65003)
+    backend = RestRserve:::BackendRserve$new()
+    backend$start(app, http_port = 65003)
   })
   Sys.sleep(0.5) # wait to start process
   con = url("http://127.0.0.1:65003/status")

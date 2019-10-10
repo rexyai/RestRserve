@@ -9,12 +9,11 @@
 #' REST API by registering R functions as handlers http requests.
 #'
 #' @section Construction:
-#'
 #' Constructor for `Application`.
 #'
-#' ```
+#' `````
 #' Application$new(middleware = list(), content_type = "text/plain", ...)
-#' ````
+#' `````
 #'
 #' * **`middleware`** :: `list` of [Middleware]\cr
 #'   List of middlewares.
@@ -99,19 +98,6 @@
 #'   Process incoming request and generate [Response] object.
 #'   Useful for tests your handlers before deploy application.
 #'
-#' * **`run`**`(http_port = 8080, ..., background = FALSE)`\cr
-#'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
-#'   Starts RestRserve application from current R session.
-#'
-#'   * `http_port` - http port for application. Negative values (such as -1)
-#'     means not to expose plain http.
-#'
-#'   * `...` - key-value pairs of the Rserve configuration. If contains
-#'     `"http.port"` then `http_port` will be silently replaced with its value.
-#'
-#'   * `background` - whether to try to launch in background process on UNIX
-#'     systems. Ignored on windows.
-#'
 #' * **`add_openapi`**`(path = "/openapi.yaml", file_path = "openapi.yaml")`
 #'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
@@ -195,7 +181,8 @@
 #' app$process_request(say_rq)
 #'
 #' # run app
-#' # app$run(8080)
+#' # backend = BackendRserve$new()
+#' # backend$start(app, 8080)
 #'
 Application = R6::R6Class(
   classname = "Application",
@@ -263,14 +250,6 @@ Application = R6::R6Class(
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
       return(invisible(self))
     },
-    run = function(http_port = 8080, ..., background = FALSE) {
-      # print endpoints summary
-      if (length(self$endpoints) == 0) {
-        self$logger$warn("", context = "'Application' doesn't have any endpoints")
-      }
-      self$logger$info("", context = list(endpoints = self$endpoints))
-      private$backend$start(app = self, http_port = http_port, ...)
-    },
     add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
       checkmate::assert_string(path, pattern = "/.*")
       file_path = path.expand(file_path)
@@ -321,11 +300,14 @@ Application = R6::R6Class(
       return(invisible(self))
     },
     process_request = function(request = private$request) {
+      on.exit(private$request$reset())
+
       response = private$response
       private$eval_with_error_handling({
         response$reset()
         response$set_content_type(self$content_type)
-        request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
+        if (is.null(request$decode))
+          request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
         self$logger$trace(
           "",
