@@ -59,9 +59,9 @@
 #'   `character(1)` -> `logical(1)`\cr
 #'   Determine whether or not the response header exists.
 #'
-#' * **`get_header`**`(name)`\cr
-#'   `character(1)` -> `character()`\cr
-#'   Get HTTP response header value.
+#' * **`get_header`**`(name, default = NULL)`\cr
+#'   `character(1)`, `character(1)` -> `character()`\cr
+#'   Get HTTP response header value. If requested header is empty returns `default`.
 #'
 #' * **`set_header`**`(name, value)`\cr
 #'   `character(1)`, `character()` -> `self`\cr
@@ -197,11 +197,17 @@ Response = R6::R6Class(
       }
       return(!is.null(self$headers[[name]]))
     },
-    get_header = function(name) {
+    get_header = function(name, default = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
+        checkmate::assert_string(default, null.ok = TRUE)
       }
-      return(self$headers[[name]])
+      # NOTE that here we do not use tolower(name) as user may want to set case sensitive headers
+      # as they are used in the wild (despite standards claim that headers should be case insensitive)
+      res = self$headers[[name]]
+      if (is.null(res))
+        res = default
+      return(res)
     },
     set_header = function(name, value) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {

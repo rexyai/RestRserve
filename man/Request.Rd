@@ -101,9 +101,9 @@ Request accepts XML response.
 \item \strong{\code{reset}}\code{()}\cr
 Resets request object. This is not useful for end user, but useful for RestRserve internals -
 resetting R6 class is much faster then initialize it.
-\item \strong{\code{get_header}}\code{(name)}\cr
-\code{character(1)} -> \code{character(1)}\cr
-Get request header by name.
+\item \strong{\code{get_header}}\code{(name, default = NULL)}\cr
+\code{character(1)}, \code{character(1)} -> \code{character()}\cr
+Get HTTP response header value. If requested header is empty returns \code{default}.
 \item \strong{\code{get_param_query}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request query parameter by name.
