@@ -24,6 +24,11 @@ app$add_static(
   file_path = "public/dir"
 )
 
+app$add_static(
+  path = "/",
+  file_path = "public/dir"
+)
+
 
 ## ---- start application ----
 backend = BackendRserve$new()
