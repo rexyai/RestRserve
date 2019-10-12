@@ -71,12 +71,14 @@ CORSMiddleware = R6::R6Class(
 
       self$process_response = function(request, response) {
         prefixes_mask = match == "partial"
-        if ((request$path %in% routes[!prefixes_mask]) || any(startsWith(request$path, routes[prefixes_mask]))) {
+        if ((request$path %in% routes[!prefixes_mask]) ||
+            any(startsWith(request$path, routes[prefixes_mask])) &&
+            # response successful
+            response$status_code < 300) {
           response$set_header("Access-Control-Allow-Origin", response$get_header("Access-Control-Allow-Origin", "*"))
 
           # presence of the "Access-Control-Request-Method" header means CORS request
           if (request$method == "OPTIONS" && !is.null(request$get_header("Access-Control-Request-Method"))) {
-            message("CORS request")
             # get methods from OPTIONS "Allow" header and delete it since this is CORS request
             allow = response$get_header("Allow")
             response$delete_header("Allow")
