@@ -34,11 +34,13 @@ Middleware id
 
 \examples{
 app = Application$new(middleware = list(CORSMiddleware$new()))
-app$add_get(path = "/hello", FUN = function(req, res) {
-  res$set_body("world")
+app$add_post(path = "/hello", FUN = function(req, res) {
+  res$set_body("Hello from RestRserve!")
 })
-app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {TRUE})
-req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "*"), method = "GET")
+app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {
+ res$set_header("Allow", "POST, OPTIONS")
+})
+req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "POST"), method = "OPTIONS")
 app$process_request(req)
 
 }

@@ -42,11 +42,13 @@
 #'
 #' @examples
 #' app = Application$new(middleware = list(CORSMiddleware$new()))
-#' app$add_get(path = "/hello", FUN = function(req, res) {
-#'   res$set_body("world")
+#' app$add_post(path = "/hello", FUN = function(req, res) {
+#'   res$set_body("Hello from RestRserve!")
 #' })
-#' app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {TRUE})
-#' req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "*"), method = "GET")
+#' app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {
+#'  res$set_header("Allow", "POST, OPTIONS")
+#' })
+#' req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "POST"), method = "OPTIONS")
 #' app$process_request(req)
 #'
 CORSMiddleware = R6::R6Class(
@@ -67,16 +69,23 @@ CORSMiddleware = R6::R6Class(
 
       self$id = id
 
-      self$process_request = function(request, response) {
+      self$process_response = function(request, response) {
         prefixes_mask = match == "partial"
         if ((request$path %in% routes[!prefixes_mask]) || any(startsWith(request$path, routes[prefixes_mask]))) {
           response$set_header("Access-Control-Allow-Origin", response$get_header("Access-Control-Allow-Origin", "*"))
 
+          # presence of the "Access-Control-Request-Method" header means CORS request
           if (request$method == "OPTIONS" && !is.null(request$get_header("Access-Control-Request-Method"))) {
-            allow = response$get_header("Allow", "*")
+            message("CORS request")
+            # get methods from OPTIONS "Allow" header and delete it since this is CORS request
+            allow = response$get_header("Allow")
             response$delete_header("Allow")
             allow_headers = request$get_header("Access-Control-Request-Headers", "*")
-            response$set_header("Access-Control-Allow-Methods", allow)
+
+            if (!is.null(allow)) {
+              response$set_header("Access-Control-Allow-Methods", allow)
+            }
+
             response$set_header("Access-Control-Allow-Headers", allow_headers)
             response$set_header("Access-Control-Max-Age", "86400")  # 24 hours
           }
@@ -84,7 +93,7 @@ CORSMiddleware = R6::R6Class(
         invisible(TRUE)
       }
 
-      self$process_response = function(request, response) {
+      self$process_request = function(request, response) {
         invisible(TRUE)
       }
     }
