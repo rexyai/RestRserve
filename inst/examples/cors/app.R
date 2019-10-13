@@ -22,5 +22,3 @@ app$add_route("/nocors", method = "OPTIONS", FUN = function(req, res) {
 ## ---- start application ----
 backend = BackendRserve$new()
 # backend$start(app, http_port = 8080)
-
-
