@@ -54,9 +54,9 @@ Set status code for response. See \href{https://developer.mozilla.org/en-US/docs
 \item \strong{\code{has_header}}\code{(name)}\cr
 \code{character(1)} -> \code{logical(1)}\cr
 Determine whether or not the response header exists.
-\item \strong{\code{get_header}}\code{(name)}\cr
-\code{character(1)} -> \code{character()}\cr
-Get HTTP response header value.
+\item \strong{\code{get_header}}\code{(name, default = NULL)}\cr
+\code{character(1)}, \code{character(1)} -> \code{character()}\cr
+Get HTTP response header value. If requested header is empty returns \code{default}.
 \item \strong{\code{set_header}}\code{(name, value)}\cr
 \code{character(1)}, \code{character()} -> \code{self}\cr
 Set HTTP response header. \code{Content-type} and \code{Content-length} headers not

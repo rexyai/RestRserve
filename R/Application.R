@@ -450,7 +450,8 @@ Application = R6::R6Class(
       if (dir.exists(file_path)) {
         # file_path is a DIRECTORY
         handler = function(request, response) {
-          fl = file.path(file_path, substr(request$path, url_nchars + 2L, nchar(request$path)))
+          fl = substr(request$path, url_nchars + 1L, nchar(request$path))
+          fl = file.path(file_path, fl)
           if (!file.exists(fl) || dir.exists(fl)) {
             raise(self$HTTPError$not_found())
           } else {

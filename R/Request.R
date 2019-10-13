@@ -120,9 +120,9 @@
 #'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
 #'    resetting R6 class is much faster then initialize it.
 #'
-#' * **`get_header`**`(name)`\cr
-#'   `character(1)` -> `character(1)`\cr
-#'   Get request header by name.
+#' * **`get_header`**`(name, default = NULL)`\cr
+#'   `character(1)`, `character(1)` -> `character()`\cr
+#'   Get HTTP response header value. If requested header is empty returns `default`.
 #'
 #' * **`get_param_query`**`(name)`\cr
 #'   `character(1)` -> `character(1)`\cr
@@ -246,12 +246,16 @@ Request = R6::R6Class(
       private$request_id = uuid::UUIDgenerate(TRUE)
       invisible(self)
     },
-    get_header = function(name) {
+    get_header = function(name, default = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
+        checkmate::assert_string(default, null.ok = TRUE)
       }
       name = tolower(name)
-      return(self$headers[[name]])
+      res = self$headers[[name]]
+      if (is.null(res))
+        res = default
+      return(res)
     },
     get_param_query = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
