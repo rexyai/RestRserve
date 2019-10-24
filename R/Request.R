@@ -214,8 +214,8 @@ Request = R6::R6Class(
       }
       self$path = path
       self$method = match.arg(method)
-      self$parameters_query = setNames(parameters_query, tolower(names(parameters_query)))
-      self$parameters_body = setNames(parameters_body, tolower(names(parameters_body)))
+      self$parameters_query = setNames(parameters_query, names(parameters_query))
+      self$parameters_body = setNames(parameters_body, names(parameters_body))
       self$headers = setNames(headers, tolower(names(headers)))
       self$body = body
       self$cookies = setNames(cookies, tolower(names(cookies)))
@@ -261,21 +261,20 @@ Request = R6::R6Class(
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      name = tolower(name)
+      # https://stackoverflow.com/questions/24699643/are-query-string-keys-case-sensitive
+      # query is case sensitive
       return(self$parameters_query[[name]])
     },
     get_param_body = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      name = tolower(name)
       return(self$parameters_body[[name]])
     },
     get_param_path = function(name) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
       }
-      name = tolower(name)
       return(self$parameters_path[[name]])
     },
     get_file = function(name) {

@@ -223,3 +223,16 @@ expect_equal(r$body, NULL)
 expect_equal(r$cookies, list())
 expect_equal(r$content_type, "text/plain")
 expect_equal(r$decode, NULL)
+
+
+
+# Test query parameters are case sensitive
+r = Request$new(
+  path = '/a',
+  method = 'GET',
+  parameters_query = list(key = "value", KEY = "VALUE")
+)
+expect_identical(r$get_param_query("key"), "value")
+expect_identical(r$get_param_query("key"), r$parameters_query[["key"]])
+expect_identical(r$get_param_query("KEY"), "VALUE")
+expect_identical(r$get_param_query("KEY"), r$parameters_query[["KEY"]])

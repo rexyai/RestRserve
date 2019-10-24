@@ -1,3 +1,4 @@
+#nocov start
 Backend = R6::R6Class(
   "Backend",
   public = list(
@@ -19,3 +20,5 @@ BackendHttpuv = R6::R6Class(
     # }
   )
 )
+
+#nocov end
