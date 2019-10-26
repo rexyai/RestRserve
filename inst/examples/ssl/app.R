@@ -37,7 +37,9 @@ if (any(!file.exists(ssl_files))) {
 }
 
 # set up options according to https://github.com/s-u/Rserve/wiki/rserve.conf
-app$run(
+backend = BackendRserve$new()
+backend$start(
+  app,
   # http_port <= 0 means not allow plain http interface
   http_port = -1,
   https.port = 8443,

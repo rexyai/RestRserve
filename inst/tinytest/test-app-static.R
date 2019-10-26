@@ -26,6 +26,16 @@ expect_equal(rs$content_type, "text/plain")
 expect_equal(rs$headers, list())
 expect_equal(rs$status_code, 200L)
 
+# Test root static directory
+rq = Request$new(path = "/hello.txt")
+rs = app$process_request(rq)
+expect_equal(names(rs$body), "file")
+expect_true(file.exists(rs$body))
+expect_equal(readLines(rs$body, n = 1L), "Hello, World!")
+expect_equal(rs$content_type, "text/plain")
+expect_equal(rs$headers, list())
+expect_equal(rs$status_code, 200L)
+
 # Test static directory not exists
 rq = Request$new(path = "/dir/hello2.txt")
 rs = app$process_request(rq)

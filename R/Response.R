@@ -11,7 +11,7 @@
 #' ```
 #' Response$new(body = "",
 #'              content_type = 'text/plain',
-#'              headers = list_named(),
+#'              headers = structure(list(), names = character(0)),
 #'              status_code = 200L,
 #'              encode = NULL)
 #' ````
@@ -59,9 +59,9 @@
 #'   `character(1)` -> `logical(1)`\cr
 #'   Determine whether or not the response header exists.
 #'
-#' * **`get_header`**`(name)`\cr
-#'   `character(1)` -> `character()`\cr
-#'   Get HTTP response header value.
+#' * **`get_header`**`(name, default = NULL)`\cr
+#'   `character(1)`, `character(1)` -> `character()`\cr
+#'   Get HTTP response header value. If requested header is empty returns `default`.
 #'
 #' * **`set_header`**`(name, value)`\cr
 #'   `character(1)`, `character()` -> `self`\cr
@@ -197,11 +197,17 @@ Response = R6::R6Class(
       }
       return(!is.null(self$headers[[name]]))
     },
-    get_header = function(name) {
+    get_header = function(name, default = NULL) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(name)
+        checkmate::assert_string(default, null.ok = TRUE)
       }
-      return(self$headers[[name]])
+      # NOTE that here we do not use tolower(name) as user may want to set case sensitive headers
+      # as they are used in the wild (despite standards claim that headers should be case insensitive)
+      res = self$headers[[name]]
+      if (is.null(res))
+        res = default
+      return(res)
     },
     set_header = function(name, value) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
@@ -339,56 +345,3 @@ Response = R6::R6Class(
     }
   )
 )
-
-
-# * **`to_rserve`**`()`\cr
-#   -> `list()`\cr
-#   Convert `self` object to Rserve compatible structure.
-#   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
-#   returned list should have the following structure:
-#     * `body`: can be a character vector of length one or a raw vector.
-#       if the character vector is named "file" then the content of a file of
-#       that name is the body.
-#       If the character vector is named "tmpfile" then the content of a
-#       temporary file of that name is the body.
-#
-#     * `content-type`: must be a character vector of length one or NULL
-#       (if present, else default is `"text/plain"`).
-#
-#     * `headers`: must be a character vector - the elements will have CRLF
-#       appended and neither `Content-type` nor `Content-length` may be used.
-#
-#     * `status-code`: must be an integer if present (default is 200).
-to_rserve = function(response) {
-  body = response$body
-  # prepare headers
-  if (length(response$headers) > 0L) {
-    headers = format_headers(as.list(response$headers))
-    if (length(response$cookies) > 0L) {
-      headers = paste(headers, format_cookies(as.list(response$cookies)), sep = "\r\n")
-    }
-  } else {
-    headers = character(0)
-  }
-
-  # prepare body
-  if (is_string(body)) {
-    body_name = names(body)
-    if (isTRUE(body_name %in% c("file", "tmpfile"))) {
-      # NOTE there is no call to response$encode() - we are serving files "as is"
-      return(c(as.list(body), list(response$content_type, headers, response$status_code)))
-    }
-  }
-  if (is.null(body)) {
-    body = raw()
-  } else {
-    if (is.function(response$encode)) {
-      body = response$encode(body)
-    }
-  }
-  if (isTRUE(is.raw(body) || is.character(body))) {
-    return(list(body, response$content_type, headers, response$status_code))
-  } else {
-    return(list("500 Internal Server Error (body is not character or raw)", "text/plain", headers, 500L))
-  }
-}

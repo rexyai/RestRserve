@@ -1,0 +1,12 @@
+coverage:
+  status:
+    project:
+      default:
+        # basic
+        target: auto
+        # don't fail CI - https://docs.codecov.io/docs/ci-service-relationship
+        threshold: 100
+    patch:
+      default:
+        target: auto
+        threshold: 50

@@ -27,8 +27,8 @@ Depends:
   R (>= 3.6.0)
 Imports:
   methods,
-  Rcpp (>= 1.0.2),
   Rserve (>= 1.7.3),
+  Rcpp (>= 1.0.2),
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
   checkmate (>= 1.9.4),

@@ -24,7 +24,12 @@ app$add_static(
   file_path = "public/dir"
 )
 
+app$add_static(
+  path = "/",
+  file_path = "public/dir"
+)
+
 
 ## ---- start application ----
-
-# app$run(http_port = 8080)
+backend = BackendRserve$new()
+# backend$start(app, http_port = 8080)

@@ -19,3 +19,10 @@ to_json = function(x, unbox = TRUE)  {
   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')
   unclass(res)
 }
+
+from_json = function(x) {
+  if (is.raw(x)) {
+    x = rawToChar(x)
+  }
+  jsonlite::fromJSON(txt = x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+}

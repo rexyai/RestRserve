@@ -9,12 +9,11 @@
 #' REST API by registering R functions as handlers http requests.
 #'
 #' @section Construction:
-#'
 #' Constructor for `Application`.
 #'
-#' ```
+#' `````
 #' Application$new(middleware = list(), content_type = "text/plain", ...)
-#' ````
+#' `````
 #'
 #' * **`middleware`** :: `list` of [Middleware]\cr
 #'   List of middlewares.
@@ -99,19 +98,6 @@
 #'   Process incoming request and generate [Response] object.
 #'   Useful for tests your handlers before deploy application.
 #'
-#' * **`run`**`(http_port = 8080, ..., background = FALSE)`\cr
-#'   `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
-#'   Starts RestRserve application from current R session.
-#'
-#'   * `http_port` - http port for application. Negative values (such as -1)
-#'     means not to expose plain http.
-#'
-#'   * `...` - key-value pairs of the Rserve configuration. If contains
-#'     `"http.port"` then `http_port` will be silently replaced with its value.
-#'
-#'   * `background` - whether to try to launch in background process on UNIX
-#'     systems. Ignored on windows.
-#'
 #' * **`add_openapi`**`(path = "/openapi.yaml", file_path = "openapi.yaml")`
 #'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
 #'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
@@ -195,7 +181,8 @@
 #' app$process_request(say_rq)
 #'
 #' # run app
-#' # app$run(8080)
+#' # backend = BackendRserve$new()
+#' # backend$start(app, 8080)
 #'
 Application = R6::R6Class(
   classname = "Application",
@@ -206,6 +193,7 @@ Application = R6::R6Class(
     ContentHandlers = NULL,
     #------------------------------------------------------------------------
     initialize = function(middleware = list(), content_type = "text/plain", ...) {
+      private$backend = BackendRserve$new()
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
 
@@ -262,62 +250,6 @@ Application = R6::R6Class(
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
       return(invisible(self))
     },
-    run = function(http_port = 8080, ..., background = FALSE) {
-      checkmate::assert_int(http_port)
-      ARGS = list(...)
-      if (http_port > 0L) {
-        if (is.null(ARGS[["http.port"]])) {
-          ARGS[["http.port"]] = http_port
-        }
-      }
-      if (is.null(ARGS[["port"]])) {
-        # find available port (if default (6311) is busy)
-        ARGS[["port"]] = find_port()
-      }
-      if (port_is_taken(ARGS[["port"]])) {
-        stop(sprintf("Port %s is already in use. ", ARGS[["port"]]),
-             "Please provide another 'port' argument value.", call. = FALSE)
-      }
-
-      keep_http_request = .GlobalEnv[[".http.request"]]
-      # restore global environment on exit
-      on.exit({
-        .GlobalEnv[[".http.request"]] = keep_http_request
-      })
-      # temporary modify global environment
-      .GlobalEnv[[".http.request"]] = private$.http.request
-
-      if (.Platform$OS.type != "windows" && background) {
-        run_mode = 'BACKGROUND'
-      } else {
-        run_mode = 'FOREGROUND'
-      }
-
-      # print endpoints summary
-      if (length(self$endpoints) == 0) {
-        self$logger$warn("", context = "'Application' doesn't have any endpoints")
-      }
-      self$logger$info("", context = list(endpoints = self$endpoints))
-
-      pid = Sys.getpid()
-      if (run_mode == 'BACKGROUND') {
-        pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)[["pid"]]
-      }
-
-      # print msg now because after `do.call` process will be blocked
-      if (interactive()) {
-        message(sprintf("Started RestRserve in a %s process pid = %d", run_mode, pid))
-        msg = sprintf("You can kill process GROUP with 'kill -TERM -%d'", pid)
-        msg = paste(msg, '(current master process also will be killed)')
-        message(msg)
-      }
-
-      if (run_mode == 'FOREGROUND') {
-        do.call(Rserve::run.Rserve, ARGS)
-      }
-
-      return(pid)
-    },
     add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
       checkmate::assert_string(path, pattern = "/.*")
       file_path = path.expand(file_path)
@@ -368,11 +300,14 @@ Application = R6::R6Class(
       return(invisible(self))
     },
     process_request = function(request = private$request) {
+      on.exit(private$request$reset())
+
       response = private$response
       private$eval_with_error_handling({
         response$reset()
         response$set_content_type(self$content_type)
-        request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
+        if (is.null(request$decode))
+          request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
         self$logger$trace(
           "",
@@ -491,6 +426,7 @@ Application = R6::R6Class(
     middleware = NULL,
     response = NULL,
     request = NULL,
+    backend = NULL,
     # according to
     # https://github.com/s-u/Rserve/blob/d5c1dfd029256549f6ca9ed5b5a4b4195934537d/src/http.c#L29
     # only "GET", "POST", ""HEAD" are ""natively supported. Other methods are "custom"
@@ -514,7 +450,8 @@ Application = R6::R6Class(
       if (dir.exists(file_path)) {
         # file_path is a DIRECTORY
         handler = function(request, response) {
-          fl = file.path(file_path, substr(request$path, url_nchars + 2L, nchar(request$path)))
+          fl = substr(request$path, url_nchars + 1L, nchar(request$path))
+          fl = file.path(file_path, fl)
           if (!file.exists(fl) || dir.exists(fl)) {
             raise(self$HTTPError$not_found())
           } else {
@@ -606,22 +543,6 @@ Application = R6::R6Class(
         success = FALSE
       }
       return(success)
-    },
-    #------------------------------------------------------------------------
-
-    # this is workhorse for RestRserve
-    # it is assigned to .http.request as per requirements of Rserve for http interface
-    .http.request = function(url, parameters_query, body, headers) {
-      # first parse incoming request
-      private$request$reset()
-      from_rserve(
-        private$request,
-        path = url,
-        parameters_query = parameters_query,
-        headers = headers,
-        body = body
-      )
-      to_rserve(self$process_request(private$request))
     }
   )
 )

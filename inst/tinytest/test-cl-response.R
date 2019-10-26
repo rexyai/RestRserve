@@ -12,7 +12,10 @@ expect_null(r$encode)
 expect_true(inherits(r$status_code, "integer"))
 expect_equal(length(r$status_code), 1L)
 expect_equal(r$status_code, 200L)
-expect_equal(RestRserve:::to_rserve(r), list(raw(), "text/plain", character(0), 200L))
+
+backend = RestRserve:::BackendRserve$new()
+
+expect_equal(backend$convert_response(r), list(raw(), "text/plain", character(0), 200L))
 
 # Test parse_headers
 h = list("Test-Header" = "value",
@@ -88,7 +91,7 @@ r = Response$new(
 expect_equal(r$body, list())
 expect_equal(r$content_type, "application/json")
 expect_equal(r$encode, to_json)
-expect_equal(RestRserve:::to_rserve(r)[[1]], to_json(list()))
+expect_equal(backend$convert_response(r)[[1]], to_json(list()))
 
 # Test set_date method
 r = Response$new()
@@ -115,7 +118,7 @@ expect_null(r$cookies[["param"]])
 
 # Test to_rserve method with empty response
 r = Response$new()
-rs = RestRserve:::to_rserve(r)
+rs = backend$convert_response(r)
 expect_equal(rs[[1]], raw())
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
@@ -124,7 +127,7 @@ expect_equal(rs[[4]], 200L)
 # Test to_rserve method with empty response
 r = Response$new()
 r$set_body(raw())
-rs = RestRserve:::to_rserve(r)
+rs = backend$convert_response(r)
 expect_equal(rs[[1]], raw())
 expect_equal(rs[[2]], "text/plain")
 expect_equal(rs[[3]], character(0))
@@ -144,7 +147,7 @@ h = paste(
   "Set-Cookie: param=value",
   sep = "\r\n"
 )
-rs = RestRserve:::to_rserve(r)
+rs = backend$convert_response(r)
 expect_equal(rs[[1]], "{status: ok}")
 expect_equal(rs[[2]], "applicaiton/json")
 expect_equal(rs[[3]], h)
@@ -155,7 +158,7 @@ r = Response$new()
 tmp = tempfile(fileext = ".html")
 r$set_body(c("file" = tmp))
 r$set_content_type("text/html")
-rs = RestRserve:::to_rserve(r)
+rs = backend$convert_response(r)
 expect_equal(names(rs)[[1]], "file")
 expect_equal(rs[[1]], tmp)
 expect_equal(rs[[2]], "text/html")
@@ -167,7 +170,7 @@ r = Response$new()
 tmp = tempfile(fileext = ".html")
 r$set_body(c("tmpfile" = tmp))
 r$set_content_type("text/html")
-rs = RestRserve:::to_rserve(r)
+rs = backend$convert_response(r)
 expect_equal(names(rs)[[1]], "tmpfile")
 expect_equal(rs[[1]], tmp)
 expect_equal(rs[[2]], "text/html")
