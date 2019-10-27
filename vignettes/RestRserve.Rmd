@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 ```
 
 ```{r, include = FALSE}
-run_bg <- function(expr) {
+run_bg = function(expr) {
   args = c("--vanilla", "-q")
   expr_c = deparse(substitute(expr))
-  expr_c <- paste(expr_c, collapse = "\n")
+  expr_c = paste(expr_c, collapse = "\n")
   pid = sys::r_background(c(args, "-e", expr_c), std_out = TRUE, std_err = TRUE)
   return(pid)
 }
@@ -136,7 +136,7 @@ pid = run_bg({
     for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
     x[[n]]
   }
-  
+
   fib_handler = function(request, response) {
     n = as.integer(request$parameters_query[["n"]])
     if (length(n) == 0L || is.na(n)) {
@@ -145,7 +145,7 @@ pid = run_bg({
     response$set_body(as.character(calc_fib(n)))
     response$set_content_type("text/plain")
   }
-  
+
   app = RestRserve::Application$new()
   app$add_get(path = "/fib", FUN = fib_handler)
   yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
