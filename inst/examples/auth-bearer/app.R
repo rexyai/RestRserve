@@ -37,7 +37,7 @@ auth_mw = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
-  name = "bearer_auth"
+  id = "bearer_auth"
 )
 
 
@@ -63,5 +63,5 @@ app$add_get(
 
 
 ## ---- start application ----
-
-# app$run(http_port = 8080)
+backend = BackendRserve$new()
+# backend$start(app, http_port = 8080)

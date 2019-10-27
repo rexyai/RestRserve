@@ -10,7 +10,7 @@
 #' @section Construction:
 #'
 #' ```
-#' AuthMiddleware$new(auth_backend, routes, match = "exact", name = "AuthMiddleware")
+#' AuthMiddleware$new(auth_backend, routes, match = "exact", id = "AuthMiddleware")
 #' ````
 #'
 #' * `auth_backend` :: [AuthBackend]\cr
@@ -22,8 +22,8 @@
 #' * `match` :: `character()`\cr
 #'   How routes will be matched: exact or partial (as prefix).
 #'
-#' * `name` :: `character(1)`\cr
-#'   Middleware name.
+#' * `id` :: `character(1)`\cr
+#'   Middleware id
 #'
 #' @export
 #'
@@ -36,11 +36,11 @@ AuthMiddleware = R6::R6Class(
   classname = "AuthMiddleware",
   inherit = Middleware,
   public = list(
-    initialize = function(auth_backend, routes, match = "exact", name = "AuthMiddleware") {
+    initialize = function(auth_backend, routes, match = "exact", id = "AuthMiddleware") {
       checkmate::assert_class(auth_backend, "AuthBackend")
       checkmate::assert_character(routes, pattern = "^/")
       checkmate::assert_subset(match, c("exact", "partial"))
-      checkmate::assert_string(name, min.chars = 1L)
+      checkmate::assert_string(id, min.chars = 1L)
 
       if (length(match) == 1L) {
         match = rep(match, length(routes))
@@ -50,14 +50,13 @@ AuthMiddleware = R6::R6Class(
       }
 
       private$auth_backend = auth_backend
-      self$name = name
+      self$id = id
 
       self$process_request = function(request, response) {
         prefixes_mask = match == "partial"
-        if (any(!prefixes_mask) && request$path %in% routes[!prefixes_mask])
+        if ((request$path %in% routes[!prefixes_mask]) || any(startsWith(request$path, routes[prefixes_mask]))) {
           return(private$auth_backend$authenticate(request, response))
-        if (any(prefixes_mask) && startsWith(request$path, routes[prefixes_mask]))
-          return(private$auth_backend$authenticate(request, response))
+        }
       }
 
       self$process_response = function(request, response) {

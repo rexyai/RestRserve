@@ -18,17 +18,27 @@ Also useful for testing.
  body = list(),
  cookies = list(),
  content_type = "text/plain",
- decode = NULL)
+ decode = NULL,
+ ...)
 }
 \itemize{
 \item \strong{\code{path}} :: \code{character(1)}\cr
 Character with requested path. Always starts with \code{/}.
 \item \strong{\code{method}} :: \code{character(1)}\cr
 Request HTTP method.
+\item \strong{\code{parameters_path}} :: \code{named list()}\cr
+List of parameters extracted from templated path after routing.
+For example if we have some handler listening at \code{/job/{job_id}} and we are
+receiving request at \code{/job/1} then \code{parameters_path} will be \code{list(job_id = "1")}.
+It is important to understand that \code{parameters_path} will be available
+(not empty) only after request will reach handler.
+This effectively means that \code{parameters_path} can be used inside handler
+and response middleware (but not request middleware!).
 \item \strong{\code{parameters_query}} :: \code{named list()}\cr
 A named list with URL decoded query parameters.
 \item \strong{\code{parameters_body}} :: \code{named list()}\cr
-A named list with URL decoded body parameters.
+A named list with URL decoded body parameters. This field is helpful when request is
+a urlencoded form or a multipart form.
 \item \strong{\code{headers}} :: \code{named list()}\cr
 Request HTTP headers represented as named list.
 \item \strong{\code{body}} :: \code{anything} \cr
@@ -36,10 +46,10 @@ Request body. Can be anything and in conjunction with \code{content_type}
 defines how HTTP body will be represented.
 \item \strong{\code{cookies}} :: \code{named list()}\cr
 cookies represented as named list. \strong{Note} that cookies should be provided explicitly -
-they won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
+they won't be derived from \code{headers}.
 \item \strong{\code{content_type}} :: \code{character(1)}\cr
 HTTP content type. \strong{Note} that \code{content_type} should be provided explicitly -
-it won't be derived from \code{headers} (in contrast to \code{from_rserve()} method).
+it won't be derived from \code{headers}.
 \item \strong{\code{decode}} :: \code{function}\cr
 Function to decode body for the specific content type.
 }
@@ -67,17 +77,9 @@ Request cookies.
 \item \strong{\code{files}} :: \code{named list()}\cr
 Structure which contains positions and lengths of files for the multipart
 body.
-\item \strong{\code{parameters_path}} :: \code{named list()}\cr
-List of parameters extracted from templated path after routing.
-For example if we have some handler listening at \code{/job/{job_id}} and we are
-receiving request at \code{/job/1} then \code{parameters_path} will be \code{list(job_id = "1")}.
-It is important to understand that \code{parameters_path} will be available
-(not empty) only after request will reach handler.
-This effectively means that \code{parameters_path} can be used inside handler
-and response middleware (but not request middleware!).
 \item \strong{\code{context}} :: \code{environment()}\cr
 Environment to store any data. Can be used in middlewares.
-\item \strong{\code{request_id}} :: \code{character(1)}\cr
+\item \strong{\code{id}} :: \code{character(1)}\cr
 Automatically generated UUID for each request. Read only.
 \item \strong{\code{body_decoded}} :: \code{any}\cr
 Body parsed according to the \code{Content-type} request header and \code{decode}
@@ -96,24 +98,12 @@ Request accepts XML response.
 \section{Methods}{
 
 \itemize{
-\item \strong{\code{from_rserve}}\code{(path = "/", parameters_query = NULL, headers = NULL, body = NULL)} :: \code{function}\cr
-\itemize{
-\item \code{path} :: \code{character(1)}\cr
-Character with requested path. Always starts with \code{/}.
-\item \code{parameters_query} :: \code{named character()}\cr
-A named character vector with URL decoded query parameters.
-\item \code{headers} :: \code{raw()} | \code{character(1)}\cr
-Request HTTP headers.
-\item \code{body} :: \code{raw()} | \code{character()}\cr
-Request body. Can be \code{NULL}, raw vector or named character vector for the
-URL encoded form (like a \code{parameters_query} parameter).
-}
 \item \strong{\code{reset}}\code{()}\cr
 Resets request object. This is not useful for end user, but useful for RestRserve internals -
 resetting R6 class is much faster then initialize it.
-\item \strong{\code{get_header}}\code{(name)}\cr
-\code{character(1)} -> \code{character(1)}\cr
-Get request header by name.
+\item \strong{\code{get_header}}\code{(name, default = NULL)}\cr
+\code{character(1)}, \code{character(1)} -> \code{character()}\cr
+Get HTTP response header value. If requested header is empty returns \code{default}.
 \item \strong{\code{get_param_query}}\code{(name)}\cr
 \code{character(1)} -> \code{character(1)}\cr
 Get request query parameter by name.
@@ -146,7 +136,7 @@ rq = Request$new(
   )
 )
 # get request UUID
-rq$request_id
+rq$id
 # get content accept
 rq$accept
 # get request content type

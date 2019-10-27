@@ -25,7 +25,7 @@ mw1 = Middleware$new(
       request$path = "/hello-world"
   },
   process_response = function(request, response) { TRUE },
-  name = "mw1"
+  id = "mw1"
 )
 
 mw2 = Middleware$new(
@@ -36,7 +36,7 @@ mw2 = Middleware$new(
       response$set_content_type("text/plain")
     }
   },
-  name = "mw2"
+  id = "mw2"
 )
 
 mw3 = Middleware$new(
@@ -48,7 +48,7 @@ mw3 = Middleware$new(
     if (request$path == "/err-mw-resp")
       stop("should be caught by middleware handler and wrapped to error")
   },
-  name = "mw3"
+  id = "mw3"
 )
 
 
@@ -74,5 +74,5 @@ app$add_get(
 
 
 ## ---- start application ----
-
-# app$run(http_port = 8080)
+backend = BackendRserve$new()
+# backend$start(app, http_port = 8080)

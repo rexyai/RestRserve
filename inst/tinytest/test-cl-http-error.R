@@ -35,12 +35,10 @@ rs = obj$bad_gateway()
 expect_equal(obj$content_type, "application/json")
 expect_equal(rs$content_type, "application/json")
 
+backend = RestRserve:::BackendRserve$new()
 # fails with 500 because rs$encode = NULL
-expect_equal(rs$to_rserve()[[1]], "500 Internal Server Error (body is not character or raw)")
+expect_equal(backend$convert_response(rs)[[1]], "500 Internal Server Error (body is not character or raw)")
 
 # test reset works
 obj$reset()
 expect_equal(obj, cl)
-
-# snippet below generates markdown HTTPError docs:
-# paste(error_methods, collapse = "**`(...)`\\cr\n#' `...` -> `[Response]`\\cr\n#' Generates corresponding http error.\\cr\n#' * **`")

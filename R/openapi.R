@@ -43,7 +43,8 @@ NULL
 #' @param openapi string, version of open api. For example `"3.0.1"`
 #' @param info infoObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject>.
 #' See [openapi_info]
-#' @param ... other parameters - see <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject>
+#' @param ... other parameters - see
+#' <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject>
 #' @rdname openapi
 #' @keywords internal
 openapi_create = function(openapi = openapi_openapi_version(),
@@ -99,7 +100,8 @@ openapi_info = function(title = "RestRserve OpenAPI",
   res
 }
 
-#' @param servers serverObject - <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject>
+#' @param servers serverObject -
+#' <https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject>
 #' See [openapi_servers]
 #' @rdname openapi
 #' @keywords internal
@@ -111,7 +113,8 @@ openapi_servers = function(servers = list(openapi_server())) {
 }
 
 # https://swagger.io/specification/#serverObject
-#' @param variables  a map between a variable name and its value. The value is used for substitution in the server's URL template.
+#' @param variables  a map between a variable name and its value.
+#' #The value is used for substitution in the server's URL template.
 #' @rdname openapi
 #' @keywords internal
 openapi_server = function(url = "/",

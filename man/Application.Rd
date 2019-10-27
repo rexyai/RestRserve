@@ -12,7 +12,6 @@ REST API by registering R functions as handlers http requests.
 }
 \section{Construction}{
 
-
 Constructor for \code{Application}.\preformatted{Application$new(middleware = list(), content_type = "text/plain", ...)
 }
 \itemize{
@@ -39,7 +38,7 @@ Class which raises HTTP errors. Global \link{HTTPError} is used by default. In t
 user can replace it with his own class (see \code{RestRserve:::HTTPErrorFactory}). However we believe
 in the majority of the cases using \link{HTTPError} will be enough.
 \item \strong{\code{ContentHandlers}} :: \code{ContentHandler}\cr
-Helper to decode request body and encode response body.
+Helper to decode request body and encode response body. Global \link{ContentHandlers} is used by default.
 \item \strong{\code{endpoints}} :: \code{named list()}\cr
 Prints all the registered routes with allowed methods.
 }
@@ -85,30 +84,20 @@ automatically (from file extension).
 
 If it will be impossible to guess about file type then \code{content_type} will
 be set to \code{"application/octet-stream"}.
-\item \strong{\code{append_middleware}}\code{(...)}\cr
-\code{list()} of \link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
+\item \strong{\code{append_middleware}}\code{(mw)}\cr
+\link{Middleware} -> \code{invisible(self)} - \link{Application} \cr
 Appends middleware to handlers pipeline.
 \item \strong{\code{process_request}}\code{(request)}\cr
 \link{Request} -> \link{Response}\cr
 Process incoming request and generate \link{Response} object.
 Useful for tests your handlers before deploy application.
-\item \strong{\code{run}}\code{(http_port = 8080, ..., background = FALSE)}\cr
-\code{integer(1)}, \code{any}, \code{logical(1)} -> \code{NULL} \cr
-Starts RestRserve application from current R session.
-\itemize{
-\item \code{http_port} - http port for application. Negative values (such as -1)
-means not to expose plain http.
-\item \code{...} - key-value pairs of the Rserve configuration. If contains
-\code{"http.port"} then \code{http_port} will be silently replaced with its value.
-\item \code{background} - whether to try to launch in background process on UNIX
-systems. Ignored on windows.
-}
 \item \strong{\code{add_openapi}}\code{(path = "/openapi.yaml", file_path = "openapi.yaml")}
 \code{character(1)}, \code{named list()}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.
 \item \strong{\code{add_swagger_ui}}\code{(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")}\cr
-\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} -> \code{invisible(self)} - \link{Application} \cr
+\code{character(1)}, \code{character(1)}, \code{logical(1)}, \code{character(1)}, \code{character(1)} ->
+\code{invisible(self)} - \link{Application} \cr
 Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
 }
@@ -123,12 +112,12 @@ app_logger$set_name("MW Logger")
 # init middleware to logging
 mw = Middleware$new(
   process_request = function(rq, rs) {
-    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$request_id, rq$path))
+    app_logger$info(sprintf("Incomming request (id \%s): \%s", rq$id, rq$path))
   },
   process_response = function(rq, rs) {
-    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$request_id, rs$status))
+    app_logger$info(sprintf("Outgoing response (id \%s): \%s", rq$id, rs$status))
   },
-  name = "awesome-app-logger"
+  id = "awesome-app-logger"
 )
 
 # init application
@@ -179,7 +168,8 @@ app$process_request(desc_rq)
 app$process_request(say_rq)
 
 # run app
-# app$run(8080)
+# backend = BackendRserve$new()
+# backend$start(app, 8080)
 
 }
 \seealso{

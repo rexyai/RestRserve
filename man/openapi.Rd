@@ -34,10 +34,12 @@ openapi_license(name = NULL, url = NULL)
 \item{info}{infoObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject}.
 See \link{openapi_info}}
 
-\item{servers}{serverObject - \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
+\item{servers}{serverObject -
+\url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject}
 See \link{openapi_servers}}
 
-\item{...}{other parameters - see \url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}}
+\item{...}{other parameters - see
+\url{https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject}}
 
 \item{openapi_version}{version on OpenAPI}
 
@@ -55,7 +57,8 @@ See \link{openapi_servers}}
 
 \item{url}{url}
 
-\item{variables}{a map between a variable name and its value. The value is used for substitution in the server's URL template.}
+\item{variables}{a map between a variable name and its value.
+#The value is used for substitution in the server's URL template.}
 
 \item{name}{name}
 

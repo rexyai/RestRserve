@@ -19,7 +19,7 @@
 #' Middleware$new(
 #'   process_request  = function(request, response) TRUE,
 #'   process_response = function(request, response) TRUE,
-#'   name = "Middleware"
+#'   id = "Middleware"
 #' )
 #' ````
 #'
@@ -31,8 +31,8 @@
 #'   Modify `request` or `response` objects or  throw exception using
 #'   `[HTTPError]` helper. This function evaluate after router handler called.
 #'
-#' * `name` :: `character(1)`\cr
-#'   Middleware name.
+#' * `id` :: `character(1)`\cr
+#'   Middleware id
 #'
 #' @section Fields:
 #'
@@ -54,8 +54,8 @@
 #'
 #'   Usually `process_response` is used to perform logging, custom error handling, etc.
 #'
-#' * `name` :: `character(1)`\cr
-#'   Middleware name.
+#' * `id` :: `character(1)`\cr
+#'   Middleware id
 #'
 #' @export
 #'
@@ -66,18 +66,19 @@ Middleware = R6::R6Class(
   public = list(
     process_request = NULL,
     process_response = NULL,
-    name = NULL,
+    id = NULL,
     initialize = function(
       process_request  = function(request, response) TRUE,
       process_response = function(request, response) TRUE,
-      name = "Middleware") {
-      checkmate::assert_function(process_request, nargs = 2L)
-      checkmate::assert_function(process_response, nargs = 2L)
-      checkmate::assert_string(name)
+      id = "Middleware") {
 
-      self$process_request  = process_request
-      self$process_response = process_response
-      self$name = name
+        checkmate::assert_function(process_request, nargs = 2L)
+        checkmate::assert_function(process_response, nargs = 2L)
+        checkmate::assert_string(id)
+
+        self$process_request  = process_request
+        self$process_response = process_response
+        self$id = id
     }
   )
 )

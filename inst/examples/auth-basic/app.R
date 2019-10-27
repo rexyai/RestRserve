@@ -56,13 +56,13 @@ auth_mw_exact = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/secure",
   match = "exact",
-  name = "basic_auth"
+  id = "basic_auth"
 )
 auth_mw_partial = AuthMiddleware$new(
   auth_backend = auth_backend,
   routes = "/securearea",
   match = "partial",
-  name = "basic_auth"
+  id = "basic_auth"
 )
 
 
@@ -94,5 +94,5 @@ app$add_get(
 
 
 ## ---- start application ----
-
-# app$run(http_port = 8080)
+backend = BackendRserve$new()
+# backend$start(app, http_port = 8080)
