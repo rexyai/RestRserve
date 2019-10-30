@@ -5,9 +5,7 @@
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
-**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
-
-[RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance microservices and app backends**. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits for that should go to [Simon Urbanek](https://github.com/s-u)).
+[RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 
 ## Installation
 
@@ -31,7 +29,8 @@ app$add_get(
   FUN = function(request, response) {
     response$set_body("Hello from RestRserve")
   })
-app$run(http_port = 8080)
+backend = BackendRserve$new()
+backend$start(app, http_port = 8080)
 ```
 
 Now you can type `http://localhost:8080/hello` in your favourite browser and see (surprisingly!) *Hello from RestRserve*.
@@ -45,11 +44,11 @@ Please follow [quick start article on http://restrserve.org/](./articles/quick-s
 - Allows to build **high performance REST API** ( > 2000 req/sec per CPU core)
 - Build **safe and secure applications** - RestRserve supports *https*, provides building blocks for basic/token authentication
 - Concise and intuitive syntax
-- Allows to **raise meaningful http errors** and interrupt request handling from any place of your code
+- **Raise meaningful http errors** and allows to interrupt request handling from any place of the user code
 - Comes with **many examples** - see `inst/examples`
 - Saves you from boilerplate code:
-  - automatically **lazily** decodes request body of common formats
-  - automatically encodes response body for common formats
+  - automatically **lazily** decodes request body from the common formats
+  - automatically encodes response body to the common formats
   - automatically parses URI templates (such as `/get/{item_id}`)
   - helps to expose OpenAPI and Swagger/Redoc/Rapidoc UI
 
