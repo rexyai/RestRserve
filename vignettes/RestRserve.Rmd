@@ -24,16 +24,35 @@ run_bg = function(expr) {
 }
 ```
 
-## Steps
+## Introduction
 
-### 0. Dependencies
+Suppose you've developed a very useful algorithm or statistical model and you need to itegrate it with some external system. Nowdays HTTP became de-facto a lingua-franca for this kind of tasks.
+
+In this article we will demonstrate how to use RestRserve to build a basic REST API.
+
+
+## Workflow overview
+
+Genrerally RestRserve workflow consists of several major steps:
+
+1. Create application with `Application$new()`
+1. Create a function which:
+    - takes 2 arguments - `request` and `response` as an input. `request` and `response` are instances of `RestRserve::Request` and `RestRserve::Response`. It is **important** that both `request` and `response` are **mutable** objects.
+    - modifies `response` in place or `raise()` exception in case of some error
+1. Register this function as a handler for some endpoint
+1. Start application
+
+
+## 1. Create application
 
 ```{r}
 library(RestRserve)
+app = Application$new()
 ```
 
-### 1. Define core functions
+## 2. Define logic 
 
+For simplicity we will use Fibonacci number calculation as an algorithm we want to expose.
 
 ```{r}
 calc_fib = function(n) {
@@ -41,12 +60,16 @@ calc_fib = function(n) {
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-  for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
-  x[[n]]
+  
+  for (i in 3L:n) {
+   x[[i]] = x[[i - 1]] + x[[i - 2]] 
+  }
+  
+  return(x[[n]])
 }
 ```
 
-### 2. Define request handler
+Create function which will handle requests.
 
 ```{r}
 fib_handler = function(request, response) {
@@ -59,28 +82,27 @@ fib_handler = function(request, response) {
 }
 ```
 
-### 3. Create application instance
-
-```{r}
-app = Application$new()
-```
-
-### 4. Regiester endpoints with handlers
+## 2. Add endpoint
 
 ```{r}
 app$add_get(path = "/fib", FUN = fib_handler)
 ```
 
-### 5. Test endpoints
+## 3. Test endpoints
+
+Now we can test our appliaction without starting it:
 
 ```{r}
-rq = Request$new(path = "/fib", parameters_query = c(n = 10))
-rs = app$process_request(rq)
-cat("Response status:", rs$status)
-cat("Response body:", rs$body)
+request = Request$new(path = "/fib", parameters_query = list(n = 10))
+response = app$process_request(request)
+
+cat("Response status:", response$status)
+cat("Response body:", response$body)
 ```
 
-### 6. Add OpenAPI desciption and Swagger UI
+## 4. Add OpenAPI desciption and Swagger UI
+
+Generally it is a good idea to provide documentation along with the API.  Convenient way to do that is to supply a [openapi specification](https://swagger.io/docs/specification/about/). This as simple as adding a yaml file as an additional endpoint:
 
 ```yaml
 openapi: 3.0.1
@@ -119,11 +141,26 @@ app$add_openapi(path = "/openapi.yaml", file_path = yaml_file)
 app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE)
 ```
 
-### 7. Start
+## 5. Start the app
+
+Now all is ready and we can start application with Rserve backend. It will block R session and start listening for incoming requests.
 
 ```{r eval = FALSE}
-app$run(http_port = 8001)
+backend = BackendRserve$new()
+backend$start(app, http_port = 8080)
 ```
+
+## 6. Check it works
+
+Check app can calculate fibonacci numbers:
+
+```{bash eval = FALSE}
+curl localhost:8080/fib?n=10
+```
+
+Check out a swagger UI in the browser: [http://localhost:8080/doc](http://localhost:8080/doc)
+
+
 
 ```{r echo = FALSE, eval = FALSE}
 pid = run_bg({
@@ -151,7 +188,8 @@ pid = run_bg({
   yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
   app$add_openapi(path = "/openapi.yaml", file_path = yaml_file)
   app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE)
-  app$run(http_port = 8001)
+  backend = BackendRserve$new()
+  backend$start(app, http_port = 8080)
 })
 tools::pskill(pid)
 ```
