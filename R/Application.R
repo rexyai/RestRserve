@@ -309,14 +309,18 @@ Application = R6::R6Class(
         if (is.null(request$decode))
           request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
-        self$logger$trace(
+        # log request
+        self$logger$debug(
           "",
           context = list(
             request_id = request$id,
-            method = request$method,
-            path = request$path,
-            parameters_query = request$parameters_query,
-            headers = request$headers
+            request = list(
+              method = request$method,
+              path = request$path,
+              parameters_query = request$parameters_query,
+              parameters_path = request$parameters_path,
+              headers = request$headers
+            )
           )
         )
 
@@ -383,6 +387,18 @@ Application = R6::R6Class(
         if (!is.function(response$encode)) {
           response$encode = self$ContentHandlers$get_encode(response$content_type)
         }
+
+        # log response
+        self$logger$debug(
+          "",
+          context = list(
+            request_id = request$id,
+            response = list(
+              status_code = response$status_code,
+              headers = response$headers
+            )
+          )
+        )
       })
       return(response)
     },
