@@ -258,7 +258,7 @@ Application = R6::R6Class(
       content_type = switch(
         tools::file_ext(file_path),
         json = "application/json",
-        "application/x-yaml" # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
+        "text/plain"
       )
 
       self$add_static(path = path, file_path = file_path, content_type = content_type)

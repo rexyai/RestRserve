@@ -74,7 +74,9 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         encode = self$handlers[[content_type]][["encode"]]
         if (!is.function(encode)) {
-          encode  = as.character
+          raise(HTTPError$internal_server_error(
+            body = list(error = sprintf("Can't encode body with content_type = '%s'", content_type))
+          ))
         }
       }
       return(encode)
@@ -124,6 +126,9 @@ ContentHandlersFactory = R6::R6Class(
       # set default encoders
       self$set_encode("application/json", to_json)
       self$set_encode("text/plain", to_string)
+      self$set_encode("text/html", to_string)
+      self$set_encode("text/css", to_string)
+
 
       # set default decoders
       self$set_decode(

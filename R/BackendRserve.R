@@ -113,7 +113,7 @@ BackendRserve = R6::R6Class(
       }
 
       # print endpoints summary
-      if (length(self$endpoints) == 0) {
+      if (length(app$endpoints) == 0) {
         app$logger$warn("", context = "'Application' doesn't have any endpoints")
       }
       app$logger$info("", context = list(http_port = http_port, endpoints = app$endpoints))
