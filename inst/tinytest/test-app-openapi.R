@@ -12,7 +12,7 @@ rs = app$process_request(rq)
 expect_equal(names(rs$body), "file")
 expect_true(file.exists(rs$body))
 expect_equal(readLines(rs$body, n = 1L), "openapi: 3.0.1")
-expect_equal(rs$content_type, "application/x-yaml")
+expect_equal(rs$content_type, "text/plain")
 expect_equal(rs$headers, list())
 expect_equal(rs$status_code, 200L)
 

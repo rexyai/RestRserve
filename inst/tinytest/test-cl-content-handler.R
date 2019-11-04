@@ -7,7 +7,7 @@ cl = RestRserve:::ContentHandlersFactory$new()
 # Test empty object
 expect_true(inherits(obj, "ContentHandler"))
 expect_true(inherits(obj$handlers, "environment"))
-expect_equal(length(obj$handlers), 2L)
+expect_equal(length(obj$handlers), 4L)
 expect_true(inherits(obj$handlers[["text/plain"]], "list"))
 expect_equal(length(obj$handlers[["text/plain"]]), 2L)
 expect_equal(names(obj$handlers[["text/plain"]]), c("encode", "decode"))
@@ -16,13 +16,13 @@ expect_true(inherits(obj$handlers[["text/plain"]]$decode, "function"))
 
 # Test list method
 expect_true(inherits(obj$list(), "list"))
-expect_equal(names(obj$list()), c("application/json", "text/plain"))
+expect_equal(sort(names(obj$list())), sort(c("application/json", "text/plain", "text/html", "text/css")))
 
 # Test unknown handlers
 e = tryCatch(obj$get_decode("unknown"), error = function(e) e)
 expect_error(obj$get_decode("unknown"))
 expect_true(inherits(e, "HTTPErrorRaise"))
-expect_equal(obj$get_encode("unknown"), as.character)
+expect_error(obj$get_encode("unknown"))
 
 f = function() TRUE
 ct = "custom/type1"

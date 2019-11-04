@@ -17,6 +17,7 @@ plot_handler = function(request, response) {
   # on.exit(unlink(tmp))
   # response$body = readBin(tmp, raw(), file.size(tmp))
   response$body = c("tmpfile" = tmp)
+  response$encode = identity
 }
 
 
