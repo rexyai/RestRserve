@@ -385,7 +385,9 @@ Application = R6::R6Class(
         # this means that response wants RestRerveApplication to select
         # how to encode automatically
         if (!is.function(response$encode)) {
-          response$encode = self$ContentHandlers$get_encode(response$content_type)
+          private$eval_with_error_handling({
+            response$encode = self$ContentHandlers$get_encode(response$content_type)
+          })
         }
 
         # log response
