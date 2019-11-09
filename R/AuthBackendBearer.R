@@ -13,7 +13,9 @@
 #' ````
 #'
 #' * `FUN` :: `function`\cr
-#'   Function to perform authentication
+#'   `character(1)` -> `logical(1)` \cr
+#'   Function to perform authentication which takes one arguments - `token`.
+#'   Returns boolean - whether access is allowed for a requested `token` or not.
 #'
 #' @section Methods:
 #'

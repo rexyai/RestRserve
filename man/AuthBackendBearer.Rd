@@ -13,7 +13,9 @@ Creates AuthBackendBearer class object.
 }
 \itemize{
 \item \code{FUN} :: \code{function}\cr
-Function to perform authentication
+\code{character(1)} -> \code{logical(1)} \cr
+Function to perform authentication which takes one arguments - \code{token}.
+Returns boolean - whether access is allowed for a requested \code{token} or not.
 }
 }
 
