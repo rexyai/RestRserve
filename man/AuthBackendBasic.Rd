@@ -13,7 +13,9 @@ Creates AuthBackendBasic class object.
 }
 \itemize{
 \item \code{FUN} :: \code{function}\cr
-Function to perform authentication.
+\code{character(1)}, \code{character(1)} -> \code{logical(1)} \cr
+Function to perform authentication which takes two arguments - \code{user} and \code{password}.
+Returns boolean - whether access is allowed for a requested \code{user} or not.
 }
 }
 

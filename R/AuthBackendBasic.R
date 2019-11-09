@@ -13,7 +13,9 @@
 #' ````
 #'
 #' * `FUN` :: `function`\cr
-#'   Function to perform authentication.
+#'   `character(1)`, `character(1)` -> `logical(1)` \cr
+#'   Function to perform authentication which takes two arguments - `user` and `password`.
+#'   Returns boolean - whether access is allowed for a requested `user` or not.
 #'
 #' @section Methods:
 #'
