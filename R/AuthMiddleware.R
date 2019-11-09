@@ -20,7 +20,7 @@
 #'   Routes paths to protect.
 #'
 #' * `match` :: `character()`\cr
-#'   How routes will be matched: exact or partial (as prefix).
+#'   How routes will be matched: `"exact"` or `"partial"` (as prefix).
 #'
 #' * `id` :: `character(1)`\cr
 #'   Middleware id
