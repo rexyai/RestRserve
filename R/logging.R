@@ -121,10 +121,10 @@ Logger = R6::R6Class(
     #----------------------------------------
     initialize = function(
         level = c("info", "fatal", "error", "warn", "debug", "trace", "off", "all"),
-        name = "ROOT", FUN = NULL) {
+        name = "ROOT", printer = NULL) {
       self$set_log_level(level)
       self$set_name(name)
-      self$set_printer(FUN)
+      self$set_printer(printer)
     },
     #----------------------------------------
     trace = function(msg, ...) {
