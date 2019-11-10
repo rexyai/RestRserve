@@ -36,10 +36,10 @@ In this article we will demonstrate how to use RestRserve to build a basic REST 
 Genrerally RestRserve workflow consists of several major steps:
 
 1. Create application with `Application$new()`
-1. Create a function which:
-    - takes 2 arguments - `request` and `response` as an input. `request` and `response` are instances of `RestRserve::Request` and `RestRserve::Response`. It is **important** that both `request` and `response` are **mutable** objects.
-    - modifies `response` in place or `raise()` exception in case of some error
-1. Register this function as a handler for some endpoint
+1. Create a function which follows RestRserve API:
+    - should take 2 arguments - `request` and `response` as an input. `request` and `response` are instances of `RestRserve::Request` and `RestRserve::Response`. It is **important to remember** that both `request` and `response` are **mutable** objects.
+    - should modify `response` in place or `raise()` exception in case of error
+1. Register this function as a handler for an endpoint
 1. Start application
 
 
@@ -82,7 +82,7 @@ fib_handler = function(request, response) {
 }
 ```
 
-## 2. Add endpoint
+## 2. Register endpoint
 
 ```{r}
 app$add_get(path = "/fib", FUN = fib_handler)
@@ -99,6 +99,8 @@ response = app$process_request(request)
 cat("Response status:", response$status)
 cat("Response body:", response$body)
 ```
+
+It is generally a good idea to write unit tests against application. One can use a common framework such as [tinytest](https://cran.r-project.org/web/packages/tinytest/index.html).
 
 ## 4. Add OpenAPI desciption and Swagger UI
 
