@@ -360,7 +360,7 @@ RestRserveApplication = R6::R6Class(
 
       path_openapi = gsub("^/*", "", path_openapi)
 
-      self$add_static(path_swagger_assets, system.file("dist", package = "swagger"))
+      self$add_static(path_swagger_assets, system.file("dist3", package = "swagger"))
       write_swagger_ui_index_html(file_path, path_swagger_assets = path_swagger_assets, path_openapi = path_openapi)
       self$add_static(path, file_path)
       invisible(file_path)
