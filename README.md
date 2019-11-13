@@ -41,7 +41,6 @@ Please follow [quick start article on http://restrserve.org/](./articles/quick-s
 
 - Easy to install, small number of dependencies
 - Fully featured http server with the **support for URL encoded and multipart forms**
-- Allows to build **high performance REST API** ( > 2000 req/sec per CPU core)
 - Build **safe and secure applications** - RestRserve supports *https*, provides building blocks for basic/token authentication
 - Concise and intuitive syntax
 - **Raise meaningful http errors** and allows to interrupt request handling from any place of the user code
@@ -51,6 +50,9 @@ Please follow [quick start article on http://restrserve.org/](./articles/quick-s
   - automatically encodes response body to the common formats
   - automatically parses URI templates (such as `/get/{item_id}`)
   - helps to expose OpenAPI and Swagger/Redoc/Rapidoc UI
+- It is [fast](http://restrserve.org/articles/benchmarks/Benchmarks.html)!
+
+![](vignettes/img/bench-rps.png)
 
 ## Acknowledgements
 
