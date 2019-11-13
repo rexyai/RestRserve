@@ -15,16 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r, include = FALSE}
-run_bg = function(expr) {
-  args = c("--vanilla", "-q")
-  expr_c = deparse(substitute(expr))
-  expr_c = paste(expr_c, collapse = "\n")
-  pid = sys::r_background(c(args, "-e", expr_c), std_out = TRUE, std_err = TRUE)
-  return(pid)
-}
-```
-
 ## Middleware
 
 Many web API frameworks contain a concept called "middleware" (but every language/framework calls it differently - filters, middleware, etc). Essentially, the middleware performs some specific function on the HTTP request or response before or after the handler. Common tasks to offload to a middleware would be logging, authorization, body compression, etc.
@@ -159,14 +149,3 @@ And now check what is actual decoded response body:
 ```{r}
 rawToChar(memDecompress(resp$body, "gzip"))
 ```
-
-```{r echo = FALSE, eval = FALSE}
-pid = run_bg({
-  library(RestRserve)
-  app = RestRserve::Application$new()
-  backend = BackendRserve$new()
-  backend$start(app, http_port = 8080)
-})
-tools::pskill(pid)
-```
-
