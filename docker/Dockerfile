@@ -5,14 +5,23 @@ ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
 
 COPY . /tmp/RestRserve
 
-ENV STRIP "-- --strip"
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libssl-dev libjemalloc-dev && \
-    install2.r -r http://www.rforge.net/ $STRIP $R_FORGE_PKGS && \
-    install2.r  $STRIP $R_CRAN_PKGS && \
+    install2.r -r http://www.rforge.net/ $R_FORGE_PKGS && \
+    install2.r $R_CRAN_PKGS && \
     R CMD build --no-manual --no-build-vignettes /tmp/RestRserve && \
     R CMD INSTALL $STRIP /RestRserve*.tar.gz && rm -rf /tmp/RestRserve* && rm /RestRserve*.tar.gz
+
+RUN cd /tmp && \
+    wget http://www.haproxy.org/download/2.0/src/haproxy-2.0.8.tar.gz && \
+    tar -xvzf haproxy-2.0.8.tar.gz && \
+    cd haproxy-2.0.8/ && \
+    make TARGET=linux-glibc && \
+    chmod +x haproxy && \
+    cp haproxy /bin/ && \
+    rm -rf /tmp/*
+
+WORKDIR /
 
 ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
 
