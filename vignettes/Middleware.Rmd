@@ -102,8 +102,7 @@ Later you will see all the responses with errors in the log (`status_code` >= 40
 
 It is important to understand that middlewares are executed in order you've added them (that's why it is called `append_middleware`).  Flow is shown on the diagram below.
 
-![](img/middleware-order.png)
-
+<img src="img/middleware-order.png" width="320"/>
 
 ## Compression
 
