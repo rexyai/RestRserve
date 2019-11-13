@@ -58,7 +58,7 @@ bench_app = function(content_type = "text/plain") {
 ```
 
 
-### Benchmarking Rserve backend
+## Benchmarking Rserve backend
 
 At the moment RestRserve supports single backend - [Rserve](http://rforge.net/Rserve/).
 
@@ -138,7 +138,7 @@ plot_results(results_json, "application/json")
 ```
 <img src="../img/bench-rps.png" width="640"/>
 
-### No keep-alive
+## No keep-alive
 
 Keep in mind that creating new connections is quite expensive for any HTTP server. For `RestRserve`'s `Rserve` backend this is particularly true since for each new connection it forks a child process (which has relatively high cost). With other backends slow down might be less significant. 
 
@@ -154,7 +154,7 @@ plot_results(results_no_keep_alive, "application/json", 2)
 Nonetheless one can always put application behind proxy (such as [HAproxy](http://www.haproxy.org/) or [nginx](https://www.nginx.com/)). It will 
 maintain pool of connections to RestRserve and hence won't suffer from creating new connections.
 
-### Comparison with Plumber
+## Comparison with Plumber
 
 At the moment of writing the most popular way to develop a web service is to use [plumber](https://www.rplumber.io/) package. Unfortunately it doesn't support parallel request processing. So will benchmark it with a single thread.
 

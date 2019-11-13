@@ -1,5 +1,5 @@
 ---
-title: "ContentHandlers - avoiding boilerplate code with body encoding and decoding"
+title: "Body encoding and decoding"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Middleware}
