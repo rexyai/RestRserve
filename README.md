@@ -1,17 +1,17 @@
-# RestRserve
+# RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
-[![Travis-CI Build Status](https://travis-ci.org/dselivanov/RestRserve.svg?branch=dev)](https://travis-ci.org/dselivanov/RestRserve)
-[![codecov](https://codecov.io/gh/dselivanov/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/dselivanov/RestRserve/branch/dev)
+[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=dev)](https://travis-ci.org/rexyai/RestRserve)
+[![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/dev)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
-[RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
+[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 
 ## Installation
 
 ### From source
 ```r
-remotes::install_github("dselivanov/RestRserve")
+remotes::install_github("rexyai/RestRserve")
 ```
 
 ### Docker
