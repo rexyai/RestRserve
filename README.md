@@ -16,7 +16,7 @@ remotes::install_github("rexyai/RestRserve")
 
 ### Docker
 
-Automated docker builds from docker-hub: [https://hub.docker.com/r/dselivanov/restrserve/](https://hub.docker.com/r/dselivanov/restrserve/)
+Automated docker builds from docker-hub: [https://hub.docker.com/r/rexyai/restrserve/](https://hub.docker.com/r/rexyai/restrserve/)
 
 ## Quick start
 
