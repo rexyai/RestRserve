@@ -11,7 +11,7 @@
 
 ### From source
 ```r
-remotes::install_github("rexyai/RestRserve")
+remotes::install_github("rexyai/RestRserve@dev")
 ```
 
 ### Docker
@@ -35,7 +35,13 @@ backend$start(app, http_port = 8080)
 
 Now you can type `http://localhost:8080/hello` in your favourite browser and see (surprisingly!) *Hello from RestRserve*.
 
-Please follow [quick start article on http://restrserve.org/](./articles/quick-start.html) for more details.
+
+## Learn RestRserve
+
+- follow [quick start guide on http://restrserve.org/](http://restrserve.org/articles/RestRserve.html) for more details.
+- check out "Articles" section on http://restrserve.org/
+- browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/dev/inst/examples)
+
 
 ## Features
 
