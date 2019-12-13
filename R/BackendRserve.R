@@ -121,21 +121,10 @@ BackendRserve = R6::R6Class(
       pid = Sys.getpid()
       if (run_mode == 'BACKGROUND') {
         pid = parallel::mcparallel(do.call(Rserve::run.Rserve, ARGS), detached = TRUE)[["pid"]]
-      }
-
-      # print msg now because after `do.call` process will be blocked
-      if (interactive()) {
-        message(sprintf("Started RestRserve in a %s process pid = %d", run_mode, pid))
-        msg = sprintf("You can kill process GROUP with 'kill -TERM -%d'", pid)
-        msg = paste(msg, '(current master process also will be killed)')
-        message(msg)
-      }
-
-      if (run_mode == 'FOREGROUND') {
+        return(ApplicationProcess$new(pid))
+      } else {
         do.call(Rserve::run.Rserve, ARGS)
       }
-
-      return(pid)
     },
 
     set_request = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
@@ -307,4 +296,20 @@ BackendRserve = R6::R6Class(
       invisible(request)
     }
   ),
+)
+
+ApplicationProcess = R6::R6Class(
+  classname = "ApplicationProcess",
+  public = list(
+    pid = NULL,
+    initialize = function(pid) {
+      self$pid = pid
+    },
+    kill = function(signal = 15L) {
+      # kill service
+      tools::pskill(self$pid, signal)
+      # kill childs
+      system(sprintf("pkill -%s -P %s", signal, self$pid), wait = FALSE)
+    }
+  )
 )
