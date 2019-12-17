@@ -5,7 +5,7 @@
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
-[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
+[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. With [Rserve](https://github.com/s-u/Rserve) backend on UNIX-like systems it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 
 ## Installation
 
