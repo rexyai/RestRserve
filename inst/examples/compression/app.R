@@ -9,11 +9,17 @@ library(RestRserve)
 
 # simple response
 hello_handler = function(request, response) {
-  resp_body = "Hello, World!"
+  resp_body = charToRaw("Hello, World!")
   enc = request$get_header("accept-encoding")
-  if (!is.null(enc) && any(grepl("gzip", enc))) {
-    resp_body = memCompress(resp_body, "gzip")
-    response$set_header("Content-encoding", "gzip")
+  if ("gzip" %in% enc) {
+    # remotes::install_github("omegahat/Rcompression")
+    resp_body = Rcompression::gzip(resp_body)
+    response$set_header("Content-Encoding", "gzip")
+    response$set_header("Vary", "Accept-Encoding")
+  } else if ("br" %in% enc) {
+    resp_body = brotli::brotli_compress(resp_body)
+    response$set_header("Content-Encoding", "br")
+    response$set_header("Vary", "Accept-Encoding")
   }
   response$body = resp_body
   response$encode = identity # prevent convert to character
