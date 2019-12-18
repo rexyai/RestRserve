@@ -258,7 +258,7 @@ Application = R6::R6Class(
       content_type = switch(
         tools::file_ext(file_path),
         json = "application/json",
-        "application/x-yaml" # https://www.quora.com/What-is-the-correct-MIME-type-for-YAML-documents
+        "text/plain"
       )
 
       self$add_static(path = path, file_path = file_path, content_type = content_type)
@@ -309,14 +309,18 @@ Application = R6::R6Class(
         if (is.null(request$decode))
           request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
-        self$logger$trace(
+        # log request
+        self$logger$debug(
           "",
           context = list(
             request_id = request$id,
-            method = request$method,
-            path = request$path,
-            parameters_query = request$parameters_query,
-            headers = request$headers
+            request = list(
+              method = request$method,
+              path = request$path,
+              parameters_query = request$parameters_query,
+              parameters_path = request$parameters_path,
+              headers = request$headers
+            )
           )
         )
 
@@ -381,8 +385,22 @@ Application = R6::R6Class(
         # this means that response wants RestRerveApplication to select
         # how to encode automatically
         if (!is.function(response$encode)) {
-          response$encode = self$ContentHandlers$get_encode(response$content_type)
+          private$eval_with_error_handling({
+            response$encode = self$ContentHandlers$get_encode(response$content_type)
+          })
         }
+
+        # log response
+        self$logger$debug(
+          "",
+          context = list(
+            request_id = request$id,
+            response = list(
+              status_code = response$status_code,
+              headers = response$headers
+            )
+          )
+        )
       })
       return(response)
     },
@@ -540,6 +558,7 @@ Application = R6::R6Class(
         for (field in c("body", "content_type", "headers", "status_code")) {
           private$response[[field]] = x[[field]]
         }
+        private$response$encode = self$ContentHandlers$get_encode(private$response$content_type)
         success = FALSE
       }
       return(success)

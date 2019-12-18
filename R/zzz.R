@@ -14,9 +14,6 @@
   recent_rserve = as.numeric_version("1.8.6")
   current_rserve = utils::packageVersion("Rserve")
   if (interactive()) {
-    msg = paste("RestRserve is still work in progress",
-                "- while we try hard to have stable API expect some breaking changes.")
-    packageStartupMessage(msg)
     if (current_rserve < recent_rserve) {
       packageStartupMessage(
         sprintf("Rserve version %s detected", current_rserve), "\n",

@@ -1,0 +1,154 @@
+---
+title: "Body encoding and decoding"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Middleware}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  results = 'markup'
+)
+```
+
+**Note that as of RestRserve v 0.2 `ContentHandlers` API is not fully polished yet - likely it will be refactored into a middleware in future**.
+
+# Encoding
+
+Let's consider an example. We develop an application which calculates `factorial` of a number:
+
+```{r}
+library(RestRserve)
+backend = BackendRserve$new()
+application = Application$new()
+application$add_get(path = "/factorial", function(req, res) {
+  x = req$get_param_query("x")
+  x = as.integer(x)
+  res$set_body(factorial(x))
+})
+```
+
+Here is how request will be processed:
+```{r}
+request = Request$new(
+  path = "/factorial", 
+  method = "GET", 
+  parameters_query = list(x = 10)
+)
+response = application$process_request(request)
+response
+```
+
+Let's take a closer look to the `response` object and its `body` property:
+```{r}
+str(response$body)
+```
+
+As we can see it is a numeric value. HTTP response body however can't be an arbitrary R object. It should be something that external systems can understand - either `character` vector or `raw` vector. Fortunately `application` helps to avoid writing boilerplate code to encode the body. Based on the `content_type` property it can set up `encode` function which `backend` will use to transform `body` into a http body.
+```{r}
+response$content_type
+```
+```{r}
+response$encode
+```
+At backend actual http response body will be constructed via `response$encode(response$body)`. 
+
+Two immediate questions can arise:
+
+1. Why `content_type` is equal to `text/plain`? 
+    - This is because we can specify default `content_type` in `Application` constructor. It is `text/plain` by default, which means all the responses by default will have `text/plain` content type.
+1. How does application know how to encode `text/plain`? Can it encode any arbitrary content type?
+    - The logic on how to encode and decode request and response body is controlled by global `ContentHandlers` object. Out of the box it supports two content types - `text/plain` and `application/json`. 
+
+For example:
+```{r}
+FUN = ContentHandlers$get_encode('application/json')
+FUN
+```
+We can manually override application default content-type:
+```{r}
+application$add_get(path = "/factorial-json", function(req, res) {
+  x = as.integer(req$get_param_query("x"))
+  result = factorial(x)
+  res$set_body(list(result = result))
+  res$set_content_type("application/json")
+})
+```
+
+```{r}
+request = Request$new(
+  path = "/factorial-json", 
+  method = "GET", 
+  parameters_query = list(x = 10)
+)
+response = application$process_request(request)
+```
+
+```{r}
+response$encode(response$body)
+```
+
+And here is a little bit more complex example where we store a binary object in the body. We will use R's native serialization, but one can use `protobuf`, `messagepack`, etc.
+
+```{r}
+application$add_get(path = "/factorial-rds", function(req, res) {
+  x = as.integer(req$get_param_query("x"))
+  result = factorial(x)
+  body_rds = serialize(list(result = result), connection = NULL)
+  res$set_body(body_rds)
+  res$set_content_type("application/x-rds")
+})
+
+```
+However function above won't work correctly. Out of the box `ContentHndlers` doesn't know anything about `application/x-rds`:
+```{r}
+request = Request$new(
+  path = "/factorial-rds", 
+  method = "GET", 
+  parameters_query = list(x = 10)
+)
+response = application$process_request(request)
+response$body
+```
+In order to resolve problem above we would need to either register `application/x-rds` content handler with `ContentHandlers$set_encode()` or manually specify `encode` function (`identity` in our case):
+
+```{r}
+application$add_get(path = "/factorial-rds2", function(req, res) {
+  x = as.integer(req$get_param_query("x"))
+  result = factorial(x)
+  body_rds = serialize(list(result = result), connection = NULL)
+  res$set_body(body_rds)
+  res$set_content_type("application/x-rds")
+  res$encode = identity
+})
+```
+Now the answer is valid:
+```{r}
+request = Request$new(
+  path = "/factorial-rds2", 
+  method = "GET", 
+  parameters_query = list(x = 10)
+)
+response = application$process_request(request)
+unserialize(response$body)
+```
+
+# Decoding
+
+RestRserve facilitates with parsing incoming request body as well. Consider a service which expects JSON POST requests:
+
+```{r}
+application = Application$new(content_type = "application/json")
+application$add_post("/echo", function(req, res) {
+  res$set_body(req$body_decoded)
+})
+
+request = Request$new(path = "/echo", method = "POST", body = '{"hello":"world"}', content_type = "application/json")
+response = application$process_request(request)
+response$body
+```
+The logic behind decoding is also controlled by global `ContentHandlers`. Also worth to mention that body is decoded lazyly - only if `body_decoded` is evaluated. 

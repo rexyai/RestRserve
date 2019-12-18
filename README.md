@@ -1,24 +1,22 @@
-# RestRserve
+# RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
-[![Travis-CI Build Status](https://travis-ci.org/dselivanov/RestRserve.svg?branch=dev)](https://travis-ci.org/dselivanov/RestRserve)
-[![codecov](https://codecov.io/gh/dselivanov/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/dselivanov/RestRserve/branch/dev)
+[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=dev)](https://travis-ci.org/rexyai/RestRserve)
+[![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/dev)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
-**RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.**
-
-[RestRserve](https://github.com/dselivanov/RestRserve) is an R web API framework for building **high-performance microservices and app backends**. Thanks to [Rserve](https://github.com/s-u/Rserve) it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits for that should go to [Simon Urbanek](https://github.com/s-u)).
+[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. With [Rserve](https://github.com/s-u/Rserve) backend on UNIX-like systems it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 
 ## Installation
 
 ### From source
 ```r
-remotes::install_github("dselivanov/RestRserve")
+remotes::install_github("rexyai/RestRserve@dev")
 ```
 
 ### Docker
 
-Automated docker builds from docker-hub: [https://hub.docker.com/r/dselivanov/restrserve/](https://hub.docker.com/r/dselivanov/restrserve/)
+Automated docker builds from docker-hub: [https://hub.docker.com/r/rexyai/restrserve/](https://hub.docker.com/r/rexyai/restrserve/)
 
 ## Quick start
 
@@ -31,27 +29,36 @@ app$add_get(
   FUN = function(request, response) {
     response$set_body("Hello from RestRserve")
   })
-app$run(http_port = 8080)
+backend = BackendRserve$new()
+backend$start(app, http_port = 8080)
 ```
 
 Now you can type `http://localhost:8080/hello` in your favourite browser and see (surprisingly!) *Hello from RestRserve*.
 
-Please follow [quick start article on http://restrserve.org/](./articles/quick-start.html) for more details.
+
+## Learn RestRserve
+
+- follow [quick start guide on http://restrserve.org/](http://restrserve.org/articles/RestRserve.html) for more details.
+- check out "Articles" section on http://restrserve.org/
+- browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/dev/inst/examples)
+
 
 ## Features
 
 - Easy to install, small number of dependencies
 - Fully featured http server with the **support for URL encoded and multipart forms**
-- Allows to build **high performance REST API** ( > 2000 req/sec per CPU core)
 - Build **safe and secure applications** - RestRserve supports *https*, provides building blocks for basic/token authentication
 - Concise and intuitive syntax
-- Allows to **raise meaningful http errors** and interrupt request handling from any place of your code
+- **Raise meaningful http errors** and allows to interrupt request handling from any place of the user code
 - Comes with **many examples** - see `inst/examples`
 - Saves you from boilerplate code:
-  - automatically **lazily** decodes request body of common formats
-  - automatically encodes response body for common formats
+  - automatically **lazily** decodes request body from the common formats
+  - automatically encodes response body to the common formats
   - automatically parses URI templates (such as `/get/{item_id}`)
   - helps to expose OpenAPI and Swagger/Redoc/Rapidoc UI
+- It is [fast](http://restrserve.org/articles/benchmarks/Benchmarks.html)!
+
+![](vignettes/img/bench-rps.png)
 
 ## Acknowledgements
 

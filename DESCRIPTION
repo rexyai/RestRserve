@@ -19,8 +19,8 @@ Authors@R: c(
          comment = c(ORCID = "0000-0003-0492-6647")),
   person(given = "rexy.ai",
          role = c("cph", "fnd")))
-URL: http://restrserve.org, https://github.com/dselivanov/RestRserve
-BugReports: https://github.com/dselivanov/RestRserve/issues
+URL: http://restrserve.org, https://github.com/rexyai/RestRserve
+BugReports: https://github.com/rexyai/RestRserve/issues
 License: GPL (>= 2)
 Depends:
   R (>= 3.6.0)

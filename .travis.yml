@@ -28,6 +28,9 @@ addons:
       - g++-5
       - gfortran-5
 
+r_github_packages:
+  - rstudio/rmarkdown
+
 r_packages:
   - covr
   - lintr
@@ -58,4 +61,4 @@ deploy:
   local_dir: docs
   on:
     branch: dev
-    repo: dselivanov/RestRserve
+    repo: rexyai/RestRserve

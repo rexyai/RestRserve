@@ -18,7 +18,7 @@ Authentication backend.
 \item \code{routes} :: \code{character()}\cr
 Routes paths to protect.
 \item \code{match} :: \code{character()}\cr
-How routes will be matched: exact or partial (as prefix).
+How routes will be matched: \code{"exact"} or \code{"partial"} (as prefix).
 \item \code{id} :: \code{character(1)}\cr
 Middleware id
 }

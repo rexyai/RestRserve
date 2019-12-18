@@ -65,7 +65,9 @@ ContentHandlersFactory = R6::R6Class(
     },
     get_encode = function(content_type) {
       if (!is_string(content_type)) {
-        raise(HTTPError$internal_server_error(body = list(error = "Can't encode the body - invalid 'content_type'")))
+        raise(HTTPError$internal_server_error(
+          body = list(error = "500 Internal Server Error: can't encode the body - invalid 'content_type'"))
+        )
       }
       content_type = tolower(content_type)
       encode = self$handlers[[content_type]][["encode"]]
@@ -74,7 +76,10 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         encode = self$handlers[[content_type]][["encode"]]
         if (!is.function(encode)) {
-          encode  = as.character
+          err = sprintf("500 Internal Server Error: can't encode body with content_type = '%s'", content_type)
+          raise(HTTPError$internal_server_error(
+            body = list(error = err)
+          ))
         }
       }
       return(encode)
@@ -124,6 +129,9 @@ ContentHandlersFactory = R6::R6Class(
       # set default encoders
       self$set_encode("application/json", to_json)
       self$set_encode("text/plain", to_string)
+      self$set_encode("text/html", to_string)
+      self$set_encode("text/css", to_string)
+
 
       # set default decoders
       self$set_decode(
