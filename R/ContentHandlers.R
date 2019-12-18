@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Controls how RestRserve encodes and decodes different content types.
+#' Designed to work jointly with [EncodeDecodeMiddleware]
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
@@ -37,7 +38,7 @@
 #'   -> `list`\cr
 #'   Convert handlers to list.
 #'
-#' @seealso [Application]
+#' @seealso [Application] [EncodeDecodeMiddleware]
 #'
 #' @name ContentHandlers
 #'
@@ -165,5 +166,62 @@ ContentHandlersFactory = R6::R6Class(
         "multipart/form-data"
       )
     )
+  )
+)
+
+#' @title Creates EncodeDecodeMiddleware middleware object
+#'
+#' @description
+#' Controls how RestRserve encodes and decodes different content types.
+#' **This middleware is passed by default to the [Application] constructor**.
+#' Designed to work jointly with [ContentHandlers]
+#' This class inherits from [Middleware].
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
+#' @section Construction:
+#' ```
+#' EncodeDecodeMiddleware$new(id = "EncodeDecodeMiddleware")
+#' ````
+#' * `id` :: `character(1)`\cr
+#'   Middleware id
+#' @export
+#'
+#' @seealso
+#' [Middleware] [Application] [ContentHandlers]
+#'
+EncodeDecodeMiddleware = R6::R6Class(
+  classname = "EncodeDecodeMiddleware",
+  inherit = Middleware,
+  public = list(
+    initialize = function(id = "EncodeDecodeMiddleware") {
+      self$id = id
+      self$process_response = function(request, response) {
+        # this means that response wants RestRerveApplication to select
+        # how to encode automatically
+        if (!is.function(response$encode)) {
+          response$encode = ContentHandlers$get_encode(response$content_type)
+        }
+
+        if (!is_string(response$body)) {
+          response$body = response$encode(response$body)
+        } else {
+          body_name = names(response$body)
+          if (isTRUE(body_name ==  "file" || body_name == "tmpfile")) {
+            # do nothing - body cosnidered as file path
+          } else {
+            response$body = response$encode(response$body)
+          }
+        }
+        invisible(TRUE)
+      }
+      self$process_request = function(request, response) {
+        if (is.null(request$decode)) {
+          request$decode = ContentHandlers$get_decode(content_type = request$content_type)
+        }
+        invisible(TRUE)
+      }
+    }
   )
 )

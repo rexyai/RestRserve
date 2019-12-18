@@ -39,9 +39,6 @@
 #'   user can replace it with his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
 #'   in the majority of the cases using [HTTPError] will be enough.
 #'
-#' * **`ContentHandlers`** :: `ContentHandler`\cr
-#'   Helper to decode request body and encode response body. Global [ContentHandlers] is used by default.
-#'
 #' * **`endpoints`** :: `named list()`\cr
 #'   Prints all the registered routes with allowed methods.
 #'
@@ -190,9 +187,8 @@ Application = R6::R6Class(
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
-    ContentHandlers = NULL,
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(), content_type = "text/plain", ...) {
+    initialize = function(middleware = list(EncodeDecodeMiddleware$new()), content_type = "text/plain", ...) {
       private$backend = BackendRserve$new()
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
@@ -204,7 +200,6 @@ Application = R6::R6Class(
       private$response = Response$new(content_type = self$content_type)
       private$request = Request$new()
 
-      self$ContentHandlers = ContentHandlers
 
       checkmate::assert_list(middleware, types = "Middleware", unique = TRUE)
       private$middleware = list()
@@ -306,8 +301,6 @@ Application = R6::R6Class(
       private$eval_with_error_handling({
         response$reset()
         response$set_content_type(self$content_type)
-        if (is.null(request$decode))
-          request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
         # log request
         self$logger$debug(
@@ -380,14 +373,6 @@ Application = R6::R6Class(
           )
           FUN = private$middleware[[id]][[mw_flag]]
           mw_status = private$eval_with_error_handling(FUN(request, response))
-        }
-
-        # this means that response wants RestRerveApplication to select
-        # how to encode automatically
-        if (!is.function(response$encode)) {
-          private$eval_with_error_handling({
-            response$encode = self$ContentHandlers$get_encode(response$content_type)
-          })
         }
 
         # log response
@@ -558,7 +543,7 @@ Application = R6::R6Class(
         for (field in c("body", "content_type", "headers", "status_code")) {
           private$response[[field]] = x[[field]]
         }
-        private$response$encode = self$ContentHandlers$get_encode(private$response$content_type)
+        private$response$encode = ContentHandlers$get_encode(private$response$content_type)
         success = FALSE
       }
       return(success)

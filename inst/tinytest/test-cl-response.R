@@ -91,7 +91,6 @@ r = Response$new(
 expect_equal(r$body, list())
 expect_equal(r$content_type, "application/json")
 expect_equal(r$encode, to_json)
-expect_equal(backend$convert_response(r)[[1]], to_json(list()))
 
 # Test set_date method
 r = Response$new()

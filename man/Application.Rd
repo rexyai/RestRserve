@@ -37,8 +37,6 @@ Default response body content type.
 Class which raises HTTP errors. Global \link{HTTPError} is used by default. In theory
 user can replace it with his own class (see \code{RestRserve:::HTTPErrorFactory}). However we believe
 in the majority of the cases using \link{HTTPError} will be enough.
-\item \strong{\code{ContentHandlers}} :: \code{ContentHandler}\cr
-Helper to decode request body and encode response body. Global \link{ContentHandlers} is used by default.
 \item \strong{\code{endpoints}} :: \code{named list()}\cr
 Prints all the registered routes with allowed methods.
 }

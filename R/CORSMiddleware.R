@@ -15,7 +15,7 @@
 #' by the browser to allow ross site resource sharing. You can change this easy
 #' just by providing `CORSMiddleware` as middleware to the [Application].
 #'
-#' This class inherits [Middleware].
+#' This class inherits from [Middleware].
 #'
 #' @section Construction:
 #'

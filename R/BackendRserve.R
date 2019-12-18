@@ -182,11 +182,8 @@ BackendRserve = R6::R6Class(
       }
       if (is.null(body)) {
         body = raw()
-      } else {
-        if (is.function(response$encode)) {
-          body = response$encode(body)
-        }
       }
+
       if (isTRUE(is.raw(body) || is.character(body))) {
         return(list(body, response$content_type, headers, response$status_code))
       } else {

@@ -11,7 +11,7 @@ expect_true(inherits(a$logger, "Logger"))
 expect_true(inherits(a$.__enclos_env__$private$handlers, "environment"))
 expect_equal(length(a$.__enclos_env__$private$handlers), 0L)
 expect_true(inherits(a$.__enclos_env__$private$middleware, "list"))
-expect_equal(length(a$.__enclos_env__$private$middleware), 0L)
+expect_equal(length(a$.__enclos_env__$private$middleware), 1L)
 expect_true(inherits(a$.__enclos_env__$private$routes, "environment"))
 expect_equal(length(a$.__enclos_env__$private$routes), 0L)
 expect_equal(a$.__enclos_env__$private$supported_methods,
@@ -49,9 +49,9 @@ mw2 = Middleware$new(
 )
 a$append_middleware(mw2)
 
-expect_equal(length(a$.__enclos_env__$private$middleware), 2L)
-expect_equal(a$.__enclos_env__$private$middleware[[1]], mw1)
-expect_equal(a$.__enclos_env__$private$middleware[[2]], mw2)
+expect_equal(length(a$.__enclos_env__$private$middleware), 3L)
+expect_equal(a$.__enclos_env__$private$middleware[[2]], mw1)
+expect_equal(a$.__enclos_env__$private$middleware[[3]], mw2)
 
 # Test add_route method
 a = Application$new()
@@ -151,7 +151,7 @@ a = Application$new()
 f = function(x) { TRUE }
 ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
 HTTPError$set_content_type("application/json")
-expect_equal(a$ContentHandlers$get_decode("custom/type"), f)
+expect_equal(ContentHandlers$get_decode("custom/type"), f)
 expect_equal(a$HTTPError$content_type, "application/json")
 
 
