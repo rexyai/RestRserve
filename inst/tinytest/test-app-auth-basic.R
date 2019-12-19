@@ -61,7 +61,7 @@ expect_equal(rs$status_code, 401L)
 h = list("Authorization" = paste("Basic", jsonlite::base64_enc("user-1:password-1")))
 rq = Request$new(path = "/securearea/param1/param2", headers = h)
 rs = app$process_request(rq)
-expect_equal(rs$body, list(error = "404 Not Found"))
+expect_equal(rs$body, "404 Not Found")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
 expect_equal(rs$headers, structure(list(), .Names = character(0)))

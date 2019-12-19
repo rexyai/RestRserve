@@ -37,7 +37,7 @@ expect_equal(rs$status_code, 500L)
 # Test raise error on request
 rq = Request$new(path = "/err-mw-req")
 rs = app$process_request(rq)
-expect_equal(rs$body, list(error = "500 Internal Server Error"))
+expect_equal(rs$body, "500 Internal Server Error")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
 expect_equal(rs$headers, structure(list(), .Names = character(0)))
@@ -46,7 +46,7 @@ expect_equal(rs$status_code, 500L)
 # Test raise error on response
 rq = Request$new(path = "/err-mw-resp")
 rs = app$process_request(rq)
-expect_equal(rs$body, list(error = "500 Internal Server Error"))
+expect_equal(rs$body, "500 Internal Server Error")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
 expect_equal(rs$headers, structure(list(), .Names = character(0)))

@@ -543,7 +543,8 @@ Application = R6::R6Class(
         for (field in c("body", "content_type", "headers", "status_code")) {
           private$response[[field]] = x[[field]]
         }
-        private$response$encode = ContentHandlers$get_encode(private$response$content_type)
+        private$response$body = self$HTTPError$encode(x$body)
+        private$response$encode = identity
         success = FALSE
       }
       return(success)
