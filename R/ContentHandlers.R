@@ -197,28 +197,33 @@ EncodeDecodeMiddleware = R6::R6Class(
   public = list(
     initialize = function(id = "EncodeDecodeMiddleware") {
       self$id = id
+
+      self$process_request = function(request, response) {
+        decode = request$decode
+        if (!is.function(decode)) {
+          decode = ContentHandlers$get_decode(content_type = request$content_type)
+        }
+        request$body = decode(request$body)
+        invisible(TRUE)
+      }
+
       self$process_response = function(request, response) {
         # this means that response wants RestRerveApplication to select
         # how to encode automatically
-        if (!is.function(response$encode)) {
-          response$encode = ContentHandlers$get_encode(response$content_type)
+        encode = response$encode
+        if (!is.function(encode)) {
+          encode = ContentHandlers$get_encode(response$content_type)
         }
 
         if (!is_string(response$body)) {
-          response$body = response$encode(response$body)
+          response$body = encode(response$body)
         } else {
           body_name = names(response$body)
           if (isTRUE(body_name ==  "file" || body_name == "tmpfile")) {
             # do nothing - body cosnidered as file path
           } else {
-            response$body = response$encode(response$body)
+            response$body = encode(response$body)
           }
-        }
-        invisible(TRUE)
-      }
-      self$process_request = function(request, response) {
-        if (is.null(request$decode)) {
-          request$decode = ContentHandlers$get_decode(content_type = request$content_type)
         }
         invisible(TRUE)
       }

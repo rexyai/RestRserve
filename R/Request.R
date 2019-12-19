@@ -98,10 +98,6 @@
 #' * **`id`** :: `character(1)`\cr
 #'   Automatically generated UUID for each request. Read only.
 #'
-#' * **`body_decoded`** :: `any`\cr
-#'   Body parsed according to the `Content-type` request header and `decode`
-#'   argument of the R.
-#'
 #' * **`date`** :: `POSIXct(1)`\cr
 #'   Request `Date` header converted to `POSIXct`.
 #'
@@ -338,17 +334,6 @@ Request = R6::R6Class(
     }
   ),
   active = list(
-    body_decoded = function() {
-      # early stop if body is empty
-      if (length(body) == 0L) {
-        return(self$body)
-      }
-      decode = self$decode
-      if (!is.function(decode)) {
-        decode = ContentHandlers$get_decode(self$content_type)
-      }
-      return(decode(self$body))
-    },
     id = function() {
       private$request_id
     },
