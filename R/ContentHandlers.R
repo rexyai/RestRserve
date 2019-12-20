@@ -117,9 +117,7 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         decode = self$handlers[[content_type]][["decode"]]
         if (!is.function(decode)) {
-          raise(HTTPError$unsupported_media_type(
-            headers = list("Accept" = paste(private$supported_decode_types, collapse = ","))
-          ))
+          raise(HTTPError$unsupported_media_type())
         }
       }
       return(decode)
