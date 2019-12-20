@@ -94,6 +94,7 @@ ContentHandlersFactory = R6::R6Class(
         self$handlers[[content_type]] = list()
       }
       self$handlers[[content_type]][["decode"]] = FUN
+      private$supported_decode_types = unique(c(private$supported_decode_types, content_type))
       return(invisible(self))
     },
     get_decode = function(content_type) {
@@ -116,7 +117,9 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         decode = self$handlers[[content_type]][["decode"]]
         if (!is.function(decode)) {
-          raise(HTTPError$unsupported_media_type())
+          raise(HTTPError$unsupported_media_type(
+            headers = list("Accept" = paste(private$supported_decode_types, collapse = ","))
+          ))
         }
       }
       return(decode)
@@ -126,6 +129,7 @@ ContentHandlersFactory = R6::R6Class(
     },
     reset = function() {
       self$handlers = new.env(parent = emptyenv())
+      private$supported_decode_types = NULL
 
       # set default encoders
       self$set_encode("application/json", to_json)
@@ -158,6 +162,7 @@ ContentHandlersFactory = R6::R6Class(
     }
   ),
   private = list(
+    supported_decode_types = NULL,
     ignore = list(
       equal = c(
         "application/x-www-form-urlencoded"
