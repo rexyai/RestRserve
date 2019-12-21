@@ -99,8 +99,8 @@ ContentHandlersFactory = R6::R6Class(
     },
     get_decode = function(content_type) {
       if (!is_string(content_type)) {
-        msg = "'content-type' header is not set/invalid - don't know how to decode the body"
-        raise(HTTPError$unsupported_media_type(msg))
+        err = "'content-type' header is not set/invalid - don't know how to decode the body"
+        raise(HTTPError$unsupported_media_type(body = list(error = err)))
       }
       content_type = tolower(content_type)
       # ignore content types (exact match)
@@ -117,7 +117,8 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         decode = self$handlers[[content_type]][["decode"]]
         if (!is.function(decode)) {
-          raise(HTTPError$unsupported_media_type())
+          err = sprintf("unsupported media type \"%s\"", content_type)
+          raise(HTTPError$unsupported_media_type(body = list(error = err)))
         }
       }
       return(decode)
@@ -204,7 +205,13 @@ EncodeDecodeMiddleware = R6::R6Class(
       self$process_request = function(request, response) {
         decode = request$decode
         if (!is.function(decode)) {
-          decode = ContentHandlers$get_decode(content_type = request$content_type)
+          # if it is a request without body and content_type -
+          # just set decode to identity
+          if(is.null(request$content_type) && is.null(request$body)) {
+            decode = identity
+          } else {
+            decode = ContentHandlers$get_decode(content_type = request$content_type)
+          }
         }
         request$body = decode(request$body)
         invisible(TRUE)

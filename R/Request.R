@@ -197,12 +197,12 @@ Request = R6::R6Class(
                           headers = list(),
                           body = NULL,
                           cookies = list(),
-                          content_type = "text/plain",
+                          content_type = NULL,
                           decode = NULL,
                           ...) {
       if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
         checkmate::assert_string(path, pattern = "/.*")
-        checkmate::assert_string(content_type, pattern = ".*/.*")
+        checkmate::assert_string(content_type, pattern = ".*/.*", null.ok = TRUE)
         checkmate::check_list(headers)
         checkmate::check_list(parameters_query)
         checkmate::check_list(cookies)
@@ -232,7 +232,7 @@ Request = R6::R6Class(
       self$headers = list()
       self$cookies = list()
       self$context = new.env(parent = emptyenv())
-      self$content_type = "text/plain"
+      self$content_type = NULL
       self$body = NULL
       self$parameters_query = list()
       self$parameters_body = list()

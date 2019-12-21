@@ -175,6 +175,27 @@ mw = Middleware$new(
 a$append_middleware(mw)
 expect_silent(print(a))
 
+# test 415
+
+app = Application$new()
+
+app$add_get("/", function(req, res) TRUE)
+ct = "application/messagepack"
+rq = Request$new(path = "/", method = "GET", content_type = ct)
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 415)
+expect_equal(rs$body, sprintf("unsupported media type \"%s\"", ct))
+
+app$add_get("/no-content-type", function(req, res) TRUE)
+rq = Request$new(path = "/no-content-type", method = "GET", content_type = NULL)
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 200)
+
+rq = Request$new(path = "/no-content-type", method = "GET", content_type = NULL, body = "non-empty")
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 415)
+expect_equal(rs$body, "'content-type' header is not set/invalid - don't know how to decode the body")
+
 # Reset global objects state
 ContentHandlers$reset()
 HTTPError$reset()
