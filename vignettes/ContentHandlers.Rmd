@@ -2,7 +2,7 @@
 title: "Body encoding and decoding"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Middleware}
+  %\VignetteIndexEntry{Body encoding and decoding}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

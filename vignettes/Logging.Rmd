@@ -2,7 +2,7 @@
 title: "Logging"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Middleware}
+  %\VignetteIndexEntry{Logging}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
