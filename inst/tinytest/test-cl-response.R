@@ -7,7 +7,7 @@ expect_equal(r$body, NULL)
 expect_equal(r$content_type, "text/plain")
 expect_true(inherits(r$context, "environment"))
 expect_true(inherits(r$headers, "list"))
-expect_equal(length(r$headers), 0L)
+expect_equal(length(r$headers), 1L) # Server header
 expect_null(r$encode)
 expect_true(inherits(r$status_code, "integer"))
 expect_equal(length(r$status_code), 1L)
@@ -15,7 +15,8 @@ expect_equal(r$status_code, 200L)
 
 backend = RestRserve:::BackendRserve$new()
 
-expect_equal(backend$convert_response(r), list(raw(), "text/plain", character(0), 200L))
+server_header = paste("Server", RestRserve:::SERVER_HEADER, sep = ": ")
+expect_equal(backend$convert_response(r), list(raw(), "text/plain", server_header, 200L))
 
 # Test parse_headers
 h = list("Test-Header" = "value",
@@ -120,7 +121,7 @@ r = Response$new()
 rs = backend$convert_response(r)
 expect_equal(rs[[1]], raw())
 expect_equal(rs[[2]], "text/plain")
-expect_equal(rs[[3]], character(0))
+expect_equal(rs[[3]], server_header)
 expect_equal(rs[[4]], 200L)
 
 # Test to_rserve method with empty response
@@ -129,7 +130,7 @@ r$set_body(raw())
 rs = backend$convert_response(r)
 expect_equal(rs[[1]], raw())
 expect_equal(rs[[2]], "text/plain")
-expect_equal(rs[[3]], character(0))
+expect_equal(rs[[3]], server_header)
 expect_equal(rs[[4]], 200L)
 
 # Test to_rserve method with complex response
@@ -141,6 +142,7 @@ r$set_status_code(200L)
 r$set_header("Custom-Header", "text")
 r$set_cookie(name = "param", "value")
 h = paste(
+  server_header,
   "Date: Fri, 02 Aug 2019 15:36:13 GMT",
   "Custom-Header: text",
   "Set-Cookie: param=value",
@@ -161,7 +163,7 @@ rs = backend$convert_response(r)
 expect_equal(names(rs)[[1]], "file")
 expect_equal(rs[[1]], tmp)
 expect_equal(rs[[2]], "text/html")
-expect_equal(rs[[3]], character(0))
+expect_equal(rs[[3]], server_header)
 expect_equal(rs[[4]], 200L)
 
 # Test to_rserve with static file body
@@ -173,7 +175,7 @@ rs = backend$convert_response(r)
 expect_equal(names(rs)[[1]], "tmpfile")
 expect_equal(rs[[1]], tmp)
 expect_equal(rs[[2]], "text/html")
-expect_equal(rs[[3]], character(0))
+expect_equal(rs[[3]], server_header)
 expect_equal(rs[[4]], 200L)
 
 # Test set_response method
@@ -215,7 +217,7 @@ rs$context[['some_context']] = list(a = 1)
 rs$reset()
 expect_equal(rs$body, NULL)
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 expect_equal(rs$encode, NULL)
 expect_equal(rs$cookies, list())

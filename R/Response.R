@@ -1,3 +1,5 @@
+SERVER_HEADER = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
+
 #' @title Creates response object
 #'
 #' @usage NULL
@@ -149,7 +151,7 @@ Response = R6::R6Class(
     #------------------------------------------------
     initialize = function(body = NULL,
                           content_type = "text/plain",
-                          headers = structure(list(), names = character(0)),
+                          headers = list("Server" = SERVER_HEADER),
                           status_code = 200L,
                           encode = NULL,
                           ...) {
@@ -170,7 +172,7 @@ Response = R6::R6Class(
     reset = function() {
       self$body = NULL
       self$set_content_type("text/plain")
-      self$headers = list()
+      self$headers = list("Server" = SERVER_HEADER)
       self$status_code = 200L
       self$cookies = list()
       self$context = new.env(parent = emptyenv())

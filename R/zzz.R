@@ -35,6 +35,12 @@
   # docstrings inside fucntions
   # options("keep.source" = TRUE)
 
+  assign(
+    'SERVER_HEADER',
+    paste("RestRserve", packageVersion("RestRserve"), sep = "/"),
+    envir = parent.env(environment())
+  )
+
   runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
   runtime_asserts = isTRUE(as.logical(runtime_asserts))
   options("RestRserve_RuntimeAsserts" = runtime_asserts)

@@ -234,4 +234,3 @@ expect_identical(r$get_param_query("key"), "value")
 expect_identical(r$get_param_query("key"), r$parameters_query[["key"]])
 expect_identical(r$get_param_query("KEY"), "VALUE")
 expect_identical(r$get_param_query("KEY"), r$parameters_query[["KEY"]])
-

@@ -130,8 +130,10 @@ a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
 
+
+server_header = paste("Server", RestRserve:::SERVER_HEADER, sep = ": ")
 r = backend$convert_response(a$process_request(rq))
-expect_equal(r, list("text", "text/plain", character(0), 200L))
+expect_equal(r, list("text", "text/plain", server_header, 200L))
 
 # Test endpoints method
 a = Application$new()

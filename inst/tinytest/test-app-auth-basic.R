@@ -11,7 +11,7 @@ rq = Request$new(path = "/hello")
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, World!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 
 # Test unauthorized request
@@ -28,7 +28,7 @@ rq = Request$new(path = "/secure", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, user-1!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 
 # Test authorized request with incorrect credentials
@@ -46,7 +46,7 @@ rq = Request$new(path = "/securearea/res1", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, user-1! Request resource is 'res1'.")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 
 # Test unauthorized request with not exists path
@@ -64,7 +64,7 @@ rs = app$process_request(rq)
 expect_equal(rs$body, "404 Not Found")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
-expect_equal(rs$headers, structure(list(), .Names = character(0)))
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 404L)
 
 cleanup_app()

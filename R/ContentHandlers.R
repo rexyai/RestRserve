@@ -207,7 +207,7 @@ EncodeDecodeMiddleware = R6::R6Class(
         if (!is.function(decode)) {
           # if it is a request without body and content_type -
           # just set decode to identity
-          if(is.null(request$content_type) && is.null(request$body)) {
+          if (is.null(request$content_type) && is.null(request$body)) {
             decode = identity
           } else {
             decode = ContentHandlers$get_decode(content_type = request$content_type)

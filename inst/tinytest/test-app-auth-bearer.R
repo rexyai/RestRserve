@@ -11,7 +11,7 @@ rq = Request$new(path = "/hello")
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, World!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 
 # Test unauthorized request
@@ -28,7 +28,7 @@ rq = Request$new(path = "/secure", headers = h)
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, World!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
 expect_equal(rs$status_code, 200L)
 
 # Test authorized request with invalid
