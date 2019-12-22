@@ -48,7 +48,11 @@
 #' app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {
 #'  res$set_header("Allow", "POST, OPTIONS")
 #' })
-#' req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "POST"), method = "OPTIONS")
+#' req = Request$new(
+#'   path = "/hello",
+#'   headers = list("Access-Control-Request-Method" = "POST"),
+#'   method = "OPTIONS"
+#' )
 #' app$process_request(req)
 #'
 CORSMiddleware = R6::R6Class(

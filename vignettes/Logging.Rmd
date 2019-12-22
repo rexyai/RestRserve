@@ -40,7 +40,7 @@ If you want to customize `logger`, you can tweak it with `logger$set_printer()` 
 ```{r}
 application$logger = Logger$new(level = "trace", name = "mylogger")
 ```
-Moreover `Logger` mimics loggers from fully-featured [lgr](https://cran.r-project.org/web/packages/lgr/) package - you can use them interchangeably.
+Moreover `Logger` mimics loggers from fully-featured [lgr](https://cran.r-project.org/package=lgr) package - you can use them interchangeably.
 
 `application$logger` object however is not designed to be called by end user to produce messages. It is used internally in the `application` to emit status messages along the request-response processing pipeline.
 

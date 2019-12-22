@@ -40,7 +40,11 @@ app$add_post(path = "/hello", FUN = function(req, res) {
 app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {
  res$set_header("Allow", "POST, OPTIONS")
 })
-req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "POST"), method = "OPTIONS")
+req = Request$new(
+  path = "/hello",
+  headers = list("Access-Control-Request-Method" = "POST"),
+  method = "OPTIONS"
+)
 app$process_request(req)
 
 }
