@@ -25,11 +25,3 @@ parse_multipart_body <- function(body, boundary) {
     .Call(`_RestRserve_parse_multipart_body`, body, boundary)
 }
 
-url_decode <- function(x) {
-    .Call(`_RestRserve_url_decode`, x)
-}
-
-url_encode <- function(x) {
-    .Call(`_RestRserve_url_encode`, x)
-}
-
