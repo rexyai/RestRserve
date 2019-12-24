@@ -26,7 +26,6 @@ std::string url_encode_one(const std::string& value) {
   return escaped.str();
 }
 
-// [[Rcpp::export(rng=false)]]
 Rcpp::CharacterVector url_encode(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
   Rcpp::CharacterVector out = Rcpp::no_init(n);
