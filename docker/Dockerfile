@@ -1,4 +1,4 @@
-FROM r-base:3.6.1
+FROM r-base:3.6.2
 
 ENV R_FORGE_PKGS Rserve
 ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
