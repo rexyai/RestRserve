@@ -26,7 +26,7 @@ as_http_date = function(from) {
   if (is.null(from) || is.na(from)) {
     return(NULL)
   }
-  return(structure(Cpp_to_http_date(from), class = "HTTPDate"))
+  return(structure(format(from, "%a, %d %b %Y %H:%M:%S %Z", tz = "GMT"), class = "HTTPDate"))
 }
 
 setAs("NULL", "HTTPDate", function(from)  {
@@ -34,10 +34,12 @@ setAs("NULL", "HTTPDate", function(from)  {
 })
 
 setAs("integer", "HTTPDate", function(from)  {
+  from = as.POSIXct(from, origin = "1970-01-01")
   as_http_date(from)
 })
 
 setAs("numeric", "HTTPDate", function(from)  {
+  from = as.POSIXct(from, origin = "1970-01-01")
   as_http_date(from)
 })
 
@@ -51,7 +53,8 @@ from_http_date = function(from) {
   if (is.null(from)) {
     return(NULL)
   }
-  return(Cpp_from_http_date(from))
+  res = as.POSIXct(strptime(from, format = "%a, %d %b %Y %H:%M:%S", tz = "GMT"))
+  return(res)
 }
 
 setAs("HTTPDate", "POSIXct", function(from)  {
