@@ -15,7 +15,7 @@ expect_equal(r$status_code, 200L)
 
 backend = RestRserve:::BackendRserve$new()
 
-server_header = paste("Server", RestRserve:::SERVER_HEADER, sep = ": ")
+server_header = paste("Server", getOption("RestRserve.headers.server"), sep = ": ")
 expect_equal(backend$convert_response(r), list(raw(), "text/plain", server_header, 200L))
 
 # Test parse_headers
@@ -217,7 +217,7 @@ rs$context[['some_context']] = list(a = 1)
 rs$reset()
 expect_equal(rs$body, NULL)
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list(Server = RestRserve:::SERVER_HEADER))
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 200L)
 expect_equal(rs$encode, NULL)
 expect_equal(rs$cookies, list())

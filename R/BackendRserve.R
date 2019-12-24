@@ -129,7 +129,7 @@ BackendRserve = R6::R6Class(
 
     set_request = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
       # actually we can skip runtime check as inputs from Rserve are guaranteed
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(path)
         checkmate::assert_character(parameters_query, null.ok = TRUE)
         checkmate::assert(

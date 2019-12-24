@@ -1,5 +1,3 @@
-SERVER_HEADER = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
-
 #' @title Creates response object
 #'
 #' @usage NULL
@@ -151,7 +149,7 @@ Response = R6::R6Class(
     #------------------------------------------------
     initialize = function(body = NULL,
                           content_type = "text/plain",
-                          headers = list("Server" = SERVER_HEADER),
+                          headers = list("Server" = getOption("RestRserve.headers.server")),
                           status_code = 200L,
                           encode = NULL,
                           ...) {
@@ -172,7 +170,7 @@ Response = R6::R6Class(
     reset = function() {
       self$body = NULL
       self$set_content_type("text/plain")
-      self$headers = list("Server" = SERVER_HEADER)
+      self$headers = list("Server" = getOption("RestRserve.headers.server"))
       self$status_code = 200L
       self$cookies = list()
       self$context = new.env(parent = emptyenv())
@@ -180,27 +178,27 @@ Response = R6::R6Class(
     },
     #------------------------------------------------
     set_content_type = function(content_type = 'text/plain') {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(content_type, pattern = ".*/.*")
       }
       self$content_type = content_type
       return(invisible(self))
     },
     set_status_code = function(code) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_int(code, lower = 100L, upper = 600L)
       }
       self$status_code = code
       return(invisible(self))
     },
     has_header = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(!is.null(self$headers[[name]]))
     },
     get_header = function(name, default = NULL) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(default, null.ok = TRUE)
       }
@@ -212,7 +210,7 @@ Response = R6::R6Class(
       return(res)
     },
     set_header = function(name, value) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
@@ -228,14 +226,14 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     delete_header = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       self$headers[[name]] = NULL
       return(invisible(TRUE))
     },
     append_header = function(name, value) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(value)
       }
@@ -252,7 +250,7 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     set_date = function(dtm = Sys.time()) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_posixct(dtm, null.ok = TRUE)
       }
       res = as(dtm, "HTTPDate")
@@ -265,7 +263,7 @@ Response = R6::R6Class(
     },
     set_cookie = function(name, value, expires = NULL, max_age = NULL, domain = NULL,
                           path = NULL, secure = NULL, http_only = NULL) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(value)
         checkmate::assert_posixct(expires, null.ok = TRUE)
@@ -292,7 +290,7 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     unset_cookie = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       self$cookies[[name]] = NULL
@@ -303,7 +301,7 @@ Response = R6::R6Class(
       return(invisible(self))
     },
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_int(status_code, lower = 100L, upper = 600L)
         checkmate::assert_string(content_type, pattern = ".*/.*")
       }

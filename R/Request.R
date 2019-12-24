@@ -200,7 +200,7 @@ Request = R6::R6Class(
                           content_type = NULL,
                           decode = NULL,
                           ...) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(path, pattern = "/.*")
         checkmate::assert_string(content_type, pattern = ".*/.*", null.ok = TRUE)
         checkmate::check_list(headers)
@@ -243,7 +243,7 @@ Request = R6::R6Class(
       invisible(self)
     },
     get_header = function(name, default = NULL) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
         checkmate::assert_string(default, null.ok = TRUE)
       }
@@ -254,7 +254,7 @@ Request = R6::R6Class(
       return(res)
     },
     get_param_query = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       # https://stackoverflow.com/questions/24699643/are-query-string-keys-case-sensitive
@@ -262,19 +262,19 @@ Request = R6::R6Class(
       return(self$parameters_query[[name]])
     },
     get_param_body = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(self$parameters_body[[name]])
     },
     get_param_path = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(self$parameters_path[[name]])
     },
     get_file = function(name) {
-      if (isTRUE(getOption('RestRserve_RuntimeAsserts', TRUE))) {
+      if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       if (is.null(self$files[[name]]) || !is.raw(self$body)) {

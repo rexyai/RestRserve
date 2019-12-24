@@ -131,7 +131,7 @@ rq = Request$new(path = "/")
 rs = Response$new()
 
 
-server_header = paste("Server", RestRserve:::SERVER_HEADER, sep = ": ")
+server_header = paste("Server", getOption("RestRserve.headers.server"), sep = ": ")
 r = backend$convert_response(a$process_request(rq))
 expect_equal(r, list("text", "text/plain", server_header, 200L))
 
