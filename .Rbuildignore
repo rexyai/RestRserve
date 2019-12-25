@@ -12,3 +12,4 @@ CONTRIBUTING.md
 ^\.openapi\.yaml$
 ^pkgdown$
 ^\.dockerignore$
+^\.appveyor.yml$
