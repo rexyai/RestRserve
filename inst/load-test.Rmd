@@ -1,0 +1,180 @@
+---
+title: "Rserve vs RestRserve performance comparison"
+author: "Artem Klevtsov"
+output:
+  html_document:
+    code_folding: show
+    code_download: true
+    highlight: default
+    df_print: kable
+params:
+  threads: 10
+  loops: 1000
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r loadtest, include=FALSE}
+if (!requireNamespace("loadtest", quietly = TRUE)) {
+  remotes::install_github("tmobile/loadtest")
+}
+```
+
+```{r packages, message = FALSE}
+library(loadtest)
+library(sys)
+library(ggplot2)
+library(data.table)
+library(checkmate)
+```
+
+
+```{r}
+run_bg <- function(expr) {
+  args = c("--vanilla", "-q")
+  expr_c = deparse(substitute(expr))
+  expr_c <- paste(expr_c, collapse = "\n")
+  pid = r_background(c(args, "-e", expr_c), std_out = FALSE, std_err = FALSE)
+  return(pid)
+}
+
+run_test <- function(start_fun, exec_fun) {
+  assert_function(start_fun, nargs = 0L)
+  assert_function(exec_fun, nargs = 0L)
+  
+  args = c("--vanilla", "-q")
+  expr_start = body(start_fun)
+  expr_exec = body(exec_fun)
+  expr <- paste(deparse(expr_start), collapse = "\n")
+  pid = r_background(c(args, "-e", expr), std_out = FALSE, std_err = FALSE)
+  on.exit(tools::pskill(pid))
+  res = eval(expr_exec)
+  return(invisible(res))
+}
+
+print_results <- function(res) {
+  n_threads = res[, uniqueN(thread)]
+  n_loops = res[, .N / uniqueN(thread)]
+  n_reqs = res[, .N]
+  n_failed = res[request_status == "Failure", .N]
+  total = res[, max(time_since_start) + elapsed[which.max(time_since_start)]] / 1000
+  resps = round(res[, .N] / total, 3)
+  cat("* Number of threads: ", n_threads, "\n", sep = "")
+  cat("* Number of loops per thread: ", n_loops, "\n", sep = "")
+  cat("* Total number of requests: ", n_reqs, "\n", sep = "")
+  cat("* Number of failed results: ", n_failed, "\n", sep = "")
+  cat("* Runtime (secs): ", total, "\n", sep = "")
+  cat("* Responses pre second: ", resps, "\n", sep = "")
+  cat("* Median of response time (ms): ", res[, median(elapsed)], "\n", sep = "")
+  return(invisible(res))
+}
+```
+
+# Collect data
+
+## Rserve app
+
+```{r}
+res_rserve = run_test(
+  start_fun = function() {
+    .http.request = function(path, query, body, headers) {
+      if (path == "/hello") {
+        resp_body = "Hello, World!"
+        status_code = 200L
+      } else {
+        resp_body = "Not Found"
+        status_code = 404L
+      }
+      resp_headers = character(0)
+      content_type = "text/plain"
+      list(resp_body, content_type, resp_headers, status_code)
+    }
+    Rserve::run.Rserve(http.port = 8001)
+  },
+  exec_fun = function() {
+    loadtest(
+      url = "http://localhost:8001/hello",
+      method = "GET",
+      threads = params$threads,
+      loops = params$loops
+    )
+  }
+)
+setDT(res_rserve)
+```
+
+## RestRserve app
+
+```{R}
+res_restrserve = run_test(
+  start_fun = function() {
+    # simple response
+    hello_handler = function(request, response) {
+      response$body = "Hello, World!"
+    }
+    app = RestRserve::RestRserveApplication$new(
+      content_type = "text/plain"
+    )
+    app$add_get(path = "/hello", FUN = hello_handler)
+    app$run(http_port = 8002)
+  },
+  exec_fun = function() {
+    loadtest(
+      url = "http://localhost:8002/hello",
+      method = "GET",
+      threads = params$threads,
+      loops = params$loops
+    )
+  }
+)
+setDT(res_restrserve)
+```
+
+# Results
+
+```{r}
+results <- rbind(
+  "Rserve" = res_rserve,
+  "RestRserve" = res_restrserve,
+  idcol = "package"
+)
+```
+
+## Rserve `r packageVersion("Rserve")`
+
+```{r results = "asis"}
+print_results(res_rserve)
+```
+
+## RestRserve `r packageVersion("RestRserve")`
+
+```{r results = "asis"}
+print_results(res_restrserve)
+```
+
+## Total
+
+```{r}
+ggplot(results, aes(x = time_since_start / 1000, y = elapsed, color = request_status)) +
+  geom_point() +
+  lims(y = c(0, NA)) +
+  labs(x = "Time since start, s",
+       y = "Elapsed time, ms",
+       color = "Request status",
+       title = "Time to complete request over duration of test") +
+  facet_wrap(~ package, ncol = 2) +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(results, aes(x = package, y = elapsed)) +
+  geom_violin() +
+  scale_y_log10() +
+  labs(x = "Package",
+       y = "Elapsed time, ms (log10)",
+       title = "Compare elapsed time") +
+  theme_minimal()
+```
