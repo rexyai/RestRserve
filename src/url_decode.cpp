@@ -9,14 +9,13 @@ static inline char from_hex(char ch) {
 }
 
 std::string url_decode_one(const std::string& value) {
-  char h;
   std::ostringstream escaped;
   escaped.fill('0');
   for (auto cur = value.begin(), end = value.end(); cur != end; ++cur) {
     std::string::value_type c = (*cur);
     if (c == '%') {
       if (cur[1] && cur[2]) {
-        h = from_hex(cur[1]) << 4 | from_hex(cur[2]);
+        char h = from_hex(cur[1]) << 4 | from_hex(cur[2]);
         escaped << h;
         cur += 2;
       }

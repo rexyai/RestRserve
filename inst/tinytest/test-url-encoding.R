@@ -4,7 +4,7 @@
 url_encode = RestRserve:::url_encode
 url_decode = RestRserve:::url_decode
 
-text = c("Hello, World", "Hello Günter")
+text = c("Hello, World", "Hello G\u00fcnter")
 
 # Test empty input
 expect_equal(url_encode(NULL), character())
