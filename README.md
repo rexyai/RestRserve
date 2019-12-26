@@ -1,6 +1,7 @@
 # RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
 [![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=dev)](https://travis-ci.org/rexyai/RestRserve)
+[![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/dev?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/dev)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/dev)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
