@@ -17,7 +17,7 @@ by the browser as default because RestRserve will not send the headers required
 by the browser to allow ross site resource sharing. You can change this easy
 just by providing \code{CORSMiddleware} as middleware to the \link{Application}.
 
-This class inherits \link{Middleware}.
+This class inherits from \link{Middleware}.
 }
 \section{Construction}{
 \preformatted{CORSMiddleware$new(routes, match = "exact", id = "CORSMiddleware")
@@ -40,7 +40,11 @@ app$add_post(path = "/hello", FUN = function(req, res) {
 app$add_route("/hello", method = "OPTIONS", FUN = function(req, res) {
  res$set_header("Allow", "POST, OPTIONS")
 })
-req = Request$new(path = "/hello", headers = list("Access-Control-Request-Method" = "POST"), method = "OPTIONS")
+req = Request$new(
+  path = "/hello",
+  headers = list("Access-Control-Request-Method" = "POST"),
+  method = "OPTIONS"
+)
 app$process_request(req)
 
 }

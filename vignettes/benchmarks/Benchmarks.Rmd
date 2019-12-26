@@ -4,7 +4,7 @@ output: rmarkdown::html_vignette
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 author: Dmitriy Selivanov
 vignette: >
-  %\VignetteIndexEntry{Middleware}
+  %\VignetteIndexEntry{Benchmarks}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -44,7 +44,7 @@ app$add_get("/rds2", function(request, response) {
 
 app$add_post("/json", function(request, response) {
   response$content_type = "application/rds"
-  response$body = serialize(request$body_decoded, NULL)
+  response$body = serialize(request$body, NULL)
 })
 
 

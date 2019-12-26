@@ -2,6 +2,7 @@
 #'
 #' @description
 #' Controls how RestRserve encodes and decodes different content types.
+#' Designed to work jointly with [EncodeDecodeMiddleware]
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
@@ -37,7 +38,7 @@
 #'   -> `list`\cr
 #'   Convert handlers to list.
 #'
-#' @seealso [Application]
+#' @seealso [Application] [EncodeDecodeMiddleware]
 #'
 #' @name ContentHandlers
 #'
@@ -93,12 +94,13 @@ ContentHandlersFactory = R6::R6Class(
         self$handlers[[content_type]] = list()
       }
       self$handlers[[content_type]][["decode"]] = FUN
+      private$supported_decode_types = unique(c(private$supported_decode_types, content_type))
       return(invisible(self))
     },
     get_decode = function(content_type) {
       if (!is_string(content_type)) {
-        msg = "'content-type' header is not set/invalid - don't know how to decode the body"
-        raise(HTTPError$unsupported_media_type(msg))
+        err = "'content-type' header is not set/invalid - don't know how to decode the body"
+        raise(HTTPError$unsupported_media_type(body = list(error = err)))
       }
       content_type = tolower(content_type)
       # ignore content types (exact match)
@@ -115,7 +117,8 @@ ContentHandlersFactory = R6::R6Class(
         content_type = strsplit(content_type, ';', TRUE)[[1]][[1]]
         decode = self$handlers[[content_type]][["decode"]]
         if (!is.function(decode)) {
-          raise(HTTPError$unsupported_media_type())
+          err = sprintf("unsupported media type \"%s\"", content_type)
+          raise(HTTPError$unsupported_media_type(body = list(error = err)))
         }
       }
       return(decode)
@@ -125,6 +128,7 @@ ContentHandlersFactory = R6::R6Class(
     },
     reset = function() {
       self$handlers = new.env(parent = emptyenv())
+      private$supported_decode_types = NULL
 
       # set default encoders
       self$set_encode("application/json", to_json)
@@ -157,6 +161,7 @@ ContentHandlersFactory = R6::R6Class(
     }
   ),
   private = list(
+    supported_decode_types = NULL,
     ignore = list(
       equal = c(
         "application/x-www-form-urlencoded"
@@ -165,5 +170,73 @@ ContentHandlersFactory = R6::R6Class(
         "multipart/form-data"
       )
     )
+  )
+)
+
+#' @title Creates EncodeDecodeMiddleware middleware object
+#'
+#' @description
+#' Controls how RestRserve encodes and decodes different content types.
+#' **This middleware is passed by default to the [Application] constructor**.
+#' Designed to work jointly with [ContentHandlers]
+#' This class inherits from [Middleware].
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
+#' @section Construction:
+#' ```
+#' EncodeDecodeMiddleware$new(id = "EncodeDecodeMiddleware")
+#' ````
+#' * `id` :: `character(1)`\cr
+#'   Middleware id
+#' @export
+#'
+#' @seealso
+#' [Middleware] [Application] [ContentHandlers]
+#'
+EncodeDecodeMiddleware = R6::R6Class(
+  classname = "EncodeDecodeMiddleware",
+  inherit = Middleware,
+  public = list(
+    initialize = function(id = "EncodeDecodeMiddleware") {
+      self$id = id
+
+      self$process_request = function(request, response) {
+        decode = request$decode
+        if (!is.function(decode)) {
+          # if it is a request without body and content_type -
+          # just set decode to identity
+          if (is.null(request$content_type) && is.null(request$body)) {
+            decode = identity
+          } else {
+            decode = ContentHandlers$get_decode(content_type = request$content_type)
+          }
+        }
+        request$body = decode(request$body)
+        invisible(TRUE)
+      }
+
+      self$process_response = function(request, response) {
+        # this means that response wants RestRerveApplication to select
+        # how to encode automatically
+        encode = response$encode
+        if (!is.function(encode)) {
+          encode = ContentHandlers$get_encode(response$content_type)
+        }
+
+        if (!is_string(response$body)) {
+          response$body = encode(response$body)
+        } else {
+          body_name = names(response$body)
+          if (isTRUE(body_name ==  "file" || body_name == "tmpfile")) {
+            # do nothing - body cosnidered as file path
+          } else {
+            response$body = encode(response$body)
+          }
+        }
+        invisible(TRUE)
+      }
+    }
   )
 )

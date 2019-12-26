@@ -10,7 +10,7 @@ expect_true(inherits(r$id, "character"))
 expect_equal(nchar(r$id), 36L)
 expect_equal(r$body, NULL)
 expect_equal(length(r$body), 0L)
-expect_equal(r$content_type, "text/plain")
+expect_equal(r$content_type, NULL)
 expect_equal(r$method, "GET")
 expect_equal(r$path, "/")
 expect_true(inherits(r$headers, "list"))
@@ -221,10 +221,8 @@ expect_equal(r$parameters_query, list())
 expect_equal(r$headers, list())
 expect_equal(r$body, NULL)
 expect_equal(r$cookies, list())
-expect_equal(r$content_type, "text/plain")
+expect_equal(r$content_type, NULL)
 expect_equal(r$decode, NULL)
-
-
 
 # Test query parameters are case sensitive
 r = Request$new(

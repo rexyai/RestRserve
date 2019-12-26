@@ -35,9 +35,17 @@
   # docstrings inside fucntions
   # options("keep.source" = TRUE)
 
+  default_options = options()
+
   runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
   runtime_asserts = isTRUE(as.logical(runtime_asserts))
-  options("RestRserve_RuntimeAsserts" = runtime_asserts)
+  restrserve_options = list(
+    "RestRserve.runtime.asserts" = runtime_asserts,
+    "RestRserve.headers.server" = paste("RestRserve", packageVersion("RestRserve"), sep = "/")
+  )
+
+  toset = !(names(restrserve_options) %in% names(default_options))
+  if (any(toset)) options(restrserve_options[toset])
 
   assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
   assign('ContentHandlers', ContentHandlersFactory$new(), envir = parent.env(environment()))

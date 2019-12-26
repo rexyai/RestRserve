@@ -53,7 +53,7 @@ Now you can type `http://localhost:8080/hello` in your favourite browser and see
 - **Raise meaningful http errors** and allows to interrupt request handling from any place of the user code
 - Comes with **many examples** - see `inst/examples`
 - Saves you from boilerplate code:
-  - automatically **lazily** decodes request body from the common formats
+  - automatically decodes request body from the common formats
   - automatically encodes response body to the common formats
   - automatically parses URI templates (such as `/get/{item_id}`)
   - helps to expose OpenAPI and Swagger/Redoc/Rapidoc UI

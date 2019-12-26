@@ -7,38 +7,44 @@ library(RestRserve)
 
 ## ---- create handler for the HTTP requests ----
 
-# simple response
-hello_handler = function(request, response) {
-  resp_body = charToRaw("Hello, World!")
-  enc = request$get_header("accept-encoding")
-  if ("gzip" %in% enc) {
-    # remotes::install_github("omegahat/Rcompression")
-    resp_body = Rcompression::gzip(resp_body)
-    response$set_header("Content-Encoding", "gzip")
-    response$set_header("Vary", "Accept-Encoding")
-  } else if ("br" %in% enc) {
-    resp_body = brotli::brotli_compress(resp_body)
-    response$set_header("Content-Encoding", "br")
-    response$set_header("Vary", "Accept-Encoding")
-  }
-  response$body = resp_body
-  response$encode = identity # prevent convert to character
-}
+CompressResponse = Middleware$new(
+  process_response = function(request, response) {
 
-## ---- create application -----
+    # Need "Rcompression" package!
+    # alternatively memCompress can be used, but there some caveats
+    # https://stackoverflow.com/questions/39707388/gzip-byte-array-not-the-same-for-c-sharp-and-r
 
-app = Application$new(
-  content_type = "text/plain"
+    if (!requireNamespace("Rcompression", quietly = TRUE)) {
+      stop("Please install \"Rcompression\" package with 'remotes::install_github(\"omegahat/Rcompression\")'")
+    }
+
+    enc = request$get_header("Accept-Encoding")
+    if ("gzip" %in% enc) {
+      response$set_header("Content-Encoding", "gzip")
+      response$set_header("Vary", "Accept-Encoding")
+      response$set_body(Rcompression::gzip(response$body))
+      response$encode = identity
+    }
+  },
+  id = "gzip"
 )
 
 
-## ---- register endpoints and corresponding R handlers ----
+EncodeDecode = EncodeDecodeMiddleware$new()
 
-app$add_get(
-  path = "/hello",
-  FUN = hello_handler
-)
+app = Application$new(middleware = list())
+app$append_middleware(CompressResponse)
+app$append_middleware(EncodeDecode)
 
+app$add_get("/json", function(request, response) {
+  response$content_type = "application/json"
+  response$body = list(answer = "json")
+})
+
+app$add_get("/text", function(request, response) {
+  response$content_type = "text/plain"
+  response$body = 'text answer'
+})
 
 ## ---- start application ----
 backend = BackendRserve$new()
