@@ -34,7 +34,7 @@
 #' * **`content_type`** :: `character(1)`\cr
 #'   Default response body content type.
 #'
-#' * **`HTTPError`** :: `HTTPErrorFactory`\cr
+#' * **`HTTPError`** :: `HTTPError`\cr
 #'   Class which raises HTTP errors. Global [HTTPError] is used by default. In theory
 #'   user can replace it with his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
 #'   in the majority of the cases using [HTTPError] will be enough.
@@ -109,7 +109,7 @@
 #'
 #' @export
 #'
-#' @seealso [HTTPError] [ContentHandlers] [Middleware]
+#' @seealso [HTTPError] [Middleware]
 #'          [Request] [Response]
 #'
 #' @examples

@@ -48,5 +48,4 @@
   if (any(toset)) options(restrserve_options[toset])
 
   assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
-  assign('ContentHandlers', ContentHandlersFactory$new(), envir = parent.env(environment()))
 } # nocov end

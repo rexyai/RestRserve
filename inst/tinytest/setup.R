@@ -11,7 +11,6 @@ ex_app = function(name) {
 
 cleanup_app = function() {
   RestRserve::HTTPError$reset()
-  RestRserve::ContentHandlers$reset()
 }
 
 # genearate multipart binary body

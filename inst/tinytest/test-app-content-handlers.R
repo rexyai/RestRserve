@@ -31,6 +31,7 @@ rs = unserialize(rs[[1]])
 expect_equal(rs, list(answer = "rds2"))
 
 HTTPError$set_content_type("application/json")
+ContentHandlers = RestRserve:::ContentHandlersFactory$new()
 HTTPError$set_encode(ContentHandlers$get_encode("application/json"))
 request_404 = Request$new(path = "/404")
 rs = backend$convert_response(app$process_request(request_404))
