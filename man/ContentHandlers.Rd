@@ -7,6 +7,7 @@
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Controls how RestRserve encodes and decodes different content types.
+Designed to work jointly with \link{EncodeDecodeMiddleware}
 }
 \section{Fields}{
 
@@ -41,6 +42,6 @@ Convert handlers to list.
 }
 
 \seealso{
-\link{Application}
+\link{Application} \link{EncodeDecodeMiddleware}
 }
 \keyword{datasets}

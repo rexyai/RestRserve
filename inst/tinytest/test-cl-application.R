@@ -11,7 +11,7 @@ expect_true(inherits(a$logger, "Logger"))
 expect_true(inherits(a$.__enclos_env__$private$handlers, "environment"))
 expect_equal(length(a$.__enclos_env__$private$handlers), 0L)
 expect_true(inherits(a$.__enclos_env__$private$middleware, "list"))
-expect_equal(length(a$.__enclos_env__$private$middleware), 0L)
+expect_equal(length(a$.__enclos_env__$private$middleware), 1L)
 expect_true(inherits(a$.__enclos_env__$private$routes, "environment"))
 expect_equal(length(a$.__enclos_env__$private$routes), 0L)
 expect_equal(a$.__enclos_env__$private$supported_methods,
@@ -49,9 +49,9 @@ mw2 = Middleware$new(
 )
 a$append_middleware(mw2)
 
-expect_equal(length(a$.__enclos_env__$private$middleware), 2L)
-expect_equal(a$.__enclos_env__$private$middleware[[1]], mw1)
-expect_equal(a$.__enclos_env__$private$middleware[[2]], mw2)
+expect_equal(length(a$.__enclos_env__$private$middleware), 3L)
+expect_equal(a$.__enclos_env__$private$middleware[[2]], mw1)
+expect_equal(a$.__enclos_env__$private$middleware[[3]], mw2)
 
 # Test add_route method
 a = Application$new()
@@ -130,8 +130,10 @@ a$add_route("/", "GET", f, "exact")
 rq = Request$new(path = "/")
 rs = Response$new()
 
+
+server_header = paste("Server", getOption("RestRserve.headers.server"), sep = ": ")
 r = backend$convert_response(a$process_request(rq))
-expect_equal(r, list("text", "text/plain", character(0), 200L))
+expect_equal(r, list("text", "text/plain", server_header, 200L))
 
 # Test endpoints method
 a = Application$new()
@@ -151,7 +153,7 @@ a = Application$new()
 f = function(x) { TRUE }
 ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
 HTTPError$set_content_type("application/json")
-expect_equal(a$ContentHandlers$get_decode("custom/type"), f)
+expect_equal(ContentHandlers$get_decode("custom/type"), f)
 expect_equal(a$HTTPError$content_type, "application/json")
 
 
@@ -174,6 +176,27 @@ mw = Middleware$new(
 )
 a$append_middleware(mw)
 expect_silent(print(a))
+
+# test 415
+
+app = Application$new()
+
+app$add_get("/", function(req, res) TRUE)
+ct = "application/messagepack"
+rq = Request$new(path = "/", method = "GET", content_type = ct)
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 415)
+expect_equal(rs$body, sprintf("unsupported media type \"%s\"", ct))
+
+app$add_get("/no-content-type", function(req, res) TRUE)
+rq = Request$new(path = "/no-content-type", method = "GET", content_type = NULL)
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 200)
+
+rq = Request$new(path = "/no-content-type", method = "GET", content_type = NULL, body = "non-empty")
+rs = app$process_request(rq)
+expect_equal(rs$status_code, 415)
+expect_equal(rs$body, "'content-type' header is not set/invalid - don't know how to decode the body")
 
 # Reset global objects state
 ContentHandlers$reset()

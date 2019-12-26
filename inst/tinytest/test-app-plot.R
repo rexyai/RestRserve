@@ -15,7 +15,7 @@ expect_equal(names(rs$body), "tmpfile")
 png_sign = as.raw(c(137, 80, 78, 71, 13, 10, 26, 10))
 expect_equal(readBin(rs$body, raw(), 8), png_sign)
 expect_equal(rs$content_type, "image/png")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 200L)
 unlink(rs$body)
 

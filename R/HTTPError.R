@@ -192,7 +192,7 @@ HTTPErrorFactory = R6::R6Class(
   public = list(
     content_type = NULL,
     encode = NULL,
-    initialize = function(content_type = "text/plain", encode = NULL) {
+    initialize = function(content_type = "text/plain", encode = as.character) {
       self$set_content_type(content_type)
       self$set_encode(encode)
     },
@@ -206,7 +206,7 @@ HTTPErrorFactory = R6::R6Class(
     },
     reset = function() {
       self$set_content_type("text/plain")
-      self$set_encode(NULL)
+      self$set_encode(as.character)
       invisible(self)
     },
     #------------------------------------------------------------------------
