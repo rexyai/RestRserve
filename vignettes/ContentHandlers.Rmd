@@ -15,8 +15,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-**Note that as of RestRserve v 0.2 `ContentHandlers` API is not fully polished yet**.
-
 # Encoding
 
 Let's consider an example. We develop an application which calculates `factorial` of a number:
@@ -61,11 +59,21 @@ Two immediate questions can arise:
 1. Why `content_type` is equal to `text/plain`? 
     - This is because we can specify default `content_type` in `Application` constructor. It is `text/plain` by default, which means all the responses by default will have `text/plain` content type.
 1. How does application know how to encode `text/plain`? Can it encode any arbitrary content type?
-    - The logic on how to encode and decode request and response body is controlled by global `ContentHandlers` object. Out of the box it supports two content types - `text/plain` and `application/json`. 
+    - Application by default is initialized with pre-defined [EncodeDecodeMiddleware] middleware. The logic on how to encode and decode request and response body is controlled by its `ContentHandlers` property. Out of the box it supports two content types - `text/plain` and `application/json`. 
 
-For example:
+For instance `app1` and `app2` are equal:
 ```{r}
-FUN = ContentHandlers$get_encode('application/json')
+encode_decode_middleware = EncodeDecodeMiddleware$new()
+app1  = Application$new(middleware = list())
+app1$append_middleware(encode_decode_middleware)
+
+app2 = Application$new()
+```
+
+Here is example on how you can get the actual function used for 'application/json' encoding:
+```{r}
+
+FUN = encode_decode_middleware$ContentHandlers$get_encode('application/json')
 FUN
 ```
 We can manually override application default content-type:
@@ -150,4 +158,4 @@ request = Request$new(path = "/echo", method = "POST", body = '{"hello":"world"}
 response = application$process_request(request)
 response$body
 ```
-The logic behind decoding is also controlled by global `ContentHandlers`.
+The logic behind decoding is also controlled by [EncodeDecodeMiddleware] and its `ContentHandlers` property.

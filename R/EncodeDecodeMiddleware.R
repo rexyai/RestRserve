@@ -1,53 +1,49 @@
 #' @title Content handlers collection
-#'
+#
 #' @description
 #' Controls how RestRserve encodes and decodes different content types.
 #' Designed to work jointly with [EncodeDecodeMiddleware]
-#'
+#
 #' @usage NULL
 #' @format [R6::R6Class] object.
-#'
+#
 #' @section Fields:
-#'
+#
 #' * `handlers` :: `environment()`\cr
 #'   Handlers storage environment.
-#'
+#
 #' @section Methods:
-#'
+#
 #' * `get_encode(content_type)`\cr
 #'   `character(1)` -> `function`\cr
 #'   Get encoder function for the specific content type.
-#'
+#
 #' * `get_decode(content_type)`\cr
 #'   `character(1)` -> `function`\cr
 #'   Get decoder function for the specific content type.
-#'
+#
 #' * `set_encode(content_type, FUN)`\cr
 #'   `character(1)`, `function` -> `self`\cr
 #'   Set handler to encode body for the specific content type.
-#'
+#
 #' * `set_decode(content_type, FUN)`\cr
 #'   `character(1)`, `function` -> `self`\cr
 #'   Set handler to decode body for the specific content type.
-#'
+#
 #' * `reset()`\cr
 #'   -> `self`\cr
 #'   Resets all the content handlers to RestRserve defaults.
-#'
+#
 #' * `to_list`\cr
 #'   -> `list`\cr
 #'   Convert handlers to list.
-#'
+#
 #' @seealso [Application] [EncodeDecodeMiddleware]
-#'
+#
 #' @name ContentHandlers
-#'
-#' @export
-ContentHandlers = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
-
-
+#' @keywords internal
 ContentHandlersFactory = R6::R6Class(
-  classname = "ContentHandler",
+  classname = "ContentHandlers",
   public = list(
     handlers = NULL,
     initialize = function() {
@@ -178,7 +174,6 @@ ContentHandlersFactory = R6::R6Class(
 #' @description
 #' Controls how RestRserve encodes and decodes different content types.
 #' **This middleware is passed by default to the [Application] constructor**.
-#' Designed to work jointly with [ContentHandlers]
 #' This class inherits from [Middleware].
 #'
 #' @usage NULL
@@ -190,6 +185,16 @@ ContentHandlersFactory = R6::R6Class(
 #' ````
 #' * `id` :: `character(1)`\cr
 #'   Middleware id
+#' @section Fields:
+#'
+#' * **`ContentHandlers`** :: `ContentHandlers`\cr
+#'   Class which controls how RestRserve encodes and decodes different content types.
+#'   See [ContentHandlers] for documentation.
+#'   User can add new ecoding and decoding methods for new content types using `set_encode`
+#'   and `set_decode` methods.
+#'
+#'   In theory user can replace it with his own class (see `RestRserve:::ContentHandlersFactory`).
+#'   However we believe that in the majority of the cases using [ContentHandlers] will be enough.
 #' @export
 #'
 #' @seealso
@@ -199,7 +204,9 @@ EncodeDecodeMiddleware = R6::R6Class(
   classname = "EncodeDecodeMiddleware",
   inherit = Middleware,
   public = list(
+    ContentHandlers = NULL,
     initialize = function(id = "EncodeDecodeMiddleware") {
+      self$ContentHandlers = ContentHandlersFactory$new()
       self$id = id
 
       self$process_request = function(request, response) {
@@ -210,7 +217,7 @@ EncodeDecodeMiddleware = R6::R6Class(
           if (is.null(request$content_type) && is.null(request$body)) {
             decode = identity
           } else {
-            decode = ContentHandlers$get_decode(content_type = request$content_type)
+            decode = self$ContentHandlers$get_decode(content_type = request$content_type)
           }
         }
         request$body = decode(request$body)
@@ -222,7 +229,7 @@ EncodeDecodeMiddleware = R6::R6Class(
         # how to encode automatically
         encode = response$encode
         if (!is.function(encode)) {
-          encode = ContentHandlers$get_encode(response$content_type)
+          encode = self$ContentHandlers$get_encode(response$content_type)
         }
 
         if (!is_string(response$body)) {

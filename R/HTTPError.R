@@ -188,7 +188,7 @@ error_methods = c(
 HTTPError = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
 
 HTTPErrorFactory = R6::R6Class(
-  classname = "HTTPErrorFactory",
+  classname = "HTTPError",
   public = list(
     content_type = NULL,
     encode = NULL,

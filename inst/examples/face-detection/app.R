@@ -50,6 +50,7 @@ face_handler = function(request, response) {
 
 app = Application$new(
   content_type = "application/json",
+  middleware = list()
 )
 
 
@@ -63,11 +64,12 @@ app$add_post(
 
 ## ---- register content handlers -----
 
+enc_dec_mw = EncodeDecodeMiddleware$new()
 allowed_types = c("application/jpeg", "application/png")
 for (type in allowed_types) {
-  ContentHandlers$set_decode(type, identity)
+  enc_dec_mw$ContentHandlers$set_decode(type, identity)
 }
-
+app$append_middleware(enc_dec_mw)
 
 ## ---- start application ----
 backend = BackendRserve$new()

@@ -33,7 +33,7 @@ Alternatively user can use loggers from lgr package as a
 drop-in replacement - \code{Logger} methods and loggers created by \code{lgr} share function signatures.
 \item \strong{\code{content_type}} :: \code{character(1)}\cr
 Default response body content type.
-\item \strong{\code{HTTPError}} :: \code{HTTPErrorFactory}\cr
+\item \strong{\code{HTTPError}} :: \code{HTTPError}\cr
 Class which raises HTTP errors. Global \link{HTTPError} is used by default. In theory
 user can replace it with his own class (see \code{RestRserve:::HTTPErrorFactory}). However we believe
 in the majority of the cases using \link{HTTPError} will be enough.
@@ -171,7 +171,7 @@ app$process_request(say_rq)
 
 }
 \seealso{
-\link{HTTPError} \link{ContentHandlers} \link{Middleware}
+\link{HTTPError} \link{Middleware}
 \link{Request} \link{Response}
 }
 \keyword{datasets}

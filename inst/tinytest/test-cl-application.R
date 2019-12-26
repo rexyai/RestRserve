@@ -6,7 +6,7 @@ backend = RestRserve:::BackendRserve$new()
 a = Application$new()
 expect_true(inherits(a$content_type, "character"))
 expect_equal(a$content_type, "text/plain")
-expect_true(inherits(a$HTTPError, "HTTPErrorFactory"))
+expect_true(inherits(a$HTTPError, "HTTPError"))
 expect_true(inherits(a$logger, "Logger"))
 expect_true(inherits(a$.__enclos_env__$private$handlers, "environment"))
 expect_equal(length(a$.__enclos_env__$private$handlers), 0L)
@@ -149,11 +149,13 @@ ep = list(
 expect_equal(a$endpoints, ep)
 
 # Test global object affects changes in the app
-a = Application$new()
+enc_dec_mw = EncodeDecodeMiddleware$new()
 f = function(x) { TRUE }
-ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
+enc_dec_mw$ContentHandlers$set_decode(content_type = "custom/type", FUN = f)
+a = Application$new(middleware = list(enc_dec_mw))
+
 HTTPError$set_content_type("application/json")
-expect_equal(ContentHandlers$get_decode("custom/type"), f)
+expect_equal(enc_dec_mw$ContentHandlers$get_decode("custom/type"), f)
 expect_equal(a$HTTPError$content_type, "application/json")
 
 
@@ -199,7 +201,6 @@ expect_equal(rs$status_code, 415)
 expect_equal(rs$body, "'content-type' header is not set/invalid - don't know how to decode the body")
 
 # Reset global objects state
-ContentHandlers$reset()
 HTTPError$reset()
 
 # Test that Application can run
@@ -223,3 +224,4 @@ if (.Platform$OS.type == "unix") {
   expect_equal(ans, "OK!")
   tools::pskill(ps$pid) # kill process
 }
+
