@@ -224,4 +224,3 @@ if (.Platform$OS.type == "unix") {
   expect_equal(ans, "OK!")
   tools::pskill(ps$pid) # kill process
 }
-
