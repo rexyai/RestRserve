@@ -224,7 +224,9 @@ Request = R6::R6Class(
 
       private$request_id = uuid::UUIDgenerate(TRUE)
     },
-
+    set_id = function(id = uuid::UUIDgenerate(TRUE)) {
+      private$request_id = id
+    },
     reset = function() {
       # should reset all the fields which touched during `from_rserve` or `initialize`
       self$path = "/"

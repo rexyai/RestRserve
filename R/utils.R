@@ -14,10 +14,20 @@ try_capture_stack = function(expr, env = environment()) {
 }
 
 get_traceback = function(err) {
-  err_msg = err$message
-  stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
-  call_msg  = utils::capture.output(print(err$call))
-  list(error = err_msg, call = call_msg, traceback = stack_msg)
+  # no expanded traceback
+  if (inherits(err, "try-error")) {
+    condition = attr(err, "condition")[["call"]]
+    list(
+      error = condition[["message"]],
+      call = as.character(condition[["call"]]),
+      traceback = list()
+    )
+  } else {
+    err_msg = err$message
+    stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
+    call_msg  = utils::capture.output(print(err$call))
+    list(error = err_msg, call = call_msg, traceback = stack_msg)
+  }
 }
 
 guess_mime = function(file_path, content_type = NULL) {

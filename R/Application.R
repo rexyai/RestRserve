@@ -294,7 +294,14 @@ Application = R6::R6Class(
       private$middleware = append(private$middleware, mw)
       return(invisible(self))
     },
-    process_request = function(request = private$request) {
+    process_request = function(request = NULL) {
+      # if we use fork-mode then on.exit wlll be called in a fork and
+      # request_id will never be updated. Hence if the input request is `private$request`
+      # we need to do it manually
+      if (is.null(request)) {
+        request = private$request
+        request$set_id()
+      }
       on.exit(private$request$reset())
 
       response = private$response
@@ -521,7 +528,13 @@ Application = R6::R6Class(
     },
     #------------------------------------------------------------------------
     eval_with_error_handling = function(expr) {
-      x = try_capture_stack(expr)
+      expanded_traceback = isTRUE(getOption("RestRserve.runtime.traceback", TRUE))
+      if (expanded_traceback) {
+        x = try_capture_stack(expr)
+      } else {
+        x = try(expr, silent = TRUE)
+      }
+
       success = TRUE
       if (inherits(x, "HTTPErrorRaise")) {
         # HTTPError response
