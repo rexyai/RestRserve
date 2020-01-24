@@ -2,9 +2,9 @@
 
 Package website: [release](https://restrserve.org/) | [dev](https://restrserve.org/dev)
 
-[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=dev)](https://travis-ci.org/rexyai/RestRserve)
-[![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/dev?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/dev)
-[![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/dev)
+[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=master)](https://travis-ci.org/rexyai/RestRserve)
+[![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/master?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/master)
+[![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/master)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
@@ -14,7 +14,7 @@ Package website: [release](https://restrserve.org/) | [dev](https://restrserve.o
 
 ### From source
 ```r
-remotes::install_github("rexyai/RestRserve@dev")
+remotes::install_github("rexyai/RestRserve")
 ```
 
 ### Docker
@@ -43,7 +43,7 @@ Now you can type `http://localhost:8080/hello` in your favourite browser and see
 
 - follow [quick start guide on http://restrserve.org/](http://restrserve.org/articles/RestRserve.html) for more details.
 - check out "Articles" section on http://restrserve.org/
-- browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/dev/inst/examples)
+- browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/master/inst/examples)
 
 
 ## Features
