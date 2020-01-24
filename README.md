@@ -1,5 +1,7 @@
 # RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
+Package website: [release](https://restrserve.org/) | [dev](https://restrserve.org/dev)
+
 [![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=dev)](https://travis-ci.org/rexyai/RestRserve)
 [![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/dev?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/dev)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/dev/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/dev)

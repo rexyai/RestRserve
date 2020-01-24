@@ -2,9 +2,7 @@ Package: RestRserve
 Type: Package
 Title: High-Performance Web Server for Building Microservices and App Backends
 Description:
-  Allows to easily create high-performance HTTP API from R functions.
-  Provides many small convenient tools like flexible logging, JSON encoding,
-  utils for app deployment and management.
+  Allows to easily create high-performance full featured HTTP API from R functions.
 Version: 0.2.0
 Authors@R: c(
   person(given = "Dmitriy",
