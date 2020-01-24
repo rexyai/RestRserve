@@ -59,17 +59,7 @@ deploy:
     keep_history: true
     committer_from_gh: true
     github_token: $GITHUB_TOKEN
-    local_dir: docs
-    verbose: true
-    on:
-      branch: master
-      repo: rexyai/RestRserve
-  - provider: pages
-    skip_cleanup: true
-    keep_history: true
-    committer_from_gh: true
-    github_token: $GITHUB_TOKEN
-    local_dir: docs
+    local_dir: docs/
     verbose: true
     on:
       branch: dev
