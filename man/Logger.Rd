@@ -3,35 +3,72 @@
 \docType{data}
 \name{Logger}
 \alias{Logger}
-\title{simple logging utility}
-\format{\code{\link{R6Class}} object.}
-\usage{
-Logger
-}
+\title{Simple logging utility}
+\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-creates Logger object which can be used for logging with different level of verbosity.
-Log messages are in JSON format
+Creates Logger object which can be used for logging with different level of
+verbosity. Log messages are in JSON format.
 }
+\section{Construction}{
+\preformatted{Logger$new(level = "info", name = "ROOT", printer = NULL)
+}
+\itemize{
+\item \code{level} :: \code{character(1)}\cr
+Log level. Allowed values: info, fatal, error, warn, debug, trace, off, all.
+\item \code{name} :: \code{character(1)}\cr
+Logger name.
+\item \code{printer} :: \code{function}\cr
+Logger with sink defined by \code{printer} function.
+It should have signature \code{function(timestamp, level, logger_name, pid, message)}.
+By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}.
+}
+}
+
 \section{Methods}{
 
-\describe{
-  \item{\code{$new(level = INFO, name = "ROOT", printer = NULL)}}{Logger with sink defined by \code{printer}
-  function. It should have signature \code{function(timestamp, level, logger_name, pid, message)}.
-  By default when \code{printer = NULL} logger writes message in JSON format to \code{stdout}}
-  \item{\code{$set_name(name = "ROOT")}}{ sets logger name}
-  \item{\code{$set_log_level(level = INFO)}}{ sets log level}
-  \item{\code{$set_printer(FUN = NULL)}}{ sets function which defines how to print logs}
-  \item{\code{$trace(msg, ...)}}{ write trace message}
-  \item{\code{$debug(msg, ...)}}{ write debug message}
-  \item{\code{$info(msg, ...)}}{ write info message}
-  \item{\code{$warning(msg, ...)}}{ write warning message}
-  \item{\code{$error(msg, ...)}}{ write error message}
+\itemize{
+\item \code{set_name(name = "ROOT")}\cr
+\code{character(1)} -> \code{self}\cr
+Sets logger name.
+\item \code{set_log_level(level = "info")}\cr
+\code{character(1)} -> \code{self}\cr
+Sets log level.
+\item \code{set_printer(FUN = NULL)}\cr
+\code{function} -> \code{self}\cr
+Sets function which defines how to print logs.
+\code{FUN} should be a function with 6 formal arguments: timestamp, level,
+logger_name, pid, message.
+\item \code{trace(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write trace message.
+\item \code{debug(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write debug message.
+\item \code{info(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write info message.
+\item \code{warn(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write warning message.
+\item \code{error(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write error message.
+\item \code{fatal(msg, ...)}\cr
+\code{character()}, \code{any} -> \code{character(1)}\cr
+Write fatal error message.
 }
 }
 
 \examples{
-logger = Logger$new(INFO)
+# init logger
+logger = Logger$new("info")
+# write info message
 logger$info("hello world")
-logger$info(list(message = "hello world", code = 0L))
+# write extended log entry
+logger$info("", context = list(message = "hello world", code = 0L))
+
+}
+\seealso{
+\link[lgr:Logger]{lgr::Logger}
 }
 \keyword{datasets}

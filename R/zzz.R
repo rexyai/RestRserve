@@ -1,19 +1,51 @@
+#' @import methods
 #' @importFrom R6 R6Class
 #' @importFrom uuid UUIDgenerate
+#' @importFrom mime guess_type
+#' @importFrom utils packageName packageVersion
+#' @importFrom stats runif setNames
+#' @importFrom jsonlite base64_dec base64_enc toJSON fromJSON
+#' @importFrom checkmate assert assert_string test_string check_string assert_flag
+#'   assert_function check_raw assert_raw assert_int assert_class assert_list
+#'   assert_file_exists check_file_exists check_directory_exists
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib RestRserve, .registration=TRUE
+.onAttach = function(libname, pkgname) { # nocov start
+  recent_rserve = as.numeric_version("1.8.6")
+  current_rserve = utils::packageVersion("Rserve")
+  if (interactive()) {
+    if (current_rserve < recent_rserve) {
+      packageStartupMessage(
+        sprintf("Rserve version %s detected", current_rserve), "\n",
+        "While it should work we recommend to install more recent version",
+        sprintf("(>= %s) from R-Forge:", recent_rserve), "\n",
+        "`install.packages('Rserve',,'http://www.rforge.net/')`"
+      )
+    }
+  }
+} # nocov end
 
-.onAttach = function(libname, pkgname) {
+.onUnload = function(libpath) { # nocov start
+  library.dynam.unload("RestRserve", libpath)
+} # nocov end
+
+.onLoad = function(...) { # nocov start
   # make it TRUE because only this way comments inside functions can be printed during
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
   # docstrings inside fucntions
-  options("keep.source" = TRUE)
-  recent_rserve = "1.8.6"
-  if (interactive()) {
-    packageStartupMessage("RestRserve is still work in progress - while we try hard to have stable API expect some breaking changes.")
-    if(utils::packageVersion("Rserve") < recent_rserve) {
-      m1 = sprintf("Rserve version %s detected", utils::packageVersion("Rserve"))
-      m2 = sprintf("While it should work we recommend to install more recent version (>= %s) from rforge:", recent_rserve)
-      m3 = "`install.packages('Rserve',,'http://www.rforge.net/')`"
-      packageStartupMessage(paste(m1, m2, m3, sep = "\n"))
-    }
-  }
-}
+  # options("keep.source" = TRUE)
+
+  default_options = options()
+
+  runtime_asserts = Sys.getenv("RESTRSERVE_RUNTIME_ASSERTS", unset = TRUE)
+  runtime_asserts = isTRUE(as.logical(runtime_asserts))
+  restrserve_options = list(
+    "RestRserve.runtime.asserts" = runtime_asserts,
+    "RestRserve.headers.server" = paste("RestRserve", packageVersion("RestRserve"), sep = "/")
+  )
+
+  toset = !(names(restrserve_options) %in% names(default_options))
+  if (any(toset)) options(restrserve_options[toset])
+
+  assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
+} # nocov end

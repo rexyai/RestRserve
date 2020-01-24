@@ -5,6 +5,11 @@
 ^examples$
 CONTRIBUTING.md
 ^docker$
-drat.R
 ^.*[.]tar.gz$
-openapi.yaml
+^\.lintr$
+^\.codecov\.yml
+^\.travis\.yml$
+^\.openapi\.yaml$
+^pkgdown$
+^\.dockerignore$
+^\.appveyor.yml$

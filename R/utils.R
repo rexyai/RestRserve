@@ -1,61 +1,3 @@
-#------------------------------------------------
-# vectorized URLencode
-#------------------------------------------------
-URLenc = function(x) {
-  x = as.character(x)
-  vapply(x, utils::URLencode, character(1L), USE.NAMES = FALSE)
-}
-#------------------------------------------------
-# combine http-headers by key
-# cookies processed in a special way - combined with "; " opposed to ", " for the rest of the keys
-#------------------------------------------------
-combine_headers_by_key_env = function(header_keys, header_values) {
-  res = new.env(parent = emptyenv())
-
-  for(i in seq_along(header_keys)) {
-    key = header_keys[[i]]
-    value = header_values[[i]]
-    # no such key yet
-    if(is.null(res[[key]])) {
-      res[[key]] = value
-    } else {
-      # key already exists and we need cobine values with existing values
-      if(key == "cookie") {
-        res[[key]] = paste(res[[key]], value, sep = "; ")
-      } else {
-        res[[key]] = paste(res[[key]], value, sep = ", ")
-      }
-    }
-  }
-
-  res
-}
-#------------------------------------------------
-# environments as basic dictionaries
-#------------------------------------------------
-dict_create = function() {
-  new.env(parent = emptyenv())
-}
-dict_insert_not_empty = function(x, key, value) {
-  if(!is.environment(x))
-    stop("x should be environment")
-  if(!is.null(value) && length(value) > 0)
-    x[[key]] = value
-}
-dict_is_empty = function(x) {
-  if(!is.environment(x))
-    stop("x should be environment")
-  length(x) == 0L
-}
-#------------------------------------------------
-is_string_or_null = function(x) {
-  is.null(x) || (is.character(x) && length(x) == 1L)
-}
-is_string_len_one = function(x) {
-  is.character(x) && length(x) == 1L
-}
-#------------------------------------------------
-
 # borrowed from
 # https://github.com/r-lib/evaluate/blob/f0119259b3a1d335e399ac2235e91bb0e5b769b6/R/traceback.r#L29
 try_capture_stack = function(expr, env = environment()) {
@@ -72,22 +14,88 @@ try_capture_stack = function(expr, env = environment()) {
 }
 
 get_traceback = function(err) {
-  err_msg = err$message
-  stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
-  call_msg  = utils::capture.output(print(err$call))
-  list(error = err_msg, call = call_msg, traceback = stack_msg)
+  # no expanded traceback
+  if (inherits(err, "try-error")) {
+    condition = attr(err, "condition")[["call"]]
+    list(
+      error = condition[["message"]],
+      call = as.character(condition[["call"]]),
+      traceback = list()
+    )
+  } else {
+    err_msg = err$message
+    stack_msg = lapply(err$calls, function(x) utils::capture.output(print(x)))
+    call_msg  = utils::capture.output(print(err$call))
+    list(error = err_msg, call = call_msg, traceback = stack_msg)
+  }
 }
 
-#https://stackoverflow.com/a/15139734/1069256
-kill_process_group = function(pid, signal = "TERM") {
-  pgid = system2("ps", sprintf("-o pgid= %d | grep -o '[0-9]*'", pid), stdout = T)
-  tools::pskill(pid)
-  cmd_args = sprintf("-s %s -- -%s", signal, pgid)
-  # message(sprintf("kill %s", cmd_args))
-  system2("kill", cmd_args)
+guess_mime = function(file_path, content_type = NULL) {
+  if (is.null(content_type))
+    content_type = mime::guess_type(file_path)
+  content_type
 }
 
-#' @useDynLib RestRserve, .registration=TRUE
-deparse_vector = function(x) {
-  .Call("C_escape_chars", x)
+compact_list = function(x) {
+  x[lengths(x) > 0L]
+}
+
+is_string = function(x) {
+  is.character(x) && length(x) == 1L
+}
+
+is_path = function(path) {
+  is_string(path) && startsWith(path, "/")
+}
+
+to_string = function(x) {
+  if (is.raw(x)) {
+    x = rawToChar(x)
+  }
+  paste(as.character(x), collapse = "\n")
+}
+
+list_named = function(length = 0, names = paste0("V", character(length))) {
+  if (!(is.numeric(length) && (length(length) == 1) && is.finite(length)))
+    stop("invalid 'length' argument - should be finite numeric")
+
+  if (length == 0)
+    names = character(0)
+
+  if (!is.character(names) || (length(names) != length))
+    stop("invalid 'names' argument - should be character of size 'length'")
+
+  if (length > 0) names = paste0('V', as.character(seq_len(length)))
+  setNames(vector("list", length), names)
+}
+
+port_is_taken = function(port) {
+  tryCatch({
+    con = suppressWarnings(socketConnection(host = "localhost", port, open = "r"))
+    on.exit(close(con))
+    TRUE
+  },
+  error = function(e) { FALSE }
+  )
+}
+
+find_port = function(tries = 50) {
+  port = 6311        # default Rserve port
+  min_port = 49152   # min port
+  max_port = 65535   # max port
+  for (i in seq_len(tries)) {
+    if (!port_is_taken(port)) {
+      return(port)
+    }
+    port = trunc(runif(1, min_port, max_port))
+  }
+  return(NULL)
+}
+
+url_encode = function(x) {
+  vapply(x, utils::URLencode, "", reserved = TRUE, USE.NAMES = FALSE)
+}
+
+url_decode = function(x) {
+  vapply(x, utils::URLdecode, "", USE.NAMES = FALSE)
 }

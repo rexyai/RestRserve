@@ -1,23 +1,33 @@
-FROM r-base:latest
+FROM r-base:3.6.2
+
+ENV R_FORGE_PKGS Rserve
+ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    libssl-dev libjemalloc1
+    apt-get install -y --no-install-recommends libssl-dev libjemalloc-dev && \
+    install2.r -r http://www.rforge.net/ $R_FORGE_PKGS && \
+    install2.r $R_CRAN_PKGS
 
-ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so.1
+RUN cd /tmp && \
+    wget http://www.haproxy.org/download/2.0/src/haproxy-2.0.8.tar.gz && \
+    tar -xvzf haproxy-2.0.8.tar.gz && \
+    cd haproxy-2.0.8/ && \
+    make TARGET=linux-glibc && \
+    chmod +x haproxy && \
+    cp haproxy /bin/ && \
+    rm -rf /tmp/*
 
-RUN Rscript -e "install.packages( c( \
-    'Rserve', \
-    'R6', \
-    'uuid', \
-    'base64enc', \
-    'yaml', \
-    'swagger', 'mime', 'remotes'), \
-  repos = c('https://cran.rstudio.com/', 'http://www.rforge.net/'))"
+COPY . /tmp/RestRserve
 
-COPY . /RestRserve
+RUN R CMD build --no-manual --no-build-vignettes /tmp/RestRserve && \
+    R CMD INSTALL /RestRserve*.tar.gz && \
+    rm -rf /tmp/RestRserve* && \
+    rm /RestRserve*.tar.gz
 
-RUN R CMD build /RestRserve
-RUN R CMD INSTALL RestRserve*.tar.gz && rm -rf RestRserve*
+WORKDIR /
 
-CMD ["Rscript", "-e", "source(system.file('fib.R', package = 'RestRserve'), keep.source = TRUE)"]
+ENV LD_PRELOAD /usr/lib/x86_64-linux-gnu/libjemalloc.so
+
+EXPOSE 8080
+
+CMD ["Rscript", "-e", "source(system.file('examples', 'hello', 'app.R', package = 'RestRserve')); backend$start(app, http_port = 8080)"]

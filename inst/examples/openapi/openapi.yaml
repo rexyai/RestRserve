@@ -1,0 +1,28 @@
+openapi: 3.0.1
+info:
+  title: RestRserve OpenAPI
+  version: '1.0'
+servers:
+- url: /
+paths:
+  /fib:
+    get:
+      description: Calculates Fibonacci number
+      parameters:
+        - name: "n"
+          description: "x for Fibonnacci number"
+          in: query
+          schema:
+            type: integer
+          example: 10
+          required: true
+      responses:
+        200:
+          description: API response
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 5
+        400:
+          description: Bad Request

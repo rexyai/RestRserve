@@ -1,27 +1,51 @@
 Package: RestRserve
 Type: Package
-Title: High-Performance Web Server for Building Microservices and App Backends 
-Version: 0.1.5
-Authors@R: person("Dmitriy", "Selivanov", , "selivanov.dmitriy@gmail.com", role = c("aut", "cre"))
-Maintainer: Dmitriy Selivanov <selivanov.dmitriy@gmail.com>
-Description: 
-  Allows to easily create high-performance HTTP API from R functions. 
-  Provides many small convenient tools like flexible logging, json encoding, 
-  utils for app deployment and management.
+Title: High-Performance Web Server for Building Microservices and App Backends
+Description:
+  Allows to easily create high-performance full featured HTTP API from R functions.
+Version: 0.2.0
+Authors@R: c(
+  person(given = "Dmitriy",
+         family = "Selivanov",
+         role = c("aut", "cre"),
+         email = "selivanov.dmitriy@gmail.com",
+         comment = c(ORCID = "0000-0001-5413-1506")),
+  person(given = "Artem",
+         family = "Klevtsov",
+         role = "aut",
+         email = "a.a.klevtsov@gmail.com",
+         comment = c(ORCID = "0000-0003-0492-6647")),
+  person(given = "rexy.ai",
+         role = c("cph", "fnd")))
+URL: http://restrserve.org, https://github.com/rexyai/RestRserve
+BugReports: https://github.com/rexyai/RestRserve/issues
 License: GPL (>= 2)
-ByteCompile: true
-Imports: 
+Depends:
+  R (>= 3.6.0)
+Imports:
+  methods,
   Rserve (>= 1.7.3),
-  R6 (>= 2.2.2), 
-  uuid (>= 0.1-2), 
-  base64enc (>= 0.1-3)
+  Rcpp (>= 1.0.3),
+  R6 (>= 2.4.0),
+  uuid (>= 0.1-2),
+  checkmate (>= 1.9.4),
+  mime (>= 0.7),
+  jsonlite (>= 1.6)
 Suggests:
-  yaml (>= 2.1.14),
-  swagger (>= 3.9.2),
-  mime (>= 0.5),
-  curl (>= 2.7),
-  testthat (>= 2.0.0)
+  tinytest (>= 1.0.0),
+  lgr (>= 0.3.2),
+  lintr,
+  knitr,
+  rmarkdown,
+  curl,
+  sys
+LinkingTo:
+  Rcpp
+SystemRequirements: C++11
+ByteCompile: true
 KeepSource: true
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.0
+Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

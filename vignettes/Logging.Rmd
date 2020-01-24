@@ -1,0 +1,92 @@
+---
+title: "Logging"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Logging}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  results = 'markup'
+)
+```
+
+Logging is a very important part of a server application - it allows to analyze workload, collect metrics and facilitates finding critical bugs. 
+
+`RestRserve` ships with basic (yet handy) logging utility - `Logger`. It can be used in the application code, but what is more important, it is integrated into `Application` class in order to print useful messages during app execution.
+
+
+Each applications comes with built-in logger member:
+
+```{r}
+library(RestRserve)
+application = Application$new()
+application$logger$info("hello from logger")
+```
+`logger` is an instance of `Logger` class. We believe it is important to have logs in a machine readable format, so by default logger writes messages to `stdout` in JSON format. 
+
+Amount of logging can be adjusted with `set_log_level` method:
+```{r}
+application$logger$set_log_level("error")
+application$logger$info("you won't see this message")
+```
+
+If you want to customize `logger`, you can tweak it with `logger$set_printer()` function or even swap it to your own (see `?Logger` for details):
+
+```{r}
+application$logger = Logger$new(level = "trace", name = "mylogger")
+```
+Moreover `Logger` mimics loggers from fully-featured [lgr](https://cran.r-project.org/package=lgr) package - you can use them interchangeably.
+
+`application$logger` object however is not designed to be called by end user to produce messages. It is used internally in the `application` to emit status messages along the request-response processing pipeline.
+
+Consider following example. We develop a method which takes a square root of a number:
+```{r}
+application = Application$new()
+application$add_get("/sqrt", function(request, response) {
+  response$body = sqrt(x)
+})
+```
+Now let's query it:
+```{r}
+# let's emulate query string "/sqrt?x=10"
+request = Request$new(path = "/sqrt", method = "GET", parameters_query = list(x = "10")) 
+response = application$process_request(request)
+response$body
+```
+Surprise! (or not?)
+
+All request query parameters are strings, but we forgot to convert `x` to a numeric value. This caused R interpreter to throw an error. 
+
+Note however how gracefully RestRserve handled this case:
+
+- it hasn't crashed and produced HTTP error with 500 code
+- written error with expanded traceback to the log. This is particularly important as R's traceback does not contain the full stack trace if you catch errors and warnings!
+
+For example following code will just give you last error (but not a traceback):
+```{r}
+fun2 = function(x) {
+  sqrt(x)
+}
+fun1 = function(x) {
+  fun2(x)
+}
+try(fun1('a'))
+```
+Which is not very useful when you try to debug server application.
+
+
+In contrast let's call it within RestRserve application:
+```{r}
+application$add_get("/sqrt2", function(request, response) {
+  response$body = fun1(x)
+})
+request = Request$new(path = "/sqrt2", method = "GET", parameters_query = list(x = "10")) 
+response = application$process_request(request)
+```
+
+Now we clearly see that error happens inside `fun2`

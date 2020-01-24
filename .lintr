@@ -1,0 +1,13 @@
+linters: with_defaults(
+  assignment_linter = RestRserve:::assignment_eq_linter,
+  infix_spaces_linter,
+  commas_linter,
+  no_tab_linter,
+  spaces_inside_linter,
+  spaces_left_parentheses_linter,
+  trailing_blank_lines_linter,
+  trailing_whitespace_linter,
+  line_length_linter(120),
+  default = NULL)
+exclusions: list(
+  "R/RcppExports.R")
