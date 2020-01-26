@@ -13,3 +13,4 @@ CONTRIBUTING.md
 ^pkgdown$
 ^\.dockerignore$
 ^\.appveyor.yml$
+cran-comments.md
