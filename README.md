@@ -1,25 +1,14 @@
 # RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
-Package website: [release](https://restrserve.org/)
-
 [![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=master)](https://travis-ci.org/rexyai/RestRserve)
 [![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/master?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/master)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/master)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![gitter](https://img.shields.io/gitter/room/RestRserve/community.svg?color=61D6AD&style=popout)](https://gitter.im/RestRserve/community)
+<a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
 
 [RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. With [Rserve](https://github.com/s-u/Rserve) backend on UNIX-like systems it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
-
-## Installation
-
-### From source
-```r
-remotes::install_github("rexyai/RestRserve")
-```
-
-### Docker
-
-Automated docker builds from docker-hub: [https://hub.docker.com/r/rexyai/restrserve/](https://hub.docker.com/r/rexyai/restrserve/)
 
 ## Quick start
 
@@ -45,7 +34,6 @@ Now you can type `http://localhost:8080/hello` in your favourite browser and see
 - check out "Articles" section on http://restrserve.org/
 - browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/master/inst/examples)
 
-
 ## Features
 
 - Easy to install, small number of dependencies
@@ -62,6 +50,21 @@ Now you can type `http://localhost:8080/hello` in your favourite browser and see
 - It is [fast](http://restrserve.org/articles/benchmarks/Benchmarks.html)!
 
 ![](vignettes/img/bench-rps.png)
+
+## Installation
+
+### From source
+```r
+remotes::install_github("rexyai/RestRserve")
+```
+
+### Docker
+
+Automated docker builds from docker-hub: [https://hub.docker.com/r/rexyai/restrserve/](https://hub.docker.com/r/rexyai/restrserve/)
+
+## Contributing
+
+Guidelines for filing issues / pull requests - [CONTRIBUTING.md](https://github.com/rexyai/RestRserve/blob/master/CONTRIBUTING.md).
 
 ## Acknowledgements
 
