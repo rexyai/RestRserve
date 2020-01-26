@@ -1,0 +1,14 @@
+pandoc: '2.2'
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  Authentication: Authentication.html
+  ContentHandlers: ContentHandlers.html
+  Logging: Logging.html
+  Middleware: Middleware.html
+  RestRserve: RestRserve.html
+  Benchmarks: benchmarks/Benchmarks.html
+urls:
+  reference: http://restrserve.org/reference
+  article: http://restrserve.org/articles
+
