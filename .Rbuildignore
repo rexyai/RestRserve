@@ -15,3 +15,4 @@ CONTRIBUTING.md
 ^\.appveyor.yml$
 cran-comments.md
 ^\.github/*
+^CRAN-RELEASE$

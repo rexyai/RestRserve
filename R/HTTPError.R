@@ -373,7 +373,7 @@ HTTPErrorFactory = R6::R6Class(
 #' @export
 #'
 #' @seealso [HTTPError] [Application]
-#'
+#' @return None - stops execution of the current expression and executes an error action.
 #' @examples
 #' # catch exception
 #' res = try(raise(HTTPError$bad_request()), silent = TRUE)

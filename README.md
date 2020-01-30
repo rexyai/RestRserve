@@ -80,6 +80,7 @@ Guidelines for filing issues / pull requests - [CONTRIBUTING.md](https://github.
 ## Related projects
 
 - [Rook](https://github.com/jeffreyhorner/Rook)
+- [FastRWeb](https://CRAN.R-project.org/package=FastRWeb)
 - [opencpu](https://www.opencpu.org/)
 - [plumber](https://www.rplumber.io/)
 - [fiery](https://github.com/thomasp85/fiery)
