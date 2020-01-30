@@ -14,7 +14,7 @@ browsers to avoid request between different domains. To allow it RestRserve
 has easy way to enable your CORS policies. By default CORS policies are disabled.
 So if any request is coming from a different domain will be blocked
 by the browser as default because RestRserve will not send the headers required
-by the browser to allow ross site resource sharing. You can change this easy
+by the browser to allow cross site resource sharing. You can change this easy
 just by providing \code{CORSMiddleware} as middleware to the \link{Application}.
 
 This class inherits from \link{Middleware}.

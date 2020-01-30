@@ -8,7 +8,7 @@ Authors@R: c(
   person(given = "Dmitriy",
          family = "Selivanov",
          role = c("aut", "cre"),
-         email = "selivanov.dmitriy@gmail.com",
+         email = "ds@rexy.ai",
          comment = c(ORCID = "0000-0001-5413-1506")),
   person(given = "Artem",
          family = "Klevtsov",

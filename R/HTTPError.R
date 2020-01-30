@@ -76,7 +76,7 @@ error_methods = c(
 #'
 #' * **`error`**`(status_code, body, ...)`\cr
 #'   `integer(1)`, `raw()` | `character()`, `...` -> [Response]\cr
-#'   `...` - additional named arguments which will be pased to `Response$new(...)`.
+#'   `...` - additional named arguments which will be passed to `Response$new(...)`.
 #'   `headers` may be particularly useful.\cr
 #'   Generate HTTP error response with a given status code and body
 #' * **`reset`**`()`\cr

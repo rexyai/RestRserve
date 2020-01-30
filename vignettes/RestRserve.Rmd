@@ -26,14 +26,14 @@ run_bg = function(expr) {
 
 ## Introduction
 
-Suppose you've developed a very useful algorithm or statistical model and you need to itegrate it with some external system. Nowdays HTTP became de-facto a lingua-franca for this kind of tasks.
+Suppose you've developed a very useful algorithm or statistical model and you need to integrate it with some external system. Nowadays HTTP became de facto a lingua-franca for this kind of tasks.
 
 In this article we will demonstrate how to use RestRserve to build a basic REST API.
 
 
 ## Workflow overview
 
-Genrerally RestRserve workflow consists of several major steps:
+Generally RestRserve workflow consists of several major steps:
 
 1. Create application with `Application$new()`
 1. Create a function which follows RestRserve API:
@@ -90,7 +90,7 @@ app$add_get(path = "/fib", FUN = fib_handler)
 
 ## 3. Test endpoints
 
-Now we can test our appliaction without starting it:
+Now we can test our application without starting it:
 
 ```{r}
 request = Request$new(path = "/fib", parameters_query = list(n = 10))
@@ -102,7 +102,7 @@ cat("Response body:", response$body)
 
 It is generally a good idea to write unit tests against application. One can use a common framework such as [tinytest](https://cran.r-project.org/package=tinytest).
 
-## 4. Add OpenAPI desciption and Swagger UI
+## 4. Add OpenAPI description and Swagger UI
 
 Generally it is a good idea to provide documentation along with the API.  Convenient way to do that is to supply a [openapi specification](https://swagger.io/docs/specification/about/). This as simple as adding a yaml file as an additional endpoint:
 

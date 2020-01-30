@@ -38,7 +38,7 @@ but also the errors format produced by RestRserve. Same holds for \code{$set_enc
 Set encode for the given content type.
 \item \strong{\code{error}}\code{(status_code, body, ...)}\cr
 \code{integer(1)}, \code{raw()} | \code{character()}, \code{...} -> \link{Response}\cr
-\code{...} - additional named arguments which will be pased to \code{Response$new(...)}.
+\code{...} - additional named arguments which will be passed to \code{Response$new(...)}.
 \code{headers} may be particularly useful.\cr
 Generate HTTP error response with a given status code and body
 \item \strong{\code{reset}}\code{()}\cr

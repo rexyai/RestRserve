@@ -190,7 +190,7 @@ ContentHandlersFactory = R6::R6Class(
 #' * **`ContentHandlers`** :: `ContentHandlers`\cr
 #'   Class which controls how RestRserve encodes and decodes different content types.
 #'   See [ContentHandlers] for documentation.
-#'   User can add new ecoding and decoding methods for new content types using `set_encode`
+#'   User can add new encoding and decoding methods for new content types using `set_encode`
 #'   and `set_decode` methods.
 #'
 #'   In theory user can replace it with his own class (see `RestRserve:::ContentHandlersFactory`).

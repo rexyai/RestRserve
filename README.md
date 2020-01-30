@@ -25,7 +25,7 @@ backend = BackendRserve$new()
 backend$start(app, http_port = 8080)
 ```
 
-Now you can type `http://localhost:8080/hello` in your favourite browser and see (surprisingly!) *Hello from RestRserve*.
+Now you can type `http://localhost:8080/hello` in your favorite browser and see (surprisingly!) *Hello from RestRserve*.
 
 
 ## Learn RestRserve

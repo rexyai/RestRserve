@@ -25,7 +25,7 @@ Middleware id
 \item \strong{\code{ContentHandlers}} :: \code{ContentHandlers}\cr
 Class which controls how RestRserve encodes and decodes different content types.
 See \link{ContentHandlers} for documentation.
-User can add new ecoding and decoding methods for new content types using \code{set_encode}
+User can add new encoding and decoding methods for new content types using \code{set_encode}
 and \code{set_decode} methods.
 
 In theory user can replace it with his own class (see \code{RestRserve:::ContentHandlersFactory}).
