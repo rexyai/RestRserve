@@ -18,8 +18,8 @@ Rcpp::List parse_headers(const char* headers) {
   std::istringstream stream(headers);
   std::string buffer;
   while (std::getline(stream, buffer)) {
-    if (*buffer.rbegin() == '\r') {
-      buffer.erase(buffer.size() - 1);
+    if (buffer.size() > 0 && *buffer.rbegin() == '\r') {
+      buffer.pop_back();
     }
     if (buffer.empty()) {
       continue;
