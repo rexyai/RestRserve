@@ -178,8 +178,10 @@
 #' app$process_request(say_rq)
 #'
 #' # run app
-#' # backend = BackendRserve$new()
-#' # backend$start(app, 8080)
+#' backend = BackendRserve$new()
+#' \donttest{
+#' backend$start(app, 8080)
+#' }
 #'
 Application = R6::R6Class(
   classname = "Application",

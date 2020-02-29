@@ -1,14 +1,19 @@
 Package: RestRserve
 Type: Package
-Title: High-Performance Web Server for Building Microservices and App Backends
+Title: A Framework for Building HTTP API
 Description:
-  Allows to easily create high-performance full featured HTTP API from R functions.
+  Allows to easily create high-performance full featured HTTP APIs from R 
+  functions. Provides high-level classes such as 'Request', 'Response', 
+  'Application', 'Middleware' in order to streamline server side 
+  application development. Out of the box allows to serve requests using 
+  'Rserve' package, but flexible enough to integrate with other HTTP servers
+  such as 'httpuv'.
 Version: 0.2.0
 Authors@R: c(
   person(given = "Dmitriy",
          family = "Selivanov",
          role = c("aut", "cre"),
-         email = "selivanov.dmitriy@gmail.com",
+         email = "ds@rexy.ai",
          comment = c(ORCID = "0000-0001-5413-1506")),
   person(given = "Artem",
          family = "Klevtsov",

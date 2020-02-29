@@ -70,7 +70,7 @@ app1$append_middleware(encode_decode_middleware)
 app2 = Application$new()
 ```
 
-Here is example on how you can get the actual function used for 'application/json' encoding:
+Here is example on how you can get the actual function used for `application/json` encoding:
 ```{r}
 
 FUN = encode_decode_middleware$ContentHandlers$get_encode('application/json')

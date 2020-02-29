@@ -8,7 +8,7 @@
 #' @param x the object to be encoded
 #' @param unbox `TRUE` by default. Whether to unbox (simplify) arrays consists
 #' of a single element
-#'
+#' @return JSON string
 #' @export
 #'
 #' @examples

@@ -14,3 +14,5 @@ CONTRIBUTING.md
 ^\.dockerignore$
 ^\.appveyor.yml$
 cran-comments.md
+^\.github/*
+^CRAN-RELEASE$
