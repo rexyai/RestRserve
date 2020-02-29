@@ -81,9 +81,6 @@ body.
 Environment to store any data. Can be used in middlewares.
 \item \strong{\code{id}} :: \code{character(1)}\cr
 Automatically generated UUID for each request. Read only.
-\item \strong{\code{body_decoded}} :: \code{any}\cr
-Body parsed according to the \code{Content-type} request header and \code{decode}
-argument of the R.
 \item \strong{\code{date}} :: \code{POSIXct(1)}\cr
 Request \code{Date} header converted to \code{POSIXct}.
 \item \strong{\code{accept}} :: \code{character()}\cr

@@ -34,13 +34,10 @@
 #' * **`content_type`** :: `character(1)`\cr
 #'   Default response body content type.
 #'
-#' * **`HTTPError`** :: `HTTPErrorFactory`\cr
+#' * **`HTTPError`** :: `HTTPError`\cr
 #'   Class which raises HTTP errors. Global [HTTPError] is used by default. In theory
 #'   user can replace it with his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
 #'   in the majority of the cases using [HTTPError] will be enough.
-#'
-#' * **`ContentHandlers`** :: `ContentHandler`\cr
-#'   Helper to decode request body and encode response body. Global [ContentHandlers] is used by default.
 #'
 #' * **`endpoints`** :: `named list()`\cr
 #'   Prints all the registered routes with allowed methods.
@@ -112,7 +109,7 @@
 #'
 #' @export
 #'
-#' @seealso [HTTPError] [ContentHandlers] [Middleware]
+#' @seealso [HTTPError] [Middleware]
 #'          [Request] [Response]
 #'
 #' @examples
@@ -190,9 +187,8 @@ Application = R6::R6Class(
     logger = NULL,
     content_type = NULL,
     HTTPError = NULL,
-    ContentHandlers = NULL,
     #------------------------------------------------------------------------
-    initialize = function(middleware = list(), content_type = "text/plain", ...) {
+    initialize = function(middleware = list(EncodeDecodeMiddleware$new()), content_type = "text/plain", ...) {
       private$backend = BackendRserve$new()
       private$routes = new.env(parent = emptyenv())
       private$handlers = new.env(parent = emptyenv())
@@ -204,7 +200,6 @@ Application = R6::R6Class(
       private$response = Response$new(content_type = self$content_type)
       private$request = Request$new()
 
-      self$ContentHandlers = ContentHandlers
 
       checkmate::assert_list(middleware, types = "Middleware", unique = TRUE)
       private$middleware = list()
@@ -299,15 +294,20 @@ Application = R6::R6Class(
       private$middleware = append(private$middleware, mw)
       return(invisible(self))
     },
-    process_request = function(request = private$request) {
+    process_request = function(request = NULL) {
+      # if we use fork-mode then on.exit wlll be called in a fork and
+      # request_id will never be updated. Hence if the input request is `private$request`
+      # we need to do it manually
+      if (is.null(request)) {
+        request = private$request
+        request$set_id()
+      }
       on.exit(private$request$reset())
 
       response = private$response
       private$eval_with_error_handling({
         response$reset()
         response$set_content_type(self$content_type)
-        if (is.null(request$decode))
-          request$decode = self$ContentHandlers$get_decode(content_type = request$content_type)
 
         # log request
         self$logger$debug(
@@ -380,14 +380,6 @@ Application = R6::R6Class(
           )
           FUN = private$middleware[[id]][[mw_flag]]
           mw_status = private$eval_with_error_handling(FUN(request, response))
-        }
-
-        # this means that response wants RestRerveApplication to select
-        # how to encode automatically
-        if (!is.function(response$encode)) {
-          private$eval_with_error_handling({
-            response$encode = self$ContentHandlers$get_encode(response$content_type)
-          })
         }
 
         # log response
@@ -536,7 +528,13 @@ Application = R6::R6Class(
     },
     #------------------------------------------------------------------------
     eval_with_error_handling = function(expr) {
-      x = try_capture_stack(expr)
+      expanded_traceback = isTRUE(getOption("RestRserve.runtime.traceback", TRUE))
+      if (expanded_traceback) {
+        x = try_capture_stack(expr)
+      } else {
+        x = try(expr, silent = TRUE)
+      }
+
       success = TRUE
       if (inherits(x, "HTTPErrorRaise")) {
         # HTTPError response
@@ -558,7 +556,8 @@ Application = R6::R6Class(
         for (field in c("body", "content_type", "headers", "status_code")) {
           private$response[[field]] = x[[field]]
         }
-        private$response$encode = self$ContentHandlers$get_encode(private$response$content_type)
+        private$response$body = self$HTTPError$encode(x$body)
+        private$response$encode = identity
         success = FALSE
       }
       return(success)

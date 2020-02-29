@@ -8,8 +8,8 @@ url_decode = RestRserve:::url_decode
 text = c("Hello, World", "Hello G\u00fcnter")
 
 # Test empty input
-expect_error(url_encode(NULL))
-expect_error(url_decode(NULL))
+expect_equal(url_encode(NULL), character())
+expect_equal(url_decode(NULL), character())
 expect_equal(url_encode(""), "")
 expect_equal(url_decode(""), "")
 expect_equal(url_encode(character(0)), character(0))

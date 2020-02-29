@@ -100,7 +100,7 @@ cat("Response status:", response$status)
 cat("Response body:", response$body)
 ```
 
-It is generally a good idea to write unit tests against application. One can use a common framework such as [tinytest](https://cran.r-project.org/web/packages/tinytest/index.html).
+It is generally a good idea to write unit tests against application. One can use a common framework such as [tinytest](https://cran.r-project.org/package=tinytest).
 
 ## 4. Add OpenAPI desciption and Swagger UI
 
@@ -160,7 +160,7 @@ Check app can calculate fibonacci numbers:
 curl localhost:8080/fib?n=10
 ```
 
-Check out a swagger UI in the browser: [http://localhost:8080/doc](http://localhost:8080/doc)
+Check out a swagger UI in the browser: `http://localhost:8080/doc`
 
 
 

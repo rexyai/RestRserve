@@ -5,14 +5,14 @@ obj = RestRserve:::HTTPErrorFactory$new()
 cl = RestRserve:::HTTPErrorFactory$new()
 
 # Test empty object
-expect_true(inherits(obj, "HTTPErrorFactory"))
+expect_true(inherits(obj, "HTTPError"))
 expect_null(obj$body)
 expect_null(obj$headers)
 expect_null(obj$status_code)
 expect_true(inherits(obj$content_type, "character"))
 expect_equal(length(obj$content_type), 1L)
 expect_equal(obj$content_type, "text/plain")
-expect_null(obj$encode)
+expect_equal(obj$encode, as.character)
 
 # Test error method result
 rs = obj$error(500L, "Error text")

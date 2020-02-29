@@ -14,7 +14,7 @@ rq = Request$new(path = "/hello-world")
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, World!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 200L)
 
 # Test redirect
@@ -22,7 +22,7 @@ rq = Request$new(path = "/temp")
 rs = app$process_request(rq)
 expect_equal(rs$body, "Hello, World!")
 expect_equal(rs$content_type, "text/plain")
-expect_equal(rs$headers, list())
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 200L)
 
 # Test redirect
@@ -31,25 +31,25 @@ rs = app$process_request(rq)
 expect_equal(rs$body, "Custom 500 from mw2")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
-expect_equal(rs$headers, structure(list(), .Names = character(0)))
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 500L)
 
 # Test raise error on request
 rq = Request$new(path = "/err-mw-req")
 rs = app$process_request(rq)
-expect_equal(rs$body, list(error = "500 Internal Server Error"))
+expect_equal(rs$body, "500 Internal Server Error")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
-expect_equal(rs$headers, structure(list(), .Names = character(0)))
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 500L)
 
 # Test raise error on response
 rq = Request$new(path = "/err-mw-resp")
 rs = app$process_request(rq)
-expect_equal(rs$body, list(error = "500 Internal Server Error"))
+expect_equal(rs$body, "500 Internal Server Error")
 expect_equal(rs$content_type, "text/plain")
 # FIXME: why is it named list?
-expect_equal(rs$headers, structure(list(), .Names = character(0)))
+expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 500L)
 
 cleanup_app()

@@ -11,3 +11,6 @@ CONTRIBUTING.md
 ^\.travis\.yml$
 ^\.openapi\.yaml$
 ^pkgdown$
+^\.dockerignore$
+^\.appveyor.yml$
+cran-comments.md

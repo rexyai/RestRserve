@@ -8,7 +8,7 @@ library(RestRserve)
 
 ## ---- create application -----
 
-app = Application$new(content_type = "application/json")
+app = Application$new(content_type = "application/json", middleware = list())
 
 
 ## ---- register endpoints and corresponding R handlers ----
@@ -44,16 +44,17 @@ app$add_get("/rds2", function(request, response) {
 
 app$add_post("/json", function(request, response) {
   response$content_type = "application/rds"
-  response$body = serialize(request$body_decoded, NULL)
+  response$body = serialize(request$body, NULL)
 })
 
 
 ## ---- register custom content handlers ----
 
 # Note that new content handler can be registered at any time before application start
-ContentHandlers$set_encode("application/rds2", identity)
-ContentHandlers$set_encode("application/rds", identity)
-
+enc_dec_mw = EncodeDecodeMiddleware$new()
+enc_dec_mw$ContentHandlers$set_encode("application/rds2", identity)
+enc_dec_mw$ContentHandlers$set_encode("application/rds", identity)
+app$append_middleware(enc_dec_mw)
 
 ## ---- start application ----
 backend = BackendRserve$new()
