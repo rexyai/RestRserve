@@ -51,7 +51,7 @@ after_success:
   - Rscript -e 'covr::codecov()'
   - R CMD INSTALL $PKG_TARBALL
   - Rscript -e 'lintr::lint_package()'
-  - Rscript -e 'pkgdown::build_site()'
+  - Rscript -e 'pkgdown::build_site(examples = FALSE)'
 
 deploy:
   provider: pages
