@@ -78,7 +78,7 @@ Also useful for testing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -274,7 +274,7 @@ Extract specific file from multipart body.</p></li>
     <div class='dont-index'><p><a href='Response.html'>Response</a> <a href='Application.html'>Application</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># init simply request</span>
+    <pre class="examples"><span class='co'># init simply request</span>
 <span class='no'>rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(
   <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/"</span>,
   <span class='kw'>parameters_query</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
@@ -290,25 +290,17 @@ Extract specific file from multipart body.</p></li>
   )
 )
 <span class='co'># get request UUID</span>
-<span class='no'>rq</span>$<span class='no'>id</span></div><div class='output co'>#&gt; [1] "a78fec72-4024-11ea-ba39-42010a1400b4"</div><div class='input'><span class='co'># get content accept</span>
-<span class='no'>rq</span>$<span class='no'>accept</span></div><div class='output co'>#&gt; [1] "*/*"</div><div class='input'><span class='co'># get request content type</span>
-<span class='no'>rq</span>$<span class='no'>content_type</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='co'># get header by name (lower case)</span>
-<span class='no'>rq</span>$<span class='fu'>get_header</span>(<span class='st'>"custom-field"</span>)</div><div class='output co'>#&gt; [1] "value"</div><div class='input'><span class='co'># get query param by name</span>
-<span class='no'>rq</span>$<span class='fu'>get_param_query</span>(<span class='st'>"param1"</span>)</div><div class='output co'>#&gt; [1] "value1"</div><div class='input'><span class='co'># print request</span>
-<span class='no'>rq</span></div><div class='output co'>#&gt; &lt;RestRserve Request&gt;
-#&gt;   method: GET
-#&gt;   path: /
-#&gt;   accept: */*
-#&gt;   content-type:
-#&gt;   &lt;Query Parameters&gt;
-#&gt;     param1: value1
-#&gt;     param2: value2
-#&gt;   &lt;Headers&gt;
-#&gt;     content-encoding: identity
-#&gt;     custom-field: value
-#&gt;   &lt;Cookies&gt;
-#&gt;     sessionid: 1</div><div class='input'>
-</div></pre>
+<span class='no'>rq</span>$<span class='no'>id</span>
+<span class='co'># get content accept</span>
+<span class='no'>rq</span>$<span class='no'>accept</span>
+<span class='co'># get request content type</span>
+<span class='no'>rq</span>$<span class='no'>content_type</span>
+<span class='co'># get header by name (lower case)</span>
+<span class='no'>rq</span>$<span class='fu'>get_header</span>(<span class='st'>"custom-field"</span>)
+<span class='co'># get query param by name</span>
+<span class='no'>rq</span>$<span class='fu'>get_param_query</span>(<span class='st'>"param1"</span>)
+<span class='co'># print request</span>
+<span class='no'>rq</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

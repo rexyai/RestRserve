@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -190,7 +190,7 @@ Provide authentication for the given request.</p></li>
   <code><a href='AuthBackend.html'>AuthBackend</a></code>, <code><a href='AuthMiddleware.html'>AuthMiddleware</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># init users database</span>
+    <pre class="examples"><span class='co'># init users database</span>
 <span class='no'>user_db</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
   <span class='st'>"user-1"</span> <span class='kw'>=</span> <span class='st'>"password-1"</span>,
   <span class='st'>"user-2"</span> <span class='kw'>=</span> <span class='st'>"password-2"</span>
@@ -206,7 +206,7 @@ Provide authentication for the given request.</p></li>
 
 <span class='co'># test backend</span>
 <span class='co'># define credentials (see RFC)</span>
-<span class='no'>creds</span> <span class='kw'>=</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/base64.html'>base64_enc</a></span>(<span class='st'>"user-1:password-1"</span>)
+<span class='no'>creds</span> <span class='kw'>=</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://jeroen.cran.dev/jsonlite/reference/base64.html'>base64_enc</a></span>(<span class='st'>"user-1:password-1"</span>)
 <span class='co'># generate request headers</span>
 <span class='no'>h</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Authorization"</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Basic %s"</span>, <span class='no'>creds</span>))
 <span class='co'># simulate request</span>
@@ -214,8 +214,7 @@ Provide authentication for the given request.</p></li>
 <span class='co'># init response object</span>
 <span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
 <span class='co'># perform authentication</span>
-<span class='no'>auth_backend</span>$<span class='fu'>authenticate</span>(<span class='no'>rq</span>, <span class='no'>rs</span>) <span class='co'># TRUE</span></div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></pre>
+<span class='no'>auth_backend</span>$<span class='fu'>authenticate</span>(<span class='no'>rq</span>, <span class='no'>rs</span>) <span class='co'># TRUE</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

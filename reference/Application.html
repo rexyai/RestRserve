@@ -79,7 +79,7 @@ REST API by registering R functions as handlers http requests." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -253,7 +253,7 @@ Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI<
 <a href='Request.html'>Request</a> <a href='Response.html'>Response</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># init logger</span>
+    <pre class="examples"><span class='co'># init logger</span>
 <span class='no'>app_logger</span> <span class='kw'>=</span> <span class='no'>Logger</span>$<span class='fu'>new</span>()
 <span class='co'># set log level for the middleware</span>
 <span class='no'>app_logger</span>$<span class='fu'>set_log_level</span>(<span class='st'>"debug"</span>)
@@ -303,15 +303,8 @@ Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI<
 <span class='no'>app</span>$<span class='fu'>add_get</span>(<span class='st'>"/say/{user}"</span>, <span class='no'>say_handler</span>, <span class='st'>"regex"</span>)
 
 <span class='co'># print application info</span>
-<span class='no'>app</span></div><div class='output co'>#&gt; &lt;RestRserve Application&gt;
-#&gt;   &lt;Middlewares&gt;
-#&gt;  [request][response]: awesome-app-logger
-#&gt;   &lt;Endpoints&gt;
-#&gt;     HEAD [exact]: /status
-#&gt;     HEAD [regex]: /say/{user}
-#&gt;     GET [exact]: /status
-#&gt;     GET [exact]: /desc
-#&gt;     GET [regex]: /say/{user}</div><div class='input'>
+<span class='no'>app</span>
+
 <span class='co'># test app</span>
 <span class='co'># simulate requests</span>
 <span class='no'>not_found_rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/no"</span>)
@@ -319,32 +312,16 @@ Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI<
 <span class='no'>desc_rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/desc"</span>)
 <span class='no'>say_rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/say/anonym"</span>, <span class='kw'>parameters_query</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"message"</span> <span class='kw'>=</span> <span class='st'>"Hola"</span>))
 <span class='co'># process prepared requests</span>
-<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>not_found_rq</span>)</div><div class='output co'>#&gt; {"timestamp":"2020-01-26 10:14:33.895217","level":"INFO","name":"MW Logger","pid":15014,"msg":"Incomming request (id a6270b36-4024-11ea-ba39-42010a1400b4): /no"}
-#&gt; {"timestamp":"2020-01-26 10:14:33.896969","level":"INFO","name":"MW Logger","pid":15014,"msg":"Outgoing response (id a6270b36-4024-11ea-ba39-42010a1400b4): 404 Not Found"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 404 Not Found
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0</div><div class='input'><span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>status_rq</span>)</div><div class='output co'>#&gt; {"timestamp":"2020-01-26 10:14:33.917902","level":"INFO","name":"MW Logger","pid":15014,"msg":"Incomming request (id a6277d8c-4024-11ea-ba39-42010a1400b4): /status"}
-#&gt; {"timestamp":"2020-01-26 10:14:33.942757","level":"INFO","name":"MW Logger","pid":15014,"msg":"Outgoing response (id a6277d8c-4024-11ea-ba39-42010a1400b4): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0</div><div class='input'><span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>desc_rq</span>)</div><div class='output co'>#&gt; {"timestamp":"2020-01-26 10:14:33.959005","level":"INFO","name":"MW Logger","pid":15014,"msg":"Incomming request (id a627a064-4024-11ea-ba39-42010a1400b4): /desc"}
-#&gt; {"timestamp":"2020-01-26 10:14:33.959495","level":"INFO","name":"MW Logger","pid":15014,"msg":"Outgoing response (id a627a064-4024-11ea-ba39-42010a1400b4): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0</div><div class='input'><span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>say_rq</span>)</div><div class='output co'>#&gt; {"timestamp":"2020-01-26 10:14:33.960930","level":"INFO","name":"MW Logger","pid":15014,"msg":"Incomming request (id a627c06c-4024-11ea-ba39-42010a1400b4): /say/anonym"}
-#&gt; {"timestamp":"2020-01-26 10:14:33.961582","level":"INFO","name":"MW Logger","pid":15014,"msg":"Outgoing response (id a627c06c-4024-11ea-ba39-42010a1400b4): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0</div><div class='input'>
-# run app
-# backend = BackendRserve$new()
-# backend$start(app, 8080)
+<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>not_found_rq</span>)
+<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>status_rq</span>)
+<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>desc_rq</span>)
+<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>say_rq</span>)
 
-</div></pre>
+<span class='co'># run app</span>
+<span class='no'>backend</span> <span class='kw'>=</span> <span class='no'>BackendRserve</span>$<span class='fu'>new</span>()
+<span class='co'># \donttest{</span>
+<span class='no'>backend</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='fl'>8080</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

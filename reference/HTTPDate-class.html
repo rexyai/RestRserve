@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -168,15 +168,13 @@
 <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date'>MDN</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># convert POSIXct to HTTP date string</span>
-<span class='fu'>as</span>(<span class='fl'>0</span>, <span class='st'>"HTTPDate"</span>) <span class='co'># Thu, 01 Jan 1970 00:00:00 GMT</span></div><div class='output co'>#&gt; [1] "Thu, 01 Jan 1970 00:00:00 GMT"
-#&gt; attr(,"class")
-#&gt; [1] "HTTPDate"</div><div class='input'><span class='fu'>as</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='st'>"HTTPDate"</span>)</div><div class='output co'>#&gt; [1] "Sun, 26 Jan 2020 10:14:35 GMT"
-#&gt; attr(,"class")
-#&gt; [1] "HTTPDate"</div><div class='input'><span class='co'># parse HTTP date string to POSIXct</span>
+    <pre class="examples"><span class='co'># convert POSIXct to HTTP date string</span>
+<span class='fu'>as</span>(<span class='fl'>0</span>, <span class='st'>"HTTPDate"</span>) <span class='co'># Thu, 01 Jan 1970 00:00:00 GMT</span>
+<span class='fu'>as</span>(<span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='st'>"HTTPDate"</span>)
+<span class='co'># parse HTTP date string to POSIXct</span>
 <span class='no'>dt</span> <span class='kw'>=</span> <span class='st'>"Thu, 01 Jan 1970 00:00:00 GMT"</span>
 <span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span>(<span class='no'>dt</span>) <span class='kw'>=</span> <span class='st'>"HTTPDate"</span>
-<span class='fu'>as</span>(<span class='no'>dt</span>, <span class='st'>"POSIXct"</span>)</div><div class='output co'>#&gt; [1] "1970-01-01 GMT"</div></pre>
+<span class='fu'>as</span>(<span class='no'>dt</span>, <span class='st'>"POSIXct"</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

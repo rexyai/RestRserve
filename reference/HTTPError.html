@@ -81,7 +81,7 @@ interrupt request processing and return response with status code = 404 and body
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -194,7 +194,7 @@ but also the errors format produced by RestRserve. Same holds for <code>$set_enc
 Set encode for the given content type.</p></li>
 <li><p><strong><code>error</code></strong><code>(status_code, body, ...)</code><br />
 <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>, <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> | <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>...</code> -&gt; <a href='Response.html'>Response</a><br />
-<code>...</code> - additional named arguments which will be pased to <code>Response$new(...)</code>.
+<code>...</code> - additional named arguments which will be passed to <code>Response$new(...)</code>.
 <code>headers</code> may be particularly useful.<br />
 Generate HTTP error response with a given status code and body</p></li>
 <li><p><strong><code>reset</code></strong><code>()</code><br />
@@ -297,12 +297,12 @@ Generates corresponding http error.<br /></p></li>
     <div class='dont-index'><p><a href='raise.html'>raise</a> <a href='Application.html'>Application</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>check_list</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
+    <pre class="examples"><span class='no'>check_list</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
   <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/list.html'>is.list</a></span>(<span class='no'>x</span>)) <span class='fu'><a href='raise.html'>raise</a></span>(<span class='no'>HTTPError</span>$<span class='fu'>bad_request</span>())
   <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span>(<span class='fl'>TRUE</span>)
 }
 <span class='fu'>check_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_list</span>(<span class='fl'>1</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_list</span>(<span class='fl'>1</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

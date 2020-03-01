@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -190,18 +190,14 @@ Find path within paths added before. Returns <code>NULL</code> if path not match
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>r</span> <span class='kw'>=</span> <span class='kw pkg'>RestRserve</span><span class='kw ns'>:::</span><span class='no'><a href='https://rdrr.io/pkg/RestRserve/man/Router.html'>Router</a></span>$<span class='fu'>new</span>()
+    <pre class="examples"><span class='no'>r</span> <span class='kw'>=</span> <span class='kw pkg'>RestRserve</span><span class='kw ns'>:::</span><span class='no'><a href='http://restrserve.org/reference/Router.html'>Router</a></span>$<span class='fu'>new</span>()
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/test"</span>, <span class='st'>"exact"</span>, <span class='st'>"testid"</span>)
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/area"</span>, <span class='st'>"partial"</span>, <span class='st'>"areaid"</span>)
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/template/{variable}"</span>, <span class='st'>"regex"</span>, <span class='st'>"templateid"</span>)
-<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/test"</span>) <span class='co'># testid</span></div><div class='output co'>#&gt; [1] "testid"</div><div class='input'><span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/area/entry"</span>) <span class='co'># areaid</span></div><div class='output co'>#&gt; [1] "areaid"</div><div class='input'><span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>) <span class='co'># templateid</span></div><div class='output co'>#&gt; [1] "templateid"
-#&gt; attr(,"parameters_path")
-#&gt; attr(,"parameters_path")$variable
-#&gt; [1] "12345"
-#&gt; </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>), <span class='st'>"parameters_path"</span>) <span class='co'># variables values</span></div><div class='output co'>#&gt; $variable
-#&gt; [1] "12345"
-#&gt; </div><div class='input'>
-</div></pre>
+<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/test"</span>) <span class='co'># testid</span>
+<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/area/entry"</span>) <span class='co'># areaid</span>
+<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>) <span class='co'># templateid</span>
+<span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>), <span class='st'>"parameters_path"</span>) <span class='co'># variables values</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

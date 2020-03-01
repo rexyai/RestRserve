@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>High-Performance Web Server for Building Microservices and App Backends • RestRserve</title>
+<title>A Framework for Building HTTP API • RestRserve</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -16,9 +16,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="High-Performance Web Server for Building Microservices and App Backends">
+<script src="pkgdown.js"></script><meta property="og:title" content="A Framework for Building HTTP API">
 <meta property="og:description" content="
-  Allows to easily create high-performance full featured HTTP API from R functions.">
+  Allows to easily create high-performance full featured HTTP APIs from R 
+  functions. Provides high-level classes such as Request, Response, 
+  Application, Middleware in order to streamline server side 
+  application development. Out of the box allows to serve requests using 
+  Rserve package, but flexible enough to integrate with other HTTP servers
+  such as httpuv.">
 <meta property="og:image" content="http://restrserve.org/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -39,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -123,7 +128,7 @@
 <a class="sourceLine" id="cb1-7" data-line-number="7">  })</a>
 <a class="sourceLine" id="cb1-8" data-line-number="8">backend =<span class="st"> </span>BackendRserve<span class="op">$</span><span class="kw">new</span>()</a>
 <a class="sourceLine" id="cb1-9" data-line-number="9">backend<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/stats/start.html">start</a></span>(app, <span class="dt">http_port =</span> <span class="dv">8080</span>)</a></code></pre></div>
-<p>Now you can type <code>http://localhost:8080/hello</code> in your favourite browser and see (surprisingly!) <em>Hello from RestRserve</em>.</p>
+<p>Now you can type <code>http://localhost:8080/hello</code> in your favorite browser and see (surprisingly!) <em>Hello from RestRserve</em>.</p>
 </div>
 <div id="learn-restrserve" class="section level2">
 <h2 class="hasAnchor">
@@ -167,7 +172,7 @@
 <div id="from-source" class="section level3">
 <h3 class="hasAnchor">
 <a href="#from-source" class="anchor"></a>From source</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"rexyai/RestRserve"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">remotes<span class="op">::</span><span class="kw"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"rexyai/RestRserve"</span>)</a></code></pre></div>
 </div>
 <div id="docker" class="section level3">
 <h3 class="hasAnchor">
@@ -205,6 +210,7 @@
 <a href="#related-projects" class="anchor"></a>Related projects</h2>
 <ul>
 <li><a href="https://github.com/jeffreyhorner/Rook">Rook</a></li>
+<li><a href="https://CRAN.R-project.org/package=FastRWeb">FastRWeb</a></li>
 <li><a href="https://www.opencpu.org/">opencpu</a></li>
 <li><a href="https://www.rplumber.io/">plumber</a></li>
 <li><a href="https://github.com/thomasp85/fiery">fiery</a></li>
@@ -219,6 +225,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=RestRserve">https://​cloud.r-project.org/​package=RestRserve</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/rexyai/RestRserve">https://​github.com/​rexyai/​RestRserve</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/rexyai/RestRserve/issues">https://​github.com/​rexyai/​RestRserve/​issues</a>

@@ -50,7 +50,7 @@ browsers to avoid request between different domains. To allow it RestRserve
 has easy way to enable your CORS policies. By default CORS policies are disabled.
 So if any request is coming from a different domain will be blocked
 by the browser as default because RestRserve will not send the headers required
-by the browser to allow ross site resource sharing. You can change this easy
+by the browser to allow cross site resource sharing. You can change this easy
 just by providing CORSMiddleware as middleware to the Application.
 This class inherits from Middleware." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
@@ -86,7 +86,7 @@ This class inherits from Middleware." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ browsers to avoid request between different domains. To allow it RestRserve
 has easy way to enable your CORS policies. By default CORS policies are disabled.
 So if any request is coming from a different domain will be blocked
 by the browser as default because RestRserve will not send the headers required
-by the browser to allow ross site resource sharing. You can change this easy
+by the browser to allow cross site resource sharing. You can change this easy
 just by providing <code>CORSMiddleware</code> as middleware to the <a href='Application.html'>Application</a>.</p>
 <p>This class inherits from <a href='Middleware.html'>Middleware</a>.</p>
     </div>
@@ -197,7 +197,7 @@ Middleware id</p></li>
     <div class='dont-index'><p><a href='Middleware.html'>Middleware</a> <a href='Application.html'>Application</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>app</span> <span class='kw'>=</span> <span class='no'>Application</span>$<span class='fu'>new</span>(<span class='kw'>middleware</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>CORSMiddleware</span>$<span class='fu'>new</span>()))
+    <pre class="examples"><span class='no'>app</span> <span class='kw'>=</span> <span class='no'>Application</span>$<span class='fu'>new</span>(<span class='kw'>middleware</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>CORSMiddleware</span>$<span class='fu'>new</span>()))
 <span class='no'>app</span>$<span class='fu'>add_post</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/hello"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>req</span>, <span class='no'>res</span>) {
   <span class='no'>res</span>$<span class='fu'>set_body</span>(<span class='st'>"Hello from RestRserve!"</span>)
 })
@@ -209,16 +209,7 @@ Middleware id</p></li>
   <span class='kw'>headers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Access-Control-Request-Method"</span> <span class='kw'>=</span> <span class='st'>"POST"</span>),
   <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"OPTIONS"</span>
 )
-<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>req</span>)</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0
-#&gt;     Access-Control-Allow-Origin: *
-#&gt;     Access-Control-Allow-Methods: POST, OPTIONS
-#&gt;     Access-Control-Allow-Headers: *
-#&gt;     Access-Control-Max-Age: 86400</div><div class='input'>
-</div></pre>
+<span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>req</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

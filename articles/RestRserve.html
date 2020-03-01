@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -117,13 +117,13 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Suppose you’ve developed a very useful algorithm or statistical model and you need to itegrate it with some external system. Nowdays HTTP became de-facto a lingua-franca for this kind of tasks.</p>
+<p>Suppose you’ve developed a very useful algorithm or statistical model and you need to integrate it with some external system. Nowadays HTTP became de facto a lingua-franca for this kind of tasks.</p>
 <p>In this article we will demonstrate how to use RestRserve to build a basic REST API.</p>
 </div>
 <div id="workflow-overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#workflow-overview" class="anchor"></a>Workflow overview</h2>
-<p>Genrerally RestRserve workflow consists of several major steps:</p>
+<p>Generally RestRserve workflow consists of several major steps:</p>
 <ol style="list-style-type: decimal">
 <li>Create application with <code>Application$new()</code>
 </li>
@@ -177,7 +177,7 @@
 <div id="test-endpoints" class="section level2">
 <h2 class="hasAnchor">
 <a href="#test-endpoints" class="anchor"></a>3. Test endpoints</h2>
-<p>Now we can test our appliaction without starting it:</p>
+<p>Now we can test our application without starting it:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">request =<span class="st"> </span>Request<span class="op">$</span><span class="kw">new</span>(<span class="dt">path =</span> <span class="st">"/fib"</span>, <span class="dt">parameters_query =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">n =</span> <span class="dv">10</span>))</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">response =<span class="st"> </span>app<span class="op">$</span><span class="kw">process_request</span>(request)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
@@ -187,9 +187,9 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Response body: 55</span></a></code></pre></div>
 <p>It is generally a good idea to write unit tests against application. One can use a common framework such as <a href="https://cran.r-project.org/package=tinytest">tinytest</a>.</p>
 </div>
-<div id="add-openapi-desciption-and-swagger-ui" class="section level2">
+<div id="add-openapi-description-and-swagger-ui" class="section level2">
 <h2 class="hasAnchor">
-<a href="#add-openapi-desciption-and-swagger-ui" class="anchor"></a>4. Add OpenAPI desciption and Swagger UI</h2>
+<a href="#add-openapi-description-and-swagger-ui" class="anchor"></a>4. Add OpenAPI description and Swagger UI</h2>
 <p>Generally it is a good idea to provide documentation along with the API. Convenient way to do that is to supply a <a href="https://swagger.io/docs/specification/about/">openapi specification</a>. This as simple as adding a yaml file as an additional endpoint:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="fu">openapi:</span><span class="at"> 3.0.1</span></a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="fu">info:</span></a>
@@ -251,7 +251,7 @@
       <li><a href="#define-logic">2. Define logic</a></li>
       <li><a href="#register-endpoint">2. Register endpoint</a></li>
       <li><a href="#test-endpoints">3. Test endpoints</a></li>
-      <li><a href="#add-openapi-desciption-and-swagger-ui">4. Add OpenAPI desciption and Swagger UI</a></li>
+      <li><a href="#add-openapi-description-and-swagger-ui">4. Add OpenAPI description and Swagger UI</a></li>
       <li><a href="#start-the-app">5. Start the app</a></li>
       <li><a href="#check-it-works">6. Check it works</a></li>
       </ul>

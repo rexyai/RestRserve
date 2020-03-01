@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [1] "401 Missing Authorization Header"</span></a></code></pre></div>
 <p>As expected this gives <code>405</code> error.</p>
 <p>Now let’s add correct credentials:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">credentials =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-1"</span>)</a>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">credentials =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw"><a href="https://jeroen.cran.dev/jsonlite/reference/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-1"</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2">headers =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"Basic %s"</span>, credentials))</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">req =<span class="st"> </span>Request<span class="op">$</span><span class="kw">new</span>(</a>
@@ -179,7 +179,7 @@
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; [1] 120</span></a></code></pre></div>
 <p>Success!</p>
 <p>Let’s see what happens if password is wrong:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">credentials =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-2"</span>)</a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">credentials =<span class="st"> </span>jsonlite<span class="op">::</span><span class="kw"><a href="https://jeroen.cran.dev/jsonlite/reference/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-2"</span>)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">headers =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"Basic %s"</span>, credentials))</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">req =<span class="st"> </span>Request<span class="op">$</span><span class="kw">new</span>(</a>

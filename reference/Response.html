@@ -77,7 +77,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -247,7 +247,7 @@ Set response fields.</p></li>
     <div class='dont-index'><p><a href='Request.html'>Request</a> <a href='Application.html'>Application</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># init response</span>
+    <pre class="examples"><span class='co'># init response</span>
 <span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
 <span class='co'># set body media type</span>
 <span class='no'>rs</span>$<span class='fu'>set_content_type</span>(<span class='st'>"text/plain"</span>)
@@ -256,11 +256,8 @@ Set response fields.</p></li>
 <span class='co'># set response status code</span>
 <span class='no'>rs</span>$<span class='fu'>set_status_code</span>(<span class='fl'>200L</span>)
 <span class='co'># print response</span>
-<span class='no'>rs</span></div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0</div><div class='input'>
+<span class='no'>rs</span>
+
 <span class='co'># init response</span>
 <span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
 <span class='co'># static file path</span>
@@ -276,14 +273,7 @@ Set response fields.</p></li>
 <span class='co'># set 'last-modified' header</span>
 <span class='no'>rs</span>$<span class='fu'>set_header</span>(<span class='st'>"Last-Modified"</span>, <span class='fu'>as</span>(<span class='no'>file_mtime</span>, <span class='st'>"HTTPDate"</span>))
 <span class='co'># print response</span>
-<span class='no'>rs</span></div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
-#&gt;   status code: 200 OK
-#&gt;   content-type: text/plain
-#&gt;   &lt;Headers&gt;
-#&gt;     Server: RestRserve/0.2.0
-#&gt;     Date: Sun, 26 Jan 2020 10:14:36 GMT
-#&gt;     Last-Modified: Sun, 26 Jan 2020 10:13:57 GMT</div><div class='input'>
-</div></pre>
+<span class='no'>rs</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
