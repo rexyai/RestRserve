@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.1</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@
 <a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt;   status code: 200 OK</span></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;   content-type: text/plain</span></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;   &lt;Headers&gt;</span></a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;     Server: RestRserve/0.2.0</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt;     Server: RestRserve/0.2.0.1</span></a></code></pre></div>
 <p>Let’s take a closer look to the <code>response</code> object and its <code>body</code> property:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(response<span class="op">$</span>body)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;  chr "3628800"</span></a></code></pre></div>
@@ -174,7 +174,7 @@
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;   unclass(res)</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; }</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; &lt;bytecode: 0x60e3c20&gt;</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; &lt;bytecode: 0x63bba40&gt;</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></a></code></pre></div>
 <p>We can manually override application default content-type:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">application<span class="op">$</span><span class="kw">add_get</span>(<span class="dt">path =</span> <span class="st">"/factorial-json"</span>, <span class="cf">function</span>(req, res) {</a>
