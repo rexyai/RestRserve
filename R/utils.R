@@ -71,7 +71,7 @@ list_named = function(length = 0, names = paste0("V", character(length))) {
 
 port_is_taken = function(port) {
   tryCatch({
-    con = suppressWarnings(socketConnection(host = "localhost", port, open = "r"))
+    con = suppressWarnings(socketConnection(host = "localhost", port, open = "r", timeout = 1L))
     on.exit(close(con))
     TRUE
   },
