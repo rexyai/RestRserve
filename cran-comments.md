@@ -1,6 +1,6 @@
 ## New submission
 
-- fixed memory access bug detected by CRAN ASAN checks
+- Urgent fix. Decreased socket connectction timeout to 1 sec. This caused hang for several minutes during server start on Windows
 
 ### Test environments
 
