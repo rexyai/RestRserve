@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(RestRserve)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">application =<span class="st"> </span>Application<span class="op">$</span><span class="kw">new</span>()</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3">application<span class="op">$</span>logger<span class="op">$</span><span class="kw">info</span>(<span class="st">"hello from logger"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; {"timestamp":"2020-03-02 16:48:01.576556","level":"INFO","name":"Application","pid":15384,"msg":"hello from logger"}</span></a></code></pre></div>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; {"timestamp":"2020-03-09 15:37:56.549986","level":"INFO","name":"Application","pid":27919,"msg":"hello from logger"}</span></a></code></pre></div>
 <p><code>logger</code> is an instance of <code>Logger</code> class. We believe it is important to have logs in a machine readable format, so by default logger writes messages to <code>stdout</code> in JSON format.</p>
 <p>Amount of logging can be adjusted with <code>set_log_level</code> method:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">application<span class="op">$</span>logger<span class="op">$</span><span class="kw">set_log_level</span>(<span class="st">"error"</span>)</a>
@@ -138,7 +138,7 @@
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># let's emulate query string "/sqrt?x=10"</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">request =<span class="st"> </span>Request<span class="op">$</span><span class="kw">new</span>(<span class="dt">path =</span> <span class="st">"/sqrt"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">parameters_query =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">x =</span> <span class="st">"10"</span>)) </a>
 <a class="sourceLine" id="cb5-3" data-line-number="3">response =<span class="st"> </span>application<span class="op">$</span><span class="kw">process_request</span>(request)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; {"timestamp":"2020-03-02 16:48:01.645514","level":"ERROR","name":"Application","pid":15384,"msg":"","context":{"request_id":"9451b2c4-5ca5-11ea-9d45-42010a140098","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)"]</span><span class="re">}}}</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; {"timestamp":"2020-03-09 15:37:56.615415","level":"ERROR","name":"Application","pid":27919,"msg":"","context":{"request_id":"f2d1d344-621b-11ea-9461-42010a140159","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)"]</span><span class="re">}}}</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">response<span class="op">$</span>body</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [1] "500 Internal Server Error"</span></a></code></pre></div>
 <p>Surprise! (or not?)</p>
@@ -164,7 +164,7 @@
 <a class="sourceLine" id="cb7-3" data-line-number="3">})</a>
 <a class="sourceLine" id="cb7-4" data-line-number="4">request =<span class="st"> </span>Request<span class="op">$</span><span class="kw">new</span>(<span class="dt">path =</span> <span class="st">"/sqrt2"</span>, <span class="dt">method =</span> <span class="st">"GET"</span>, <span class="dt">parameters_query =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">x =</span> <span class="st">"10"</span>)) </a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">response =<span class="st"> </span>application<span class="op">$</span><span class="kw">process_request</span>(request)</a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; {"timestamp":"2020-03-02 16:48:01.755708","level":"ERROR","name":"Application","pid":15384,"msg":"","context":{"request_id":"9459de4a-5ca5-11ea-9d45-42010a140098","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)","response$body = fun1(x)","fun2(x)"]</span><span class="re">}}}</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; {"timestamp":"2020-03-09 15:37:56.726974","level":"ERROR","name":"Application","pid":27919,"msg":"","context":{"request_id":"f2d97a4a-621b-11ea-9461-42010a140159","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)","response$body = fun1(x)","fun2(x)"]</span><span class="re">}}}</span></a></code></pre></div>
 <p>Now we clearly see that error happens inside <code>fun2</code></p>
   </div>
 
