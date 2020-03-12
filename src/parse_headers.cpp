@@ -8,8 +8,8 @@
 using Headers = std::unordered_map<std::string, std::vector<std::string>>;
 
 bool validate_header_name(const std::string& x) {
-  auto check = [&](char c) { return std::isalpha(c) || c == '-'; };
-  return std::all_of(x.begin(), x.end(), check);
+  const char* valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!#$%&'*+-.^_`|~";
+  return x.find_first_not_of(valid) == std::string::npos;
 }
 
 // [[Rcpp::export(rng=false)]]
