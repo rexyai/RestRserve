@@ -10,6 +10,7 @@ expect_true(inherits(parse_headers(NA_character_), "list"))
 expect_equal(length(parse_headers(NA_character_)), 0L)
 expect_true(inherits(parse_headers(""), "list"))
 expect_equal(length(parse_headers("")), 0L)
+expect_error(parse_headers("param\u100: value"), "header contains invalid character.")
 
 # Test fields
 # nolint start
