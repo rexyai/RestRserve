@@ -393,4 +393,3 @@ raise = function(x) {
   exception = errorCondition("raise", response = x, class = "HTTPErrorRaise")
   stop(exception)
 }
-
