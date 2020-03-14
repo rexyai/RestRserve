@@ -1,29 +1,7 @@
 #' @title Creates authorization middleware object
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Adds various authorizations to [Application].
-#' This class inherits [Middleware].
-#'
-#' @section Construction:
-#'
-#' ```
-#' AuthMiddleware$new(auth_backend, routes, match = "exact", id = "AuthMiddleware")
-#' ````
-#'
-#' * `auth_backend` :: [AuthBackend]\cr
-#'   Authentication backend.
-#'
-#' * `routes` :: `character()`\cr
-#'   Routes paths to protect.
-#'
-#' * `match` :: `character()`\cr
-#'   How routes will be matched: `"exact"` or `"partial"` (as prefix).
-#'
-#' * `id` :: `character(1)`\cr
-#'   Middleware id
 #'
 #' @export
 #'
@@ -36,6 +14,12 @@ AuthMiddleware = R6::R6Class(
   classname = "AuthMiddleware",
   inherit = Middleware,
   public = list(
+    #' @description
+    #' Creeates AuthMiddleware object.
+    #' @param auth_backend Authentication backend.
+    #' @param routes Routes paths to protect.
+    #' @param match How routes will be matched: `"exact"` or `"partial"` (as prefix).
+    #' @param id Middleware id.
     initialize = function(auth_backend, routes, match = "exact", id = "AuthMiddleware") {
       checkmate::assert_class(auth_backend, "AuthBackend")
       checkmate::assert_character(routes, pattern = "^/")

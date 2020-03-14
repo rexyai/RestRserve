@@ -1,27 +1,7 @@
 #' @title Basic authorization backend
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Creates AuthBackendBasic class object.
-#'
-#' @section Construction:
-#'
-#' ```
-#' AuthBackendBasic$new(FUN)
-#' ````
-#'
-#' * `FUN` :: `function`\cr
-#'   `character(1)`, `character(1)` -> `logical(1)` \cr
-#'   Function to perform authentication which takes two arguments - `user` and `password`.
-#'   Returns boolean - whether access is allowed for a requested `user` or not.
-#'
-#' @section Methods:
-#'
-#' * `authenticate(request, response)`\cr
-#'   [Request], [Response] -> `NULL`\cr
-#'   Provide authentication for the given request.
 #'
 #' @references
 #' [RFC7617](https://tools.ietf.org/html/rfc7617)
@@ -64,9 +44,19 @@ AuthBackendBasic = R6::R6Class(
   "AuthBackendBasic",
   inherit = AuthBackend,
   public = list(
+    #' @description
+    #' Creates AuthBackendBasic class object.
+    #' @param FUN Function to perform authentication which takes two arguments -
+    #'  `user` and `password`.  Returns boolean - whether access is allowed for
+    #'  a requested `user` or not.
     initialize = function(FUN) {
       super$initialize(FUN, "Basic")
     },
+    #' @description
+    #' Provide authentication for the given request.
+    #' @param request [Request] object.
+    #' @param response [Response] object.
+    #' @return Boolean - whether access is allowed for a requested `user` or not.
     authenticate = function(request, response) {
       user_password = private$extract_credentials(request, response)
       res = private$auth_fun(user_password[[1]], user_password[[2]])

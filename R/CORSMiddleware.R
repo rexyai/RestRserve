@@ -1,7 +1,5 @@
 #' @title Creates CORS middleware object
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
 #'
 #' @description
 #' Adds CORS to [Application]. CORS Middleware out of the box in RestRserve to turn on/off the CORS
@@ -14,23 +12,6 @@
 #' by the browser as default because RestRserve will not send the headers required
 #' by the browser to allow cross site resource sharing. You can change this easy
 #' just by providing `CORSMiddleware` as middleware to the [Application].
-#'
-#' This class inherits from [Middleware].
-#'
-#' @section Construction:
-#'
-#' ```
-#' CORSMiddleware$new(routes, match = "exact", id = "CORSMiddleware")
-#' ````
-#'
-#' * `routes` :: `character()`\cr
-#'   Routes paths to protect.
-#'
-#' * `match` :: `character()`\cr
-#'   How routes will be matched: exact or partial (as prefix).
-#'
-#' * `id` :: `character(1)`\cr
-#'   Middleware id
 #'
 #' @export
 #'
@@ -59,6 +40,11 @@ CORSMiddleware = R6::R6Class(
   classname = "CORSMiddleware",
   inherit = Middleware,
   public = list(
+    #' @description
+    #' Creates CORS middleware object
+    #' @param routes Routes paths to protect.
+    #' @param match How routes will be matched: exact or partial (as prefix).
+    #' @param id Middleware id.
     initialize = function(routes = "/", match = "partial", id = "CORSMiddleware") {
       checkmate::assert_character(routes, pattern = "^/")
       checkmate::assert_subset(match, c("exact", "partial"))

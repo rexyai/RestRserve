@@ -1,27 +1,7 @@
 #' @title Bearer token authorization backend
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Creates AuthBackendBearer class object.
-#'
-#' @section Construction:
-#'
-#' ```
-#' AuthBackendBearer$new(FUN)
-#' ````
-#'
-#' * `FUN` :: `function`\cr
-#'   `character(1)` -> `logical(1)` \cr
-#'   Function to perform authentication which takes one arguments - `token`.
-#'   Returns boolean - whether access is allowed for a requested `token` or not.
-#'
-#' @section Methods:
-#'
-#' * `authenticate(request, response)`\cr
-#'   [Request], [Response] -> `NULL`\cr
-#'   Provide authentication for the given request.
 #'
 #' @export
 #'
@@ -63,9 +43,18 @@ AuthBackendBearer = R6::R6Class(
   "AuthBackendBearer",
   inherit = AuthBackend,
   public = list(
+    #' @description
+    #' Creates AuthBackendBearer class object.
+    #' @param FUN Function to perform authentication which takes one arguments - `token`.
+    #'   Returns boolean - whether access is allowed for a requested `token` or not.
     initialize = function(FUN) {
       super$initialize(FUN, "Bearer")
     },
+    #' @description
+    #' Provide authentication for the given request.
+    #' @param request [Request] object.
+    #' @param response [Response] object.
+    #' @return Boolean - whether access is allowed for a requested `user` or not.
     authenticate = function(request, response) {
       token = private$extract_credentials(request, response)
       res = private$auth_fun(token)

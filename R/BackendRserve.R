@@ -1,77 +1,31 @@
 #' @title Creates Rserve backend for processing HTTP requests
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
-#' Creates BackendRserve object which can start [Application]
-#' using Rserve backend.
+#' Creates BackendRserve object which can start [Application] using Rserve backend.
 #'
-#' @section Construction:
-#' Constructor for `BackendRserve`.
-#' `````
-#' BackendRserve$new(...)
-#' `````
+#' @references
+#' [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
 #'
-#' * **`...`** \cr
-#'   Not used at the moment
-#'
-#' @section  Methods:
-#'
-#' * **`start`**`(app, http_port = 8080, ..., background = FALSE)` \cr
-#'   [Application], `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
-#'   Starts RestRserve application from current R session.
-#'
-#'   * `http_port` - http port for application. Negative values (such as -1)
-#'     means not to expose plain http.
-#'
-#'   * `...` - key-value pairs of the Rserve configuration. If contains
-#'     `"http.port"` then `http_port` will be silently replaced with its value.
-#'
-#'   * `background` - whether to try to launch in background process on UNIX
-#'     systems. Ignored on windows.
-#' * **`set_request`**`(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
-#'     * `request` :: [Request]\cr
-#'
-#'     * `path` :: `character(1)`\cr
-#'       Character with requested path. Always starts with `/`.
-#'
-#'     * `parameters_query` :: `named character()`\cr
-#'       A named character vector with URL decoded query parameters.
-#'
-#'     * `headers` :: `raw()` | `character(1)`\cr
-#'       Request HTTP headers.
-#'
-#'     * `body` :: `raw()` | `character()`\cr
-#'       Request body. Can be `NULL`, raw vector or named character vector for the
-#'       URL encoded form (like a `parameters_query` parameter).
-#'
-#' * **`convert_response`**`(response)`\cr
-#'   [Response] -> `list()`\cr
-#'   Convert `self` object to Rserve compatible structure.
-#'   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
-#'   returned list should have the following structure:
-#'     * `body`: can be a character vector of length one or a raw vector.
-#'       if the character vector is named "file" then the content of a file of
-#'       that name is the body.
-#'       If the character vector is named "tmpfile" then the content of a
-#'       temporary file of that name is the body.
-#'
-#'     * `content-type`: must be a character vector of length one or NULL
-#'       (if present, else default is `"text/plain"`).
-#'
-#'     * `headers`: must be a character vector - the elements will have CRLF
-#'       appended and neither `Content-type` nor `Content-length` may be used.
-#'
-#'     * `status-code`: must be an integer if present (default is 200).
 #' @export
+#'
 BackendRserve = R6::R6Class(
-  "BackendRserve",
+  classname = "BackendRserve",
   inherit = Backend,
   public = list(
+    #' @description
+    #' Creates BackendRserve object.
+    #' @param ... Not used at the moment.
     initialize = function(...) {invisible(self)},
+    #' @description
+    #' Starts RestRserve application from current R session.
+    #' @param app [Application] object.
+    #' @param http_port HTTP port for application. Negative values (such as -1)
+    #'   means not to expose plain http.
+    #' @param ... Key-value pairs of the Rserve configuration. If contains
+    #'   `"http.port"` then `http_port` will be silently replaced with its value.
+    #' @param background Whether to try to launch in background process on UNIX.
+    #' @return [ApplicationProcess] object when `background = TRUE`.
     start = function(app, http_port = 8080, ..., background = FALSE) {
-
       checkmate::assert_int(http_port)
       ARGS = list(...)
       if (http_port > 0L) {
@@ -126,7 +80,16 @@ BackendRserve = R6::R6Class(
         do.call(Rserve::run.Rserve, ARGS)
       }
     },
-
+    #' @description
+    #' Parse request and set to it fields.
+    #' @param request [Request] object.
+    #' @param path Character with requested path. Always starts with `/`.
+    #' @param parameters_query A named character vector with URL decoded query
+    #'   parameters.
+    #' @param headers Request HTTP headers.
+    #' @param body Request body. Can be `NULL`, raw vector or named character
+    #'   vector for the URL encoded form (like a `parameters_query` parameter).
+    #' @return `request` modified object.
     set_request = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
       # actually we can skip runtime check as inputs from Rserve are guaranteed
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
@@ -159,7 +122,20 @@ BackendRserve = R6::R6Class(
 
       invisible(request)
     },
-
+    #' @description
+    #' Convert `self` object to Rserve compatible structure.
+    #' @param response [Response] object.
+    #' @return List with the following structure:
+    #'   * `body`: can be a character vector of length one or a raw vector.
+    #'       if the character vector is named "file" then the content of a file of
+    #'       that name is the body.
+    #'       If the character vector is named "tmpfile" then the content of a
+    #'       temporary file of that name is the body.
+    #'   * `content-type`: must be a character vector of length one or NULL
+    #'       (if present, else default is `"text/plain"`).
+    #'   * `headers`: must be a character vector - the elements will have CRLF
+    #'       appended and neither `Content-type` nor `Content-length` may be used.
+    #'   * `status-code`: must be an integer if present (default is 200).
     convert_response = function(response) {
       body = response$body
       # prepare headers
@@ -295,13 +271,25 @@ BackendRserve = R6::R6Class(
   ),
 )
 
+#' @title Creates ApplicationProcess object
+#'
+#' @description
+#' Creates ApplicationProcess to hold PID of the runnung applicaiton.
+#'
 ApplicationProcess = R6::R6Class(
   classname = "ApplicationProcess",
   public = list(
+    #' @field pid Process identificator.
     pid = NULL,
+    #' @description
+    #' Creates ApplicationProcess object
+    #' @param pid Process identificator.
     initialize = function(pid) {
       self$pid = pid
     },
+    #' @description
+    #' Send signal to process.
+    #' @param signal Singal code.
     kill = function(signal = 15L) {
       # kill service
       tools::pskill(self$pid, signal)
