@@ -101,13 +101,3 @@ bool str_ends_with(const std::string& s, const std::string& suffix) {
   std::size_t cmp_n = suffix.size();
   return str_n >= cmp_n && 0 == s.compare(str_n - cmp_n, cmp_n, suffix);
 }
-
-// convert unordered map to list
-template<typename T>
-Rcpp::Environment map_to_env(const std::unordered_map<std::string,T>& x) {
-  Rcpp::Environment env = Rcpp::new_env();
-  for (const auto& pair: x) {
-    env.assign(pair.first, pair.second);
-  }
-  return env;
-}
