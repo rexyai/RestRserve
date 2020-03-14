@@ -85,26 +85,25 @@ Application = R6::R6Class(
   classname = "Application",
   public = list(
     #' @field logger Logger object which records events during request processing.
-    #' Alternatively user can use loggers from lgr package as a drop-in
-    #' replacement - `Logger` methods and loggers created by `lgr` share
-    #' function signatures.
+    #'   Alternatively user can use loggers from lgr package as a drop-in
+    #'   replacement - `Logger` methods and loggers created by `lgr` share
+    #'   function signatures.
     logger = NULL,
 
     #' @field content_type Default response body content type.
     content_type = NULL,
 
     #' @field HTTPError Class which raises HTTP errors.
-    #' Global [HTTPError] is used by default. In theory user can replace it with
-    #' his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
-    #' in the majority of the cases using [HTTPError] will be enough.
+    #'   Global [HTTPError] is used by default. In theory user can replace it with
+    #'   his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
+    #'   in the majority of the cases using [HTTPError] will be enough.
     HTTPError = NULL,
 
     #' @description
     #' Creates Application object.
     #' @param middleware List of [Middleware] objects.
     #' @param content_type Default response body content (media) type. `"text/plain"` by default.
-    #' @param ... Not used at the moment
-    #' @return New `Application` object.
+    #' @param ... Not used at the moment.
     initialize = function(middleware = list(EncodeDecodeMiddleware$new()), content_type = "text/plain", ...) {
       private$backend = BackendRserve$new()
       private$routes = new.env(parent = emptyenv())
