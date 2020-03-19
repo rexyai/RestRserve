@@ -4,7 +4,7 @@
 #' Creates BackendRserve object which can start [Application] using Rserve backend.
 #'
 #' @references
-#' [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
+#' [See http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372)
 #'
 #' @export
 #'

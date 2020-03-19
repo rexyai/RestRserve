@@ -144,12 +144,9 @@ Creates Application object.
 
 \item{\code{content_type}}{Default response body content (media) type. \code{"text/plain"} by default.}
 
-\item{\code{...}}{Not used at the moment}
+\item{\code{...}}{Not used at the moment.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-New \code{Application} object.
 }
 }
 \if{html}{\out{<hr>}}
