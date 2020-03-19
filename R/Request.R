@@ -1,140 +1,8 @@
-#' @title Creates request object
-#'
-#' @usage NULL
-#' @format [R6::R6Class] object.
+#' @title Creates Request object
 #'
 #' @description
 #' Called internally for handling incoming requests from Rserve side.
 #' Also useful for testing.
-#'
-#' @section Construction:
-#'
-#' ```
-#' Request$new(path = "/",
-#'  method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
-#'  parameters_query = list(),
-#'  parameters_body = list(),
-#'  headers = list(),
-#'  body = list(),
-#'  cookies = list(),
-#'  content_type = "text/plain",
-#'  decode = NULL,
-#'  ...)
-#' ```
-#'
-#' * **`path`** :: `character(1)`\cr
-#'   Character with requested path. Always starts with `/`.
-#'
-#' * **`method`** :: `character(1)`\cr
-#'   Request HTTP method.
-#'
-#' * **`parameters_path`** :: `named list()`\cr
-#'   List of parameters extracted from templated path after routing.
-#'   For example if we have some handler listening at `/job/{job_id}` and we are
-#'   receiving request at `/job/1` then `parameters_path` will be `list(job_id = "1")`.
-#'   It is important to understand that `parameters_path` will be available
-#'   (not empty) only after request will reach handler.
-#'   This effectively means that `parameters_path` can be used inside handler
-#'   and response middleware (but not request middleware!).
-#'
-#' * **`parameters_query`** :: `named list()`\cr
-#'   A named list with URL decoded query parameters.
-#'
-#' * **`parameters_body`** :: `named list()`\cr
-#'   A named list with URL decoded body parameters. This field is helpful when request is
-#'   a urlencoded form or a multipart form.
-#'
-#' * **`headers`** :: `named list()`\cr
-#'   Request HTTP headers represented as named list.
-#'
-#' * **`body`** :: `anything` \cr
-#'   Request body. Can be anything and in conjunction with `content_type`
-#'   defines how HTTP body will be represented.
-#'
-#' * **`cookies`** :: `named list()`\cr
-#'   cookies represented as named list. **Note** that cookies should be provided explicitly -
-#'   they won't be derived from `headers`.
-#'
-#' * **`content_type`** :: `character(1)`\cr
-#'   HTTP content type. **Note** that `content_type` should be provided explicitly -
-#'   it won't be derived from `headers`.
-#'
-#' * **`decode`** :: `function`\cr
-#'   Function to decode body for the specific content type.
-#'
-#' @section  Fields:
-#'
-#' * **`path`** :: `character(1)`\cr
-#'   Request path.
-#'
-#' * **`method`** :: `character(1)`\cr
-#'   Request HTTP method.
-#'
-#' * **`headers`** :: `named list()`\cr
-#'   Request headers.
-#'
-#' * **`parameters_query`** :: `named list()`\cr
-#'   Request query parameters.
-#'
-#' * **`parameters_body`** :: `named list()`\cr
-#'   Request body parameters.
-#'
-#' * **`content_type`** :: `character(1)`\cr
-#'   Request body content type.
-#'
-#' * **`body`** :: `raw()` | `named character()`\cr
-#'   Request body.
-#'
-#' * **`cookies`** :: `named list()`\cr
-#'   Request cookies.
-#'
-#' * **`files`** :: `named list()`\cr
-#'   Structure which contains positions and lengths of files for the multipart
-#'   body.
-#'
-#' * **`context`** :: `environment()`\cr
-#'   Environment to store any data. Can be used in middlewares.
-#'
-#' * **`id`** :: `character(1)`\cr
-#'   Automatically generated UUID for each request. Read only.
-#'
-#' * **`date`** :: `POSIXct(1)`\cr
-#'   Request `Date` header converted to `POSIXct`.
-#'
-#' * **`accept`** :: `character()`\cr
-#'   Split `Accept` request header.
-#'
-#' * **`accept_json`** :: `logical(1)`\cr
-#'   Request accepts JSON response.
-#'
-#' * **`accept_xml`** :: `logical(1)`\cr
-#'   Request accepts XML response.
-#'
-#' @section Methods:
-#'
-#' * **`reset`**`()`\cr
-#'    Resets request object. This is not useful for end user, but useful for RestRserve internals -
-#'    resetting R6 class is much faster then initialize it.
-#'
-#' * **`get_header`**`(name, default = NULL)`\cr
-#'   `character(1)`, `character(1)` -> `character()`\cr
-#'   Get HTTP response header value. If requested header is empty returns `default`.
-#'
-#' * **`get_param_query`**`(name)`\cr
-#'   `character(1)` -> `character(1)`\cr
-#'   Get request query parameter by name.
-#'
-#' * **`get_param_body`**`(name)`\cr
-#'   `character(1)` -> `character(1)`\cr
-#'   Get request body parameter by name.
-#'
-#' * **`get_param_path`**`(name)`\cr
-#'   `character(1)` -> `character(1)`\cr
-#'   Get templated path parameter by name.
-#'
-#' * **`get_file`**`(name)`\cr
-#'   `character(1)` -> `raw()`\cr
-#'   Extract specific file from multipart body.
 #'
 #' @export
 #'
@@ -172,24 +40,54 @@
 Request = R6::R6Class(
   classname = "Request",
   public = list(
-    #---------------------------------
-    # public members
-    #---------------------------------
+    #' @field path Request path.
     path = NULL,
+    #' @field method Request HTTP method.
     method = NULL,
+    #' @field headers Request headers.
     headers = NULL,
+    #' @field cookies Request cookies.
     cookies = NULL,
+    #' @field context Environment to store any data. Can be used in middlewares.
     context = NULL,
+    #' @field content_type Request body content type.
     content_type = NULL,
+    #' @field body Request body.
     body = NULL,
+    #' @field parameters_query Request query parameters.
     parameters_query = NULL,
+    #' @field parameters_body Request body parameters.
     parameters_body = NULL,
+    #' @field parameters_path List of parameters extracted from templated path
+    #'   after routing. For example if we have some handler listening at
+    #'   `/job/{job_id}` and we are receiving request at `/job/1` then
+    #'   `parameters_path` will be `list(job_id = "1")`.\cr
+    #'   It is important to understand that `parameters_path` will be available
+    #'   (not empty) only after request will reach handler.\cr
+    #'   This effectively means that `parameters_path` can be used inside handler
+    #'   and response middleware (but not request middleware!).
     parameters_path = NULL,
+    #' @field files Structure which contains positions and lengths of files for
+    #'   the multipart body.
     files = NULL,
+    #' @field decode Function to decode body for the specific content type.
     decode = NULL,
-    #---------------------------------
-    # methods
-    #---------------------------------
+    #' @description
+    #' Creates Request object
+    #' @param path Character with requested path. Always starts with `/`.
+    #' @param method Request HTTP method.
+    #' @param parameters_query A named list with URL decoded query parameters.
+    #' @param parameters_body A named list with URL decoded body parameters.
+    #'   This field is helpful when request is a urlencoded form or a multipart form.
+    #' @param headers Request HTTP headers represented as named list.
+    #' @param body Request body. Can be anything and in conjunction with
+    #'   `content_type` defines how HTTP body will be represented.
+    #' @param cookies Cookies represented as named list. **Note** that cookies
+    #'   should be provided explicitly - they won't be derived from `headers`.
+    #' @param content_type HTTP content type. **Note** that `content_type`
+    #'   should be provided explicitly - it won't be derived from `headers`.
+    #' @param decode Function to decode body for the specific content type.
+    #' @param ... Not used at this moment.
     initialize = function(path = "/",
                           method = c("GET", "HEAD", "POST", "PUT", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH"),
                           parameters_query = list(),
@@ -224,9 +122,16 @@ Request = R6::R6Class(
 
       private$request_id = uuid::UUIDgenerate(TRUE)
     },
+    #' @description
+    #' Set request id.
+    #' @param id Request id.
     set_id = function(id = uuid::UUIDgenerate(TRUE)) {
       private$request_id = id
+      return(invisible(self))
     },
+    #' @description
+    #' Resets request object. This is not useful for end user, but useful for
+    #'   RestRserve internals - resetting R6 class is much faster then initialize it.
     reset = function() {
       # should reset all the fields which touched during `from_rserve` or `initialize`
       self$path = "/"
@@ -242,8 +147,13 @@ Request = R6::R6Class(
       self$files = list()
       self$decode = NULL
       private$request_id = uuid::UUIDgenerate(TRUE)
-      invisible(self)
+      return(invisible(self))
     },
+    #' @description
+    #' Get HTTP response header value. If requested header is empty returns `default`.
+    #' @param name Header field name.
+    #' @param default Default value if header does not exists.
+    #' @return Header field values (character string).
     get_header = function(name, default = NULL) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -255,6 +165,10 @@ Request = R6::R6Class(
         res = default
       return(res)
     },
+    #' @description
+    #' Get request query parameter by name.
+    #' @param name Query parameter name.
+    #' @return Query parameter value (character string).
     get_param_query = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -263,18 +177,30 @@ Request = R6::R6Class(
       # query is case sensitive
       return(self$parameters_query[[name]])
     },
+    #' @description
+    #' Get request body parameter by name.
+    #' @param name Body field name.
+    #' @return Body field value.
     get_param_body = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(self$parameters_body[[name]])
     },
+    #' @description
+    #' Get templated path parameter by name.
+    #' @param name Path parameter name.
+    #' @return Path parameter value.
     get_param_path = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(self$parameters_path[[name]])
     },
+    #' @description
+    #' Extract specific file from multipart body.
+    #' @param name Body file name.
+    #' @return Raw vector with `filname` and `content-type` attributes.
     get_file = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -288,6 +214,8 @@ Request = R6::R6Class(
       attr(res, "content-type") = self$files[[name]]$content_type
       return(res)
     },
+    #' @description
+    #' Print method.
     print = function() {
       cat("<RestRserve Request>")
       cat("\n")
@@ -336,14 +264,17 @@ Request = R6::R6Class(
     }
   ),
   active = list(
+    #' @field id Automatically generated UUID for each request. Read only.
     id = function() {
       private$request_id
     },
+    #' @field date Request `Date` header converted to `POSIXct`.
     date = function() {
       dt = self$headers[["date"]]
       if (is.character(dt)) dt = structure(dt, class = "HTTPDate")
       return(as(dt, "POSIXct"))
     },
+    #' @field accept Splitted `Accept` request header.
     accept = function() {
       res = "*/*"
       if (!is.null(self$headers[["accept"]])) {
@@ -351,6 +282,7 @@ Request = R6::R6Class(
       }
       return(res)
     },
+    #' @field accept_json Request accepts JSON response.
     accept_json = function() {
       res = FALSE
       if (!is.null(self$headers[["accept"]])) {
@@ -358,6 +290,7 @@ Request = R6::R6Class(
       }
       return(res)
     },
+    #' @field accept_xml Request accepts XML response.
     accept_xml = function() {
       res = FALSE
       if (!is.null(self$headers[["accept"]])) {

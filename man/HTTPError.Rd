@@ -3,139 +3,27 @@
 \docType{data}
 \name{HTTPError}
 \alias{HTTPError}
-\title{Helps to generate http error responses}
-\format{\link[R6:R6Class]{R6::R6Class} object.}
+\alias{HTTPErrorFactory}
+\title{Helps to generate HTTP error responses}
+\format{
+An object of class \code{HTTPError} (inherits from \code{R6}) of length 39.
+}
+\usage{
+HTTPError
+}
 \description{
 \strong{Global Object} which holds functions to raise common http error responses.
 Most of the time this class is used jointly with \link{raise}. \cr
 For example calling
 \code{raise(HTTPError$bad_request(body = "request is invalid"))} from any place in the user code will
 interrupt request processing and return response with status code = 404 and body = "request is invalid".
-}
-\section{Fields}{
 
+Class to generate HTTP error responses.
+}
+\section{Functions}{
 \itemize{
-\item \strong{\code{content_type}} :: \code{character(1)}\cr
-Type of the error response.
-\item \strong{\code{encode}} :: \code{function}\cr
-Function to encode response body.
-}
-}
-
-\section{Methods}{
-
-\itemize{
-\item \strong{\code{set_content_type}}\code{(content_type)}\cr
-\code{character(1)} -> \code{self}\cr
-Set content type of response.\cr
-\strong{NOTE} that modifying \link{HTTPError} (for example with \code{HTTPError$set_content_type("application/json")})
-will have global impact on RestRserve functionality.
-By default \code{HTTPError} is used by \link{Application} in order to produce http errors (404, 500, etc).
-Hence changing \code{HTTPError} with \code{$set_content_type()} will impact not only user code,
-but also the errors format produced by RestRserve. Same holds for \code{$set_encode()} method below.
-\item \strong{\code{set_encode}}\code{(encode)}\cr
-\code{function} -> \code{self}\cr
-Set encode for the given content type.
-\item \strong{\code{error}}\code{(status_code, body, ...)}\cr
-\code{integer(1)}, \code{raw()} | \code{character()}, \code{...} -> \link{Response}\cr
-\code{...} - additional named arguments which will be passed to \code{Response$new(...)}.
-\code{headers} may be particularly useful.\cr
-Generate HTTP error response with a given status code and body
-\item \strong{\code{reset}}\code{()}\cr
--> \code{self} \cr
-Resets \code{HTTPError} to the default RestRserve state.
-\item \strong{\code{bad_request}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{unauthorized}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{forbidden}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{not_found}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{method_not_allowed}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{not_acceptable}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{conflict}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{gone}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{length_required}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{precondition_failed}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{payload_too_large}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{uri_too_long}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{unsupported_media_type}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{range_not_satisfiable}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{unprocessable_entity}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{locked}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{failed_dependency}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{precondition_required}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{too_many_requests}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{request_header_fields_too_large}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{unavailable_for_legal_reasons}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{internal_server_error}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{not_implemented}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{bad_gateway}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{service_unavailable}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{gateway_timeout}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{version_not_supported}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{insufficient_storage}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{loop_detected}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.
-\item \strong{\code{network_authentication_required}}\code{(...)}\cr
-\code{...} -> \code{[Response]}\cr
-Generates corresponding http error.\cr
-}
-}
+\item \code{HTTPErrorFactory}: 
+}}
 
 \examples{
 check_list = function(x) {
@@ -144,8 +32,776 @@ check_list = function(x) {
 }
 check_list(list())
 try(check_list(1), silent = TRUE)
+
 }
 \seealso{
 \link{raise} \link{Application}
 }
 \keyword{datasets}
+\keyword{internal}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{content_type}}{Type of the error response.}
+
+\item{\code{encode}}{Function to encode response body.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{HTTPErrorFactory$new()}}
+\item \href{#method-set_content_type}{\code{HTTPErrorFactory$set_content_type()}}
+\item \href{#method-set_encode}{\code{HTTPErrorFactory$set_encode()}}
+\item \href{#method-reset}{\code{HTTPErrorFactory$reset()}}
+\item \href{#method-error}{\code{HTTPErrorFactory$error()}}
+\item \href{#method-bad_request}{\code{HTTPErrorFactory$bad_request()}}
+\item \href{#method-unauthorized}{\code{HTTPErrorFactory$unauthorized()}}
+\item \href{#method-forbidden}{\code{HTTPErrorFactory$forbidden()}}
+\item \href{#method-not_found}{\code{HTTPErrorFactory$not_found()}}
+\item \href{#method-method_not_allowed}{\code{HTTPErrorFactory$method_not_allowed()}}
+\item \href{#method-not_acceptable}{\code{HTTPErrorFactory$not_acceptable()}}
+\item \href{#method-conflict}{\code{HTTPErrorFactory$conflict()}}
+\item \href{#method-gone}{\code{HTTPErrorFactory$gone()}}
+\item \href{#method-length_required}{\code{HTTPErrorFactory$length_required()}}
+\item \href{#method-precondition_failed}{\code{HTTPErrorFactory$precondition_failed()}}
+\item \href{#method-payload_too_large}{\code{HTTPErrorFactory$payload_too_large()}}
+\item \href{#method-uri_too_long}{\code{HTTPErrorFactory$uri_too_long()}}
+\item \href{#method-unsupported_media_type}{\code{HTTPErrorFactory$unsupported_media_type()}}
+\item \href{#method-range_not_satisfiable}{\code{HTTPErrorFactory$range_not_satisfiable()}}
+\item \href{#method-unprocessable_entity}{\code{HTTPErrorFactory$unprocessable_entity()}}
+\item \href{#method-locked}{\code{HTTPErrorFactory$locked()}}
+\item \href{#method-failed_dependency}{\code{HTTPErrorFactory$failed_dependency()}}
+\item \href{#method-precondition_required}{\code{HTTPErrorFactory$precondition_required()}}
+\item \href{#method-too_many_requests}{\code{HTTPErrorFactory$too_many_requests()}}
+\item \href{#method-request_header_fields_too_large}{\code{HTTPErrorFactory$request_header_fields_too_large()}}
+\item \href{#method-unavailable_for_legal_reasons}{\code{HTTPErrorFactory$unavailable_for_legal_reasons()}}
+\item \href{#method-internal_server_error}{\code{HTTPErrorFactory$internal_server_error()}}
+\item \href{#method-not_implemented}{\code{HTTPErrorFactory$not_implemented()}}
+\item \href{#method-bad_gateway}{\code{HTTPErrorFactory$bad_gateway()}}
+\item \href{#method-service_unavailable}{\code{HTTPErrorFactory$service_unavailable()}}
+\item \href{#method-gateway_timeout}{\code{HTTPErrorFactory$gateway_timeout()}}
+\item \href{#method-version_not_supported}{\code{HTTPErrorFactory$version_not_supported()}}
+\item \href{#method-insufficient_storage}{\code{HTTPErrorFactory$insufficient_storage()}}
+\item \href{#method-loop_detected}{\code{HTTPErrorFactory$loop_detected()}}
+\item \href{#method-network_authentication_required}{\code{HTTPErrorFactory$network_authentication_required()}}
+\item \href{#method-clone}{\code{HTTPErrorFactory$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Creates HTTPError object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$new(content_type = "text/plain", encode = as.character)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{content_type}}{Type of the error response.}
+
+\item{\code{encode}}{Function to encode response body.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_content_type"></a>}}
+\if{latex}{\out{\hypertarget{method-set_content_type}{}}}
+\subsection{Method \code{set_content_type()}}{
+Set content type of response.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$set_content_type(content_type)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{content_type}}{Type of the error response.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+Modifying \link{HTTPError} will have global impact on RestRserve functionality.
+
+By default \code{HTTPError} is used by \link{Application} in order to produce http
+errors (404, 500, etc). Hence changing \code{HTTPError} with
+\code{HTTPErrorFactory$set_content_type()} will impact not only user code, but
+also the errors format produced by RestRserve. Same holds for
+\code{HTTPErrorFactory$set_encode()} method below.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_encode"></a>}}
+\if{latex}{\out{\hypertarget{method-set_encode}{}}}
+\subsection{Method \code{set_encode()}}{
+Set encode for the given content type.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$set_encode(encode)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{encode}}{Function to encode response body.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-reset}{}}}
+\subsection{Method \code{reset()}}{
+Resets \code{HTTPError} to the default RestRserve state.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$reset()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-error"></a>}}
+\if{latex}{\out{\hypertarget{method-error}{}}}
+\subsection{Method \code{error()}}{
+Generate HTTP error response with a given status code and body.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$error(status_code, body = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{status_code}}{HTTP status code.}
+
+\item{\code{body}}{Response body.}
+
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.
+\code{headers} may be particularly useful.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-bad_request"></a>}}
+\if{latex}{\out{\hypertarget{method-bad_request}{}}}
+\subsection{Method \code{bad_request()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$bad_request(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-unauthorized"></a>}}
+\if{latex}{\out{\hypertarget{method-unauthorized}{}}}
+\subsection{Method \code{unauthorized()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$unauthorized(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-forbidden"></a>}}
+\if{latex}{\out{\hypertarget{method-forbidden}{}}}
+\subsection{Method \code{forbidden()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$forbidden(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-not_found"></a>}}
+\if{latex}{\out{\hypertarget{method-not_found}{}}}
+\subsection{Method \code{not_found()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$not_found(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-method_not_allowed"></a>}}
+\if{latex}{\out{\hypertarget{method-method_not_allowed}{}}}
+\subsection{Method \code{method_not_allowed()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$method_not_allowed(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-not_acceptable"></a>}}
+\if{latex}{\out{\hypertarget{method-not_acceptable}{}}}
+\subsection{Method \code{not_acceptable()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$not_acceptable(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-conflict"></a>}}
+\if{latex}{\out{\hypertarget{method-conflict}{}}}
+\subsection{Method \code{conflict()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$conflict(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gone"></a>}}
+\if{latex}{\out{\hypertarget{method-gone}{}}}
+\subsection{Method \code{gone()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$gone(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-length_required"></a>}}
+\if{latex}{\out{\hypertarget{method-length_required}{}}}
+\subsection{Method \code{length_required()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$length_required(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-precondition_failed"></a>}}
+\if{latex}{\out{\hypertarget{method-precondition_failed}{}}}
+\subsection{Method \code{precondition_failed()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$precondition_failed(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-payload_too_large"></a>}}
+\if{latex}{\out{\hypertarget{method-payload_too_large}{}}}
+\subsection{Method \code{payload_too_large()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$payload_too_large(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-uri_too_long"></a>}}
+\if{latex}{\out{\hypertarget{method-uri_too_long}{}}}
+\subsection{Method \code{uri_too_long()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$uri_too_long(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-unsupported_media_type"></a>}}
+\if{latex}{\out{\hypertarget{method-unsupported_media_type}{}}}
+\subsection{Method \code{unsupported_media_type()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$unsupported_media_type(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-range_not_satisfiable"></a>}}
+\if{latex}{\out{\hypertarget{method-range_not_satisfiable}{}}}
+\subsection{Method \code{range_not_satisfiable()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$range_not_satisfiable(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-unprocessable_entity"></a>}}
+\if{latex}{\out{\hypertarget{method-unprocessable_entity}{}}}
+\subsection{Method \code{unprocessable_entity()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$unprocessable_entity(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-locked"></a>}}
+\if{latex}{\out{\hypertarget{method-locked}{}}}
+\subsection{Method \code{locked()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$locked(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-failed_dependency"></a>}}
+\if{latex}{\out{\hypertarget{method-failed_dependency}{}}}
+\subsection{Method \code{failed_dependency()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$failed_dependency(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-precondition_required"></a>}}
+\if{latex}{\out{\hypertarget{method-precondition_required}{}}}
+\subsection{Method \code{precondition_required()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$precondition_required(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-too_many_requests"></a>}}
+\if{latex}{\out{\hypertarget{method-too_many_requests}{}}}
+\subsection{Method \code{too_many_requests()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$too_many_requests(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-request_header_fields_too_large"></a>}}
+\if{latex}{\out{\hypertarget{method-request_header_fields_too_large}{}}}
+\subsection{Method \code{request_header_fields_too_large()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$request_header_fields_too_large(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-unavailable_for_legal_reasons"></a>}}
+\if{latex}{\out{\hypertarget{method-unavailable_for_legal_reasons}{}}}
+\subsection{Method \code{unavailable_for_legal_reasons()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$unavailable_for_legal_reasons(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-internal_server_error"></a>}}
+\if{latex}{\out{\hypertarget{method-internal_server_error}{}}}
+\subsection{Method \code{internal_server_error()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$internal_server_error(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-not_implemented"></a>}}
+\if{latex}{\out{\hypertarget{method-not_implemented}{}}}
+\subsection{Method \code{not_implemented()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$not_implemented(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-bad_gateway"></a>}}
+\if{latex}{\out{\hypertarget{method-bad_gateway}{}}}
+\subsection{Method \code{bad_gateway()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$bad_gateway(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-service_unavailable"></a>}}
+\if{latex}{\out{\hypertarget{method-service_unavailable}{}}}
+\subsection{Method \code{service_unavailable()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$service_unavailable(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gateway_timeout"></a>}}
+\if{latex}{\out{\hypertarget{method-gateway_timeout}{}}}
+\subsection{Method \code{gateway_timeout()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$gateway_timeout(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-version_not_supported"></a>}}
+\if{latex}{\out{\hypertarget{method-version_not_supported}{}}}
+\subsection{Method \code{version_not_supported()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$version_not_supported(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-insufficient_storage"></a>}}
+\if{latex}{\out{\hypertarget{method-insufficient_storage}{}}}
+\subsection{Method \code{insufficient_storage()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$insufficient_storage(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-loop_detected"></a>}}
+\if{latex}{\out{\hypertarget{method-loop_detected}{}}}
+\subsection{Method \code{loop_detected()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$loop_detected(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-network_authentication_required"></a>}}
+\if{latex}{\out{\hypertarget{method-network_authentication_required}{}}}
+\subsection{Method \code{network_authentication_required()}}{
+Generates corresponding http error.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$network_authentication_required(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Additional named arguments which will be passed to \code{Response$new()}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Response} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{HTTPErrorFactory$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

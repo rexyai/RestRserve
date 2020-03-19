@@ -1,111 +1,9 @@
 #' @title Creates application - RestRserve usage starts from here
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Creates Application object.
 #' Application provides an interface for building high-performance
 #' REST API by registering R functions as handlers http requests.
-#'
-#' @section Construction:
-#' Constructor for `Application`.
-#'
-#' `````
-#' Application$new(middleware = list(), content_type = "text/plain", ...)
-#' `````
-#'
-#' * **`middleware`** :: `list` of [Middleware]\cr
-#'   List of middlewares.
-#'
-#' * **`content_type`** :: `character(1)`\cr
-#'   Default response body content (media) type. `"text/plain"` by default.
-#'
-#' * **`...`** \cr
-#'   Not used at the moment
-#'
-#' @section Fields:
-#'
-#' * **`logger`** :: [Logger]\cr
-#'   Logger object which records events during request processing.
-#'   Alternatively user can use loggers from lgr package as a
-#'   drop-in replacement - `Logger` methods and loggers created by `lgr` share function signatures.
-#'
-#' * **`content_type`** :: `character(1)`\cr
-#'   Default response body content type.
-#'
-#' * **`HTTPError`** :: `HTTPError`\cr
-#'   Class which raises HTTP errors. Global [HTTPError] is used by default. In theory
-#'   user can replace it with his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
-#'   in the majority of the cases using [HTTPError] will be enough.
-#'
-#' * **`endpoints`** :: `named list()`\cr
-#'   Prints all the registered routes with allowed methods.
-#'
-#' @section  Methods:
-#'
-#' * **`add_route`**`(path, method, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)` -> `invisible(self)` - [Application] \cr
-#'   Adds endpoint and register user-supplied R function as a handler.
-#'
-#'   Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.
-#'
-#'   `match` parameter defines how route will be processed.
-#'
-#'   * `exact` - match route as is. Returns 404 if route is not matched.
-#'
-#'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
-#'
-#'   * `regex` - match route as template. Returns 404 if template pattern not matched.
-#'
-#'   User function `FUN` **must** take two arguments: first is `request`
-#'   ([Request]) and second is `response` ([Response]).
-#'
-#'   The goal of the user function is to **modify** `response` or throw
-#'   exception (call [raise()] or [stop()]).
-#'
-#'   Both `response` and `request` objects modified in-place and internally
-#'   passed further to RestRserve execution pipeline.
-#'
-#' * **`add_get`**`(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any`, `logical(1)` -> `invisible(self)` - [Application] \cr
-#'   Shorthand to `add_route` with `GET` method. With `add_head = TRUE` HEAD method
-#'   handlers will be added (with `add_head()`).
-#'
-#' * **`add_post`**`(path, FUN, match = c("exact", "partial", "regex"), ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
-#'   Shorthand to `add_route` with `POST` method.
-#'
-#' * **`add_static`**`(path, file_path, content_type = NULL, ...)`\cr
-#'   `character(1)`, `character(1)`, `character(1)`, `any` -> `invisible(self)` - [Application] \cr
-#'   Adds GET method to serve file or directory at `file_path`.
-#'
-#'   If `content_type = NULL` then MIME code `content_type`  will be inferred
-#'   automatically (from file extension).
-#'
-#'   If it will be impossible to guess about file type then `content_type` will
-#'   be set to `"application/octet-stream"`.
-#'
-#' * **`append_middleware`**`(mw)`\cr
-#'   [Middleware] -> `invisible(self)` - [Application] \cr
-#'   Appends middleware to handlers pipeline.
-#'
-#' * **`process_request`**`(request)`\cr
-#'   [Request] -> [Response]\cr
-#'   Process incoming request and generate [Response] object.
-#'   Useful for tests your handlers before deploy application.
-#'
-#' * **`add_openapi`**`(path = "/openapi.yaml", file_path = "openapi.yaml")`
-#'   `character(1)`, `named list()`, `character(1)` -> `invisible(self)` - [Application] \cr
-#'   Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
-#'   available methods.
-#'
-#' * **`add_swagger_ui`**`(path = "/swagger", path_openapi = "/openapi.yaml",
-#'                   use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
-#'                   file_path = "swagger-ui.html")`\cr
-#'   `character(1)`, `character(1)`, `logical(1)`, `character(1)`, `character(1)` ->
-#'   `invisible(self)` - [Application] \cr
-#'   Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
 #'
 #' @export
 #'
@@ -186,10 +84,26 @@
 Application = R6::R6Class(
   classname = "Application",
   public = list(
+    #' @field logger Logger object which records events during request processing.
+    #'   Alternatively user can use loggers from lgr package as a drop-in
+    #'   replacement - `Logger` methods and loggers created by `lgr` share
+    #'   function signatures.
     logger = NULL,
+
+    #' @field content_type Default response body content type.
     content_type = NULL,
+
+    #' @field HTTPError Class which raises HTTP errors.
+    #'   Global [HTTPError] is used by default. In theory user can replace it with
+    #'   his own class (see `RestRserve:::HTTPErrorFactory`). However we believe
+    #'   in the majority of the cases using [HTTPError] will be enough.
     HTTPError = NULL,
-    #------------------------------------------------------------------------
+
+    #' @description
+    #' Creates Application object.
+    #' @param middleware List of [Middleware] objects.
+    #' @param content_type Default response body content (media) type. `"text/plain"` by default.
+    #' @param ... Not used at the moment.
     initialize = function(middleware = list(EncodeDecodeMiddleware$new()), content_type = "text/plain", ...) {
       private$backend = BackendRserve$new()
       private$routes = new.env(parent = emptyenv())
@@ -212,6 +126,23 @@ Application = R6::R6Class(
 
       return(invisible(self))
     },
+
+    #' @description
+    #' Adds endpoint and register user-supplied R function as a handler.
+    #' @param path Endpoint path.
+    #' @param method HTTP method. Allowed methods at the moment:
+    #'   `GET`, `HEAD`, `POST`, `PUT`, `DELETE`, `OPTIONS`, `PATCH`.
+    #' @param FUN User function to handle requests. `FUN` **must** take two arguments:
+    #'   first is `request` ([Request]) and second is `response` ([Response]).\cr
+    #'   The goal of the user function is to **modify** `response` or throw
+    #'   exception (call [raise()] or [stop()]).\cr
+    #'   Both `response` and `request` objects modified in-place and internally
+    #'   passed further to RestRserve execution pipeline.
+    #' @param match Defines how route will be processed. Allowed values:
+    #'   * `exact` - match route as is. Returns 404 if route is not matched.
+    #'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
+    #'   * `regex` - match route as template. Returns 404 if template pattern not matched.
+    #' @param ... Not used.
     add_route = function(path, method, FUN, match = c("exact", "partial", "regex"), ...) {
       checkmate::assert_string(path, min.chars = 1L, pattern = "^/")
       checkmate::assert_choice(method, private$supported_methods)
@@ -230,7 +161,21 @@ Application = R6::R6Class(
       private$handlers[[id]] = compiler::cmpfun(FUN)
       return(invisible(self))
     },
-    #------------------------------------------------------------------------
+    #' @description
+    #' Shorthand to `Application$add_route()` with `GET` method.
+    #' @param path Endpoint path.
+    #' @param FUN User function to handle requests. `FUN` **must** take two arguments:
+    #'   first is `request` ([Request]) and second is `response` ([Response]).\cr
+    #'   The goal of the user function is to **modify** `response` or throw
+    #'   exception (call [raise()] or [stop()]).\cr
+    #'   Both `response` and `request` objects modified in-place and internally
+    #'   passed further to RestRserve execution pipeline.
+    #' @param match Defines how route will be processed. Allowed values:
+    #'   * `exact` - match route as is. Returns 404 if route is not matched.
+    #'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
+    #'   * `regex` - match route as template. Returns 404 if template pattern not matched.
+    #' @param ... Not used.
+    #' @param add_head Adds HEAD method.
     add_get = function(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE) {
       if (isTRUE(add_head)) {
         self$add_route(path, "HEAD", FUN, match, ...)
@@ -238,15 +183,44 @@ Application = R6::R6Class(
       self$add_route(path, "GET", FUN, match, ...)
       return(invisible(self))
     },
+    #' @description
+    #' Shorthand to `Application$add_route()` with `POST` method.
+    #' @param path Endpoint path.
+    #' @param FUN User function to handle requests. `FUN` **must** take two arguments:
+    #'   first is `request` ([Request]) and second is `response` ([Response]).\cr
+    #'   The goal of the user function is to **modify** `response` or throw
+    #'   exception (call [raise()] or [stop()]).\cr
+    #'   Both `response` and `request` objects modified in-place and internally
+    #'   passed further to RestRserve execution pipeline.
+    #' @param match Defines how route will be processed. Allowed values:
+    #'   * `exact` - match route as is. Returns 404 if route is not matched.
+    #'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
+    #'   * `regex` - match route as template. Returns 404 if template pattern not matched.
+    #' @param ... Not used.
     add_post = function(path, FUN, match = c("exact", "partial", "regex"), ...) {
       self$add_route(path, "POST", FUN, match, ...)
       return(invisible(self))
     },
+    #' @description
+    #' Adds `GET` method to serve file or directory at `file_path`.
+    #' @param path Endpoint path.
+    #' @param file_path Path file or directory.
+    #' @param content_type MIME-type for the content.\cr
+    #'   If `content_type = NULL` then MIME code `content_type`  will be inferred
+    #'   automatically (from file extension).\cr
+    #'   If it will be impossible to guess about file type then `content_type` will
+    #'   be set to `application/octet-stream`.
+    #' @param ... Not used.
     add_static = function(path, file_path, content_type = NULL, ...) {
       handler = private$static_handler(url_path = path, file_path = file_path, content_type = content_type)
       self$add_route(path, "GET", handler, attr(handler, "match"), ...)
       return(invisible(self))
     },
+    #' @description
+    #' Adds endpoint to serve [OpenAPI](https://www.openapis.org/) description of
+    #'   available methods.
+    #' @param path path Endpoint path.
+    #' @param file_path Path to the OpenAPI specification file.
     add_openapi = function(path = "/openapi.yaml", file_path = "openapi.yaml") {
       checkmate::assert_string(path, pattern = "/.*")
       file_path = path.expand(file_path)
@@ -261,6 +235,13 @@ Application = R6::R6Class(
       self$add_static(path = path, file_path = file_path, content_type = content_type)
       return(invisible(self))
     },
+    #' @description
+    #' Adds endpoint to show [Swagger UI](https://swagger.io/tools/swagger-ui/).
+    #' @param path path Endpoint path.
+    #' @param path_openapi Path to the OpenAPI specification file.
+    #' @param use_cdn Use CDN to load Swagger UI libraries.
+    #' @param path_swagger_assets Swagger UI asstes endpoint.
+    #' @param file_path Path to Swagger UI HTML file.
     add_swagger_ui = function(path = "/swagger", path_openapi = "/openapi.yaml",
                               use_cdn = TRUE, path_swagger_assets = "/__swagger__/",
                               file_path = "swagger-ui.html") {
@@ -291,11 +272,18 @@ Application = R6::R6Class(
       self$add_static(path, file_path, "text/html")
       return(invisible(self))
     },
+    #' @description
+    #' Appends middleware to handlers pipeline.
+    #' @param mw [Middleware] object.
     append_middleware = function(mw) {
       checkmate::assert_r6(mw, classes = "Middleware")
       private$middleware = append(private$middleware, mw)
       return(invisible(self))
     },
+    #' @description
+    #' Process incoming request and generate [Response] object.
+    #' @param request [Request] object.\cr
+    #'   Useful for tests your handlers before deploy application.
     process_request = function(request = NULL) {
       # if we use fork-mode then on.exit wlll be called in a fork and
       # request_id will never be updated. Hence if the input request is `private$request`
@@ -398,6 +386,8 @@ Application = R6::R6Class(
       })
       return(response)
     },
+    #' @description
+    #' Prints application details.
     print = function() {
       cat("<RestRserve Application>")
       cat("\n")
@@ -428,6 +418,7 @@ Application = R6::R6Class(
     }
   ),
   active = list(
+    #' @field endpoints  Prints all the registered routes with allowed methods.
     endpoints = function() {
       lapply(private$routes, function(r) r$paths)
     }

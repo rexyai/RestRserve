@@ -1,107 +1,7 @@
-#' @title Creates response object
-#'
-#' @usage NULL
-#' @format [R6::R6Class] object.
+#' @title Creates Response object
 #'
 #' @description
 #' Creates response object.
-#'
-#' @section Construction:
-#'
-#' ```
-#' Response$new(body = "",
-#'              content_type = 'text/plain',
-#'              headers = structure(list(), names = character(0)),
-#'              status_code = 200L,
-#'              encode = NULL)
-#' ````
-#'
-#' @section Fields:
-#'
-#' * **`content_type`** :: `character(1)`\cr
-#'   Response body content (media) type. Will be translated to `Content-type` header.
-#'
-#' * **`body`** :: `raw()` | `character(1)`\cr
-#'   Response body.
-#'   If it is a named character with a name `file` or `tmpfile`
-#'   then the value is considered as a path to a file and content oh this file
-#'   is served as body. The latter will be deleted once served.
-#'
-#' * **`status_code`** :: `integer(1)`\cr
-#'   Response status code.
-#'
-#' * **`headers`** :: `named list()`\cr
-#'   Response headers.
-#'
-#' * **`cookies`** :: `named list()`\cr
-#'   Response cookies. Will be translated to `Set-Cookie` headers.
-#'
-#' * **`context`** :: `environment()`\cr
-#'   Environment to store any data. Can be used in middlewares.
-#'
-#' * **`encode`** :: `function`\cr
-#'   unction to encode body for specific content
-#'
-#' * **`status`** :: `character(1)`\cr
-#'   Paste together status code and description.
-#'
-#' @section Methods:
-#'
-#' * **`set_content_type`**`(content_type = 'text/plain')`\cr
-#'   `character(1)` -> `self`\cr
-#'   Set content type for response body.
-#'
-#' * **`set_status_code`**`(code)`\cr
-#'   `integer(1)` -> `self`\cr
-#'   Set status code for response. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
-#'
-#' * **`has_header`**`(name)`\cr
-#'   `character(1)` -> `logical(1)`\cr
-#'   Determine whether or not the response header exists.
-#'
-#' * **`get_header`**`(name, default = NULL)`\cr
-#'   `character(1)`, `character(1)` -> `character()`\cr
-#'   Get HTTP response header value. If requested header is empty returns `default`.
-#'
-#' * **`set_header`**`(name, value)`\cr
-#'   `character(1)`, `character()` -> `self`\cr
-#'   Set HTTP response header. `Content-type` and `Content-length` headers not
-#'   allowed (use `content_type` field instead).
-#'
-#' * **`append_header`**`(name, value)`\cr
-#'   `character(1)`, `character()` -> `self`\cr
-#'  Append HTTP response header. If header exists `,` separator will be used.
-#'  Don't use this method to set cookie (use `set_cookie` method instead).
-#'
-#' * **`delete_header`**`(name)`\cr
-#'   `character(1)` -> `logical(1)`\cr
-#'   Unset HTTP response header.
-#'
-#' * **`set_cookie`**`(name, value, expires = NULL, max_age = NULL, domain = NULL,
-#'               path = NULL, secure = NULL, http_only = NULL)`\cr
-#'   `character(1)`, `character(1)`, `POSIXct(1)`, `integer(1)`, `character(1)`,
-#'   `character(1)`, `logical(1)`, `logical(1)` -> `self`\cr
-#'   Set cookie. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
-#'
-#' * **`unset_cookie`**`(name)`\cr
-#'   `character(1)` -> `logical(1)`\cr
-#'   Unset cookie with given name.
-#'
-#' * **`set_date`**`(dtm = Sys.time())`\cr
-#'   `POSIXct(1)` -> `self`\cr
-#'   Set `Date` HTTP header. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date).
-#'
-#' * **`unset_date`**`()`\cr
-#'   -> `logical(1)`\cr
-#'   Unset `Date` HTTP header.
-#'
-#' * **`set_body`**`(body)`\cr
-#'   `any` -> `self`\cr
-#'   Set response body.
-#'
-#' * **`set_response`**`(status_code, body = NULL, content_type = self$content_type)`\cr
-#'   `integer(1)`, `any`, `character(1)` -> `self`\cr
-#'   Set response fields.
 #'
 #' @export
 #'
@@ -139,14 +39,32 @@
 Response = R6::R6Class(
   classname = "Response",
   public = list(
+    #' @field body Response body.\cr
+    #'   If it is a named character with a name `file` or `tmpfile`
+    #'   then the value is considered as a path to a file and content oh this file
+    #'   is served as body. The latter will be deleted once served.
     body = NULL,
+    #' @field content_type Response body content (media) type. Will be translated
+    #'   to `Content-type` header.
     content_type = NULL,
+    #' @field headers Response headers.
     headers = NULL,
+    #' @field status_code Response HTTP status code.
     status_code = NULL,
+    #' @field cookies Response cookies. Will be translated to `Set-Cookie` headers.
     cookies = NULL,
+    #' @field context Environment to store any data. Can be used in middlewares.
     context = NULL,
+    #' @field encode Function to encode body for specific content.
     encode = NULL,
-    #------------------------------------------------
+    #' @description
+    #' Creates Response object
+    #' @param body Response body.
+    #' @param content_type Response body content (media) type.
+    #' @param headers Response headers.
+    #' @param status_code Response status code.
+    #' @param encode Function to encode body for specific content.
+    #' @param ... Not used at this moment.
     initialize = function(body = NULL,
                           content_type = "text/plain",
                           headers = list("Server" = getOption("RestRserve.headers.server")),
@@ -167,6 +85,9 @@ Response = R6::R6Class(
       self$context = new.env(parent = emptyenv())
       self$encode = encode
     },
+    #' @description
+    #' Resets response object. This is not useful for end user, but useful for
+    #'   RestRserve internals - resetting R6 class is much faster then initialize it.
     reset = function() {
       self$body = NULL
       self$set_content_type("text/plain")
@@ -176,7 +97,9 @@ Response = R6::R6Class(
       self$context = new.env(parent = emptyenv())
       self$encode = NULL
     },
-    #------------------------------------------------
+    #' @description
+    #' Set content type for response body.
+    #' @param content_type Response body content (media) type.
     set_content_type = function(content_type = 'text/plain') {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(content_type, pattern = ".*/.*")
@@ -184,6 +107,9 @@ Response = R6::R6Class(
       self$content_type = content_type
       return(invisible(self))
     },
+    #' @description
+    #' Set HTTP status code for response. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status).
+    #' @param code Status code as integer number.
     set_status_code = function(code) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_int(code, lower = 100L, upper = 600L)
@@ -191,12 +117,21 @@ Response = R6::R6Class(
       self$status_code = code
       return(invisible(self))
     },
+    #' @description
+    #' Determine whether or not the response header exists.
+    #' @param name Header field name.
+    #' @return Logical value.
     has_header = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
       }
       return(!is.null(self$headers[[name]]))
     },
+    #' @description
+    #' Get HTTP response header value. If requested header is empty returns `default`.
+    #' @param name Header field name.
+    #' @param default Default value if header does not exists.
+    #' @return Header field values (character string).
     get_header = function(name, default = NULL) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -209,6 +144,11 @@ Response = R6::R6Class(
         res = default
       return(res)
     },
+    #' @description
+    #' Set HTTP response header. `Content-type` and `Content-length` headers not
+    #'   allowed (use `content_type` field instead).
+    #' @param name Header field name.
+    #' @param value  Header field value.
     set_header = function(name, value) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -225,6 +165,10 @@ Response = R6::R6Class(
       self$headers[[name]] = value
       return(invisible(self))
     },
+    #' @description
+    #' Unset HTTP response header.
+    #' @param name Header field name.
+    #' @return Logical value.
     delete_header = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -232,6 +176,11 @@ Response = R6::R6Class(
       self$headers[[name]] = NULL
       return(invisible(TRUE))
     },
+    #' @description
+    #' Append HTTP response header. If header exists `,` separator will be used.
+    #'   Don't use this method to set cookie (use `set_cookie` method instead).
+    #' @param name Header field name.
+    #' @param value  Header field value.
     append_header = function(name, value) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -249,6 +198,9 @@ Response = R6::R6Class(
       self$headers[[name]] = value
       return(invisible(self))
     },
+    #' @description
+    #' Set `Date` HTTP header. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date).
+    #' @param dtm POSIXct value.
     set_date = function(dtm = Sys.time()) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_posixct(dtm, null.ok = TRUE)
@@ -257,10 +209,23 @@ Response = R6::R6Class(
       self$headers[["Date"]] = res
       return(invisible(self))
     },
+    #' @description
+    #' Unset `Date` HTTP header.
+    #' @return Logical value.
     unset_date = function() {
       self$headers[["Date"]] = NULL
       return(invisible(TRUE))
     },
+    #' @description
+    #' Set cookie. See [docs on MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie).
+    #' @param name Cookie name.
+    #' @param value Cookie value.
+    #' @param expires Cookie expires date and time (POSIXct).
+    #' @param max_age Max cookie age (integer).
+    #' @param domain Cookie domain.
+    #' @param path Cookie path.
+    #' @param secure Cookie secure flag.
+    #' @param http_only Cookie HTTP only flag.
     set_cookie = function(name, value, expires = NULL, max_age = NULL, domain = NULL,
                           path = NULL, secure = NULL, http_only = NULL) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
@@ -289,6 +254,10 @@ Response = R6::R6Class(
       self$cookies[[name]] = cookie
       return(invisible(self))
     },
+    #' @description
+    #' Unset cookie with given name.
+    #' @param name Cookie name.
+    #' @return Logical value.
     unset_cookie = function(name) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_string(name)
@@ -296,10 +265,18 @@ Response = R6::R6Class(
       self$cookies[[name]] = NULL
       return(invisible(TRUE))
     },
+    #' @description
+    #' Set response body.
+    #' @param body Response body.
     set_body = function(body) {
       self$body = body
       return(invisible(self))
     },
+    #' @description
+    #' Set response fields.
+    #' @param status_code Response HTTP status code.
+    #' @param body Response body.
+    #' @param content_type content_type Response body content (media) type.
     set_response = function(status_code, body = NULL, content_type = self$content_type) {
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
         checkmate::assert_int(status_code, lower = 100L, upper = 600L)
@@ -318,6 +295,8 @@ Response = R6::R6Class(
       self$content_type = content_type
       return(invisible(self))
     },
+    #' @description
+    #' Print method.
     print = function() {
       cat("<RestRserve Response>")
       cat("\n")
@@ -338,6 +317,7 @@ Response = R6::R6Class(
     }
   ),
   active = list(
+    #' @field status Paste together status code and description.
     status = function() {
       code = as.character(self$status_code)
       res = paste(code, status_codes[[code]])

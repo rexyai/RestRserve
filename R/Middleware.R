@@ -1,8 +1,5 @@
 #' @title Creates middleware object
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Creates Middleware object.
 #'
@@ -13,50 +10,6 @@
 #' response can be post processed (for example this way we developer can set up
 #' custom error messages).
 #'
-#' @section Construction:
-#'
-#' ```
-#' Middleware$new(
-#'   process_request  = function(request, response) TRUE,
-#'   process_response = function(request, response) TRUE,
-#'   id = "Middleware"
-#' )
-#' ````
-#'
-#' * `process_request` :: `function`\cr
-#'   Modify `request` or `response` objects or  throw exception using
-#'   `[HTTPError]` helper. This function evaluate before router handler called.
-#'
-#' *  `process_response` :: `function`\cr
-#'   Modify `request` or `response` objects or  throw exception using
-#'   `[HTTPError]` helper. This function evaluate after router handler called.
-#'
-#' * `id` :: `character(1)`\cr
-#'   Middleware id
-#'
-#' @section Fields:
-#'
-#' * `process_request` :: `function`\cr
-#'   Function which takes 2 arguments - `request` and `response` objects (class
-#'   [Request] and [Response] correspondingly) and modify
-#'   `request` and `response` or throw exception using [HTTPError] helper.
-#'
-#'   Function is called before request is routed to handler.
-#'
-#'   Usually `process_request` is used to perform logging, check authorization, etc.
-#'
-#' * `process_response` :: `funciotn`\cr
-#'   Function which takes 2 arguments - `request` and `response` objects (class
-#'   [Request] and [Response] correspondingly) and modify
-#'   `request` and `response` or throw exception using [HTTPError] helper.
-#'
-#'   Function is called after request is processed by handler.
-#'
-#'   Usually `process_response` is used to perform logging, custom error handling, etc.
-#'
-#' * `id` :: `character(1)`\cr
-#'   Middleware id
-#'
 #' @export
 #'
 #' @seealso [Request] [Response] [Application]
@@ -64,9 +17,29 @@
 Middleware = R6::R6Class(
   classname = "Middleware",
   public = list(
+    #' @field process_request Function which takes 2 arguments - `request` and
+    #'   `response` objects (class  [Request] and [Response] correspondingly) and
+    #'   modify `request` and `response` or throw exception using [HTTPError] helper.\cr
+    #'   Function is called before request is routed to handler.\cr
+    #'   Usually `process_request` is used to perform logging, check authorization, etc.
     process_request = NULL,
+    #' @field process_response Function which takes 2 arguments - `request` and
+    #'   `response` objects (class [Request] and [Response] correspondingly) and
+    #'   modify `request` and `response` or throw exception using [HTTPError] helper.\cr
+    #'   Function is called after request is processed by handler.
+    #'   Usually `process_response` is used to perform logging, custom error handling, etc.
     process_response = NULL,
+    #' @field id Middleware id.
     id = NULL,
+    #' @description
+    #' Creates middleware object
+    #' @param process_request Modify `request` or `response` objects or  throw
+    #'   exception using `[HTTPError]` helper. This function evaluate before
+    #'   router handler called.
+    #' @param process_response Modify `request` or `response` objects or  throw
+    #'   exception using `[HTTPError]` helper. This function evaluate after
+    #'   router handler called.
+    #' @param id Middleware id.
     initialize = function(
       process_request  = function(request, response) TRUE,
       process_response = function(request, response) TRUE,

@@ -66,6 +66,28 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// url_decode
+Rcpp::CharacterVector url_decode(Rcpp::CharacterVector x);
+RcppExport SEXP _RestRserve_url_decode(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(url_decode(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// url_encode
+Rcpp::CharacterVector url_encode(Rcpp::CharacterVector x);
+RcppExport SEXP _RestRserve_url_encode(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(url_encode(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_format_cookies", (DL_FUNC) &_RestRserve_format_cookies, 1},
@@ -74,6 +96,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_parse_headers", (DL_FUNC) &_RestRserve_parse_headers, 1},
     {"_RestRserve_parse_multipart_boundary", (DL_FUNC) &_RestRserve_parse_multipart_boundary, 1},
     {"_RestRserve_parse_multipart_body", (DL_FUNC) &_RestRserve_parse_multipart_body, 2},
+    {"_RestRserve_url_decode", (DL_FUNC) &_RestRserve_url_decode, 1},
+    {"_RestRserve_url_encode", (DL_FUNC) &_RestRserve_url_encode, 1},
     {NULL, NULL, 0}
 };
 

@@ -3,32 +3,8 @@
 
 #' @title Create AuthBackend
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
 #' Creates AuthBackend class object.
-#'
-#' @section Construction:
-#'
-#' Note: This object is typically constructed via a derived classes, e.g.
-#' [AuthBackendBasic] or [AuthBackendBearer].
-#'
-#' ```
-#' AuthBackend$new(FUN, auth_header_prefix)
-#' ````
-#'
-#' * `FUN` :: `function`\cr
-#'   Authentication handler function.
-#'
-#' * `auth_header_prefix` :: `character(1)`\cr
-#'   Authentication HTTP header prefix.
-#'
-#' @section Methods:
-#'
-#' * `authenticate()`\cr
-#'   `simpleError`\cr
-#'   This placeholder. It must be implemented in the subclass.
 #'
 #' @references
 #' [falcon-auth](https://github.com/loanzen/falcon-auth)
@@ -40,12 +16,24 @@
 AuthBackend = R6::R6Class(
   classname = "AuthBackend",
   public = list(
+    #' @field HTTPError Class which raises HTTP errors.
     HTTPError = NULL,
+    #' @description
+    #' Creates AuthBackend class object.
+    #'
+    #' @param FUN Authentication handler function.
+    #' @param auth_header_prefix Authentication HTTP header prefix.
+    #'
+    #' @note
+    #' This object is typically constructed via a derived classes, e.g.
+    #' [AuthBackendBasic] or [AuthBackendBearer].
     initialize = function(FUN, auth_header_prefix) {
       private$auth_fun = FUN
       private$auth_header_prefix = tolower(auth_header_prefix)
       self$HTTPError = HTTPError
     },
+    #' @description
+    #' This placeholder. It must be implemented in the subclass.
     authenticate = function() {
       stop("not implemented")
     }

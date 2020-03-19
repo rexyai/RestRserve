@@ -92,10 +92,10 @@ find_port = function(tries = 50) {
   return(NULL)
 }
 
-url_encode = function(x) {
-  vapply(x, utils::URLencode, "", reserved = TRUE, USE.NAMES = FALSE)
-}
+# url_encode = function(x) {
+#   vapply(x, utils::URLencode, "", reserved = TRUE, USE.NAMES = FALSE)
+# }
 
-url_decode = function(x) {
-  vapply(x, utils::URLdecode, "", USE.NAMES = FALSE)
-}
+# url_decode = function(x) {
+#   vapply(x, utils::URLdecode, "", USE.NAMES = FALSE)
+# }
