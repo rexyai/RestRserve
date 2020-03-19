@@ -7,6 +7,7 @@
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![gitter](https://img.shields.io/gitter/room/RestRserve/community.svg?color=61D6AD&style=popout)](https://gitter.im/RestRserve/community)
 <a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
+![tinyverse](https://tinyverse.netlify.com/badge/RestRserve)
 
 [RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. With [Rserve](https://github.com/s-u/Rserve) backend on UNIX-like systems it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 

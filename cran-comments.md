@@ -1,6 +1,7 @@
 ## New submission
 
-- Urgent fix. Decreased socket connectction timeout to 1 sec. This caused hang for several minutes during server start on Windows
+- rework documentation with new roxygen2 release
+- improved http header validation
 
 ### Test environments
 
@@ -9,6 +10,6 @@
 - win-builder (devel)
 - R-devel clang SAN (https://github.com/rocker-org/r-devel-san-clang)
 
-###R CMD check results
+### R CMD check results
 
 There were no ERRORs/WARNINGs/NOTEs. 
