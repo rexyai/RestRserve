@@ -4,8 +4,9 @@
 #' Creates BackendRserve object which can start [Application] using Rserve backend.
 #'
 #' @references
+# nolint start
 #' [See http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372)
-#'
+# nolint end
 #' @export
 #'
 BackendRserve = R6::R6Class(
