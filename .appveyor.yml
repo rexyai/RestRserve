@@ -11,6 +11,7 @@ environment:
   global:
     CRAN: http://cloud.r-project.org
     WARNINGS_ARE_ERRORS: 0
+    _R_CHECK_DONTTEST_EXAMPLES_: FALSE
   matrix:
   - R_VERSION: devel
     GCC_PATH: mingw_32
