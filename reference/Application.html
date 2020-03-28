@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -47,7 +51,6 @@
 Application provides an interface for building high-performance
 REST API by registering R functions as handlers http requests." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@ REST API by registering R functions as handlers http requests." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +82,7 @@ REST API by registering R functions as handlers http requests." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -127,7 +130,7 @@ REST API by registering R functions as handlers http requests." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -158,99 +161,258 @@ REST API by registering R functions as handlers http requests.</p>
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
-
-    
-
-<p>Constructor for <code>Application</code>.</p><pre>Application$new(middleware = list(), content_type = "text/plain", ...)
-</pre>
-<ul>
-<li><p><strong><code>middleware</code></strong> :: <code>list</code> of <a href='Middleware.html'>Middleware</a><br />
-List of middlewares.</p></li>
-<li><p><strong><code>content_type</code></strong> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Default response body content (media) type. <code>"text/plain"</code> by default.</p></li>
-<li><p><strong><code>...</code></strong> <br />
-Not used at the moment</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<ul>
-<li><p><strong><code>logger</code></strong> :: <a href='Logger.html'>Logger</a><br />
-Logger object which records events during request processing.
-Alternatively user can use loggers from lgr package as a
-drop-in replacement - <code>Logger</code> methods and loggers created by <code>lgr</code> share function signatures.</p></li>
-<li><p><strong><code>content_type</code></strong> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Default response body content type.</p></li>
-<li><p><strong><code>HTTPError</code></strong> :: <code>HTTPError</code><br />
-Class which raises HTTP errors. Global <a href='HTTPError.html'>HTTPError</a> is used by default. In theory
-user can replace it with his own class (see <code>RestRserve:::HTTPErrorFactory</code>). However we believe
-in the majority of the cases using <a href='HTTPError.html'>HTTPError</a> will be enough.</p></li>
-<li><p><strong><code>endpoints</code></strong> :: <code>named list()</code><br />
-Prints all the registered routes with allowed methods.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<ul>
-<li><p><strong><code>add_route</code></strong><code>(path, method, FUN, match = c("exact", "partial", "regex"), ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Adds endpoint and register user-supplied R function as a handler.</p>
-<p>Allowed methods at the moment: GET, HEAD, POST, PUT, DELETE, OPTIONS, PATCH.</p>
-<p><code>match</code> parameter defines how route will be processed.</p><ul>
-<li><p><code>exact</code> - match route as is. Returns 404 if route is not matched.</p></li>
-<li><p><code>partial</code> - match route as prefix. Returns 404 if prefix are not matched.</p></li>
-<li><p><code>regex</code> - match route as template. Returns 404 if template pattern not matched.</p></li>
-</ul>
-
-<p>User function <code>FUN</code> <strong>must</strong> take two arguments: first is <code>request</code>
-(<a href='Request.html'>Request</a>) and second is <code>response</code> (<a href='Response.html'>Response</a>).</p>
-<p>The goal of the user function is to <strong>modify</strong> <code>response</code> or throw
-exception (call <code><a href='raise.html'>raise()</a></code> or <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code>).</p>
-<p>Both <code>response</code> and <code>request</code> objects modified in-place and internally
-passed further to RestRserve execution pipeline.</p></li>
-<li><p><strong><code>add_get</code></strong><code>(path, FUN, match = c("exact", "partial", "regex"), ..., add_head = TRUE)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>any</code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Shorthand to <code>add_route</code> with <code>GET</code> method. With <code>add_head = TRUE</code> HEAD method
-handlers will be added (with <code>add_head()</code>).</p></li>
-<li><p><strong><code>add_post</code></strong><code>(path, FUN, match = c("exact", "partial", "regex"), ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Shorthand to <code>add_route</code> with <code>POST</code> method.</p></li>
-<li><p><strong><code>add_static</code></strong><code>(path, file_path, content_type = NULL, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Adds GET method to serve file or directory at <code>file_path</code>.</p>
-<p>If <code>content_type = NULL</code> then MIME code <code>content_type</code>  will be inferred
-automatically (from file extension).</p>
-<p>If it will be impossible to guess about file type then <code>content_type</code> will
-be set to <code>"application/octet-stream"</code>.</p></li>
-<li><p><strong><code>append_middleware</code></strong><code>(mw)</code><br />
-<a href='Middleware.html'>Middleware</a> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Appends middleware to handlers pipeline.</p></li>
-<li><p><strong><code>process_request</code></strong><code>(request)</code><br />
-<a href='Request.html'>Request</a> -&gt; <a href='Response.html'>Response</a><br />
-Process incoming request and generate <a href='Response.html'>Response</a> object.
-Useful for tests your handlers before deploy application.</p></li>
-<li><p><strong><code>add_openapi</code></strong><code>(path = "/openapi.yaml", file_path = "openapi.yaml")</code>
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>named list()</code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Adds endpoint to serve <a href='https://www.openapis.org/'>OpenAPI</a> description of
-available methods.</p></li>
-<li><p><strong><code>add_swagger_ui</code></strong><code>(path = "/swagger", path_openapi = "/openapi.yaml", use_cdn = TRUE, path_swagger_assets = "/__swagger__/", file_path = "swagger-ui.html")</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt;
-<code><a href='https://rdrr.io/r/base/invisible.html'>invisible(self)</a></code> - Application <br />
-Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI</a>.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='HTTPError.html'>HTTPError</a> <a href='Middleware.html'>Middleware</a>
 <a href='Request.html'>Request</a> <a href='Response.html'>Response</a></p></div>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>logger</code></dt><dd><p>Logger object which records events during request processing.
+Alternatively user can use loggers from lgr package as a drop-in
+replacement - <code>Logger</code> methods and loggers created by <code>lgr</code> share
+function signatures.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>Default response body content type.</p></dd>
+
+<dt><code>HTTPError</code></dt><dd><p>Class which raises HTTP errors.
+Global <a href='HTTPError.html'>HTTPError</a> is used by default. In theory user can replace it with
+his own class (see <code>RestRserve:::HTTPErrorFactory</code>). However we believe
+in the majority of the cases using <a href='HTTPError.html'>HTTPError</a> will be enough.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl'>
+<dt><code>endpoints</code></dt><dd><p>Prints all the registered routes with allowed methods.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Application$new()</code></a></p></li>
+<li><p><a href='#method-add_route'><code>Application$add_route()</code></a></p></li>
+<li><p><a href='#method-add_get'><code>Application$add_get()</code></a></p></li>
+<li><p><a href='#method-add_post'><code>Application$add_post()</code></a></p></li>
+<li><p><a href='#method-add_static'><code>Application$add_static()</code></a></p></li>
+<li><p><a href='#method-add_openapi'><code>Application$add_openapi()</code></a></p></li>
+<li><p><a href='#method-add_swagger_ui'><code>Application$add_swagger_ui()</code></a></p></li>
+<li><p><a href='#method-append_middleware'><code>Application$append_middleware()</code></a></p></li>
+<li><p><a href='#method-process_request'><code>Application$process_request()</code></a></p></li>
+<li><p><a href='#method-print'><code>Application$print()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Application$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates Application object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>new</span>(
+  <span class='kw'>middleware</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>EncodeDecodeMiddleware</span>$<span class='fu'>new</span>()),
+  <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>,
+  <span class='no'>...</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>middleware</code></dt><dd><p>List of <a href='Middleware.html'>Middleware</a> objects.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>Default response body content (media) type. <code>"text/plain"</code> by default.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used at the moment.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_route"></a></p><h3>Method <code>add_route()</code></h3>
+<p>Adds endpoint and register user-supplied R function as a handler.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_route</span>(
+  <span class='no'>path</span>,
+  <span class='no'>method</span>,
+  <span class='no'>FUN</span>,
+  <span class='kw'>match</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exact"</span>, <span class='st'>"partial"</span>, <span class='st'>"regex"</span>),
+  <span class='no'>...</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Endpoint path.</p></dd>
+
+<dt><code>method</code></dt><dd><p>HTTP method. Allowed methods at the moment:
+<code>GET</code>, <code>HEAD</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>OPTIONS</code>, <code>PATCH</code>.</p></dd>
+
+<dt><code>FUN</code></dt><dd><p>User function to handle requests. <code>FUN</code> <strong>must</strong> take two arguments:
+first is <code>request</code> (<a href='Request.html'>Request</a>) and second is <code>response</code> (<a href='Response.html'>Response</a>).<br />
+The goal of the user function is to <strong>modify</strong> <code>response</code> or throw
+exception (call <code><a href='raise.html'>raise()</a></code> or <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code>).<br />
+Both <code>response</code> and <code>request</code> objects modified in-place and internally
+passed further to RestRserve execution pipeline.</p></dd>
+
+<dt><code>match</code></dt><dd><p>Defines how route will be processed. Allowed values:
+<ul>
+<li><p><code>exact</code> - match route as is. Returns 404 if route is not matched.</p></li>
+<li><p><code>partial</code> - match route as prefix. Returns 404 if prefix are not matched.</p></li>
+<li><p><code>regex</code> - match route as template. Returns 404 if template pattern not matched.</p></li>
+</ul></p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_get"></a></p><h3>Method <code>add_get()</code></h3>
+<p>Shorthand to <code>Application$add_route()</code> with <code>GET</code> method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_get</span>(
+  <span class='no'>path</span>,
+  <span class='no'>FUN</span>,
+  <span class='kw'>match</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exact"</span>, <span class='st'>"partial"</span>, <span class='st'>"regex"</span>),
+  <span class='no'>...</span>,
+  <span class='kw'>add_head</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Endpoint path.</p></dd>
+
+<dt><code>FUN</code></dt><dd><p>User function to handle requests. <code>FUN</code> <strong>must</strong> take two arguments:
+first is <code>request</code> (<a href='Request.html'>Request</a>) and second is <code>response</code> (<a href='Response.html'>Response</a>).<br />
+The goal of the user function is to <strong>modify</strong> <code>response</code> or throw
+exception (call <code><a href='raise.html'>raise()</a></code> or <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code>).<br />
+Both <code>response</code> and <code>request</code> objects modified in-place and internally
+passed further to RestRserve execution pipeline.</p></dd>
+
+<dt><code>match</code></dt><dd><p>Defines how route will be processed. Allowed values:
+<ul>
+<li><p><code>exact</code> - match route as is. Returns 404 if route is not matched.</p></li>
+<li><p><code>partial</code> - match route as prefix. Returns 404 if prefix are not matched.</p></li>
+<li><p><code>regex</code> - match route as template. Returns 404 if template pattern not matched.</p></li>
+</ul></p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+<dt><code>add_head</code></dt><dd><p>Adds HEAD method.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_post"></a></p><h3>Method <code>add_post()</code></h3>
+<p>Shorthand to <code>Application$add_route()</code> with <code>POST</code> method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_post</span>(<span class='no'>path</span>, <span class='no'>FUN</span>, <span class='kw'>match</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exact"</span>, <span class='st'>"partial"</span>, <span class='st'>"regex"</span>), <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Endpoint path.</p></dd>
+
+<dt><code>FUN</code></dt><dd><p>User function to handle requests. <code>FUN</code> <strong>must</strong> take two arguments:
+first is <code>request</code> (<a href='Request.html'>Request</a>) and second is <code>response</code> (<a href='Response.html'>Response</a>).<br />
+The goal of the user function is to <strong>modify</strong> <code>response</code> or throw
+exception (call <code><a href='raise.html'>raise()</a></code> or <code><a href='https://rdrr.io/r/base/stop.html'>stop()</a></code>).<br />
+Both <code>response</code> and <code>request</code> objects modified in-place and internally
+passed further to RestRserve execution pipeline.</p></dd>
+
+<dt><code>match</code></dt><dd><p>Defines how route will be processed. Allowed values:
+<ul>
+<li><p><code>exact</code> - match route as is. Returns 404 if route is not matched.</p></li>
+<li><p><code>partial</code> - match route as prefix. Returns 404 if prefix are not matched.</p></li>
+<li><p><code>regex</code> - match route as template. Returns 404 if template pattern not matched.</p></li>
+</ul></p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_static"></a></p><h3>Method <code>add_static()</code></h3>
+<p>Adds <code>GET</code> method to serve file or directory at <code>file_path</code>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_static</span>(<span class='no'>path</span>, <span class='no'>file_path</span>, <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Endpoint path.</p></dd>
+
+<dt><code>file_path</code></dt><dd><p>Path file or directory.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>MIME-type for the content.<br />
+If <code>content_type = NULL</code> then MIME code <code>content_type</code>  will be inferred
+automatically (from file extension).<br />
+If it will be impossible to guess about file type then <code>content_type</code> will
+be set to <code>application/octet-stream</code>.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_openapi"></a></p><h3>Method <code>add_openapi()</code></h3>
+<p>Adds endpoint to serve <a href='https://www.openapis.org/'>OpenAPI</a> description of
+available methods.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_openapi</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/openapi.yaml"</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='st'>"openapi.yaml"</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>path Endpoint path.</p></dd>
+
+<dt><code>file_path</code></dt><dd><p>Path to the OpenAPI specification file.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-add_swagger_ui"></a></p><h3>Method <code>add_swagger_ui()</code></h3>
+<p>Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI</a>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>add_swagger_ui</span>(
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/swagger"</span>,
+  <span class='kw'>path_openapi</span> <span class='kw'>=</span> <span class='st'>"/openapi.yaml"</span>,
+  <span class='kw'>use_cdn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>path_swagger_assets</span> <span class='kw'>=</span> <span class='st'>"/__swagger__/"</span>,
+  <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='st'>"swagger-ui.html"</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>path Endpoint path.</p></dd>
+
+<dt><code>path_openapi</code></dt><dd><p>Path to the OpenAPI specification file.</p></dd>
+
+<dt><code>use_cdn</code></dt><dd><p>Use CDN to load Swagger UI libraries.</p></dd>
+
+<dt><code>path_swagger_assets</code></dt><dd><p>Swagger UI asstes endpoint.</p></dd>
+
+<dt><code>file_path</code></dt><dd><p>Path to Swagger UI HTML file.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-append_middleware"></a></p><h3>Method <code>append_middleware()</code></h3>
+<p>Appends middleware to handlers pipeline.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>append_middleware</span>(<span class='no'>mw</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>mw</code></dt><dd><p><a href='Middleware.html'>Middleware</a> object.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-process_request"></a></p><h3>Method <code>process_request()</code></h3>
+<p>Process incoming request and generate <a href='Response.html'>Response</a> object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>process_request</span>(<span class='kw'>request</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>request</code></dt><dd><p><a href='Request.html'>Request</a> object.<br />
+Useful for tests your handlers before deploy application.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
+<p>Prints application details.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Application</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># init logger</span>
@@ -323,17 +485,10 @@ Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI<
 <span class='no'>backend</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='fl'>8080</span>)
 <span class='co'># }</span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -344,7 +499,7 @@ Adds endpoint to show <a href='https://swagger.io/tools/swagger-ui/'>Swagger UI<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

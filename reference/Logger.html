@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="Creates Logger object which can be used for logging with different level of
 verbosity. Log messages are in JSON format." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ verbosity. Log messages are in JSON format." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +81,7 @@ verbosity. Log messages are in JSON format." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -126,7 +129,7 @@ verbosity. Log messages are in JSON format." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -156,64 +159,166 @@ verbosity. Log messages are in JSON format.</p>
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
-
-    
-<pre>Logger$new(level = "info", name = "ROOT", printer = NULL)
-</pre>
-<ul>
-<li><p><code>level</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Log level. Allowed values: info, fatal, error, warn, debug, trace, off, all.</p></li>
-<li><p><code>name</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Logger name.</p></li>
-<li><p><code>printer</code> :: <code>function</code><br />
-Logger with sink defined by <code>printer</code> function.
-It should have signature <code>function(timestamp, level, logger_name, pid, message)</code>.
-By default when <code>printer = NULL</code> logger writes message in JSON format to <code>stdout</code>.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<ul>
-<li><p><code>set_name(name = "ROOT")</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>self</code><br />
-Sets logger name.</p></li>
-<li><p><code>set_log_level(level = "info")</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>self</code><br />
-Sets log level.</p></li>
-<li><p><code>set_printer(FUN = NULL)</code><br />
-<code>function</code> -&gt; <code>self</code><br />
-Sets function which defines how to print logs.
-<code>FUN</code> should be a function with 6 formal arguments: timestamp, level,
-logger_name, pid, message.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/trace.html'>trace(msg, ...)</a></code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write trace message.</p></li>
-<li><p><code><a href='https://rdrr.io/r/base/debug.html'>debug(msg, ...)</a></code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write debug message.</p></li>
-<li><p><code>info(msg, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write info message.</p></li>
-<li><p><code>warn(msg, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write warning message.</p></li>
-<li><p><code>error(msg, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write error message.</p></li>
-<li><p><code>fatal(msg, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>any</code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Write fatal error message.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='https://rdrr.io/pkg/lgr/man/Logger.html'>lgr::Logger</a></p></div>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Logger$new()</code></a></p></li>
+<li><p><a href='#method-set_name'><code>Logger$set_name()</code></a></p></li>
+<li><p><a href='#method-set_log_level'><code>Logger$set_log_level()</code></a></p></li>
+<li><p><a href='#method-set_printer'><code>Logger$set_printer()</code></a></p></li>
+<li><p><a href='#method-trace'><code>Logger$trace()</code></a></p></li>
+<li><p><a href='#method-debug'><code>Logger$debug()</code></a></p></li>
+<li><p><a href='#method-info'><code>Logger$info()</code></a></p></li>
+<li><p><a href='#method-warn'><code>Logger$warn()</code></a></p></li>
+<li><p><a href='#method-error'><code>Logger$error()</code></a></p></li>
+<li><p><a href='#method-fatal'><code>Logger$fatal()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Logger$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates Logger object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>new</span>(
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"info"</span>, <span class='st'>"fatal"</span>, <span class='st'>"error"</span>, <span class='st'>"warn"</span>, <span class='st'>"debug"</span>, <span class='st'>"trace"</span>, <span class='st'>"off"</span>, <span class='st'>"all"</span>),
+  <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"ROOT"</span>,
+  <span class='kw'>printer</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>level</code></dt><dd><p>Log level. Allowed values: info, fatal, error, warn, debug,
+trace, off, all.</p></dd>
+
+<dt><code>name</code></dt><dd><p>Logger name.</p></dd>
+
+<dt><code>printer</code></dt><dd><p>Logger with sink defined by <code>printer</code> function.
+It should have signature <code>function(timestamp, level, logger_name, pid, message)</code>.
+By default when <code>printer = NULL</code> logger writes message in JSON format to <code>stdout</code>.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_name"></a></p><h3>Method <code>set_name()</code></h3>
+<p>Sets logger name.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_name</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"ROOT"</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Logger name.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_log_level"></a></p><h3>Method <code>set_log_level()</code></h3>
+<p>Sets log level.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_log_level</span>(
+  <span class='kw'>level</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"info"</span>, <span class='st'>"fatal"</span>, <span class='st'>"error"</span>, <span class='st'>"warn"</span>, <span class='st'>"debug"</span>, <span class='st'>"trace"</span>, <span class='st'>"off"</span>, <span class='st'>"all"</span>)
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>level</code></dt><dd><p>Log level. Allowed values: info, fatal, error, warn, debug,
+trace, off, all.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_printer"></a></p><h3>Method <code>set_printer()</code></h3>
+<p>Sets function which defines how to print logs.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>set_printer</span>(<span class='kw'>FUN</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>FUN</code></dt><dd><p>Printer function. Should be a function with 6 formal arguments:
+timestamp, level, logger_name, pid, message.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-trace"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/trace.html'>trace()</a></code></h3>
+<p>Write trace message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='https://rdrr.io/r/base/trace.html'>trace</a></span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-debug"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/debug.html'>debug()</a></code></h3>
+<p>Write debug message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'><a href='https://rdrr.io/r/base/debug.html'>debug</a></span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-info"></a></p><h3>Method <code>info()</code></h3>
+<p>Write information message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>info</span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-warn"></a></p><h3>Method <code>warn()</code></h3>
+<p>Write warning message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>warn</span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-error"></a></p><h3>Method <code>error()</code></h3>
+<p>Write error message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>error</span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-fatal"></a></p><h3>Method <code>fatal()</code></h3>
+<p>Write fatal error message.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>fatal</span>(<span class='no'>msg</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>msg</code></dt><dd><p>Log message.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additionals params.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Logger</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># init logger</span>
@@ -223,16 +328,10 @@ Write fatal error message.</p></li>
 <span class='co'># write extended log entry</span>
 <span class='no'>logger</span>$<span class='fu'>info</span>(<span class='st'>""</span>, <span class='kw'>context</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>message</span> <span class='kw'>=</span> <span class='st'>"hello world"</span>, <span class='kw'>code</span> <span class='kw'>=</span> <span class='fl'>0L</span>))</pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -243,7 +342,7 @@ Write fatal error message.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates response object — Response • RestRserve</title>
+<title>Creates Response object — Response • RestRserve</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Creates response object — Response" />
+<meta property="og:title" content="Creates Response object — Response" />
 <meta property="og:description" content="Creates response object." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +66,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -125,7 +128,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -143,7 +146,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates response object</h1>
+    <h1>Creates Response object</h1>
     <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/Response.R'><code>R/Response.R</code></a></small>
     <div class="hidden name"><code>Response.Rd</code></div>
     </div>
@@ -154,97 +157,285 @@
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
-
-    
-<pre>Response$new(body = "",
-             content_type = 'text/plain',
-             headers = structure(list(), names = character(0)),
-             status_code = 200L,
-             encode = NULL)
-</pre>
-
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<ul>
-<li><p><strong><code>content_type</code></strong> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Response body content (media) type. Will be translated to <code>Content-type</code> header.</p></li>
-<li><p><strong><code>body</code></strong> :: <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> | <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Response body.
-If it is a named character with a name <code>file</code> or <code>tmpfile</code>
-then the value is considered as a path to a file and content oh this file
-is served as body. The latter will be deleted once served.</p></li>
-<li><p><strong><code>status_code</code></strong> :: <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code><br />
-Response status code.</p></li>
-<li><p><strong><code>headers</code></strong> :: <code>named list()</code><br />
-Response headers.</p></li>
-<li><p><strong><code>cookies</code></strong> :: <code>named list()</code><br />
-Response cookies. Will be translated to <code>Set-Cookie</code> headers.</p></li>
-<li><p><strong><code>context</code></strong> :: <code><a href='https://rdrr.io/r/base/environment.html'>environment()</a></code><br />
-Environment to store any data. Can be used in middlewares.</p></li>
-<li><p><strong><code>encode</code></strong> :: <code>function</code><br />
-unction to encode body for specific content</p></li>
-<li><p><strong><code>status</code></strong> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Paste together status code and description.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<ul>
-<li><p><strong><code>set_content_type</code></strong><code>(content_type = 'text/plain')</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>self</code><br />
-Set content type for response body.</p></li>
-<li><p><strong><code>set_status_code</code></strong><code>(code)</code><br />
-<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code> -&gt; <code>self</code><br />
-Set status code for response. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'>docs on MDN</a>.</p></li>
-<li><p><strong><code>has_header</code></strong><code>(name)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Determine whether or not the response header exists.</p></li>
-<li><p><strong><code>get_header</code></strong><code>(name, default = NULL)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
-Get HTTP response header value. If requested header is empty returns <code>default</code>.</p></li>
-<li><p><strong><code>set_header</code></strong><code>(name, value)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> -&gt; <code>self</code><br />
-Set HTTP response header. <code>Content-type</code> and <code>Content-length</code> headers not
-allowed (use <code>content_type</code> field instead).</p></li>
-<li><p><strong><code>append_header</code></strong><code>(name, value)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code> -&gt; <code>self</code><br />
-Append HTTP response header. If header exists <code>,</code> separator will be used.
-Don't use this method to set cookie (use <code>set_cookie</code> method instead).</p></li>
-<li><p><strong><code>delete_header</code></strong><code>(name)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Unset HTTP response header.</p></li>
-<li><p><strong><code>set_cookie</code></strong><code>(name, value, expires = NULL, max_age = NULL, domain = NULL, path = NULL, secure = NULL, http_only = NULL)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/DateTimeClasses.html'>POSIXct(1)</a></code>, <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>,
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> -&gt; <code>self</code><br />
-Set cookie. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie'>docs on MDN</a>.</p></li>
-<li><p><strong><code>unset_cookie</code></strong><code>(name)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Unset cookie with given name.</p></li>
-<li><p><strong><code>set_date</code></strong><code>(dtm = Sys.time())</code><br />
-<code><a href='https://rdrr.io/r/base/DateTimeClasses.html'>POSIXct(1)</a></code> -&gt; <code>self</code><br />
-Set <code>Date</code> HTTP header. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date'>docs on MDN</a>.</p></li>
-<li><p><strong><code>unset_date</code></strong><code>()</code><br />
--&gt; <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code><br />
-Unset <code>Date</code> HTTP header.</p></li>
-<li><p><strong><code>set_body</code></strong><code>(body)</code><br />
-<code>any</code> -&gt; <code>self</code><br />
-Set response body.</p></li>
-<li><p><strong><code>set_response</code></strong><code>(status_code, body = NULL, content_type = self$content_type)</code><br />
-<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>, <code>any</code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>self</code><br />
-Set response fields.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='Request.html'>Request</a> <a href='Application.html'>Application</a></p></div>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>body</code></dt><dd><p>Response body.<br />
+If it is a named character with a name <code>file</code> or <code>tmpfile</code>
+then the value is considered as a path to a file and content oh this file
+is served as body. The latter will be deleted once served.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>Response body content (media) type. Will be translated
+to <code>Content-type</code> header.</p></dd>
+
+<dt><code>headers</code></dt><dd><p>Response headers.</p></dd>
+
+<dt><code>status_code</code></dt><dd><p>Response HTTP status code.</p></dd>
+
+<dt><code>cookies</code></dt><dd><p>Response cookies. Will be translated to <code>Set-Cookie</code> headers.</p></dd>
+
+<dt><code>context</code></dt><dd><p>Environment to store any data. Can be used in middlewares.</p></dd>
+
+<dt><code>encode</code></dt><dd><p>Function to encode body for specific content.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl'>
+<dt><code>status</code></dt><dd><p>Paste together status code and description.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Response$new()</code></a></p></li>
+<li><p><a href='#method-reset'><code>Response$reset()</code></a></p></li>
+<li><p><a href='#method-set_content_type'><code>Response$set_content_type()</code></a></p></li>
+<li><p><a href='#method-set_status_code'><code>Response$set_status_code()</code></a></p></li>
+<li><p><a href='#method-has_header'><code>Response$has_header()</code></a></p></li>
+<li><p><a href='#method-get_header'><code>Response$get_header()</code></a></p></li>
+<li><p><a href='#method-set_header'><code>Response$set_header()</code></a></p></li>
+<li><p><a href='#method-delete_header'><code>Response$delete_header()</code></a></p></li>
+<li><p><a href='#method-append_header'><code>Response$append_header()</code></a></p></li>
+<li><p><a href='#method-set_date'><code>Response$set_date()</code></a></p></li>
+<li><p><a href='#method-unset_date'><code>Response$unset_date()</code></a></p></li>
+<li><p><a href='#method-set_cookie'><code>Response$set_cookie()</code></a></p></li>
+<li><p><a href='#method-unset_cookie'><code>Response$unset_cookie()</code></a></p></li>
+<li><p><a href='#method-set_body'><code>Response$set_body()</code></a></p></li>
+<li><p><a href='#method-set_response'><code>Response$set_response()</code></a></p></li>
+<li><p><a href='#method-print'><code>Response$print()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Response$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates Response object</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>new</span>(
+  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>,
+  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Server</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"RestRserve.headers.server"</span>)),
+  <span class='kw'>status_code</span> <span class='kw'>=</span> <span class='fl'>200L</span>,
+  <span class='kw'>encode</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>body</code></dt><dd><p>Response body.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>Response body content (media) type.</p></dd>
+
+<dt><code>headers</code></dt><dd><p>Response headers.</p></dd>
+
+<dt><code>status_code</code></dt><dd><p>Response status code.</p></dd>
+
+<dt><code>encode</code></dt><dd><p>Function to encode body for specific content.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Not used at this moment.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-reset"></a></p><h3>Method <code>reset()</code></h3>
+<p>Resets response object. This is not useful for end user, but useful for
+RestRserve internals - resetting R6 class is much faster then initialize it.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>reset</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_content_type"></a></p><h3>Method <code>set_content_type()</code></h3>
+<p>Set content type for response body.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_content_type</span>(<span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>Response body content (media) type.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_status_code"></a></p><h3>Method <code>set_status_code()</code></h3>
+<p>Set HTTP status code for response. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'>docs on MDN</a>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_status_code</span>(<span class='no'>code</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>code</code></dt><dd><p>Status code as integer number.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-has_header"></a></p><h3>Method <code>has_header()</code></h3>
+<p>Determine whether or not the response header exists.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>has_header</span>(<span class='no'>name</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Header field name.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Logical value.</p>
+<p><hr>
+<a id="method-get_header"></a></p><h3>Method <code>get_header()</code></h3>
+<p>Get HTTP response header value. If requested header is empty returns <code>default</code>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>get_header</span>(<span class='no'>name</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Header field name.</p></dd>
+
+<dt><code>default</code></dt><dd><p>Default value if header does not exists.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Header field values (character string).</p>
+<p><hr>
+<a id="method-set_header"></a></p><h3>Method <code>set_header()</code></h3>
+<p>Set HTTP response header. <code>Content-type</code> and <code>Content-length</code> headers not
+allowed (use <code>content_type</code> field instead).</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_header</span>(<span class='no'>name</span>, <span class='no'>value</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Header field name.</p></dd>
+
+<dt><code>value</code></dt><dd><p>Header field value.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-delete_header"></a></p><h3>Method <code>delete_header()</code></h3>
+<p>Unset HTTP response header.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>delete_header</span>(<span class='no'>name</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Header field name.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Logical value.</p>
+<p><hr>
+<a id="method-append_header"></a></p><h3>Method <code>append_header()</code></h3>
+<p>Append HTTP response header. If header exists <code>,</code> separator will be used.
+Don't use this method to set cookie (use <code>set_cookie</code> method instead).</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>append_header</span>(<span class='no'>name</span>, <span class='no'>value</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Header field name.</p></dd>
+
+<dt><code>value</code></dt><dd><p>Header field value.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_date"></a></p><h3>Method <code>set_date()</code></h3>
+<p>Set <code>Date</code> HTTP header. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date'>docs on MDN</a>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_date</span>(<span class='kw'>dtm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>dtm</code></dt><dd><p>POSIXct value.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-unset_date"></a></p><h3>Method <code>unset_date()</code></h3>
+<p>Unset <code>Date</code> HTTP header.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>unset_date</span>()</pre><p></div></p>
+
+<h3>Returns</h3>
+<p>Logical value.</p>
+<p><hr>
+<a id="method-set_cookie"></a></p><h3>Method <code>set_cookie()</code></h3>
+<p>Set cookie. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie'>docs on MDN</a>.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_cookie</span>(
+  <span class='no'>name</span>,
+  <span class='no'>value</span>,
+  <span class='kw'>expires</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>max_age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>domain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>secure</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>http_only</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Cookie name.</p></dd>
+
+<dt><code>value</code></dt><dd><p>Cookie value.</p></dd>
+
+<dt><code>expires</code></dt><dd><p>Cookie expires date and time (POSIXct).</p></dd>
+
+<dt><code>max_age</code></dt><dd><p>Max cookie age (integer).</p></dd>
+
+<dt><code>domain</code></dt><dd><p>Cookie domain.</p></dd>
+
+<dt><code>path</code></dt><dd><p>Cookie path.</p></dd>
+
+<dt><code>secure</code></dt><dd><p>Cookie secure flag.</p></dd>
+
+<dt><code>http_only</code></dt><dd><p>Cookie HTTP only flag.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-unset_cookie"></a></p><h3>Method <code>unset_cookie()</code></h3>
+<p>Unset cookie with given name.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>unset_cookie</span>(<span class='no'>name</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>name</code></dt><dd><p>Cookie name.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Logical value.</p>
+<p><hr>
+<a id="method-set_body"></a></p><h3>Method <code>set_body()</code></h3>
+<p>Set response body.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_body</span>(<span class='no'>body</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>body</code></dt><dd><p>Response body.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_response"></a></p><h3>Method <code>set_response()</code></h3>
+<p>Set response fields.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_response</span>(
+  <span class='no'>status_code</span>,
+  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>content_type</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>status_code</code></dt><dd><p>Response HTTP status code.</p></dd>
+
+<dt><code>body</code></dt><dd><p>Response body.</p></dd>
+
+<dt><code>content_type</code></dt><dd><p>content_type Response body content (media) type.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
+<p>Print method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># init response</span>
@@ -275,17 +466,10 @@ Set response fields.</p></li>
 <span class='co'># print response</span>
 <span class='no'>rs</span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -296,7 +480,7 @@ Set response fields.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

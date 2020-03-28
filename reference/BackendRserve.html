@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -43,10 +47,8 @@
 
 
 <meta property="og:title" content="Creates Rserve backend for processing HTTP requests — BackendRserve" />
-<meta property="og:description" content="Creates BackendRserve object which can start Application
-using Rserve backend." />
+<meta property="og:description" content="Creates BackendRserve object which can start Application using Rserve backend." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +66,7 @@ using Rserve backend." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +80,7 @@ using Rserve backend." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -126,7 +128,7 @@ using Rserve backend." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -150,58 +152,104 @@ using Rserve backend." />
     </div>
 
     <div class="ref-description">
-    <p>Creates BackendRserve object which can start <a href='Application.html'>Application</a>
-using Rserve backend.</p>
+    <p>Creates BackendRserve object which can start <a href='Application.html'>Application</a> using Rserve backend.</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
+    <p><a href='https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372'>See http.c in Rserve</a></p>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
-    
-
-<p>Constructor for <code>BackendRserve</code>.</p><pre>BackendRserve$new(...)
-</pre>
-<ul>
-<li><p><strong><code>...</code></strong> <br />
-Not used at the moment</p></li>
-</ul>
-
+    <p><code><a href='Backend.html'>RestRserve::Backend</a></code> -&gt; <code>BackendRserve</code></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
+<h3>Public methods</h3>
 
 <ul>
-<li><p><strong><code>start</code></strong><code>(app, http_port = 8080, ..., background = FALSE)</code> <br />
-<a href='Application.html'>Application</a>, <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>, <code>any</code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> -&gt; <code>NULL</code> <br />
-Starts RestRserve application from current R session.</p><ul>
-<li><p><code>http_port</code> - http port for application. Negative values (such as -1)
-means not to expose plain http.</p></li>
-<li><p><code>...</code> - key-value pairs of the Rserve configuration. If contains
-<code>"http.port"</code> then <code>http_port</code> will be silently replaced with its value.</p></li>
-<li><p><code>background</code> - whether to try to launch in background process on UNIX
-systems. Ignored on windows.</p></li>
-</ul></li>
-<li><p><strong><code>set_request</code></strong><code>(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL)</code> :: <code>function</code><br /></p><ul>
-<li><p><code>request</code> :: <a href='Request.html'>Request</a><br /></p></li>
-<li><p><code>path</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Character with requested path. Always starts with <code>/</code>.</p></li>
-<li><p><code>parameters_query</code> :: <code>named character()</code><br />
-A named character vector with URL decoded query parameters.</p></li>
-<li><p><code>headers</code> :: <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> | <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Request HTTP headers.</p></li>
-<li><p><code>body</code> :: <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> | <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
-Request body. Can be <code>NULL</code>, raw vector or named character vector for the
-URL encoded form (like a <code>parameters_query</code> parameter).</p></li>
-</ul></li>
-<li><p><strong><code>convert_response</code></strong><code>(response)</code><br />
-<a href='Response.html'>Response</a> -&gt; <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code><br />
-Convert <code>self</code> object to Rserve compatible structure.
-<a href='https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372'>According to http.c in Rserve</a> # nolint
-returned list should have the following structure:</p><ul>
+<li><p><a href='#method-new'><code>BackendRserve$new()</code></a></p></li>
+<li><p><a href='#method-start'><code>BackendRserve$start()</code></a></p></li>
+<li><p><a href='#method-set_request'><code>BackendRserve$set_request()</code></a></p></li>
+<li><p><a href='#method-convert_response'><code>BackendRserve$convert_response()</code></a></p></li>
+<li><p><a href='#method-clone'><code>BackendRserve$clone()</code></a></p></li>
+</ul>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+</ul>
+</details>
+
+<hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates BackendRserve object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>new</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Not used at the moment.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-start"></a></p><h3>Method <code><a href='https://rdrr.io/r/stats/start.html'>start()</a></code></h3>
+<p>Starts RestRserve application from current R session.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='kw'>http_port</span> <span class='kw'>=</span> <span class='fl'>8080</span>, <span class='no'>...</span>, <span class='kw'>background</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>app</code></dt><dd><p><a href='Application.html'>Application</a> object.</p></dd>
+
+<dt><code>http_port</code></dt><dd><p>HTTP port for application. Negative values (such as -1)
+means not to expose plain http.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Key-value pairs of the Rserve configuration. If contains
+<code>"http.port"</code> then <code>http_port</code> will be silently replaced with its value.</p></dd>
+
+<dt><code>background</code></dt><dd><p>Whether to try to launch in background process on UNIX.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='ApplicationProcess.html'>ApplicationProcess</a> object when <code>background = TRUE</code>.</p>
+<p><hr>
+<a id="method-set_request"></a></p><h3>Method <code>set_request()</code></h3>
+<p>Parse request and set to it fields.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>set_request</span>(
+  <span class='no'>request</span>,
+  <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/"</span>,
+  <span class='kw'>parameters_query</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>request</code></dt><dd><p><a href='Request.html'>Request</a> object.</p></dd>
+
+<dt><code>path</code></dt><dd><p>Character with requested path. Always starts with <code>/</code>.</p></dd>
+
+<dt><code>parameters_query</code></dt><dd><p>A named character vector with URL decoded query
+parameters.</p></dd>
+
+<dt><code>headers</code></dt><dd><p>Request HTTP headers.</p></dd>
+
+<dt><code>body</code></dt><dd><p>Request body. Can be <code>NULL</code>, raw vector or named character
+vector for the URL encoded form (like a <code>parameters_query</code> parameter).</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><code>request</code> modified object.</p>
+<p><hr>
+<a id="method-convert_response"></a></p><h3>Method <code>convert_response()</code></h3>
+<p>Convert <code>self</code> object to Rserve compatible structure.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>convert_response</span>(<span class='no'>response</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>response</code></dt><dd><p><a href='Response.html'>Response</a> object.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>List with the following structure:</p><ul>
 <li><p><code>body</code>: can be a character vector of length one or a raw vector.
 if the character vector is named "file" then the content of a file of
 that name is the body.
@@ -212,19 +260,26 @@ temporary file of that name is the body.</p></li>
 <li><p><code>headers</code>: must be a character vector - the elements will have CRLF
 appended and neither <code>Content-type</code> nor <code>Content-length</code> may be used.</p></li>
 <li><p><code>status-code</code>: must be an integer if present (default is 200).</p></li>
-</ul></li>
 </ul>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#methods">Methods</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -235,7 +290,7 @@ appended and neither <code>Content-type</code> nor <code>Content-length</code> m
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Helps to generate http error responses — HTTPError • RestRserve</title>
+<title>Helps to generate HTTP error responses — HTTPError • RestRserve</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,14 +46,14 @@
 
 
 
-<meta property="og:title" content="Helps to generate http error responses — HTTPError" />
+<meta property="og:title" content="Helps to generate HTTP error responses — HTTPError" />
 <meta property="og:description" content="Global Object which holds functions to raise common http error responses.
 Most of the time this class is used jointly with raise. 
 For example calling
 raise(HTTPError$bad_request(body = &quot;request is invalid&quot;)) from any place in the user code will
-interrupt request processing and return response with status code = 404 and body = &quot;request is invalid&quot;." />
+interrupt request processing and return response with status code = 404 and body = &quot;request is invalid&quot;.
+Class to generate HTTP error responses." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -67,7 +71,7 @@ interrupt request processing and return response with status code = 404 and body
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -81,7 +85,7 @@ interrupt request processing and return response with status code = 404 and body
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -129,7 +133,7 @@ interrupt request processing and return response with status code = 404 and body
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -147,7 +151,7 @@ interrupt request processing and return response with status code = 404 and body
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Helps to generate http error responses</h1>
+    <h1>Helps to generate HTTP error responses</h1>
     <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/HTTPError.R'><code>R/HTTPError.R</code></a></small>
     <div class="hidden name"><code>HTTPError.Rd</code></div>
     </div>
@@ -158,143 +162,509 @@ Most of the time this class is used jointly with <a href='raise.html'>raise</a>.
 For example calling
 <code><a href='raise.html'>raise(HTTPError$bad_request(body = "request is invalid"))</a></code> from any place in the user code will
 interrupt request processing and return response with status code = 404 and body = "request is invalid".</p>
+<p>Class to generate HTTP error responses.</p>
     </div>
 
+    <pre class="usage"><span class='no'>HTTPError</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
+    <p>An object of class <code>HTTPError</code> (inherits from <code>R6</code>) of length 39.</p>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
-
 <ul>
-<li><p><strong><code>content_type</code></strong> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Type of the error response.</p></li>
-<li><p><strong><code>encode</code></strong> :: <code>function</code><br />
-Function to encode response body.</p></li>
+<li><p><code>HTTPErrorFactory</code>:</p></li>
 </ul>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<ul>
-<li><p><strong><code>set_content_type</code></strong><code>(content_type)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>self</code><br />
-Set content type of response.<br />
-<strong>NOTE</strong> that modifying HTTPError (for example with <code>HTTPError$set_content_type("application/json")</code>)
-will have global impact on RestRserve functionality.
-By default <code>HTTPError</code> is used by <a href='Application.html'>Application</a> in order to produce http errors (404, 500, etc).
-Hence changing <code>HTTPError</code> with <code>$set_content_type()</code> will impact not only user code,
-but also the errors format produced by RestRserve. Same holds for <code>$set_encode()</code> method below.</p></li>
-<li><p><strong><code>set_encode</code></strong><code>(encode)</code><br />
-<code>function</code> -&gt; <code>self</code><br />
-Set encode for the given content type.</p></li>
-<li><p><strong><code>error</code></strong><code>(status_code, body, ...)</code><br />
-<code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code>, <code><a href='https://rdrr.io/r/base/raw.html'>raw()</a></code> | <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code>, <code>...</code> -&gt; <a href='Response.html'>Response</a><br />
-<code>...</code> - additional named arguments which will be passed to <code>Response$new(...)</code>.
-<code>headers</code> may be particularly useful.<br />
-Generate HTTP error response with a given status code and body</p></li>
-<li><p><strong><code>reset</code></strong><code>()</code><br />
--&gt; <code>self</code> <br />
-Resets <code>HTTPError</code> to the default RestRserve state.</p></li>
-<li><p><strong><code>bad_request</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>unauthorized</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>forbidden</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>not_found</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>method_not_allowed</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>not_acceptable</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>conflict</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>gone</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>length_required</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>precondition_failed</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>payload_too_large</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>uri_too_long</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>unsupported_media_type</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>range_not_satisfiable</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>unprocessable_entity</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>locked</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>failed_dependency</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>precondition_required</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>too_many_requests</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>request_header_fields_too_large</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>unavailable_for_legal_reasons</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>internal_server_error</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>not_implemented</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>bad_gateway</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>service_unavailable</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>gateway_timeout</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>version_not_supported</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>insufficient_storage</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>loop_detected</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.</p></li>
-<li><p><strong><code>network_authentication_required</code></strong><code>(...)</code><br />
-<code>...</code> -&gt; <code>[Response]</code><br />
-Generates corresponding http error.<br /></p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='raise.html'>raise</a> <a href='Application.html'>Application</a></p></div>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
+
+<dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>HTTPErrorFactory$new()</code></a></p></li>
+<li><p><a href='#method-set_content_type'><code>HTTPErrorFactory$set_content_type()</code></a></p></li>
+<li><p><a href='#method-set_encode'><code>HTTPErrorFactory$set_encode()</code></a></p></li>
+<li><p><a href='#method-reset'><code>HTTPErrorFactory$reset()</code></a></p></li>
+<li><p><a href='#method-error'><code>HTTPErrorFactory$error()</code></a></p></li>
+<li><p><a href='#method-bad_request'><code>HTTPErrorFactory$bad_request()</code></a></p></li>
+<li><p><a href='#method-unauthorized'><code>HTTPErrorFactory$unauthorized()</code></a></p></li>
+<li><p><a href='#method-forbidden'><code>HTTPErrorFactory$forbidden()</code></a></p></li>
+<li><p><a href='#method-not_found'><code>HTTPErrorFactory$not_found()</code></a></p></li>
+<li><p><a href='#method-method_not_allowed'><code>HTTPErrorFactory$method_not_allowed()</code></a></p></li>
+<li><p><a href='#method-not_acceptable'><code>HTTPErrorFactory$not_acceptable()</code></a></p></li>
+<li><p><a href='#method-conflict'><code>HTTPErrorFactory$conflict()</code></a></p></li>
+<li><p><a href='#method-gone'><code>HTTPErrorFactory$gone()</code></a></p></li>
+<li><p><a href='#method-length_required'><code>HTTPErrorFactory$length_required()</code></a></p></li>
+<li><p><a href='#method-precondition_failed'><code>HTTPErrorFactory$precondition_failed()</code></a></p></li>
+<li><p><a href='#method-payload_too_large'><code>HTTPErrorFactory$payload_too_large()</code></a></p></li>
+<li><p><a href='#method-uri_too_long'><code>HTTPErrorFactory$uri_too_long()</code></a></p></li>
+<li><p><a href='#method-unsupported_media_type'><code>HTTPErrorFactory$unsupported_media_type()</code></a></p></li>
+<li><p><a href='#method-range_not_satisfiable'><code>HTTPErrorFactory$range_not_satisfiable()</code></a></p></li>
+<li><p><a href='#method-unprocessable_entity'><code>HTTPErrorFactory$unprocessable_entity()</code></a></p></li>
+<li><p><a href='#method-locked'><code>HTTPErrorFactory$locked()</code></a></p></li>
+<li><p><a href='#method-failed_dependency'><code>HTTPErrorFactory$failed_dependency()</code></a></p></li>
+<li><p><a href='#method-precondition_required'><code>HTTPErrorFactory$precondition_required()</code></a></p></li>
+<li><p><a href='#method-too_many_requests'><code>HTTPErrorFactory$too_many_requests()</code></a></p></li>
+<li><p><a href='#method-request_header_fields_too_large'><code>HTTPErrorFactory$request_header_fields_too_large()</code></a></p></li>
+<li><p><a href='#method-unavailable_for_legal_reasons'><code>HTTPErrorFactory$unavailable_for_legal_reasons()</code></a></p></li>
+<li><p><a href='#method-internal_server_error'><code>HTTPErrorFactory$internal_server_error()</code></a></p></li>
+<li><p><a href='#method-not_implemented'><code>HTTPErrorFactory$not_implemented()</code></a></p></li>
+<li><p><a href='#method-bad_gateway'><code>HTTPErrorFactory$bad_gateway()</code></a></p></li>
+<li><p><a href='#method-service_unavailable'><code>HTTPErrorFactory$service_unavailable()</code></a></p></li>
+<li><p><a href='#method-gateway_timeout'><code>HTTPErrorFactory$gateway_timeout()</code></a></p></li>
+<li><p><a href='#method-version_not_supported'><code>HTTPErrorFactory$version_not_supported()</code></a></p></li>
+<li><p><a href='#method-insufficient_storage'><code>HTTPErrorFactory$insufficient_storage()</code></a></p></li>
+<li><p><a href='#method-loop_detected'><code>HTTPErrorFactory$loop_detected()</code></a></p></li>
+<li><p><a href='#method-network_authentication_required'><code>HTTPErrorFactory$network_authentication_required()</code></a></p></li>
+<li><p><a href='#method-clone'><code>HTTPErrorFactory$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates HTTPError object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>new</span>(<span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>, <span class='kw'>encode</span> <span class='kw'>=</span> <span class='no'>as.character</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
+
+<dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_content_type"></a></p><h3>Method <code>set_content_type()</code></h3>
+<p>Set content type of response.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>set_content_type</span>(<span class='no'>content_type</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
+
+</dl><p></div></p>
+<h3>Details</h3>
+<p>Modifying HTTPError will have global impact on RestRserve functionality.</p>
+<p>By default <code>HTTPError</code> is used by <a href='Application.html'>Application</a> in order to produce http
+errors (404, 500, etc). Hence changing <code>HTTPError</code> with
+<code>HTTPErrorFactory$set_content_type()</code> will impact not only user code, but
+also the errors format produced by RestRserve. Same holds for
+<code>HTTPErrorFactory$set_encode()</code> method below.</p>
+
+<p><hr>
+<a id="method-set_encode"></a></p><h3>Method <code>set_encode()</code></h3>
+<p>Set encode for the given content type.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>set_encode</span>(<span class='no'>encode</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-reset"></a></p><h3>Method <code>reset()</code></h3>
+<p>Resets <code>HTTPError</code> to the default RestRserve state.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>reset</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-error"></a></p><h3>Method <code>error()</code></h3>
+<p>Generate HTTP error response with a given status code and body.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>error</span>(<span class='no'>status_code</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>status_code</code></dt><dd><p>HTTP status code.</p></dd>
+
+<dt><code>body</code></dt><dd><p>Response body.</p></dd>
+
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.
+<code>headers</code> may be particularly useful.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-bad_request"></a></p><h3>Method <code>bad_request()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>bad_request</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-unauthorized"></a></p><h3>Method <code>unauthorized()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unauthorized</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-forbidden"></a></p><h3>Method <code>forbidden()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>forbidden</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-not_found"></a></p><h3>Method <code>not_found()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_found</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-method_not_allowed"></a></p><h3>Method <code>method_not_allowed()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>method_not_allowed</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-not_acceptable"></a></p><h3>Method <code>not_acceptable()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_acceptable</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-conflict"></a></p><h3>Method <code>conflict()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>conflict</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-gone"></a></p><h3>Method <code>gone()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>gone</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-length_required"></a></p><h3>Method <code>length_required()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>length_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-precondition_failed"></a></p><h3>Method <code>precondition_failed()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>precondition_failed</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-payload_too_large"></a></p><h3>Method <code>payload_too_large()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>payload_too_large</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-uri_too_long"></a></p><h3>Method <code>uri_too_long()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>uri_too_long</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-unsupported_media_type"></a></p><h3>Method <code>unsupported_media_type()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unsupported_media_type</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-range_not_satisfiable"></a></p><h3>Method <code>range_not_satisfiable()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>range_not_satisfiable</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-unprocessable_entity"></a></p><h3>Method <code>unprocessable_entity()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unprocessable_entity</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-locked"></a></p><h3>Method <code>locked()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>locked</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-failed_dependency"></a></p><h3>Method <code>failed_dependency()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>failed_dependency</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-precondition_required"></a></p><h3>Method <code>precondition_required()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>precondition_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-too_many_requests"></a></p><h3>Method <code>too_many_requests()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>too_many_requests</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-request_header_fields_too_large"></a></p><h3>Method <code>request_header_fields_too_large()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>request_header_fields_too_large</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-unavailable_for_legal_reasons"></a></p><h3>Method <code>unavailable_for_legal_reasons()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unavailable_for_legal_reasons</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-internal_server_error"></a></p><h3>Method <code>internal_server_error()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>internal_server_error</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-not_implemented"></a></p><h3>Method <code>not_implemented()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_implemented</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-bad_gateway"></a></p><h3>Method <code>bad_gateway()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>bad_gateway</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-service_unavailable"></a></p><h3>Method <code>service_unavailable()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>service_unavailable</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-gateway_timeout"></a></p><h3>Method <code>gateway_timeout()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>gateway_timeout</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-version_not_supported"></a></p><h3>Method <code>version_not_supported()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>version_not_supported</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-insufficient_storage"></a></p><h3>Method <code>insufficient_storage()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>insufficient_storage</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-loop_detected"></a></p><h3>Method <code>loop_detected()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>loop_detected</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-network_authentication_required"></a></p><h3>Method <code>network_authentication_required()</code></h3>
+<p>Generates corresponding http error.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>network_authentication_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p><a href='Response.html'>Response</a> object.</p>
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='no'>check_list</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
@@ -304,16 +674,10 @@ Generates corresponding http error.<br /></p></li>
 <span class='fu'>check_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
 <span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_list</span>(<span class='fl'>1</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -324,7 +688,7 @@ Generates corresponding http error.<br /></p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

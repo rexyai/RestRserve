@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="Controls how RestRserve encodes and decodes different content types.
 Designed to work jointly with EncodeDecodeMiddleware" />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ Designed to work jointly with EncodeDecodeMiddleware" />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +81,7 @@ Designed to work jointly with EncodeDecodeMiddleware" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -126,7 +129,7 @@ Designed to work jointly with EncodeDecodeMiddleware" />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -145,7 +148,7 @@ Designed to work jointly with EncodeDecodeMiddleware" />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Content handlers collection</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/EncodeDecodeMiddleware.R'><code>R/EncodeDecodeMiddleware.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/ContentHandlersFactory.R'><code>R/ContentHandlersFactory.R</code></a></small>
     <div class="hidden name"><code>ContentHandlers.Rd</code></div>
     </div>
 
@@ -156,57 +159,109 @@ Designed to work jointly with <a href='EncodeDecodeMiddleware.html'>EncodeDecode
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<ul>
-<li><p><code>handlers</code> :: <code><a href='https://rdrr.io/r/base/environment.html'>environment()</a></code><br />
-Handlers storage environment.</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-
-<ul>
-<li><p><code>get_encode(content_type)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>function</code><br />
-Get encoder function for the specific content type.</p></li>
-<li><p><code>get_decode(content_type)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <code>function</code><br />
-Get decoder function for the specific content type.</p></li>
-<li><p><code>set_encode(content_type, FUN)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>function</code> -&gt; <code>self</code><br />
-Set handler to encode body for the specific content type.</p></li>
-<li><p><code>set_decode(content_type, FUN)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code>function</code> -&gt; <code>self</code><br />
-Set handler to decode body for the specific content type.</p></li>
-<li><p><code>reset()</code><br />
--&gt; <code>self</code><br />
-Resets all the content handlers to RestRserve defaults.</p></li>
-<li><p><code>to_list</code><br />
--&gt; <code>list</code><br />
-Convert handlers to list.</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='Application.html'>Application</a> <a href='EncodeDecodeMiddleware.html'>EncodeDecodeMiddleware</a></p></div>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>handlers</code></dt><dd><p>Handlers storage environment.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>ContentHandlersFactory$new()</code></a></p></li>
+<li><p><a href='#method-set_encode'><code>ContentHandlersFactory$set_encode()</code></a></p></li>
+<li><p><a href='#method-get_encode'><code>ContentHandlersFactory$get_encode()</code></a></p></li>
+<li><p><a href='#method-set_decode'><code>ContentHandlersFactory$set_decode()</code></a></p></li>
+<li><p><a href='#method-get_decode'><code>ContentHandlersFactory$get_decode()</code></a></p></li>
+<li><p><a href='#method-list'><code>ContentHandlersFactory$list()</code></a></p></li>
+<li><p><a href='#method-reset'><code>ContentHandlersFactory$reset()</code></a></p></li>
+<li><p><a href='#method-clone'><code>ContentHandlersFactory$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates ContentHandlersFactory object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>new</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_encode"></a></p><h3>Method <code>set_encode()</code></h3>
+<p>Set handler to encode body for the specific content type.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>set_encode</span>(<span class='no'>content_type</span>, <span class='no'>FUN</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>MIME type.</p></dd>
+
+<dt><code>FUN</code></dt><dd><p>Function to encode response body.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-get_encode"></a></p><h3>Method <code>get_encode()</code></h3>
+<p>Get encoder function for the specific content type.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>get_encode</span>(<span class='no'>content_type</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>MIME type.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-set_decode"></a></p><h3>Method <code>set_decode()</code></h3>
+<p>Set handler to decode body for the specific content type.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>set_decode</span>(<span class='no'>content_type</span>, <span class='no'>FUN</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>MIME type.</p></dd>
+
+<dt><code>FUN</code></dt><dd><p>Function to decode request body.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-get_decode"></a></p><h3>Method <code>get_decode()</code></h3>
+<p>Get decoder function for the specific content type.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>get_decode</span>(<span class='no'>content_type</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>content_type</code></dt><dd><p>MIME type.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-list"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/list.html'>list()</a></code></h3>
+<p>Convert handlers to list.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>()</pre><p></div></p>
+
+<h3>Returns</h3>
+<p>List of handlers.</p>
+<p><hr>
+<a id="method-reset"></a></p><h3>Method <code>reset()</code></h3>
+<p>Resets all the content handlers to RestRserve defaults.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>reset</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ContentHandlersFactory</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#see-also">See also</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -217,7 +272,7 @@ Convert handlers to list.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

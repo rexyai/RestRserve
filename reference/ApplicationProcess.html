@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Basic authorization backend — AuthBackendBasic • RestRserve</title>
+<title>Creates ApplicationProcess object — ApplicationProcess • RestRserve</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Basic authorization backend — AuthBackendBasic" />
-<meta property="og:description" content="Creates AuthBackendBasic class object." />
+<meta property="og:title" content="Creates ApplicationProcess object — ApplicationProcess" />
+<meta property="og:description" content="Creates ApplicationProcess to hold PID of the runnung applicaiton." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
 
 
@@ -146,76 +146,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Basic authorization backend</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/AuthBackendBasic.R'><code>R/AuthBackendBasic.R</code></a></small>
-    <div class="hidden name"><code>AuthBackendBasic.Rd</code></div>
+    <h1>Creates ApplicationProcess object</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/BackendRserve.R'><code>R/BackendRserve.R</code></a></small>
+    <div class="hidden name"><code>ApplicationProcess.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates AuthBackendBasic class object.</p>
+    <p>Creates ApplicationProcess to hold PID of the runnung applicaiton.</p>
     </div>
 
 
 
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><a href='https://tools.ietf.org/html/rfc7617'>RFC7617</a>
-<a href='https://en.wikipedia.org/wiki/Basic_access_authentication'>Wikipedia</a></p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>pid</code></dt><dd><p>Process identificator.</p></dd>
 
-    <div class='dont-index'><p><a href='AuthMiddleware.html'>AuthMiddleware</a> <a href='Request.html'>Request</a> <a href='Response.html'>Response</a></p>
-<p>Other AuthBackend: 
-<code><a href='AuthBackendBearer.html'>AuthBackendBearer</a></code>,
-<code><a href='AuthBackend.html'>AuthBackend</a></code>,
-<code><a href='AuthMiddleware.html'>AuthMiddleware</a></code></p></div>
-    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
-
-    <p><code><a href='AuthBackend.html'>RestRserve::AuthBackend</a></code> -&gt; <code>AuthBackendBasic</code></p>
+</dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
 <h3>Public methods</h3>
 
 <ul>
-<li><p><a href='#method-new'><code>AuthBackendBasic$new()</code></a></p></li>
-<li><p><a href='#method-authenticate'><code>AuthBackendBasic$authenticate()</code></a></p></li>
-<li><p><a href='#method-clone'><code>AuthBackendBasic$clone()</code></a></p></li>
+<li><p><a href='#method-new'><code>ApplicationProcess$new()</code></a></p></li>
+<li><p><a href='#method-kill'><code>ApplicationProcess$kill()</code></a></p></li>
+<li><p><a href='#method-clone'><code>ApplicationProcess$clone()</code></a></p></li>
 </ul>
-<p><details open ><summary>Inherited methods</summary>
-<ul>
-</ul>
-</details>
-
-<hr>
+<p><hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Creates AuthBackendBasic class object.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>new</span>(<span class='no'>FUN</span>)</pre><p></div></p>
+<p>Creates ApplicationProcess object</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ApplicationProcess</span>$<span class='fu'>new</span>(<span class='no'>pid</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>FUN</code></dt><dd><p>Function to perform authentication which takes two arguments -
-<code>user</code> and <code>password</code>.  Returns boolean - whether access is allowed for
-a requested <code>user</code> or not.</p></dd>
+<dt><code>pid</code></dt><dd><p>Process identificator.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-authenticate"></a></p><h3>Method <code>authenticate()</code></h3>
-<p>Provide authentication for the given request.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>authenticate</span>(<span class='no'>request</span>, <span class='no'>response</span>)</pre><p></div></p>
+<a id="method-kill"></a></p><h3>Method <code>kill()</code></h3>
+<p>Send signal to process.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ApplicationProcess</span>$<span class='fu'>kill</span>(<span class='kw'>signal</span> <span class='kw'>=</span> <span class='fl'>15L</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
-<dt><code>request</code></dt><dd><p><a href='Request.html'>Request</a> object.</p></dd>
-
-<dt><code>response</code></dt><dd><p><a href='Response.html'>Response</a> object.</p></dd>
+<dt><code>signal</code></dt><dd><p>Singal code.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
-<p>Boolean - whether access is allowed for a requested <code>user</code> or not.</p>
 <p><hr>
 <a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
 <p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>ApplicationProcess</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
@@ -225,32 +206,6 @@ a requested <code>user</code> or not.</p></dd>
 
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># init users database</span>
-<span class='no'>user_db</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"user-1"</span> <span class='kw'>=</span> <span class='st'>"password-1"</span>,
-  <span class='st'>"user-2"</span> <span class='kw'>=</span> <span class='st'>"password-2"</span>
-)
-<span class='co'># define authentication handler</span>
-<span class='no'>auth_fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>user</span>, <span class='no'>password</span>) {
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='no'>user_db</span><span class='kw'>[[</span><span class='no'>user</span>]])) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>FALSE</span>) <span class='co'># not found</span>
-  <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>user_db</span><span class='kw'>[[</span><span class='no'>user</span>]], <span class='no'>password</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>FALSE</span>) <span class='co'># incorrect</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>TRUE</span>)
-}
-<span class='co'># init backend</span>
-<span class='no'>auth_backend</span> <span class='kw'>=</span> <span class='no'>AuthBackendBasic</span>$<span class='fu'>new</span>(<span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>auth_fun</span>)
-
-<span class='co'># test backend</span>
-<span class='co'># define credentials (see RFC)</span>
-<span class='no'>creds</span> <span class='kw'>=</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://jeroen.cran.dev/jsonlite/reference/base64.html'>base64_enc</a></span>(<span class='st'>"user-1:password-1"</span>)
-<span class='co'># generate request headers</span>
-<span class='no'>h</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Authorization"</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Basic %s"</span>, <span class='no'>creds</span>))
-<span class='co'># simulate request</span>
-<span class='no'>rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/"</span>, <span class='kw'>headers</span> <span class='kw'>=</span> <span class='no'>h</span>)
-<span class='co'># init response object</span>
-<span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
-<span class='co'># perform authentication</span>
-<span class='no'>auth_backend</span>$<span class='fu'>authenticate</span>(<span class='no'>rq</span>, <span class='no'>rs</span>) <span class='co'># TRUE</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

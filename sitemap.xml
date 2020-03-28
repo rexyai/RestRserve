@@ -7,6 +7,9 @@
     <loc>http://restrserve.org/reference/Application.html</loc>
   </url>
   <url>
+    <loc>http://restrserve.org/reference/ApplicationProcess.html</loc>
+  </url>
+  <url>
     <loc>http://restrserve.org/reference/AuthBackend.html</loc>
   </url>
   <url>
@@ -17,6 +20,9 @@
   </url>
   <url>
     <loc>http://restrserve.org/reference/AuthMiddleware.html</loc>
+  </url>
+  <url>
+    <loc>http://restrserve.org/reference/Backend.html</loc>
   </url>
   <url>
     <loc>http://restrserve.org/reference/BackendRserve.html</loc>
@@ -47,6 +53,9 @@
   </url>
   <url>
     <loc>http://restrserve.org/reference/Response.html</loc>
+  </url>
+  <url>
+    <loc>http://restrserve.org/reference/RestRserve-package.html</loc>
   </url>
   <url>
     <loc>http://restrserve.org/reference/Router.html</loc>

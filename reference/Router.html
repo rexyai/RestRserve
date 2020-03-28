@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Creates Router — Router • RestRserve</title>
+<title>Creates Router object. — Router • RestRserve</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,10 +46,9 @@
 
 
 
-<meta property="og:title" content="Creates Router — Router" />
+<meta property="og:title" content="Creates Router object. — Router" />
 <meta property="og:description" content="Creates Router object." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +66,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -125,7 +128,7 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -143,7 +146,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Creates Router</h1>
+    <h1>Creates Router object.</h1>
     <small class="dont-index">Source: <a href='https://github.com/rexyai/RestRserve/blob/master/R/Router.R'><code>R/Router.R</code></a></small>
     <div class="hidden name"><code>Router.Rd</code></div>
     </div>
@@ -154,43 +157,84 @@
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>paths</code></dt><dd><p>All added paths as is (with templates placeholders).</p></dd>
 
-    
-<pre>Router$new()
-</pre>
-
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<ul>
-<li><p><code>paths</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character()</a></code><br />
-All added paths as is (with templates placeholders).</p></li>
-</ul>
-
+</dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
+<h3>Public methods</h3>
 
 <ul>
-<li><p><code>size()</code><br />
--&gt; <code><a href='https://rdrr.io/r/base/integer.html'>integer(1)</a></code><br />
-Returns number of paths added before.</p></li>
-<li><p><code>add_path(path, match = c("exact", "partial", "regex"), id)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> -&gt; <br />
-Add path with their id.</p></li>
-<li><p><code>match_path(path, extract_vars = TRUE)</code><br />
-<code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code>, <code><a href='https://rdrr.io/r/base/logical.html'>logical(1)</a></code> -&gt; <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code> | <code>NULL</code><br />
-Find path within paths added before. Returns <code>NULL</code> if path not matched.</p></li>
+<li><p><a href='#method-new'><code>Router$new()</code></a></p></li>
+<li><p><a href='#method-size'><code>Router$size()</code></a></p></li>
+<li><p><a href='#method-add_path'><code>Router$add_path()</code></a></p></li>
+<li><p><a href='#method-match_path'><code>Router$match_path()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Router$clone()</code></a></p></li>
 </ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates Router object.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Router</span>$<span class='fu'>new</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-size"></a></p><h3>Method <code>size()</code></h3>
+<p>Returns number of paths added before.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Router</span>$<span class='fu'>size</span>()</pre><p></div></p>
+
+<h3>Returns</h3>
+<p>Number of paths.</p>
+<p><hr>
+<a id="method-add_path"></a></p><h3>Method <code>add_path()</code></h3>
+<p>Add path with their id.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Router</span>$<span class='fu'>add_path</span>(<span class='no'>path</span>, <span class='kw'>match</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"exact"</span>, <span class='st'>"partial"</span>, <span class='st'>"regex"</span>), <span class='no'>id</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Path to handle.</p></dd>
+
+<dt><code>match</code></dt><dd><p>Defines how route will be processed. Allowed values:
+<ul>
+<li><p><code>exact</code> - match route as is. Returns 404 if route is not matched.</p></li>
+<li><p><code>partial</code> - match route as prefix. Returns 404 if prefix are not matched.</p></li>
+<li><p><code>regex</code> - match route as template. Returns 404 if template pattern not matched.</p></li>
+</ul></p></dd>
+
+<dt><code>id</code></dt><dd><p>Path handler id.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-match_path"></a></p><h3>Method <code>match_path()</code></h3>
+<p>Find path within paths added before. Returns <code>NULL</code> if path not matched.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Router</span>$<span class='fu'>match_path</span>(<span class='no'>path</span>, <span class='kw'>extract_vars</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>path</code></dt><dd><p>Path endpoint.</p></dd>
+
+<dt><code>extract_vars</code></dt><dd><p>Extart path parameters (when handler matches regex).</p></dd>
+
+</dl><p></div></p>
+<h3>Returns</h3>
+<p>Handler id.</p>
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Router</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>r</span> <span class='kw'>=</span> <span class='kw pkg'>RestRserve</span><span class='kw ns'>:::</span><span class='no'><a href='http://restrserve.org/reference/Router.html'>Router</a></span>$<span class='fu'>new</span>()
+    <pre class="examples"><span class='no'>r</span> <span class='kw'>=</span> <span class='kw pkg'>RestRserve</span><span class='kw ns'>:::</span><span class='no'>Router</span>$<span class='fu'>new</span>()
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/test"</span>, <span class='st'>"exact"</span>, <span class='st'>"testid"</span>)
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/area"</span>, <span class='st'>"partial"</span>, <span class='st'>"areaid"</span>)
 <span class='no'>r</span>$<span class='fu'>add_path</span>(<span class='st'>"/template/{variable}"</span>, <span class='st'>"regex"</span>, <span class='st'>"templateid"</span>)
@@ -199,16 +243,10 @@ Find path within paths added before. Returns <code>NULL</code> if path not match
 <span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>) <span class='co'># templateid</span>
 <span class='fu'><a href='https://rdrr.io/r/base/attr.html'>attr</a></span>(<span class='no'>r</span>$<span class='fu'>match_path</span>(<span class='st'>"/template/12345"</span>), <span class='st'>"parameters_path"</span>) <span class='co'># variables values</span></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -219,7 +257,7 @@ Find path within paths added before. Returns <code>NULL</code> if path not match
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

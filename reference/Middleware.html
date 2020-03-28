@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -51,7 +55,6 @@ This way each request can be checked/modified before passing handler and
 response can be post processed (for example this way we developer can set up
 custom error messages)." />
 <meta property="og:image" content="http://restrserve.org/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -69,7 +72,7 @@ custom error messages)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -83,7 +86,7 @@ custom error messages)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -131,7 +134,7 @@ custom error messages)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/rexyai/RestRserve">
+  <a href="https://github.com/rexyai/RestRserve/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -166,64 +169,76 @@ custom error messages).</p>
 
 
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p><a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> object.</p>
-    <h2 class="hasAnchor" id="construction"><a class="anchor" href="#construction"></a>Construction</h2>
-
-    
-<pre>Middleware$new(
-  process_request  = function(request, response) TRUE,
-  process_response = function(request, response) TRUE,
-  id = "Middleware"
-)
-</pre>
-<ul>
-<li><p><code>process_request</code> :: <code>function</code><br />
-Modify <code>request</code> or <code>response</code> objects or  throw exception using
-<code>[HTTPError]</code> helper. This function evaluate before router handler called.</p></li>
-<li><p><code>process_response</code> :: <code>function</code><br />
-Modify <code>request</code> or <code>response</code> objects or  throw exception using
-<code>[HTTPError]</code> helper. This function evaluate after router handler called.</p></li>
-<li><p><code>id</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Middleware id</p></li>
-</ul>
-
-    <h2 class="hasAnchor" id="fields"><a class="anchor" href="#fields"></a>Fields</h2>
-
-    
-
-<ul>
-<li><p><code>process_request</code> :: <code>function</code><br />
-Function which takes 2 arguments - <code>request</code> and <code>response</code> objects (class
-<a href='Request.html'>Request</a> and <a href='Response.html'>Response</a> correspondingly) and modify
-<code>request</code> and <code>response</code> or throw exception using <a href='HTTPError.html'>HTTPError</a> helper.</p>
-<p>Function is called before request is routed to handler.</p>
-<p>Usually <code>process_request</code> is used to perform logging, check authorization, etc.</p></li>
-<li><p><code>process_response</code> :: <code>funciotn</code><br />
-Function which takes 2 arguments - <code>request</code> and <code>response</code> objects (class
-<a href='Request.html'>Request</a> and <a href='Response.html'>Response</a> correspondingly) and modify
-<code>request</code> and <code>response</code> or throw exception using <a href='HTTPError.html'>HTTPError</a> helper.</p>
-<p>Function is called after request is processed by handler.</p>
-<p>Usually <code>process_response</code> is used to perform logging, custom error handling, etc.</p></li>
-<li><p><code>id</code> :: <code><a href='https://rdrr.io/r/base/character.html'>character(1)</a></code><br />
-Middleware id</p></li>
-</ul>
-
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='Request.html'>Request</a> <a href='Response.html'>Response</a> <a href='Application.html'>Application</a></p></div>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>process_request</code></dt><dd><p>Function which takes 2 arguments - <code>request</code> and
+<code>response</code> objects (class  <a href='Request.html'>Request</a> and <a href='Response.html'>Response</a> correspondingly) and
+modify <code>request</code> and <code>response</code> or throw exception using <a href='HTTPError.html'>HTTPError</a> helper.<br />
+Function is called before request is routed to handler.<br />
+Usually <code>process_request</code> is used to perform logging, check authorization, etc.</p></dd>
+
+<dt><code>process_response</code></dt><dd><p>Function which takes 2 arguments - <code>request</code> and
+<code>response</code> objects (class <a href='Request.html'>Request</a> and <a href='Response.html'>Response</a> correspondingly) and
+modify <code>request</code> and <code>response</code> or throw exception using <a href='HTTPError.html'>HTTPError</a> helper.<br />
+Function is called after request is processed by handler.
+Usually <code>process_response</code> is used to perform logging, custom error handling, etc.</p></dd>
+
+<dt><code>id</code></dt><dd><p>Middleware id.</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-new'><code>Middleware$new()</code></a></p></li>
+<li><p><a href='#method-clone'><code>Middleware$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
+<p>Creates middleware object</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Middleware</span>$<span class='fu'>new</span>(
+  <span class='kw'>process_request</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>request</span>, <span class='no'>response</span>) <span class='fl'>TRUE</span>,
+  <span class='kw'>process_response</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>request</span>, <span class='no'>response</span>) <span class='fl'>TRUE</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='st'>"Middleware"</span>
+)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>process_request</code></dt><dd><p>Modify <code>request</code> or <code>response</code> objects or  throw
+exception using <code>[HTTPError]</code> helper. This function evaluate before
+router handler called.</p></dd>
+
+<dt><code>process_response</code></dt><dd><p>Modify <code>request</code> or <code>response</code> objects or  throw
+exception using <code>[HTTPError]</code> helper. This function evaluate after
+router handler called.</p></dd>
+
+<dt><code>id</code></dt><dd><p>Middleware id.</p></dd>
+
+</dl><p></div></p>
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>Middleware</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#construction">Construction</a></li>
-      <li><a href="#fields">Fields</a></li>
-      <li><a href="#see-also">See also</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -234,7 +249,7 @@ Middleware id</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>
