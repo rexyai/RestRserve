@@ -22,7 +22,7 @@ make_multipart_body = function(params, files) {
   on.exit(close(r), add = TRUE)
   # boundary
   boundary = paste(c(rep("-", 22), as.character(as.raw(sample.int(255, 8)))), collapse = "")
-  boundary_ <- paste0("--", boundary)
+  boundary_ = paste0("--", boundary)
   # write body params
   for (i in seq_along(params)) {
     wb(r, boundary_)
