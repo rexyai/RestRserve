@@ -26,7 +26,7 @@ BackendRserve = R6::R6Class(
     #'   `"http.port"` then `http_port` will be silently replaced with its value.
     #' @param background Whether to try to launch in background process on UNIX.
     #' @return [ApplicationProcess] object when `background = TRUE`.
-    start = function(app, http_port = 8080, ..., background = FALSE) {
+    start = function(app, http_port = 8080, ..., background = FALSE) { # nocov start
       checkmate::assert_int(http_port)
       ARGS = list(...)
       if (http_port > 0L) {
@@ -80,7 +80,7 @@ BackendRserve = R6::R6Class(
       } else {
         do.call(Rserve::run.Rserve, ARGS)
       }
-    },
+    }, # nocov end
     #' @description
     #' Parse request and set to it fields.
     #' @param request [Request] object.
