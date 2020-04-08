@@ -109,8 +109,8 @@ BackendRserve = R6::R6Class(
       }
 
       request$path = path
-      private$parse_query(parameters_query, request)
       private$parse_headers(headers, request)
+      private$parse_query(parameters_query, request)
       # Rserve adds "Request-Method: " key:
       # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
       # according to the code above we assume that "request-method" is always exists
@@ -141,9 +141,9 @@ BackendRserve = R6::R6Class(
       body = response$body
       # prepare headers
       if (length(response$headers) > 0L) {
-        headers = format_headers(as.list(response$headers))
+        headers = cpp_format_headers(as.list(response$headers))
         if (length(response$cookies) > 0L) {
-          headers = paste(headers, format_cookies(as.list(response$cookies)), sep = "\r\n")
+          headers = paste(headers, cpp_format_cookies(as.list(response$cookies)), sep = "\r\n")
         }
       } else {
         headers = character(0)
@@ -177,38 +177,35 @@ BackendRserve = R6::R6Class(
         body = body[nzchar(names(body)) & nzchar(body)]
         request$parameters_body = as.list(body)
         keys = names(body)
-        values = paste(url_encode(keys), url_encode(body), sep = "=", collapse = "&")
+        values = paste(cpp_url_encode(keys), cpp_url_encode(body), sep = "=", collapse = "&")
         body = charToRaw(values)
       } else {
         body = raw()
       }
       request$body = body
-      request$content_type = "application/x-www-form-urlencoded"
       return(request)
     },
-
     parse_form_multipart = function(body, request) {
-      content_type = attr(body, "content-type")
-      boundary = parse_multipart_boundary(content_type)
-      res = parse_multipart_body(body, paste0("--", boundary))
+      # workaround for the issue #137
+      # content_type = attr(body, "content-type")
+      boundary = cpp_parse_multipart_boundary(request$content_type)
+      res = cpp_parse_multipart_body(body, boundary)
       if (length(res$values) > 0L) {
         values = unlist(res$values, use.names = TRUE)
         values = values[nzchar(names(values)) & nzchar(values)]
-        keys = url_decode(names(values))
-        values = url_decode(values)
+        keys = cpp_url_decode(names(values))
+        values = cpp_url_decode(values)
         request$parameters_body[keys] = values
       }
       if (length(res$files) > 0L) {
         request$files = res$files
-        keys = url_decode(names(res$files))
-        values = url_decode(vapply(res$files, "[[", character(1), "filename"))
+        keys = cpp_url_decode(names(res$files))
+        values = cpp_url_decode(vapply(res$files, "[[", character(1), "filename"))
         request$parameters_body[keys] = values
       }
       request$body = body
-      request$content_type = content_type
       return(request)
     },
-
     parse_query = function(parameters_query, request) {
       res = structure(list(), names = character())
       if (length(parameters_query) > 0L) {
@@ -218,56 +215,49 @@ BackendRserve = R6::R6Class(
         res = res[nzchar(names(res)) & nzchar(parameters_query)]
       }
       request$parameters_query = res
-      invisible(request)
+      return(request)
     },
-
     parse_headers = function(headers, request) {
-
       if (is.raw(headers)) {
         headers = rawToChar(headers)
       }
-
       if (is_string(headers)) {
-        headers = parse_headers(headers)
+        headers = cpp_parse_headers(headers)
       }
-
       request$headers = headers
-      invisible(request)
+      return(request)
     },
-
     parse_body_and_content_type = function(body, request) {
-      h_ctype = request$headers[["content-type"]]
-      b_ctype = attr(body, "content-type")
-      if (!is.null(b_ctype)) {
-        h_ctype = b_ctype
+      request$content_type = request$headers[["content-type"]] # content-type from headers
+      body_type = attr(body, "content-type") # content-type from body attribute
+      # fill type from the body if empty
+      if (!is.null(body_type) && is.null(request$content_type)) {
+        request$content_type = body_type
       }
-      if (is.null(h_ctype)) {
-        h_ctype = "text/plain"
+      if (is.null(request$content_type)) {
+        request$content_type = "text/plain"
       }
       if (is.null(body)) {
         request$body = raw()
-        request$content_type = h_ctype
       } else if (!is.raw(body)) {
         # parse form
-        if (h_ctype == "application/x-www-form-urlencoded") {
+        if (request$content_type == "application/x-www-form-urlencoded") {
           return(private$parse_form_urlencoded(body, request))
         }
       } else {
-        if (startsWith(h_ctype, "multipart/form-data")) {
+        if (startsWith(request$content_type, "multipart/form-data")) {
           return(private$parse_form_multipart(body, request))
         } else {
           request$body = body
-          request$content_type = h_ctype
         }
       }
-      invisible(request)
+      return(request)
     },
-
     parse_cookies = function(request) {
       if (!is.null(request$headers[["cookie"]])) {
-        request$cookies = parse_cookies(request$headers[["cookie"]])
+        request$cookies = cpp_parse_cookies(request$headers[["cookie"]])
       }
-      invisible(request)
+      return(request)
     }
   ),
 )
