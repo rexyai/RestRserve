@@ -77,4 +77,3 @@ expect_equal(parsed$files[["raw_file"]]$content_type, "application/octet-stream"
 expect_equal(parsed$files[["raw_file"]]$length, file.size(tmp_rds))
 expect_identical(get_multipart_file(body, parsed$files[["raw_file"]]),
                  readBin(tmp_rds, raw(), file.size(tmp_rds)))
-
