@@ -21,10 +21,11 @@ make_multipart_body = function(params, files) {
   r = rawConnection(raw(0), "a+")
   on.exit(close(r), add = TRUE)
   # boundary
-  boundary = paste(c(rep("-", 24), as.character(as.raw(sample.int(255, 8)))), collapse = "")
+  boundary = paste(c(rep("-", 22), as.character(as.raw(sample.int(255, 8)))), collapse = "")
+  boundary_ <- paste0("--", boundary)
   # write body params
   for (i in seq_along(params)) {
-    wb(r, boundary)
+    wb(r, boundary_)
     wb(r, "\r\n")
     wb(r, sprintf("Content-Disposition: form-data; name=\"%s\"", names(params)[i]))
     wb(r, "\r\n")
@@ -34,7 +35,7 @@ make_multipart_body = function(params, files) {
   }
   # write body files
   for (i in seq_along(files)) {
-    wb(r, boundary)
+    wb(r, boundary_)
     wb(r, "\r\n")
     wb(r, sprintf("Content-Disposition: form-data; name=\"%s\"; filename=\"%s\"",
                   names(files)[i], basename(files[[i]]$path)))
@@ -48,12 +49,12 @@ make_multipart_body = function(params, files) {
     wb(r, "\r\n")
   }
   # close boundary
-  wb(r, boundary)
+  wb(r, boundary_)
   wb(r, "--")
   wb(r, "\r\n")
   n = seek(r, 0L)
   rr = readBin(r, raw(), n = n)
-  ctype = paste0("multipart/form-data; boundary=", substr(boundary, 3, nchar(boundary)))
+  ctype = paste0("multipart/form-data; boundary=", boundary)
   attr(rr, "content-type") = ctype
   return(rr)
 }
