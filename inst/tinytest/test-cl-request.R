@@ -22,6 +22,10 @@ expect_equal(length(r$parameters_body), 0L)
 expect_true(inherits(r$cookies, "list"))
 expect_equal(length(r$cookies), 0L)
 
+# test set_id method
+r$set_id("custom_id")
+expect_equal(r$id, "custom_id")
+
 backend = RestRserve:::BackendRserve$new()
 # Test method field handling
 r1 = Request$new()
