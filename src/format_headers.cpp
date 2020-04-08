@@ -4,7 +4,7 @@
 #include "utils.h"
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::CharacterVector format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
+Rcpp::CharacterVector cpp_format_headers(Rcpp::ListOf<Rcpp::CharacterVector> x) {
   std::size_t n = x.size();
   if (n == 0) {
     return "";
