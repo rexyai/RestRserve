@@ -22,6 +22,10 @@ expect_equal(length(r$parameters_body), 0L)
 expect_true(inherits(r$cookies, "list"))
 expect_equal(length(r$cookies), 0L)
 
+# test set_id method
+r$set_id("custom_id")
+expect_equal(r$id, "custom_id")
+
 backend = RestRserve:::BackendRserve$new()
 # Test method field handling
 r1 = Request$new()
@@ -127,7 +131,9 @@ params = list(
   "param2" = "value2"
 )
 b = make_multipart_body(params, files)
-r = Request$new(content_type = attr(b, 'content-type'))
+r = Request$new(content_type = attr(b, "content-type"))
+# simulate Rserve behaviour (see issue #137)
+attr(b, "content-type") = tolower(attr(b, "content-type"))
 backend$set_request(r, body = b)
 expect_true(inherits(r$body, "raw"))
 expect_true(inherits(r$files, "list"))

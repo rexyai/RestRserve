@@ -5,7 +5,7 @@
 
 // see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie
 // [[Rcpp::export(rng=false)]]
-Rcpp::List parse_cookies(Rcpp::CharacterVector x) {
+Rcpp::List cpp_parse_cookies(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
   std::unordered_map<std::string, std::string> res;
   for (std::size_t i = 0; i < n; ++i) {

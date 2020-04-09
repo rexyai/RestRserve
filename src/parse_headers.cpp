@@ -13,7 +13,7 @@ bool validate_header_name(const std::string& x) {
 }
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::List parse_headers(const char* headers) {
+Rcpp::List cpp_parse_headers(const char* headers) {
   Headers res;
   std::istringstream stream(headers);
   std::string buffer;

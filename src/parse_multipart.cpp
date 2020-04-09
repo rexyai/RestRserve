@@ -30,15 +30,6 @@ using sv_size_t = nonstd::string_view::size_type;
 using MultipartItem = std::pair<std::string,Rcpp::RObject>;
 using MultipartItems = std::unordered_multimap<std::string,Rcpp::RObject>;
 
-// [[Rcpp::export(rng=false)]]
-std::string parse_multipart_boundary(const std::string& content_type) {
-  std::string::size_type pos = content_type.find("boundary=");
-  if (pos == std::string::npos) {
-    Rcpp::stop("Boundary string no found.");
-  }
-  return content_type.substr(pos + 9);
-}
-
 MultipartItem parse_multipart_block(nonstd::string_view block, std::size_t offset) {
   std::size_t block_n = block.size();
 
@@ -103,15 +94,22 @@ MultipartItem parse_multipart_block(nonstd::string_view block, std::size_t offse
 }
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
+std::string cpp_parse_multipart_boundary(const std::string& content_type) {
+    std::string::size_type pos = content_type.rfind("boundary=");
+    if (pos == std::string::npos) {
+        Rcpp::stop("Boundary string no found.");
+    }
+    return content_type.substr(pos + 9);
+}
+
+// [[Rcpp::export(rng=false)]]
+Rcpp::List cpp_parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
   // body size
   std::size_t body_n = body.size();
   // early stop
   if (body_n == 0) {
     return R_NilValue;
   }
-  // boundary size
-  std::size_t boundary_n = std::strlen(boundary);
   // output object
   MultipartItems form_files;
   MultipartItems form_values;
@@ -121,13 +119,18 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
   static std::string eol = "\r\n";
   // size of EOL string
   static std::size_t eol_n = eol.size();
+  // all others starts with '--'
+  std::string boundary_ = "--";
+  boundary_.append(boundary);
+  // boundary size
+  std::size_t boundary_n = boundary_.size();
   // find boundary string
-  sv_size_t block_start_pos = body_sv.find(boundary, 0);
+  sv_size_t block_start_pos = body_sv.find(boundary_, 0);
   if (block_start_pos == nonstd::string_view::npos) {
     Rcpp::stop("Boundary string not found.");
   }
   // find second boundary string
-  sv_size_t block_end_pos = body_sv.find(boundary, block_start_pos + 1);
+  sv_size_t block_end_pos = body_sv.find(boundary_, block_start_pos + 1);
   if (block_end_pos == nonstd::string_view::npos) {
     Rcpp::stop("Boundary string at the end block not found.");
   }
@@ -138,7 +141,7 @@ Rcpp::List parse_multipart_body(Rcpp::RawVector body, const char* boundary) {
     // offset eol after boundary
     block_start_pos += eol_n;
     // find end of block
-    block_end_pos = body_sv.find(boundary, block_start_pos);
+    block_end_pos = body_sv.find(boundary_, block_start_pos);
     // if block is valid
     if (block_end_pos != nonstd::string_view::npos) {
       auto block_size = block_end_pos - block_start_pos;
