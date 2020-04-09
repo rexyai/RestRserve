@@ -21,7 +21,8 @@ make_multipart_body = function(params, files) {
   r = rawConnection(raw(0), "a+")
   on.exit(close(r), add = TRUE)
   # boundary
-  boundary = paste(c(rep("-", 22), as.character(as.raw(sample.int(255, 8)))), collapse = "")
+  sym <- c(0:9, letters, LETTERS)
+  boundary = paste(sample(sym, 40, replace = TRUE), collapse = "")
   boundary_ = paste0("--", boundary)
   # write body params
   for (i in seq_along(params)) {
@@ -61,5 +62,5 @@ make_multipart_body = function(params, files) {
 
 # get file byted from the binary body
 get_multipart_file = function(body, file) {
-  body[seq(file$offset, by = 1, length.out = file$length)]
+  body[seq(file$offset, by = 1L, length.out = file$length)]
 }
