@@ -131,7 +131,9 @@ params = list(
   "param2" = "value2"
 )
 b = make_multipart_body(params, files)
-r = Request$new(content_type = attr(b, 'content-type'))
+r = Request$new(content_type = attr(b, "content-type"))
+# simulate Rserve behaviour (see issue #137)
+attr(b, "content-type") = tolower(attr(b, "content-type"))
 backend$set_request(r, body = b)
 expect_true(inherits(r$body, "raw"))
 expect_true(inherits(r$files, "list"))

@@ -14,7 +14,7 @@ expect_error(cpp_parse_multipart_boundary(NA_character_))
 expect_error(cpp_parse_multipart_boundary(""))
 
 # Test cpp_parse_multipart_boundary
-boundary = "------------------------e529c2e8d1153bc8"
+boundary = "------------------gc0p4Jq0M2Yt08jU534c0p"
 ctype = paste0("multipart/form-data; boundary=", boundary)
 expect_equal(cpp_parse_multipart_boundary(ctype), boundary)
 
