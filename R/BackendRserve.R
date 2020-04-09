@@ -228,14 +228,17 @@ BackendRserve = R6::R6Class(
       return(request)
     },
     parse_body_and_content_type = function(body, request) {
-      request$content_type = request$headers[["content-type"]] # content-type from headers
-      body_type = attr(body, "content-type") # content-type from body attribute
-      # fill type from the body if empty
-      if (!is.null(body_type) && is.null(request$content_type)) {
-        request$content_type = body_type
+      if (is.null(request$content_type)) {
+        request$content_type = request$headers[["content-type"]]
       }
       if (is.null(request$content_type)) {
-        request$content_type = "text/plain"
+        body_type = attr(body, "content-type") # content-type from body attribute
+        # fill type from the body if empty
+        if (!is.null(body_type)) {
+          request$content_type = body_type
+        } else {
+          request$content_type = "text/plain"
+        }
       }
       if (is.null(body)) {
         request$body = raw()
