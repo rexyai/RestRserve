@@ -1,5 +1,8 @@
 ## Changelog
 
+* 2020-04-09 - 0.2.2
+    * parse content-type directly from headers - see #137
+
 * 2020-03-19 - 0.2.1
     * update code for header names validation to conform to [rfc7230](https://tools.ietf.org/html/rfc7230#section-3.2.6), see #132
     * generate documentation with roxygen2 7.1.0 which has support for R6 classes

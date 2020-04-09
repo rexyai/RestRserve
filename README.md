@@ -75,7 +75,7 @@ Guidelines for filing issues / pull requests - [CONTRIBUTING.md](https://github.
 
 ## Known limitations
 
-- RestRserve is primarily tested on UNIX systems. While it works natively on Windows please don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to try [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) and report back.
+- RestRserve is primarily tested on UNIX systems. While it works natively on Windows please don't expect it to be as performant as on UNIX-like systems. If you really want to use it on Windows - consider to use [Windows Subsystem for Linux](https://blog.jdblischak.com/posts/wsl-r/).
 - Keep in mind that every request is handled in a separate process (fork from a parent R session). While this feature allows to handle requests in parallel it also restricts reuse of certain objects which are not fork-safe (notably database connections, rJava objects, etc)
 
 ## Related projects
