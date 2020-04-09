@@ -21,7 +21,7 @@ make_multipart_body = function(params, files) {
   r = rawConnection(raw(0), "a+")
   on.exit(close(r), add = TRUE)
   # boundary
-  sym <- c(0:9, letters, LETTERS)
+  sym = c(0:9, letters, LETTERS)
   boundary = paste(sample(sym, 40, replace = TRUE), collapse = "")
   boundary_ = paste0("--", boundary)
   # write body params
