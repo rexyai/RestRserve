@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RestRserve</span>)
 <span class="no">application</span> <span class="kw">=</span> <span class="no">Application</span>$<span class="fu">new</span>()
 <span class="no">application</span>$<span class="no">logger</span>$<span class="fu">info</span>(<span class="st">"hello from logger"</span>)
-<span class="co">#&gt; {"timestamp":"2020-03-28 08:37:06.260615","level":"INFO","name":"Application","pid":15742,"msg":"hello from logger"}</span></pre></body></html></div>
+<span class="co">#&gt; {"timestamp":"2020-04-12 06:15:09.017151","level":"INFO","name":"Application","pid":15857,"msg":"hello from logger"}</span></pre></body></html></div>
 <p><code>logger</code> is an instance of <code>Logger</code> class. We believe it is important to have logs in a machine readable format, so by default logger writes messages to <code>stdout</code> in JSON format.</p>
 <p>Amount of logging can be adjusted with <code>set_log_level</code> method:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">application</span>$<span class="no">logger</span>$<span class="fu">set_log_level</span>(<span class="st">"error"</span>)
@@ -138,7 +138,7 @@
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># let's emulate query string "/sqrt?x=10"</span>
 <span class="no">request</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/sqrt"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"10"</span>))
 <span class="no">response</span> <span class="kw">=</span> <span class="no">application</span>$<span class="fu">process_request</span>(<span class="no">request</span>)
-<span class="co">#&gt; {"timestamp":"2020-03-28 08:37:06.321765","level":"ERROR","name":"Application","pid":15742,"msg":"","context":{"request_id":"4e527bf8-70cf-11ea-a3bc-42010a140055","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)"]}}}</span>
+<span class="co">#&gt; {"timestamp":"2020-04-12 06:15:09.083295","level":"ERROR","name":"Application","pid":15857,"msg":"","context":{"request_id":"f5d8a210-7c84-11ea-be73-42010a14004d","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)"]}}}</span>
 <span class="no">response</span>$<span class="no">body</span>
 <span class="co">#&gt; [1] "500 Internal Server Error"</span></pre></body></html></div>
 <p>Surprise! (or not?)</p>
@@ -164,7 +164,7 @@
 })
 <span class="no">request</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/sqrt2"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"10"</span>))
 <span class="no">response</span> <span class="kw">=</span> <span class="no">application</span>$<span class="fu">process_request</span>(<span class="no">request</span>)
-<span class="co">#&gt; {"timestamp":"2020-03-28 08:37:06.418802","level":"ERROR","name":"Application","pid":15742,"msg":"","context":{"request_id":"4e5992ee-70cf-11ea-a3bc-42010a140055","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)","response$body = fun1(x)","fun2(x)"]}}}</span></pre></body></html></div>
+<span class="co">#&gt; {"timestamp":"2020-04-12 06:15:09.191178","level":"ERROR","name":"Application","pid":15857,"msg":"","context":{"request_id":"f5e0710c-7c84-11ea-be73-42010a14004d","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)","response$body = fun1(x)","fun2(x)"]}}}</span></pre></body></html></div>
 <p>Now we clearly see that error happens inside <code>fun2</code></p>
   </div>
 
@@ -181,7 +181,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

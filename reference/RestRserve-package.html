@@ -86,7 +86,7 @@ Allows to easily create high-performance full featured HTTP APIs from R
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -208,7 +208,7 @@ of error</p></li>
 
 <p>For simplicity we will use Fibonacci number calculation as an algorithm
 we want to expose.<div class="r"></p><pre>calc_fib = function(n) {
-  if (n &lt; 0L) stop("n should be &gt;= 0")
+  if (n &amp;lt; 0L) stop("n should be &amp;gt;= 0")
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
@@ -322,7 +322,7 @@ will block R session and start listening for incoming requests.<div class="r"></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
