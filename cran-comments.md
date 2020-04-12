@@ -1,14 +1,12 @@
 ## New submission
 
-- rework documentation with new roxygen2 release
-- improved http header validation
+- take content type from headers in Rserve backend
 
 ### Test environments
 
 - local OS X install, R 3.6.0
 - Ubuntu 16.04.6 LTS (on travis-ci), R 3.6.2
 - win-builder (devel)
-- R-devel clang SAN (https://github.com/rocker-org/r-devel-san-clang)
 
 ### R CMD check results
 
