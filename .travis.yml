@@ -51,14 +51,16 @@ after_success:
   - Rscript -e 'covr::codecov()'
   - R CMD INSTALL $PKG_TARBALL
   - Rscript -e 'lintr::lint_package()'
-  - Rscript -e 'pkgdown::build_site()'
+  - Rscript -e 'pkgdown::build_site(examples = FALSE)'
 
 deploy:
   provider: pages
   skip_cleanup: true
   keep_history: true
+  committer_from_gh: true
   github_token: $GITHUB_TOKEN
   local_dir: docs
+  verbose: true
   on:
-    branch: dev
+    branch: master
     repo: rexyai/RestRserve

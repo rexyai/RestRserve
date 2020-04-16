@@ -10,6 +10,9 @@ raise(x)
 \item{x}{instance of \link{Response}. Can be created using \link{HTTPError}.
 see examples.}
 }
+\value{
+None - stops execution of the current expression and executes an error action.
+}
 \description{
 Interrupts request processing and signals RestRserve to return HTTPError
 }

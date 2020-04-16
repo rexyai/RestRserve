@@ -12,10 +12,13 @@ to_json(x, unbox = TRUE)
 \item{unbox}{\code{TRUE} by default. Whether to unbox (simplify) arrays consists
 of a single element}
 }
+\value{
+JSON string
+}
 \description{
 Encode R objects as JSON. Wrapper around \code{jsonlite::toJSON} with
 default parameters set to following values:
-\code{dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'}.
+\verb{dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null'}.
 }
 \examples{
 to_json(NULL)

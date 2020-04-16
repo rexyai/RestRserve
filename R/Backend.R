@@ -1,8 +1,21 @@
 #nocov start
+#' @title Creates Backend object
+#'
+#' @description Creates Backend object.
+#'
+#' @keywords internal
+#'
 Backend = R6::R6Class(
-  "Backend",
+  classname = "Backend",
   public = list(
+    #' @description
+    #' Creates Backend object.
     initialize = function() {},
+    #' @description
+    #' Starts backend.
+    #' @param app [Application] object.
+    #' @param port HTTP port.
+    #' @param ... Passed to backend.
     start = function(app, port, ...) {
       stop("not implemented")
     }
@@ -12,7 +25,7 @@ Backend = R6::R6Class(
 
 # TODO
 BackendHttpuv = R6::R6Class(
-  "BackendHttpuv",
+  classname = "BackendHttpuv",
   inherit = Backend,
   public = list(
     # start = function(app, http_port, ...) {

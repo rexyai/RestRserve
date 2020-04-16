@@ -3,7 +3,7 @@
 #include <Rcpp.h>
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::CharacterVector format_cookies(Rcpp::ListOf<Rcpp::List> cookies) {
+Rcpp::CharacterVector cpp_format_cookies(Rcpp::ListOf<Rcpp::List> cookies) {
   std::size_t n = cookies.size();
   if (n == 0) {
     return "";

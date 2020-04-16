@@ -5,6 +5,11 @@
 #'
 #' @param from `numeric`, `POSIXct` or `HTTPDate` object.
 #'
+#' @name HTTPDate-class
+#' @rdname HTTPDate-class
+#'
+#' @exportClass HTTPDate
+#'
 #' @references
 #' [RFC7231](https://tools.ietf.org/html/rfc7231#section-7.1.1.1)
 #' [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date)
@@ -17,9 +22,6 @@
 #' dt = "Thu, 01 Jan 1970 00:00:00 GMT"
 #' class(dt) = "HTTPDate"
 #' as(dt, "POSIXct")
-#' @name HTTPDate-class
-#' @rdname HTTPDate-class
-#' @exportClass HTTPDate
 setClass("HTTPDate")
 
 as_http_date = function(from) {

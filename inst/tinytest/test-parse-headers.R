@@ -1,15 +1,16 @@
 # Test parse headers
 
 # import functions
-parse_headers = RestRserve:::parse_headers
+cpp_parse_headers = RestRserve:::cpp_parse_headers
 
 # Empty input
-expect_error(parse_headers(NA))
-expect_error(parse_headers(NULL))
-expect_true(inherits(parse_headers(NA_character_), "list"))
-expect_equal(length(parse_headers(NA_character_)), 0L)
-expect_true(inherits(parse_headers(""), "list"))
-expect_equal(length(parse_headers("")), 0L)
+expect_error(cpp_parse_headers(NA))
+expect_error(cpp_parse_headers(NULL))
+expect_true(inherits(cpp_parse_headers(NA_character_), "list"))
+expect_equal(length(cpp_parse_headers(NA_character_)), 0L)
+expect_true(inherits(cpp_parse_headers(""), "list"))
+expect_equal(length(cpp_parse_headers("")), 0L)
+expect_error(cpp_parse_headers("param\u100: value"), "header contains invalid character.")
 
 # Test fields
 # nolint start
@@ -24,11 +25,12 @@ Connection: keep-alive\r\n
 Cookie: prov=f1e12498-1231-c8f0-8f53-97a8a6b17754; notice-ctt=4%3B1560153827826; mfnes=6e32CJ0CEAMaCwishdGGwpPLNxAFIJsCKAEyCDYyZGY0OTJh; acct=t=cmBi7gQEMWgxdi6kOiPwqAVNqmbEPdVj&s=E9Ly%2bCeEeAGmK9wDx2Zaseg6tiyi2hd8; sgt=id=3f4b96f5-b5ef-4ab1-96af-5ebce2950bcc\r\n
 Upgrade-Insecure-Requests: 1\r\n
 Cache-Control: max-age=0\r\n
+Custom_name: custom value
 TE: Trailers\r\n\r\n"
 
-parsed = parse_headers(h)
+parsed = cpp_parse_headers(h)
 expect_true(inherits(parsed, "list"))
-expect_equal(length(parsed), 12L)
+expect_equal(length(parsed), 13L)
 expect_equal(parsed[["connection"]], "keep-alive")
 expect_equal(parsed[["accept"]], c("text/html", "application/xhtml+xml", "application/xml"))
 expect_equal(parsed[["user-agent"]], "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0")
@@ -36,4 +38,5 @@ expect_equal(parsed[["accept-encoding"]], c("gzip", "deflate", "br"))
 expect_equal(parsed[["accept-language"]], c("ru-RU", "ru"))
 expect_equal(length(parsed[["cookie"]]), 5L)
 expect_equal(parsed[["cookie"]][[1L]], "prov=f1e12498-1231-c8f0-8f53-97a8a6b17754")
+expect_equal(parsed[["custom_name"]], "custom value")
 # nolint end

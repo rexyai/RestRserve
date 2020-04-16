@@ -29,7 +29,8 @@ std::string url_decode_one(const std::string& value) {
   return escaped.str();
 }
 
-Rcpp::CharacterVector url_decode(Rcpp::CharacterVector x) {
+// [[Rcpp::export]]
+Rcpp::CharacterVector cpp_url_decode(Rcpp::CharacterVector x) {
   std::size_t n = x.size();
   Rcpp::CharacterVector out = Rcpp::no_init(n);
   for (std::size_t i = 0; i < n; ++i) {

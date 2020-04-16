@@ -1,35 +1,7 @@
-#' @title Creates Router
-#'
-#' @usage NULL
-#' @format [R6::R6Class] object.
+#' @title Creates Router object.
 #'
 #' @description
 #' Creates Router object.
-#'
-#' @section Construction:
-#'
-#' ```
-#' Router$new()
-#' ````
-#'
-#' @section Fields:
-#'
-#' * `paths` :: `character()`\cr
-#'   All added paths as is (with templates placeholders).
-#'
-#' @section Methods:
-#'
-#' * `size()`\cr
-#'   -> `integer(1)`\cr
-#'   Returns number of paths added before.
-#'
-#' * `add_path(path, match = c("exact", "partial", "regex"), id)`\cr
-#'   `character(1)`, `character(1)`, `character(1)` -> \cr
-#'   Add path with their id.
-#'
-#' * `match_path(path, extract_vars = TRUE)`\cr
-#'   `character(1)`, `logical(1)` -> `character(1)` | `NULL`\cr
-#'   Find path within paths added before. Returns `NULL` if path not matched.
 #'
 #' @keywords internal
 #'
@@ -46,15 +18,29 @@
 Router = R6::R6Class(
   classname = "Router",
   public = list(
+    #' @field paths All added paths as is (with templates placeholders).
     paths = NULL,
+    #' @description
+    #' Creates Router object.
     initialize = function() {
       private$exact = new.env()
       private$partial = new.env()
       private$vars = new.env()
     },
+    #' @description
+    #' Returns number of paths added before.
+    #' @return Number of paths.
     size = function() {
       length(self$paths)
     },
+    #' @description
+    #' Add path with their id.
+    #' @param path Path to handle.
+    #' @param match Defines how route will be processed. Allowed values:
+    #'   * `exact` - match route as is. Returns 404 if route is not matched.
+    #'   * `partial` - match route as prefix. Returns 404 if prefix are not matched.
+    #'   * `regex` - match route as template. Returns 404 if template pattern not matched.
+    #' @param id Path handler id.
     add_path = function(path, match = c("exact", "partial", "regex"), id) {
       private$assert_path(path)
       match = match.arg(match)
@@ -106,6 +92,11 @@ Router = R6::R6Class(
       self$paths = append(self$paths, setNames(path, match))
       return(invisible(self))
     },
+    #' @description
+    #' Find path within paths added before. Returns `NULL` if path not matched.
+    #' @param path Path endpoint.
+    #' @param extract_vars Extart path parameters (when handler matches regex).
+    #' @return Handler id.
     match_path = function(path, extract_vars = TRUE) {
       # private$assert_path(path)
       if (!is.null(private$exact[[path]])) {

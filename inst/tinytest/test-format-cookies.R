@@ -1,13 +1,13 @@
 # Test format cookies
 
 # import functions
-format_cookies = RestRserve:::format_cookies
+cpp_format_cookies = RestRserve:::cpp_format_cookies
 
 # Empty object
-expect_equal(format_cookies(NULL), "")
-expect_equal(format_cookies(list()), "")
-expect_error(format_cookies(NA))
-expect_error(format_cookies(list(name = "value")), "cookie object must contain")
+expect_equal(cpp_format_cookies(NULL), "")
+expect_equal(cpp_format_cookies(list()), "")
+expect_error(cpp_format_cookies(NA))
+expect_error(cpp_format_cookies(list(name = "value")), "cookie object must contain")
 
 # Test list of cookies
 cookies = list(
@@ -25,5 +25,5 @@ v = paste(
   "Set-Cookie: var5=val5; Path=/; Domain=example.com; HttpOnly",
   sep = "\r\n"
 )
-r = format_cookies(cookies)
+r = cpp_format_cookies(cookies)
 expect_equal(r, v)

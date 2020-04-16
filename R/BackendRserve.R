@@ -1,77 +1,32 @@
 #' @title Creates Rserve backend for processing HTTP requests
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
-#'
 #' @description
-#' Creates BackendRserve object which can start [Application]
-#' using Rserve backend.
+#' Creates BackendRserve object which can start [Application] using Rserve backend.
 #'
-#' @section Construction:
-#' Constructor for `BackendRserve`.
-#' `````
-#' BackendRserve$new(...)
-#' `````
-#'
-#' * **`...`** \cr
-#'   Not used at the moment
-#'
-#' @section  Methods:
-#'
-#' * **`start`**`(app, http_port = 8080, ..., background = FALSE)` \cr
-#'   [Application], `integer(1)`, `any`, `logical(1)` -> `NULL` \cr
-#'   Starts RestRserve application from current R session.
-#'
-#'   * `http_port` - http port for application. Negative values (such as -1)
-#'     means not to expose plain http.
-#'
-#'   * `...` - key-value pairs of the Rserve configuration. If contains
-#'     `"http.port"` then `http_port` will be silently replaced with its value.
-#'
-#'   * `background` - whether to try to launch in background process on UNIX
-#'     systems. Ignored on windows.
-#' * **`set_request`**`(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL)` :: `function`\cr
-#'     * `request` :: [Request]\cr
-#'
-#'     * `path` :: `character(1)`\cr
-#'       Character with requested path. Always starts with `/`.
-#'
-#'     * `parameters_query` :: `named character()`\cr
-#'       A named character vector with URL decoded query parameters.
-#'
-#'     * `headers` :: `raw()` | `character(1)`\cr
-#'       Request HTTP headers.
-#'
-#'     * `body` :: `raw()` | `character()`\cr
-#'       Request body. Can be `NULL`, raw vector or named character vector for the
-#'       URL encoded form (like a `parameters_query` parameter).
-#'
-#' * **`convert_response`**`(response)`\cr
-#'   [Response] -> `list()`\cr
-#'   Convert `self` object to Rserve compatible structure.
-#'   [According to http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372) # nolint
-#'   returned list should have the following structure:
-#'     * `body`: can be a character vector of length one or a raw vector.
-#'       if the character vector is named "file" then the content of a file of
-#'       that name is the body.
-#'       If the character vector is named "tmpfile" then the content of a
-#'       temporary file of that name is the body.
-#'
-#'     * `content-type`: must be a character vector of length one or NULL
-#'       (if present, else default is `"text/plain"`).
-#'
-#'     * `headers`: must be a character vector - the elements will have CRLF
-#'       appended and neither `Content-type` nor `Content-length` may be used.
-#'
-#'     * `status-code`: must be an integer if present (default is 200).
+#' @references
+# nolint start
+#' [See http.c in Rserve](https://github.com/s-u/Rserve/blob/e6b2b6b10e92b6e201d34a05394b2186fda30696/src/http.c#L353-L372)
+# nolint end
 #' @export
+#'
 BackendRserve = R6::R6Class(
-  "BackendRserve",
+  classname = "BackendRserve",
   inherit = Backend,
   public = list(
+    #' @description
+    #' Creates BackendRserve object.
+    #' @param ... Not used at the moment.
     initialize = function(...) {invisible(self)},
-    start = function(app, http_port = 8080, ..., background = FALSE) {
-
+    #' @description
+    #' Starts RestRserve application from current R session.
+    #' @param app [Application] object.
+    #' @param http_port HTTP port for application. Negative values (such as -1)
+    #'   means not to expose plain http.
+    #' @param ... Key-value pairs of the Rserve configuration. If contains
+    #'   `"http.port"` then `http_port` will be silently replaced with its value.
+    #' @param background Whether to try to launch in background process on UNIX.
+    #' @return [ApplicationProcess] object when `background = TRUE`.
+    start = function(app, http_port = 8080, ..., background = FALSE) { # nocov start
       checkmate::assert_int(http_port)
       ARGS = list(...)
       if (http_port > 0L) {
@@ -125,8 +80,17 @@ BackendRserve = R6::R6Class(
       } else {
         do.call(Rserve::run.Rserve, ARGS)
       }
-    },
-
+    }, # nocov end
+    #' @description
+    #' Parse request and set to it fields.
+    #' @param request [Request] object.
+    #' @param path Character with requested path. Always starts with `/`.
+    #' @param parameters_query A named character vector with URL decoded query
+    #'   parameters.
+    #' @param headers Request HTTP headers.
+    #' @param body Request body. Can be `NULL`, raw vector or named character
+    #'   vector for the URL encoded form (like a `parameters_query` parameter).
+    #' @return `request` modified object.
     set_request = function(request, path = "/", parameters_query = NULL, headers = NULL, body = NULL) {
       # actually we can skip runtime check as inputs from Rserve are guaranteed
       if (isTRUE(getOption('RestRserve.runtime.asserts', TRUE))) {
@@ -145,8 +109,8 @@ BackendRserve = R6::R6Class(
       }
 
       request$path = path
-      private$parse_query(parameters_query, request)
       private$parse_headers(headers, request)
+      private$parse_query(parameters_query, request)
       # Rserve adds "Request-Method: " key:
       # https://github.com/s-u/Rserve/blob/05ff32d3c4512954a99162d392d0465d432d591e/src/http.c#L661
       # according to the code above we assume that "request-method" is always exists
@@ -159,14 +123,27 @@ BackendRserve = R6::R6Class(
 
       invisible(request)
     },
-
+    #' @description
+    #' Convert `self` object to Rserve compatible structure.
+    #' @param response [Response] object.
+    #' @return List with the following structure:
+    #'   * `body`: can be a character vector of length one or a raw vector.
+    #'       if the character vector is named "file" then the content of a file of
+    #'       that name is the body.
+    #'       If the character vector is named "tmpfile" then the content of a
+    #'       temporary file of that name is the body.
+    #'   * `content-type`: must be a character vector of length one or NULL
+    #'       (if present, else default is `"text/plain"`).
+    #'   * `headers`: must be a character vector - the elements will have CRLF
+    #'       appended and neither `Content-type` nor `Content-length` may be used.
+    #'   * `status-code`: must be an integer if present (default is 200).
     convert_response = function(response) {
       body = response$body
       # prepare headers
       if (length(response$headers) > 0L) {
-        headers = format_headers(as.list(response$headers))
+        headers = cpp_format_headers(as.list(response$headers))
         if (length(response$cookies) > 0L) {
-          headers = paste(headers, format_cookies(as.list(response$cookies)), sep = "\r\n")
+          headers = paste(headers, cpp_format_cookies(as.list(response$cookies)), sep = "\r\n")
         }
       } else {
         headers = character(0)
@@ -200,38 +177,35 @@ BackendRserve = R6::R6Class(
         body = body[nzchar(names(body)) & nzchar(body)]
         request$parameters_body = as.list(body)
         keys = names(body)
-        values = paste(url_encode(keys), url_encode(body), sep = "=", collapse = "&")
+        values = paste(cpp_url_encode(keys), cpp_url_encode(body), sep = "=", collapse = "&")
         body = charToRaw(values)
       } else {
         body = raw()
       }
       request$body = body
-      request$content_type = "application/x-www-form-urlencoded"
       return(request)
     },
-
     parse_form_multipart = function(body, request) {
-      content_type = attr(body, "content-type")
-      boundary = parse_multipart_boundary(content_type)
-      res = parse_multipart_body(body, paste0("--", boundary))
+      # workaround for the issue #137
+      # content_type = attr(body, "content-type")
+      boundary = cpp_parse_multipart_boundary(request$content_type)
+      res = cpp_parse_multipart_body(body, boundary)
       if (length(res$values) > 0L) {
         values = unlist(res$values, use.names = TRUE)
         values = values[nzchar(names(values)) & nzchar(values)]
-        keys = url_decode(names(values))
-        values = url_decode(values)
+        keys = cpp_url_decode(names(values))
+        values = cpp_url_decode(values)
         request$parameters_body[keys] = values
       }
       if (length(res$files) > 0L) {
         request$files = res$files
-        keys = url_decode(names(res$files))
-        values = url_decode(vapply(res$files, "[[", character(1), "filename"))
+        keys = cpp_url_decode(names(res$files))
+        values = cpp_url_decode(vapply(res$files, "[[", character(1), "filename"))
         request$parameters_body[keys] = values
       }
       request$body = body
-      request$content_type = content_type
       return(request)
     },
-
     parse_query = function(parameters_query, request) {
       res = structure(list(), names = character())
       if (length(parameters_query) > 0L) {
@@ -241,67 +215,75 @@ BackendRserve = R6::R6Class(
         res = res[nzchar(names(res)) & nzchar(parameters_query)]
       }
       request$parameters_query = res
-      invisible(request)
+      return(request)
     },
-
     parse_headers = function(headers, request) {
-
       if (is.raw(headers)) {
         headers = rawToChar(headers)
       }
-
       if (is_string(headers)) {
-        headers = parse_headers(headers)
+        headers = cpp_parse_headers(headers)
       }
-
       request$headers = headers
-      invisible(request)
+      return(request)
     },
-
     parse_body_and_content_type = function(body, request) {
-      h_ctype = request$headers[["content-type"]]
-      b_ctype = attr(body, "content-type")
-      if (!is.null(b_ctype)) {
-        h_ctype = b_ctype
+      if (is.null(request$content_type)) {
+        request$content_type = request$headers[["content-type"]]
       }
-      if (is.null(h_ctype)) {
-        h_ctype = "text/plain"
+      if (is.null(request$content_type)) {
+        body_type = attr(body, "content-type") # content-type from body attribute
+        # fill type from the body if empty
+        if (!is.null(body_type)) {
+          request$content_type = body_type
+        } else {
+          request$content_type = "text/plain"
+        }
       }
       if (is.null(body)) {
         request$body = raw()
-        request$content_type = h_ctype
       } else if (!is.raw(body)) {
         # parse form
-        if (h_ctype == "application/x-www-form-urlencoded") {
+        if (request$content_type == "application/x-www-form-urlencoded") {
           return(private$parse_form_urlencoded(body, request))
         }
       } else {
-        if (startsWith(h_ctype, "multipart/form-data")) {
+        if (startsWith(request$content_type, "multipart/form-data")) {
           return(private$parse_form_multipart(body, request))
         } else {
           request$body = body
-          request$content_type = h_ctype
         }
       }
-      invisible(request)
+      return(request)
     },
-
     parse_cookies = function(request) {
       if (!is.null(request$headers[["cookie"]])) {
-        request$cookies = parse_cookies(request$headers[["cookie"]])
+        request$cookies = cpp_parse_cookies(request$headers[["cookie"]])
       }
-      invisible(request)
+      return(request)
     }
   ),
 )
 
+#' @title Creates ApplicationProcess object
+#'
+#' @description
+#' Creates ApplicationProcess to hold PID of the runnung applicaiton.
+#'
 ApplicationProcess = R6::R6Class(
   classname = "ApplicationProcess",
   public = list(
+    #' @field pid Process identificator.
     pid = NULL,
+    #' @description
+    #' Creates ApplicationProcess object
+    #' @param pid Process identificator.
     initialize = function(pid) {
       self$pid = pid
     },
+    #' @description
+    #' Send signal to process.
+    #' @param signal Singal code.
     kill = function(signal = 15L) {
       # kill service
       tools::pskill(self$pid, signal)

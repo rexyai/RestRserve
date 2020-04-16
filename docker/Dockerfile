@@ -1,10 +1,10 @@
-FROM r-base:3.6.2
+FROM rocker/r-ver:3.6.2
 
 ENV R_FORGE_PKGS Rserve
 ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends libssl-dev libjemalloc-dev && \
+    apt-get install -y --no-install-recommends libssl-dev libjemalloc-dev wget && \
     install2.r -r http://www.rforge.net/ $R_FORGE_PKGS && \
     install2.r $R_CRAN_PKGS
 
