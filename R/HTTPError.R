@@ -271,7 +271,7 @@ HTTPErrorFactory = R6::R6Class(
     },
     #------------------------------------------------------------------------
     unprocessable_entity = function(...) {
-      private$prepare_response(417L, ...)
+      private$prepare_response(422L, ...)
     },
     #------------------------------------------------------------------------
     locked = function(...) {
