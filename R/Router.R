@@ -161,8 +161,15 @@ Router = R6::R6Class(
       regex = splitted
       regex[pos] = "([^/]+)"
       regex = paste0("/", paste(regex, collapse = "/"), "/?$")
+
       # Make path prefix to fast match
-      prefix = paste0("/", paste(splitted[seq_len(pos[1] - 1)], collapse = "/"), "/")
+      prefix = paste(splitted[seq_len(pos[1] - 1)], collapse = "/")
+      # prefix is root
+      if(identical(prefix, "")) {
+        prefix = "/"
+      } else { # prefix is not root
+        prefix = paste0("/", prefix, "/")
+      }
       # Detect variables types
       tmp = strsplit(splitted[pos], ":", fixed = TRUE)
       vars = data.frame(

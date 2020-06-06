@@ -98,6 +98,7 @@ h$add_path(path = "/test2/", match = "partial", id = "2")
 h$add_path(path = "/test2/{var1}", match = "regex", id = "3")
 h$add_path(path = "/test3/", match = "partial", id = "4")
 h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "5")
+
 expect_null(h$match_path("/test"))
 expect_equal(h$match_path("/test1"), "1")
 expect_null(h$match_path("/test2"))
@@ -106,6 +107,12 @@ expect_equivalent(h$match_path("/test2/test"), "3")
 expect_equal(h$match_path("/test3/"), "4")
 expect_equal(h$match_path("/test3/test"), "4")
 expect_equivalent(h$match_path("/test3/val1/text/val2"), "5")
+
+h$add_path(path = "/{param1}/{param2}", match = "regex", id = "6")
+res_6 = h$match_path("/a/b")
+expect_equivalent(res_6, "6")
+expect_equivalent(attr(res_6, "parameters_path"), list(param1 = "a", param2 = "b"))
+
 
 # Test extract path variables
 h = Router$new()
