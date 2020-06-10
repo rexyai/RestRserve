@@ -25,6 +25,10 @@ cpp_parse_multipart_body <- function(body, boundary) {
     .Call(`_RestRserve_cpp_parse_multipart_body`, body, boundary)
 }
 
+raw_slice <- function(x, offset, size) {
+    .Call(`_RestRserve_raw_slice`, x, offset, size)
+}
+
 cpp_url_decode <- function(x) {
     .Call(`_RestRserve_cpp_url_decode`, x)
 }

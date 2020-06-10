@@ -20,5 +20,6 @@ std::string str_join(const std::vector<T>&, const char*);
 std::string str_join(Rcpp::CharacterVector, const char*);
 template<typename T>
 Rcpp::Environment map_to_env(const std::unordered_map<std::string,T>&);
+Rcpp::RawVector raw_slice(const Rcpp::RawVector &x, const R_xlen_t offset, const R_xlen_t size);
 
 #endif

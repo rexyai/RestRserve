@@ -208,8 +208,9 @@ Request = R6::R6Class(
       if (is.null(self$files[[name]]) || !is.raw(self$body)) {
         return(NULL)
       }
-      idx = seq_len(self$files[[name]]$length) + self$files[[name]]$offset - 1L
-      res = self$body[idx]
+      # see https://github.com/rexyai/RestRserve/issues/151
+      # https://stackoverflow.com/questions/56614592/faster-way-to-slice-a-raw-vector
+      res = raw_slice(self$body, self$files[[name]]$offset, self$files[[name]]$length)
       attr(res, "filname") = self$files[[name]]$filename
       attr(res, "content-type") = self$files[[name]]$content_type
       return(res)
