@@ -52,9 +52,7 @@ BackendRserve = R6::R6Class(
 
       keep_http_request = .GlobalEnv[[".http.request"]]
       # restore global environment on exit
-      on.exit({
-        .GlobalEnv[[".http.request"]] = keep_http_request
-      })
+      on.exit({.GlobalEnv[[".http.request"]] = keep_http_request}, add = TRUE)
 
       # temporary modify global environment
       .GlobalEnv[[".http.request"]] = function(url, parameters_query, body, headers) {
@@ -82,7 +80,7 @@ BackendRserve = R6::R6Class(
 
       app$logger$debug("", context = sprintf("setting JIT level to %d", private$jit_level))
       old_jit = compiler::enableJIT(private$jit_level)
-      on.exit(compiler::enableJIT(old_jit))
+      on.exit(compiler::enableJIT(old_jit), add = TRUE)
 
       # see https://github.com/rexyai/RestRserve/issues/149
       if(isTRUE(private$precompile)) {
