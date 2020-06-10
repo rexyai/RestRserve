@@ -163,3 +163,13 @@ Rcpp::List cpp_parse_multipart_body(Rcpp::RawVector body, const char* boundary) 
   );
   return res;
 }
+
+// see https://github.com/rexyai/RestRserve/issues/151
+// https://stackoverflow.com/questions/56614592/faster-way-to-slice-a-raw-vector
+
+// [[Rcpp::export(rng=false)]]
+Rcpp::RawVector raw_slice(const Rcpp::RawVector &x, const R_xlen_t offset, const R_xlen_t size) {
+  Rcpp::RawVector result = Rcpp::no_init(size);
+  memcpy ( &result[0], &x[offset - 1], size );
+  return result;
+}

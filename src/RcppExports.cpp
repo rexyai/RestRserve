@@ -66,6 +66,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// raw_slice
+Rcpp::RawVector raw_slice(const Rcpp::RawVector& x, const R_xlen_t offset, const R_xlen_t size);
+RcppExport SEXP _RestRserve_raw_slice(SEXP xSEXP, SEXP offsetSEXP, SEXP sizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< const Rcpp::RawVector& >::type x(xSEXP);
+    Rcpp::traits::input_parameter< const R_xlen_t >::type offset(offsetSEXP);
+    Rcpp::traits::input_parameter< const R_xlen_t >::type size(sizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(raw_slice(x, offset, size));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_url_decode
 Rcpp::CharacterVector cpp_url_decode(Rcpp::CharacterVector x);
 RcppExport SEXP _RestRserve_cpp_url_decode(SEXP xSEXP) {
@@ -96,6 +108,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_cpp_parse_headers", (DL_FUNC) &_RestRserve_cpp_parse_headers, 1},
     {"_RestRserve_cpp_parse_multipart_boundary", (DL_FUNC) &_RestRserve_cpp_parse_multipart_boundary, 1},
     {"_RestRserve_cpp_parse_multipart_body", (DL_FUNC) &_RestRserve_cpp_parse_multipart_body, 2},
+    {"_RestRserve_raw_slice", (DL_FUNC) &_RestRserve_raw_slice, 3},
     {"_RestRserve_cpp_url_decode", (DL_FUNC) &_RestRserve_cpp_url_decode, 1},
     {"_RestRserve_cpp_url_encode", (DL_FUNC) &_RestRserve_cpp_url_encode, 1},
     {NULL, NULL, 0}
