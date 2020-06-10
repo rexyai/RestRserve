@@ -16,7 +16,10 @@ BackendRserve = R6::R6Class(
     #' @description
     #' Creates BackendRserve object.
     #' @param ... Not used at the moment.
-    initialize = function(...) {invisible(self)},
+    #' @param jit_level changes R's byte compiler level to this value before app
+    #' start
+    #' @param precompile try to use R's byte compiler to pre-compile
+    initialize = function(..., jit_level = 0, precompile = TRUE) {invisible(self)},
     #' @description
     #' Starts RestRserve application from current R session.
     #' @param app [Application] object.
