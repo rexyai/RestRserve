@@ -100,32 +100,33 @@ find_port = function(tries = 50) {
 #   vapply(x, utils::URLdecode, "", USE.NAMES = FALSE)
 # }
 
-
+# nocov start
 compile_all = function(env = .GlobalEnv, env_done = list(), options = list(optimize = 3),
                        verbose = Sys.getenv("RESTRSERVE_COMPILE_VERBOSE", unset = "FALSE")) {
   verbose = as.logical(verbose)
-  if(verbose) message(sprintf("checking env %s", environmentName(env)))
-  for(obj_name in ls(envir = env)) {
-    if(verbose) message(sprintf("inspecting object '%s'", obj_name))
+  if (verbose) message(sprintf("checking env %s", environmentName(env)))
+  for (obj_name in ls(envir = env)) {
+    if (verbose) message(sprintf("inspecting object '%s'", obj_name))
     obj = env[[obj_name]]
-    if(is.function(obj)) {
+    if (is.function(obj)) {
       status = try({
         env[[obj_name]] = compiler::cmpfun(obj, options)
       }, silent = TRUE)
-      if(verbose) {
-        if(!inherits(status, "try-error")) {
+      if (verbose) {
+        if (!inherits(status, "try-error")) {
           message(sprintf("compiled %s from '%s' env", obj_name, environmentName(env)))
         } else {
           message(sprintf("NOT compiled %s from '%s' env", obj_name, environmentName(env)))
         }
       }
     }
-    if(is.environment(obj)) {
+    if (is.environment(obj)) {
       already_compiled = vapply(env_done, function(e) identical(e, obj), FUN.VALUE = FALSE, USE.NAMES = FALSE)
       already_compiled = any(already_compiled)
-      if(!already_compiled) {
+      if (!already_compiled) {
         compile_all(obj, append(env_done, obj), options)
       }
     }
   }
 }
+# nocov end

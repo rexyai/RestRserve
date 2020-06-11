@@ -83,7 +83,7 @@ BackendRserve = R6::R6Class(
       on.exit(compiler::enableJIT(old_jit), add = TRUE)
 
       # see https://github.com/rexyai/RestRserve/issues/149
-      if(isTRUE(private$precompile)) {
+      if (isTRUE(private$precompile)) {
         app$logger$debug("", context = "trying to byte compile .GlobalEnv recursively")
         compile_all()
       }
