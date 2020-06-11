@@ -214,7 +214,7 @@ if (.Platform$OS.type == "unix") {
       },
       match = "exact"
     )
-    backend = RestRserve:::BackendRserve$new()
+    backend = RestRserve:::BackendRserve$new(precompile = FALSE)
     backend$start(app, http_port = 65003)
   })
   Sys.sleep(0.5) # wait to start process
