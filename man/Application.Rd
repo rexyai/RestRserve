@@ -76,7 +76,9 @@ app$process_request(say_rq)
 # run app
 backend = BackendRserve$new()
 \donttest{
-backend$start(app, 8080)
+if(interactive()) {
+  backend$start(app, 8080)
+}
 }
 
 }
