@@ -16,7 +16,14 @@ BackendRserve = R6::R6Class(
     #' @description
     #' Creates BackendRserve object.
     #' @param ... Not used at the moment.
-    initialize = function(...) {invisible(self)},
+    #' @param jit_level changes R's byte compiler level to this value before app
+    #' start.
+    #' @param precompile try to use R's byte compiler to pre-compile
+    initialize = function(..., jit_level = 0L, precompile = TRUE) {
+      private$jit_level = jit_level
+      private$precompile = precompile
+      invisible(self)
+    },
     #' @description
     #' Starts RestRserve application from current R session.
     #' @param app [Application] object.
@@ -45,9 +52,7 @@ BackendRserve = R6::R6Class(
 
       keep_http_request = .GlobalEnv[[".http.request"]]
       # restore global environment on exit
-      on.exit({
-        .GlobalEnv[[".http.request"]] = keep_http_request
-      })
+      on.exit({.GlobalEnv[[".http.request"]] = keep_http_request}, add = TRUE)
 
       # temporary modify global environment
       .GlobalEnv[[".http.request"]] = function(url, parameters_query, body, headers) {
@@ -72,6 +77,16 @@ BackendRserve = R6::R6Class(
         app$logger$warn("", context = "'Application' doesn't have any endpoints")
       }
       app$logger$info("", context = list(http_port = http_port, endpoints = app$endpoints))
+
+      app$logger$debug("", context = sprintf("setting JIT level to %d", private$jit_level))
+      old_jit = compiler::enableJIT(private$jit_level)
+      on.exit(compiler::enableJIT(old_jit), add = TRUE)
+
+      # see https://github.com/rexyai/RestRserve/issues/149
+      if (isTRUE(private$precompile)) {
+        app$logger$debug("", context = "trying to byte compile .GlobalEnv recursively")
+        compile_all()
+      }
 
       pid = Sys.getpid()
       if (run_mode == 'BACKGROUND') {
@@ -169,6 +184,8 @@ BackendRserve = R6::R6Class(
     }
   ),
   private = list(
+    jit_level = NULL,
+    precompile = NULL,
     request = NULL,
     parse_form_urlencoded = function(body, request) {
       if (length(body) > 0L) {

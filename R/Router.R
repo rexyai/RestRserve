@@ -165,7 +165,7 @@ Router = R6::R6Class(
       # Make path prefix to fast match
       prefix = paste(splitted[seq_len(pos[1] - 1)], collapse = "/")
       # prefix is root
-      if(identical(prefix, "")) {
+      if (identical(prefix, "")) {
         prefix = "/"
       } else { # prefix is not root
         prefix = paste0("/", prefix, "/")
