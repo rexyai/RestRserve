@@ -12,6 +12,11 @@ struct MultipartFile {
   std::size_t length;
 };
 
+using sv = nonstd::string_view;
+using sv_t = nonstd::string_view::size_type;
+using MultipartItems = std::unordered_map<std::string,std::string>;
+using MultipartFiles = std::unordered_map<std::string,MultipartFile>;
+
 namespace Rcpp {
   template <>
   SEXP wrap(const MultipartFile& x) {
@@ -21,21 +26,17 @@ namespace Rcpp {
       Rcpp::Named("offset") = x.offset,
       Rcpp::Named("length") = x.length
     );
-    res.attr("class") = "form_file";
     return res;
   }
 }
 
-using sv_size_t = nonstd::string_view::size_type;
-using MultipartItem = std::pair<std::string,Rcpp::RObject>;
-using MultipartItems = std::unordered_multimap<std::string,Rcpp::RObject>;
-
-MultipartItem parse_multipart_block(nonstd::string_view block, std::size_t offset) {
+void parse_multipart_block(sv block, std::size_t offset,
+                           MultipartFiles& files,
+                           MultipartItems& values) {
   std::size_t block_n = block.size();
 
   std::string name;
   MultipartFile form_file;
-  MultipartItem res;
 
   bool found_cdisp = false;
   bool found_ctype = false;
@@ -57,11 +58,11 @@ MultipartItem parse_multipart_block(nonstd::string_view block, std::size_t offse
     std::regex_constants::icase
   );
 
-  sv_size_t cur_pos = 0;
-  sv_size_t next_pos = nonstd::string_view::npos;
-  while ((next_pos = block.find(eol, cur_pos)) != nonstd::string_view::npos) {
+  sv_t cur_pos = 0;
+  sv_t next_pos = sv::npos;
+  while ((next_pos = block.find(eol, cur_pos)) != sv::npos) {
     auto line_n = next_pos - cur_pos;
-    nonstd::string_view line = block.substr(cur_pos, line_n);
+    sv line = block.substr(cur_pos, line_n);
     if (!line.empty()) {
       std::cmatch m;
       if (!found_cdisp && std::regex_match(line.begin(), line.end(), m, re_cdisp)) {
@@ -81,23 +82,22 @@ MultipartItem parse_multipart_block(nonstd::string_view block, std::size_t offse
         form_file.length = block_n - form_file.offset - 1;
         // correct to block position
         form_file.offset += offset;
-        res = {name, Rcpp::wrap(form_file)};
-        return res;
+        files.insert({name, form_file});
+        return;
       } else if (found_cdisp && !found_file) {
-        res = {name, Rcpp::wrap(std::string(line))};
-        return res;
+        values.insert({name, std::string(line)});
+        return;
       }
     }
     cur_pos = next_pos + eol_n;
   }
-  return res;
 }
 
 // [[Rcpp::export(rng=false)]]
 std::string cpp_parse_multipart_boundary(const std::string& content_type) {
     std::string::size_type pos = content_type.rfind("boundary=");
     if (pos == std::string::npos) {
-        Rcpp::stop("Boundary string no found.");
+        Rcpp::stop("Boundary string not found.");
     }
     return content_type.substr(pos + 9);
 }
@@ -111,10 +111,10 @@ Rcpp::List cpp_parse_multipart_body(Rcpp::RawVector body, const char* boundary) 
     return R_NilValue;
   }
   // output object
-  MultipartItems form_files;
+  MultipartFiles form_files;
   MultipartItems form_values;
   // body as string representation
-  nonstd::string_view body_sv(reinterpret_cast<const char*>(body.begin()), body_n);
+  sv body_sv(reinterpret_cast<const char*>(body.begin()), body_n);
   // end of line string
   static std::string eol = "\r\n";
   // size of EOL string
@@ -125,17 +125,17 @@ Rcpp::List cpp_parse_multipart_body(Rcpp::RawVector body, const char* boundary) 
   // boundary size
   std::size_t boundary_n = boundary_.size();
   // find boundary string
-  sv_size_t block_start_pos = body_sv.find(boundary_, 0);
-  if (block_start_pos == nonstd::string_view::npos) {
+  sv_t block_start_pos = body_sv.find(boundary_, 0);
+  if (block_start_pos == sv::npos) {
     Rcpp::stop("Boundary string not found.");
   }
   // find second boundary string
-  sv_size_t block_end_pos = body_sv.find(boundary_, block_start_pos + 1);
-  if (block_end_pos == nonstd::string_view::npos) {
+  sv_t block_end_pos = body_sv.find(boundary_, block_start_pos + 1);
+  if (block_end_pos == sv::npos) {
     Rcpp::stop("Boundary string at the end block not found.");
   }
   // define end block
-  while (block_start_pos != nonstd::string_view::npos) {
+  while (block_start_pos != sv::npos) {
     // offset boundary string
     block_start_pos += boundary_n;
     // offset eol after boundary
@@ -143,23 +143,18 @@ Rcpp::List cpp_parse_multipart_body(Rcpp::RawVector body, const char* boundary) 
     // find end of block
     block_end_pos = body_sv.find(boundary_, block_start_pos);
     // if block is valid
-    if (block_end_pos != nonstd::string_view::npos) {
+    if (block_end_pos != sv::npos) {
       auto block_size = block_end_pos - block_start_pos;
-      nonstd::string_view block = body_sv.substr(block_start_pos, block_size);
-      MultipartItem tmp = parse_multipart_block(block, block_start_pos);
-      if (tmp.second.inherits("form_file")) {
-          form_files.insert(tmp);
-      } else {
-          form_values.insert(tmp);
-      }
+      sv block = body_sv.substr(block_start_pos, block_size);
+      parse_multipart_block(block, block_start_pos, form_files, form_values);
     }
     // std::string_view block = body_sv.substr(start_pos + boundary_n + 2);
     block_start_pos = block_end_pos;
     Rcpp::checkUserInterrupt();
   }
   Rcpp::List res = Rcpp::List::create(
-    Rcpp::Named("files") = form_files,
-    Rcpp::Named("values") = form_values
+    Rcpp::Named("files") = Rcpp::wrap(form_files),
+    Rcpp::Named("values") = Rcpp::as<Rcpp::List>(Rcpp::wrap(form_values))
   );
   return res;
 }
