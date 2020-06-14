@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -183,11 +183,16 @@
 <hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 <p>Creates BackendRserve object.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>new</span>(<span class='no'>...</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='no'>BackendRserve</span>$<span class='fu'>new</span>(<span class='no'>...</span>, <span class='kw'>jit_level</span> <span class='kw'>=</span> <span class='fl'>0L</span>, <span class='kw'>precompile</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre><p></div></p>
 
 <h3>Arguments</h3>
 <p><div class="arguments"></p><dl'>
 <dt><code>...</code></dt><dd><p>Not used at the moment.</p></dd>
+
+<dt><code>jit_level</code></dt><dd><p>changes R's byte compiler level to this value before app
+start.</p></dd>
+
+<dt><code>precompile</code></dt><dd><p>try to use R's byte compiler to pre-compile</p></dd>
 
 </dl><p></div></p>
 <p><hr>

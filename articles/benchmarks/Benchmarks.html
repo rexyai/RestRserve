@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
       <h1 data-toc-skip>Benchmarks</h1>
                         <h4 class="author">Dmitriy Selivanov</h4>
             
-            <h4 class="date">12 April, 2020</h4>
+            <h4 class="date">14 June, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rexyai/RestRserve/blob/master/vignettes/benchmarks/Benchmarks.Rmd"><code>vignettes/benchmarks/Benchmarks.Rmd</code></a></small>
       <div class="hidden name"><code>Benchmarks.Rmd</code></div>
@@ -172,12 +172,12 @@
   <span class="fu">fread</span>(<span class="no">results</span>, <span class="kw">col.names</span> <span class="kw">=</span> <span class="no">csv_header</span>)
 }
 
-<span class="no">run_apib</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">n_threads</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span>), <span class="no">n_sec</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="no">keep_alive</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="no">runtime_checks</span> <span class="kw">=</span> <span class="st">"FALSE"</span>) {
+<span class="no">run_apib</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">n_threads</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span>), <span class="no">n_sec</span> <span class="kw">=</span> <span class="fl">5</span>, <span class="no">keep_alive</span> <span class="kw">=</span> <span class="fl">10000</span>, <span class="no">runtime_checks</span> <span class="kw">=</span> <span class="st">"FALSE"</span>) {
   <span class="no">results</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>()
   <span class="kw">for</span> (<span class="no">n_threads</span> <span class="kw">in</span> <span class="no">n_threads</span>) {
       <span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html">system2</a></span>(
         <span class="kw">command</span> <span class="kw">=</span> <span class="st">"apib"</span>,
-        <span class="kw">args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"-c %d -d %d -k %d --csv-output http://localhost:8080/fib?n=10"</span>, <span class="no">n_threads</span>, <span class="no">n_sec</span>, <span class="no">keep_alive</span>),
+        <span class="kw">args</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"-c %d -d %d -k %d --csv-output \'http://127.0.0.1:8080/fib?n=10\'"</span>, <span class="no">n_threads</span>, <span class="no">n_sec</span>, <span class="no">keep_alive</span>),
         <span class="kw">stdout</span> <span class="kw">=</span> <span class="fl">TRUE</span>
       )
       <span class="no">results</span><span class="kw">[[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">results</span>) + <span class="fl">1</span>]] <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">n_threads</span>, <span class="st">","</span>, <span class="no">runtime_checks</span>, <span class="no">res</span>)
@@ -185,11 +185,11 @@
   <span class="no">results</span>
 }
 
-<span class="no">apib_bench</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">n_sec</span>, <span class="no">content_type</span>, <span class="no">keep_alive</span> <span class="kw">=</span> <span class="fl">1000</span>) {
+<span class="no">apib_bench</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">n_sec</span>, <span class="no">content_type</span>, <span class="no">keep_alive</span> <span class="kw">=</span> <span class="fl">10000</span>) {
   <span class="no">results</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>()
-  <span class="kw">for</span> (<span class="no">runtime_checks</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"TRUE"</span>, <span class="st">"FALSE"</span>)) {
+  <span class="kw">for</span> (<span class="no">runtime_checks</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"FALSE"</span>, <span class="st">"TRUE"</span>)) {
     <span class="no">rr</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/callr/man/r_bg.html">r_bg</a></span>(<span class="no">bench_app</span>, <span class="kw">env</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"RESTRSERVE_RUNTIME_ASSERTS"</span> <span class="kw">=</span> <span class="no">runtime_checks</span>))
-    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="fl">1</span>)
+    <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html">Sys.sleep</a></span>(<span class="fl">2</span>)
     <span class="no">results</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="no">results</span>, <span class="fu">run_apib</span>(<span class="kw">n_threads</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span>), <span class="kw">n_sec</span> <span class="kw">=</span> <span class="no">n_sec</span>, <span class="kw">keep_alive</span> <span class="kw">=</span> <span class="no">keep_alive</span>, <span class="kw">runtime_checks</span> <span class="kw">=</span> <span class="no">runtime_checks</span>))
     <span class="no">rr</span>$<span class="fu">kill_tree</span>()
   }

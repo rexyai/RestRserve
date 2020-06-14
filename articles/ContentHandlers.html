@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -138,7 +138,7 @@
 <span class="co">#&gt;   status code: 200 OK</span>
 <span class="co">#&gt;   content-type: text/plain</span>
 <span class="co">#&gt;   &lt;Headers&gt;</span>
-<span class="co">#&gt;     Server: RestRserve/0.2.2</span></pre></body></html></div>
+<span class="co">#&gt;     Server: RestRserve/0.3.0</span></pre></body></html></div>
 <p>Let’s take a closer look to the <code>response</code> object and its <code>body</code> property:</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="no">response</span>$<span class="no">body</span>)
 <span class="co">#&gt;  chr "3628800"</span></pre></body></html></div>
@@ -174,7 +174,7 @@
 <span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span>
 <span class="co">#&gt;   unclass(res)</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x6d29728&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x6ea5630&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></pre></body></html></div>
 <p>We can manually override application default content-type:</p>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">application</span>$<span class="fu">add_get</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/factorial-json"</span>, <span class="kw">function</span>(<span class="no">req</span>, <span class="no">res</span>) {

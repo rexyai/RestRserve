@@ -82,7 +82,7 @@ REST API by registering R functions as handlers http requests." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -482,7 +482,9 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class='co'># run app</span>
 <span class='no'>backend</span> <span class='kw'>=</span> <span class='no'>BackendRserve</span>$<span class='fu'>new</span>()
 <span class='co'># \donttest{</span>
-<span class='no'>backend</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='fl'>8080</span>)
+<span class='kw'>if</span>(<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) {
+  <span class='no'>backend</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='fl'>8080</span>)
+}
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
