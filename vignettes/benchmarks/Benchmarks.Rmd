@@ -82,12 +82,12 @@ parse_apib_results = function(x) {
   fread(results, col.names = csv_header)
 }
 
-run_apib = function(n_threads = c(1, 2, 4, 6), n_sec = 5, keep_alive = 1000, runtime_checks = "FALSE") {
+run_apib = function(n_threads = c(1, 2, 4, 6), n_sec = 5, keep_alive = 10000, runtime_checks = "FALSE") {
   results = character()
   for (n_threads in n_threads) {
       res = system2(
         command = "apib", 
-        args = sprintf("-c %d -d %d -k %d --csv-output http://localhost:8080/fib?n=10", n_threads, n_sec, keep_alive),
+        args = sprintf("-c %d -d %d -k %d --csv-output \'http://127.0.0.1:8080/fib?n=10\'", n_threads, n_sec, keep_alive),
         stdout = TRUE
       )
       results[[length(results) + 1]] = paste0(n_threads, ",", runtime_checks, res)
@@ -95,11 +95,11 @@ run_apib = function(n_threads = c(1, 2, 4, 6), n_sec = 5, keep_alive = 1000, run
   results
 }
 
-apib_bench = function(n_sec, content_type, keep_alive = 1000) {
+apib_bench = function(n_sec, content_type, keep_alive = 10000) {
   results = character()
-  for (runtime_checks in c("TRUE", "FALSE")) {
+  for (runtime_checks in c("FALSE", "TRUE")) {
     rr = r_bg(bench_app, env = c("RESTRSERVE_RUNTIME_ASSERTS" = runtime_checks))
-    Sys.sleep(1)
+    Sys.sleep(2)
     results = c(results, run_apib(n_threads = c(1, 2, 4, 6), n_sec = n_sec, keep_alive = keep_alive, runtime_checks = runtime_checks))
     rr$kill_tree()
   }
@@ -143,11 +143,11 @@ plot_results(results_json, "application/json")
 Keep in mind that creating new connections is quite expensive for any HTTP server. For `RestRserve`'s `Rserve` backend this is particularly true since for each new connection it forks a child process (which has relatively high cost). With other backends slow down might be less significant. 
 
 ```{r}
-results_no_keep_alive = apib_bench(5, "application/json", keep_alive = 0) 
+results_no_keep_alive = apib_bench(5, "application/json", keep_alive = 0)
 ```
 
 ```{r, echo=FALSE}
-plot_results(results_no_keep_alive, "application/json", 2)
+plot_results(results_no_keep_alive, "application/json", adj_y_text = 2)
 ```
 <img src="../img/bench-rps-no-keep-alive.png" width="640"/>
 
