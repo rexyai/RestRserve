@@ -1,11 +1,11 @@
 ## New submission
 
-- take content type from headers in Rserve backend
+- new version, primarily bugfixes 
 
 ### Test environments
 
-- local OS X install, R 3.6.0
-- Ubuntu 16.04.6 LTS (on travis-ci), R 3.6.2
+- local ubuntu install, R 3.6.0
+- Ubuntu 16.04.6 LTS (on travis-ci), R 4.0
 - win-builder (devel)
 
 ### R CMD check results
