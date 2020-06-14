@@ -1,5 +1,11 @@
 ## Changelog
 
+* 2020-06-14 - 0.3.0
+    * more efficient multipart handling - see #150. Thanks @rplati for reporting.
+    * substantially reduced latency when handling requests from new connection in a fresh fork - see #149. Benchmarks updated. Thanks @t-wojciech and @s-u for the discussion.
+    * fixed bug when wrong error code was retuned for *Unprocessable Entity* http error  - see #141. Thanks @junghwan-yun for reporting.
+    * fixed bug when path parameters were not properly parsed - see #147.
+
 * 2020-04-09 - 0.2.2
     * parse content-type directly from headers - see #137
 
