@@ -24,5 +24,5 @@ from_json = function(x) {
   if (is.raw(x)) {
     x = rawToChar(x)
   }
-  jsonlite::fromJSON(txt = x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
+  jsonlite::parse_json(txt = x, simplifyVector = TRUE, simplifyDataFrame = FALSE, simplifyMatrix = FALSE)
 }

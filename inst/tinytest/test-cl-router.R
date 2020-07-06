@@ -118,9 +118,16 @@ expect_equivalent(attr(res_6, "parameters_path"), list(param1 = "a", param2 = "b
 h = Router$new()
 h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
 h$add_path(path = "/test3/{var1}/text/{var2}", match = "regex", id = "1")
+
 a = attr(h$match_path("/test2/1"), "parameters_path")
 v = list("var1" = "1")
 expect_equal(a, v)
+
 a = attr(h$match_path("/test3/1/text/3"), "parameters_path")
 v = list("var1" = "1", "var2" = "3")
 expect_equal(a, v)
+
+h$add_path(path = "/{z}/{x}/{y}", match = "regex", id = "1")
+a = attr(h$match_path("/1/2/3"), "parameters_path")
+expect_equal(a, list(z = "1", x = "2", y = "3"))
+
