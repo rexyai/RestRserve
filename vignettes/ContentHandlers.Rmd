@@ -59,7 +59,7 @@ Two immediate questions can arise:
 1. Why `content_type` is equal to `text/plain`? 
     - This is because we can specify default `content_type` in `Application` constructor. It is `text/plain` by default, which means all the responses by default will have `text/plain` content type.
 1. How does application know how to encode `text/plain`? Can it encode any arbitrary content type?
-    - Application by default is initialized with pre-defined [EncodeDecodeMiddleware] middleware. The logic on how to encode and decode request and response body is controlled by its `ContentHandlers` property. Out of the box it supports two content types - `text/plain` and `application/json`. 
+    - Application by default is initialized with pre-defined ?EncodeDecodeMiddleware middleware. The logic on how to encode and decode request and response body is controlled by its `ContentHandlers` property. Out of the box it supports two content types - `text/plain` and `application/json`. 
 
 For instance `app1` and `app2` are equal:
 ```{r}
@@ -158,4 +158,71 @@ request = Request$new(path = "/echo", method = "POST", body = '{"hello":"world"}
 response = application$process_request(request)
 response$body
 ```
-The logic behind decoding is also controlled by [EncodeDecodeMiddleware] and its `ContentHandlers` property.
+The logic behind decoding is also controlled by ?EncodeDecodeMiddleware and its `ContentHandlers` property.
+
+# Extending encoding and decoding
+
+Here is an example which demonstrates on how to extend ?EncodeDecodeMiddleware to handle additional content types:
+
+```{r}
+encode_decode_middleware = EncodeDecodeMiddleware$new()
+
+encode_decode_middleware$ContentHandlers$set_encode(
+  "text/csv", 
+  function(x) {
+    con = rawConnection(raw(0), "w")
+    on.exit(close(con))
+    write.csv(x, con, row.names = FALSE)
+    rawConnectionValue(con)
+  }
+)
+
+encode_decode_middleware$ContentHandlers$set_decode(
+  "text/csv", 
+  function(x) {
+    res = try({
+      con = textConnection(rawToChar(x), open = "r")
+      on.exit(close(con))
+      read.csv(con)
+    }, silent = TRUE)
+    
+    if (inherits(res, "try-error")) {
+      raise(HTTPError$bad_request(body = attributes(res)$condition$message))
+    }
+    return(res)
+  }
+)
+```
+
+Extended middleware needs to be provided to the application constructor:
+
+```{r}
+data(iris)
+app = Application$new(middleware = list(encode_decode_middleware))
+```
+
+Now let's test it:
+
+```{r}
+app$add_get("/iris", FUN = function(req, res) {
+  res$set_content_type("text/csv")
+  res$set_body(iris)
+})
+
+req = Request$new(path = "/iris", method = "GET")
+res = app$process_request(req)
+
+iris_out = read.csv(textConnection(rawToChar(res$body)))
+head(iris_out)
+```
+
+```{r}
+app$add_post("/in", FUN = function(req, res) {
+  str(req$body)
+})
+req = Request$new(path = "/in", method = "POST", body = res$body, content_type = "text/csv")
+app$process_request(req)
+```
+
+
+
