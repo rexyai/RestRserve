@@ -34,6 +34,29 @@ BackendRserve = R6::R6Class(
     #' @param background Whether to try to launch in background process on UNIX.
     #' @return [ApplicationProcess] object when `background = TRUE`.
     start = function(app, http_port = 8080, ..., background = FALSE) { # nocov start
+      # https://stackoverflow.com/a/36017172/1069256
+      if (!is.na(Sys.getenv("RSTUDIO", unset = NA))) {
+        msg = "Starting RestRserve app which uses Rserve backend from within"
+        msg = paste(msg, "RStudio is not supported.\n")
+        msg = paste0(msg, "Please consider to start the application")
+        msg = paste(msg, "from a shell in non-interactive mode:\n\n")
+        msg = paste0(msg, "> Rscript your_app.R\n\n")
+        msg = paste0(msg, "Rserve uses forks for processing requests")
+        msg = paste(msg, "in parallel. This is known to cause problems when")
+        msg = paste(msg, "using within RStudio (see 'GUI/embedded environments'")
+        msg = paste(msg, "section of the ?parallel::mcfork documentation for details)")
+        stop(msg)
+      }
+
+      if (interactive()) {
+        msg = "Starting RestRserve app from interactive session"
+        msg = paste(msg, "might cause unstable work of the service.\n")
+        msg = paste0(msg, "Please consider to start the application")
+        msg = paste(msg, "from a shell in non-interactive mode:\n\n")
+        msg = paste0(msg, "> Rscript your_app.R")
+        warning(msg)
+      }
+
       checkmate::assert_int(http_port)
       ARGS = list(...)
       if (http_port > 0L) {
@@ -56,6 +79,7 @@ BackendRserve = R6::R6Class(
 
       # temporary modify global environment
       .GlobalEnv[[".http.request"]] = function(url, parameters_query, body, headers) {
+        parallel:::closeFD(0)
         self$set_request(
           app$.__enclos_env__$private$request,
           path = url,

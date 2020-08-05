@@ -71,7 +71,7 @@ Logger = R6::R6Class(
             log_msg = c(log_msg, extra)
           }
           x = to_json(log_msg)
-          cat(x, file = "", append = TRUE, sep = "\n")
+          cat(x, file = "|cat", sep = "\n")
         }
       }
       if (!is.function(FUN))

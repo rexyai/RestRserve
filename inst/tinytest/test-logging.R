@@ -40,6 +40,25 @@ capture = function(lvl, msg, ...) {
   capture.output(invisible(fun(msg, ...)), type = "output")
 }
 
+# set a bit different printer compared to actual code:
+# in pkg code we print to the pipe (file = "|cat")  in order to not mess-up stdout from
+# different child processes who inherent same stdout from parent
+# unfortunately capture.output() doesn't capture such output...
+lg$set_printer(function(timestamp, level, logger_name, pid, message, ...) {
+  log_msg = list(
+    timestamp = format(timestamp, "%Y-%m-%d %H:%M:%OS6"),
+    level = as.character(level),
+    name = as.character(logger_name),
+    pid = as.integer(pid),
+    msg = message
+  )
+  extra = list(...)
+  if (length(extra) > 0) {
+    log_msg = c(log_msg, extra)
+  }
+  x = to_json(log_msg)
+  cat(x, file = "", sep = "\n")
+})
 # Test silent log levels
 lg$set_log_level("info")
 expect_true(nzchar(capture("error", "message")))

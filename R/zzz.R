@@ -1,5 +1,6 @@
 #' @import methods
 #' @importFrom R6 R6Class
+#' @import parallel
 #' @importFrom uuid UUIDgenerate
 #' @importFrom mime guess_type
 #' @importFrom utils packageName packageVersion
