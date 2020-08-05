@@ -25,7 +25,7 @@ fib_handler = function(request, response) {
   if (length(n) == 0L || is.na(n)) {
     raise(HTTPError$bad_request())
   }
-  response$body = as.character(calc_fib(n))
+  response$set_body(as.character(calc_fib(n)))
 }
 
 
