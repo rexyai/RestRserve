@@ -204,23 +204,29 @@ expect_equal(rs$body, "'content-type' header is not set/invalid - don't know how
 HTTPError$reset()
 
 # Test that Application can run
-if (.Platform$OS.type == "unix") {
-  ps = parallel::mcparallel({
-    app = Application$new()
-    app$add_get(
-      path = "/status",
-      FUN = function(request, response) {
-        response$body = "OK!"
-      },
-      match = "exact"
-    )
-    backend = RestRserve:::BackendRserve$new(precompile = FALSE)
-    backend$start(app, http_port = 65003)
-  })
-  Sys.sleep(0.5) # wait to start process
+
+tmp = tempfile()
+code = '
+  library(RestRserve)
+  app = Application$new() \
+  app$add_get( \
+    path = "/status",
+    FUN = function(request, response) {
+      response$body = "OK!"
+    }
+  )
+  backend = RestRserve:::BackendRserve$new(precompile = FALSE)
+  backend$start(app, http_port = 65003)
+'
+writeLines(code, con = tmp)
+
+do_test_external = function() {
+  pid = sys::exec_background(file.path(R.home("bin"), "Rscript"), args = tmp, std_out = FALSE, std_err = FALSE)
+  on.exit(tools::pskill(pid))
+  Sys.sleep(0.5)
   con = url("http://127.0.0.1:65003/status")
   ans = readLines(con, n = 1L, warn = FALSE)
   close(con)
   expect_equal(ans, "OK!")
-  tools::pskill(ps$pid) # kill process
 }
+do_test_external()
