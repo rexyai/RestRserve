@@ -2,7 +2,8 @@
 
 * 2020-08-05 - dev
     * don't allow to start app which uses Rserve backend from within RStudio. This is useless since it blocks R sessions, but also dangerous since it can crash RStudio. See discussion in #158 
-    * logs are now piped instead of written to a shared stdout
+    * stdin file desctiptor is closed inside child processes
+    * logs now flushed somewhat more reliable (but still there is race condition because muplitple child processes write to the same stdout) 
     * use `jsonlite::parse_json` instrad of `jsonlite::fromJSON` for safety reasons
 
 * 2020-06-14 - 0.3.0

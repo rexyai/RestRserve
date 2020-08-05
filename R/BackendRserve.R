@@ -79,6 +79,19 @@ BackendRserve = R6::R6Class(
 
       # temporary modify global environment
       .GlobalEnv[[".http.request"]] = function(url, parameters_query, body, headers) {
+
+        # FIXME - think of  redirecting stdout and stderr streams from child processes
+        # see https://github.com/rexyai/RestRserve/issues/158 for the hints
+        # con = nullfile()
+        # sink(con, type = "output")
+        # sink(con, type = "message")
+        #
+        # on.exit({
+        #   sink(NULL, type = "output")
+        #   sink(NULL, type = "message")
+        #   close(con)
+        # })
+
         parallel:::closeFD(0)
         self$set_request(
           app$.__enclos_env__$private$request,
