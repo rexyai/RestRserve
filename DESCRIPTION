@@ -26,7 +26,7 @@ URL: http://restrserve.org, https://github.com/rexyai/RestRserve
 BugReports: https://github.com/rexyai/RestRserve/issues
 License: GPL (>= 2)
 Depends:
-  R (>= 3.6.0)
+  R (>= 3.4.0)
 Imports:
   methods,
   Rserve (>= 1.7.3),
