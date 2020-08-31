@@ -16,7 +16,11 @@ expect_error(cpp_parse_multipart_boundary(""))
 # Test cpp_parse_multipart_boundary
 boundary = "------------------gc0p4Jq0M2Yt08jU534c0p"
 ctype = paste0("multipart/form-data; boundary=", boundary)
+ctype_sq = paste0("multipart/form-data; boundary=", sQuote(boundary, FALSE))
+ctype_dq = paste0("multipart/form-data; boundary=", dQuote(boundary, FALSE))
 expect_equal(cpp_parse_multipart_boundary(ctype), boundary)
+expect_equal(cpp_parse_multipart_boundary(ctype_sq), boundary)
+expect_equal(cpp_parse_multipart_boundary(ctype_dq), boundary)
 
 # Test cpp_parse_multipart_body with empty object
 expect_error(cpp_parse_multipart_body(NULL, NULL))

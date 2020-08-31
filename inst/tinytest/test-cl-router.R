@@ -113,7 +113,6 @@ res_6 = h$match_path("/a/b")
 expect_equivalent(res_6, "6")
 expect_equivalent(attr(res_6, "parameters_path"), list(param1 = "a", param2 = "b"))
 
-
 # Test extract path variables
 h = Router$new()
 h$add_path(path = "/test2/{var1}", match = "regex", id = "1")
