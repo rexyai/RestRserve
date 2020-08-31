@@ -129,4 +129,3 @@ expect_equal(a, v)
 h$add_path(path = "/{z}/{x}/{y}", match = "regex", id = "1")
 a = attr(h$match_path("/1/2/3"), "parameters_path")
 expect_equal(a, list(z = "1", x = "2", y = "3"))
-
