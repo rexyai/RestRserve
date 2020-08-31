@@ -102,7 +102,7 @@ std::string cpp_parse_multipart_boundary(const std::string& content_type) {
     // cut 'boundary='
     std::string res = content_type.substr(pos + 9);
     // remove quote around boundary string
-    if (res.front() == '"' && res.back() == '"') {
+    if ((res.front() == '"' && res.back() == '"') || (res.front() == '\'' && res.back() == '\'')) {
       res.erase(0, 1); // remove first character
       res.erase(res.size() - 1); // remove last character
     }
