@@ -97,9 +97,16 @@ void parse_multipart_block(sv block, std::size_t offset,
 std::string cpp_parse_multipart_boundary(const std::string& content_type) {
     std::string::size_type pos = content_type.rfind("boundary=");
     if (pos == std::string::npos) {
-        Rcpp::stop("Boundary string not found.");
+      Rcpp::stop("Boundary string not found.");
     }
-    return content_type.substr(pos + 9);
+    // cut 'boundary='
+    std::string res = content_type.substr(pos + 9);
+    // remove quote around boundary string
+    if (res.front() == '"' && res.back() == '"') {
+      res.erase(0, 1); // remove first character
+      res.erase(res.size() - 1); // remove last character
+    }
+    return res;
 }
 
 // [[Rcpp::export(rng=false)]]
