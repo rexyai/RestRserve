@@ -120,6 +120,8 @@ ContentHandlersFactory = R6::R6Class(
       self$set_encode("text/plain", to_string)
       self$set_encode("text/html", to_string)
       self$set_encode("text/css", to_string)
+      self$set_encode("application/javascript", to_string)
+      self$set_encode("image/png", identity)
 
 
       # set default decoders
