@@ -36,3 +36,4 @@ cpp_url_decode <- function(x) {
 cpp_url_encode <- function(x) {
     .Call(`_RestRserve_cpp_url_encode`, x)
 }
+

@@ -16,11 +16,11 @@ body = paste(body, collapse = "\r\n")
 body = charToRaw(body)
 multipart_meta = cpp_parse_multipart_body(body, boundary = "182e92b9-ebbb-4522-9205-a05c9e35191f")
 
-expect_equal(names(multipart_meta$values), c("param2", "param1"))
+expect_equal(sort(names(multipart_meta$values)), sort(c("param2", "param1")))
 expect_equal(multipart_meta$values$param1, "value1")
 expect_equal(multipart_meta$values$param2, "value2")
 
-expect_equal(names(multipart_meta$files), c("part4", "part3", "part2", "part1"))
+expect_equal(sort(names(multipart_meta$files)), sort(c("part4", "part3", "part2", "part1")))
 
 expect_equal(multipart_meta$files$part1$filename, "part1.txt")
 expect_equal(multipart_meta$files$part2$filename, "part2.txt")
