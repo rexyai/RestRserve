@@ -7,7 +7,7 @@ cl = RestRserve:::ContentHandlersFactory$new()
 # Test empty object
 expect_true(inherits(obj, "ContentHandlers"))
 expect_true(inherits(obj$handlers, "environment"))
-expect_equal(length(obj$handlers), 4L)
+expect_equal(length(obj$handlers), 6L)
 expect_true(inherits(obj$handlers[["text/plain"]], "list"))
 expect_equal(length(obj$handlers[["text/plain"]]), 2L)
 expect_equal(names(obj$handlers[["text/plain"]]), c("encode", "decode"))
