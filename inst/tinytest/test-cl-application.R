@@ -223,7 +223,7 @@ writeLines(code, con = tmp)
 do_test_external = function() {
   pid = sys::exec_background(file.path(R.home("bin"), "Rscript"), args = tmp, std_out = FALSE, std_err = FALSE)
   on.exit(tools::pskill(pid))
-  Sys.sleep(0.5)
+  Sys.sleep(2)
   con = url("http://127.0.0.1:65003/status")
   ans = readLines(con, n = 1L, warn = FALSE)
   close(con)

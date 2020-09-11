@@ -94,8 +94,10 @@ BackendRserve = R6::R6Class(
         #   sink(NULL, type = "message")
         #   close(con)
         # })
+        if (.Platform$OS.type == "unix") {
+          parallel:::closeFD(0)
+        }
 
-        parallel:::closeFD(0)
         self$set_request(
           app$.__enclos_env__$private$request,
           path = url,

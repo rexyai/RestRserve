@@ -5,11 +5,20 @@
 #include "nonstd/string_view.hpp"
 #include "utils.h"
 
+std::string strip_quotes(std::string s) {
+  std::string res = s;
+  if ((res.front() == '"' && res.back() == '"') || (res.front() == '\'' && res.back() == '\'')) {
+    res.erase(0, 1); // remove first character
+    res.erase(res.size() - 1); // remove last character
+  }
+  return(res);
+}
+
 struct MultipartFile {
   std::string filename;
   std::string content_type;
-  std::size_t offset;
-  std::size_t length;
+  std::size_t offset = 0;
+  std::size_t length = 0;
 };
 
 using sv = nonstd::string_view;
@@ -49,7 +58,7 @@ void parse_multipart_block(sv block, std::size_t offset,
 
   // regex to match Content-Disposition header
   static std::regex re_cdisp(
-    "Content-Disposition: form-data; name=\"(.*?)\"(?:; filename=\"(.*?)\")?",
+    R"(Content-Disposition: form-data; name=((['"]).*?[.]$\2|[^;\n]*)(?:; filename[^;\n]*=((?:(?:utf)|(?:UTF))-\d['"]*)?((['"]).*?[.]$\5|[^;\n]*)?)*)",
     std::regex_constants::icase
   );
   // regex to match Content-Type header
@@ -63,28 +72,35 @@ void parse_multipart_block(sv block, std::size_t offset,
   while ((next_pos = block.find(eol, cur_pos)) != sv::npos) {
     auto line_n = next_pos - cur_pos;
     sv line = block.substr(cur_pos, line_n);
-    if (!line.empty()) {
-      std::cmatch m;
-      if (!found_cdisp && std::regex_match(line.begin(), line.end(), m, re_cdisp)) {
-        name = m[1];
-        form_file.filename = m[2];
-        found_cdisp = true;
-        found_file = !form_file.filename.empty();
-      } else if (found_file && !found_ctype && std::regex_match(line.begin(), line.end(), m, re_ctype)) {
+    std::cmatch m;
+    if (!found_cdisp && std::regex_match(line.begin(), line.end(), m, re_cdisp)) {
+      name = strip_quotes(m[1]);
+      form_file.filename = strip_quotes(m[4]);
+      found_cdisp = true;
+      found_file = !form_file.filename.empty();
+    } else if (found_file && !found_ctype) {
+      if (std::regex_match(line.begin(), line.end(), m, re_ctype)) {
         form_file.content_type = m[1];
-        found_ctype = true;
-        // offset by current line
-        form_file.offset = next_pos;
-        // skip double empty line
-        form_file.offset += eol_n + eol_n;
-        // add one for the R
-        form_file.offset += 1;
-        form_file.length = block_n - form_file.offset - 1;
-        // correct to block position
-        form_file.offset += offset;
-        files.insert({name, form_file});
-        return;
-      } else if (found_cdisp && !found_file) {
+        form_file.offset += eol_n;
+      } else {
+        // default "text/plain" as per
+        // https://tools.ietf.org/html/rfc7578#section-4.4
+        form_file.content_type = "text/plain";
+      }
+      // offset by current line
+      form_file.offset += next_pos;
+      found_ctype = true;
+      // skip double empty line
+      form_file.offset += eol_n;
+      // add one for the R
+      form_file.offset += 1;
+      form_file.length = block_n - form_file.offset - 1;
+      // correct to block position
+      form_file.offset += offset;
+      files.insert({name, form_file});
+      return;
+    } else if (found_cdisp && !found_file) {
+      if (!line.empty()) {
         values.insert({name, std::string(line)});
         return;
       }
@@ -97,9 +113,13 @@ void parse_multipart_block(sv block, std::size_t offset,
 std::string cpp_parse_multipart_boundary(const std::string& content_type) {
     std::string::size_type pos = content_type.rfind("boundary=");
     if (pos == std::string::npos) {
-        Rcpp::stop("Boundary string not found.");
+      Rcpp::stop("Boundary string not found.");
     }
-    return content_type.substr(pos + 9);
+    // cut 'boundary='
+    std::string res = content_type.substr(pos + 9);
+    // remove quote around boundary string
+    res = strip_quotes(res);
+    return res;
 }
 
 // [[Rcpp::export(rng=false)]]

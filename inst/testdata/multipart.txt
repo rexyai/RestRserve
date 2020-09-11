@@ -1,0 +1,29 @@
+Content-Type: multipart/form-data; boundary="182e92b9-ebbb-4522-9205-a05c9e35191f"
+Content-Length: 361
+
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name=part1; filename="part1.txt"; filename*=utf-8''part1.txt
+
+part1-data
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name="part2"; filename=part2.txt; filename*=utf-8''part2.txt
+
+part2-data
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name=part3; filename*=utf-8''part3.txt
+
+part3-data
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name=part4; filename="part4.json"
+Content-Type: applcation/json
+
+{"part": 4}
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name="param1"
+
+value1
+--182e92b9-ebbb-4522-9205-a05c9e35191f
+Content-Disposition: form-data; name=param2
+
+value2
+--182e92b9-ebbb-4522-9205-a05c9e35191f--
