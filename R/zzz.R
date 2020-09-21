@@ -49,4 +49,36 @@
   if (any(toset)) options(restrserve_options[toset])
 
   assign('HTTPError', HTTPErrorFactory$new(), envir = parent.env(environment()))
+  assign('.req', Request$new(), envir = parent.env(environment()))
+  assign('.res', Response$new(), envir = parent.env(environment()))
 } # nocov end
+
+#' @name IDE-hints
+#' @title request and reponse placeholders for IDE hints
+#'
+#' @seealso [Request] [Response]
+#' @examples
+#' library(RestRserve)
+#'
+#' app = Application$new()
+#'
+#' app$add_get("/foo", FUN = function(.req, .res) {
+#'   # since .res is a dummy instance of Response class
+#'   # exported by RestRserve
+#'   # IDE facilitates with autocompletion!
+#'   .res$set_body("bar")
+#'   # in the same time all the modifications happen with local objects
+#'   # so you get right results in the end
+#' })
+#'
+#' response = app$process_request(Request$new(path = "/foo"))
+#' response$body
+
+
+#' @rdname IDE-hints
+#' @export
+.req = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
+
+#' @rdname IDE-hints
+#' @export
+.res = NULL # see zzz.R on how RestRserve initializes this object during .onLoad
