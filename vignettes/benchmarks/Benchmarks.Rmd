@@ -186,7 +186,7 @@ plot_results = function(x, title, file = NULL, facet = FALSE) {
       legend.position = "bottom"
     ) + 
     labs(
-      x = "number of threads",
+      x = "concurrent requests",
       y = "requests per second",
       title = title,
       fill = "Runtime Checks", 
@@ -337,4 +337,4 @@ plot_results(
 <img src="../img/bench-rps-vs-plumber.png" width="640"/>
 
 
-Due to the overhead of creating a new process for each request in `RServe`, `RestRserve` does not perform as quickly as `plumber` when computing instantaneous routes.  However, `RestRserve` shows it's strength when executing routes that have both low and high computational costs. No extra coding logic is needed to leverage `RestRserve`'s multi-threaded execution. Mixing `plumber` and `future` together for _high computation_ routes brings performance that scales with the number of threads (similar to `RestRserve`), but at the cost of extra route logic and domain knowledge.
+Due to the overhead of creating a new process for each request in `RServe`, `RestRserve` does not perform as quickly as `plumber` when computing instantaneous routes.  However, `RestRserve` shows it's strength when executing routes that have both low and high computational costs. No extra coding logic is needed to leverage `RestRserve`'s multi-threaded execution. Mixing `plumber` and `future` together for _high computation_ routes brings performance that scales with the number of concurrent requests (similar to `RestRserve`), but at the cost of extra route logic and domain knowledge.
