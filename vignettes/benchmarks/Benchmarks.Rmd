@@ -17,31 +17,29 @@ knitr::opts_chunk$set(
   comment = "#>", 
   results = "markup", 
   # to regenerate the images and clear the output, set eval = TRUE
-  eval = FALSE
+  eval = TRUE
 )
 ```
-*\*All benchmarks below are done on a laptop with Intel i7-8850H CPU @ 2.60GHz - 6 cores, 12 threads.*
+*\*All benchmarks below are done on a pretty old Intel Xeon X3470 CPU with 4 cores, 8 threads @ 2.93GHz *. You can expect ~2x better performance on modern CPUs.
 
 
-There are many tools to benchmark HTTP API. We will use [apib](https://github.com/apigee/apib/releases/tag/APIB_1_0) which is successor of a standard `ab` tool.
+There are many tools to benchmark HTTP API. We will use [apib](https://github.com/apigee/apib) which is successor of a standard `ab` tool.
 
 
-We will benchmark a very simple web service - it receives HTTP request at `/fib?n=15` and answers with fibonacci number.
+We will benchmark a very simple web service - it receives HTTP request at `/fib?n=10` and answers with fibonacci number.
 
 ## Details and methodology
 
 Our testing RestRserve application is implemented below:
 
 ```{r bench, eval = TRUE}
-# a function that can return quickly (n = 15) or very slowly  (n = 25)
 calc_fib = function(n) {
-  calc_fib_rec = function(n) {
-    if (n < 0L) stop("n should be >= 0")
-    if (n == 0L) return(0L)
-    if (n == 1L || n == 2L) return(1L)
-    calc_fib_rec(n - 1) + calc_fib_rec(n - 2)
-  }
-  calc_fib_rec(n)
+  if (n < 0L) stop("n should be >= 0")
+  if (n == 0L) return(0L)
+  if (n == 1L || n == 2L) return(1L)
+  x = rep(1L, n)
+  for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
+  x[[n]]
 }
 
 bench_app = function(calc_fn) {
@@ -66,11 +64,7 @@ bench_app = function(calc_fn) {
 Sample `calc_fib()` benchmarking:
 
 ```{r eval=TRUE}
-microbenchmark::microbenchmark(
-  low = calc_fib(15),
-  medium = calc_fib(20),
-  high = calc_fib(25)
-)
+microbenchmark::microbenchmark(low = calc_fib(10), times = 10)
 ```
 
 
@@ -90,7 +84,10 @@ library(callr)
 library(data.table)
 
 parse_apib_results = function(x) {
-  csv_header = system2(command = "apib", args = "--header-line", stdout = T)
+  apib_executable_path = "apib"
+  #apib_executable_path = path.expand("~/projects/apib/release/apib/apib")
+  csv_header = system2(command = apib_executable_path, 
+                       args = "--header-line", stdout = T)
   csv_header = strsplit(csv_header, ",", T)[[1]]
   csv_header = c("n_threads", "fibonacci", "flavor", csv_header[-1])
   if (length(x) == 1) x = paste0(x, "\n")
@@ -99,16 +96,19 @@ parse_apib_results = function(x) {
 }
 
 run_apib = function(
-  n_threads = c(1, 2, 4, 6), 
+  n_threads = c(4, 2, 1), 
   n_sec = 5, 
-  keep_alive = 10000, 
+  keep_alive = -1, 
   flavor = "", 
-  fib_count = 10
-) {
+  fib_count = 10) {
+  
+  apib_executable_path = "apib"
+  #apib_executable_path = path.expand("~/projects/apib/release/apib/apib")
+  
   results = character()
   for (n_thread in n_threads) {
     res = system2(
-      command = "apib", 
+      command = apib_executable_path, 
       args = sprintf(
         "-c %d -d %d -k %d --csv-output \'http://127.0.0.1:8080/fib?n=%d\'", 
         n_thread, n_sec, keep_alive, fib_count
@@ -121,11 +121,10 @@ run_apib = function(
 }
 
 apib_bench = function(
-  n_sec = 20, 
-  keep_alive = 10000, 
-  fib_counts = c(1), 
-  runtime_checks = c(FALSE, TRUE)
-) {
+  n_sec = 5, 
+  keep_alive = -1, 
+  fib_counts = 10, 
+  runtime_checks = c(FALSE, TRUE)) {
   results = character()
   for (fib_count in fib_counts) {
     for (runtime_check in runtime_checks) {
@@ -212,7 +211,7 @@ plot_results = function(x, title, file = NULL, facet = FALSE) {
 ```
 
 ```{r apib_1}
-results_runtime = apib_bench()
+results_runtime = apib_bench(keep_alive = -1, fib_counts = 10)
 ```
 
 ```{r apib_1_plot, echo = FALSE}
@@ -230,7 +229,7 @@ plot_results(
 Keep in mind that creating new connections is quite expensive for any HTTP server. For `RestRserve`'s `Rserve` backend this is particularly true since for each new connection it forks a child process (which has relatively high cost). With other backends slow down might be less significant. 
 
 ```{r apib_no_keep_alive}
-results_no_keep_alive = apib_bench(keep_alive = 0)
+results_no_keep_alive = apib_bench(keep_alive = 0, fib_counts = 10)
 ```
 
 ```{r apib_no_keep_alive_plot, echo=FALSE}
@@ -249,14 +248,37 @@ maintain pool of connections to RestRserve and hence won't suffer from creating 
 
 Support for [`promises`](https://rstudio.github.io/promises/) and [`future`](https://github.com/HenrikBengtsson/future) was added in [`plumber`](https://www.rplumber.io/) v1.0.0.  Extra coding will need to be done within a plumber definition to distinguish which routes utilize promises.
 
-Here, we will benchmark against three styles of routes (low computation, `n = 15`, ~ 0.6ms; medium computation, `n = 20`, ~ 6ms; high computation, `n = 25`, ~ 60ms) using multiple `apib` testing threads (1, 2, 4, and 6).  
+We will rewrite our `calc_fib` function in a less efficient way in order to simulate different amount of computation required by handler. We will benchmark frameworks against three styles of routes (low computation, `n = 15`; medium computation, `n = 20`; high computation, `n = 25`) using multiple `apib` testing threads (1, 2, 4).  
+
+```{r calc_fib_rec, eval=TRUE}
+calc_fib = function(n) {
+  calc_fib_rec = function(n) {
+    if (n < 0L) stop("n should be >= 0")
+    if (n == 0L) return(0L)
+    if (n == 1L || n == 2L) return(1L)
+    x = rep(1L, n)
+    for (i in 3L:n) x[[i]] = x[[i - 1]] + x[[i - 2]]
+    x[[n]]
+    calc_fib_rec(n - 1) + calc_fib_rec(n - 2)
+  }
+  calc_fib_rec(n)
+}
+```
+
+```{r eval=TRUE}
+microbenchmark::microbenchmark(
+  low = calc_fib(15),
+  medium = calc_fib(20),
+  high = calc_fib(25), times = 10
+)
+```
 
 ```{r plumber}
 plumber_app = function(calc_fn, use_future = FALSE) {
   if (isTRUE(use_future)) {
     # multiple cores
     library(future)
-    plan(multiprocess(workers = 6)) # max number of threads
+    plan(multiprocess(workers = 4)) # max number of threads
     fib_route = function(n = -1) {
       n = as.integer(n)
       if (is.na(n)) stop("\"n\"must be integer number.")
@@ -284,10 +306,9 @@ plumber_app = function(calc_fn, use_future = FALSE) {
 }
 
 apib_bench_plumber = function(
-  n_sec = 20, 
-  keep_alive = 10000, 
-  fib_counts = c(15, 20, 25)
-) {
+  n_sec = 5, 
+  keep_alive = -1, 
+  fib_counts = c(15, 20, 25)) {
   results = character()
 
   for (fib_count in fib_counts) {
@@ -302,7 +323,7 @@ apib_bench_plumber = function(
       results = c(
         results, 
         run_apib(
-          n_threads = c(1, 2, 4, 6), 
+          n_threads = c(4, 2, 1), 
           n_sec = n_sec, 
           keep_alive = keep_alive, 
           flavor = flavor, 
@@ -321,10 +342,14 @@ apib_bench_plumber = function(
 ```
 
 ```{r apib_compare}
-results_restrserve = apib_bench(fib_counts = c(15,20,25), runtime_checks = FALSE)
-results_plumber = apib_bench_plumber(fib_counts = c(15,20,25))
+N_SEC = 10
+results_restrserve = apib_bench(fib_counts = c(15, 20, 25), keep_alive = -1, 
+                                runtime_checks = FALSE, n_sec = N_SEC)
+results_plumber = apib_bench_plumber(fib_counts = c(15, 20, 25), keep_alive = -1, n_sec = N_SEC)
 results_compare = rbindlist(list(results_plumber, results_restrserve))
 ```
+
+### Results 
 
 ```{r apib_compare_plot, echo=FALSE}
 plot_results(
@@ -336,5 +361,28 @@ plot_results(
 ```
 <img src="../img/bench-rps-vs-plumber.png" width="640"/>
 
+As can be seen `RestRserce` performs very well on every workload and scales linearly with number of cores. 
 
-Due to the overhead of creating a new process for each request in `RServe`, `RestRserve` does not perform as quickly as `plumber` when computing instantaneous routes.  However, `RestRserve` shows it's strength when executing routes that have both low and high computational costs. No extra coding logic is needed to leverage `RestRserve`'s multi-threaded execution. Mixing `plumber` and `future` together for _high computation_ routes brings performance that scales with the number of concurrent requests (similar to `RestRserve`), but at the cost of extra route logic and domain knowledge.
+### keep-alive disabled
+
+Additionally we may explore environments where web-service exposed directly to many clients without having load balancer or proxy behind it. This is not very common across real-world deployments, but still worth to keep in mind. We can be simulate such scenario by setting `keep_alive = 0`:
+
+```{r apib_compare_no_keepalive}
+results_restrserve = apib_bench(fib_counts = c(15, 20, 25), keep_alive = 0, 
+                                runtime_checks = FALSE, n_sec = N_SEC)
+results_plumber = apib_bench_plumber(fib_counts = c(15, 20, 25), keep_alive = 0, n_sec = N_SEC)
+results_compare = rbindlist(list(results_plumber, results_restrserve))
+```
+
+```{r apib_compare_plot_no_keepalive, echo=FALSE}
+plot_results(
+  results_compare, 
+  "Comparison", 
+  "../img/bench-rps-vs-plumber-no-keepalive.png",
+  facet = TRUE
+)
+```
+
+<img src="../img/bench-rps-vs-plumber-no-keepalive.png" width="640"/>
+
+Due to the overhead of creating a new process for each request and [R's byte compiler overhead](https://github.com/rexyai/RestRserve/issues/149) `RestRserve` with `Rserve` backend does not perform as quickly as `plumber` when computing instantaneous routes.  However, `RestRserve` still shows it's strength when executing routes that have high computational costs. No extra coding logic is needed to leverage `RestRserve`'s multi-threaded execution. Mixing `plumber` and `future` together for _high computation_ routes brings performance that scales with the number of concurrent requests, but at the cost of extra route logic and domain knowledge.
