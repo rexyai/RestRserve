@@ -204,7 +204,7 @@ plot_results = function(x, title, file = NULL, facet = FALSE) {
   }
   
   if (!is.null(file)) {
-    ggsave(file, p, height = 6, width = 7, dpi = "retina")
+    ggsave(file, p, height = 6, width = 7, dpi = 150)
   }
   p
 }
