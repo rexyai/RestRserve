@@ -19,9 +19,9 @@ BackendRserve = R6::R6Class(
     #' @param jit_level changes R's byte compiler level to this value before app
     #' start.
     #' @param precompile try to use R's byte compiler to pre-compile
-    initialize = function(..., jit_level = 0L, precompile = TRUE) {
-      private$jit_level = jit_level
-      private$precompile = precompile
+    initialize = function(..., jit_level = 0L, precompile = FALSE) {
+      private$jit_level = checkmate::assert_int(jit_level, lower = 0L, upper = 3L)
+      private$precompile = checkmate::assert_logical(precompile)
       invisible(self)
     },
     #' @description
