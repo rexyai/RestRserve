@@ -1,16 +1,17 @@
 ## Changelog
 
 * 2020-09-11 - dev
+    * update benchmarking vignette to compare plumber and plumber + future. See #170
     * improve `multipart/form-data` parsing, see #160 for details
     * don't allow to start app which uses Rserve backend from within RStudio. This is useless since it blocks R sessions, but also dangerous since it can crash RStudio. See discussion in #158
-    * stdin file desctiptor is closed inside child processes
+    * stdin file descriptor is closed inside child processes
     * logs now flushed somewhat more reliable (but still there is race condition because muplitple child processes write to the same stdout) 
     * use `jsonlite::parse_json` instrad of `jsonlite::fromJSON` for safety reasons
 
 * 2020-06-14 - 0.3.0
     * more efficient multipart handling - see #150. Thanks @rplati for reporting.
     * substantially reduced latency when handling requests from new connection in a fresh fork - see #149. Benchmarks updated. Thanks @t-wojciech and @s-u for the discussion.
-    * fixed bug when wrong error code was retuned for *Unprocessable Entity* http error  - see #141. Thanks @junghwan-yun for reporting.
+    * fixed bug when wrong error code was returned for *Unprocessable Entity* http error  - see #141. Thanks @junghwan-yun for reporting.
     * fixed bug when path parameters were not properly parsed - see #147.
 
 * 2020-04-09 - 0.2.2
