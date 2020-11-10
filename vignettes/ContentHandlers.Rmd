@@ -23,10 +23,10 @@ Let's consider an example. We develop an application which calculates `factorial
 library(RestRserve)
 backend = BackendRserve$new()
 application = Application$new()
-application$add_get(path = "/factorial", function(req, res) {
-  x = req$get_param_query("x")
+application$add_get(path = "/factorial", function(.req, .res) {
+  x = .req$get_param_query("x")
   x = as.integer(x)
-  res$set_body(factorial(x))
+  .res$set_body(factorial(x))
 })
 ```
 
@@ -78,11 +78,11 @@ FUN
 ```
 We can manually override application default content-type:
 ```{r}
-application$add_get(path = "/factorial-json", function(req, res) {
-  x = as.integer(req$get_param_query("x"))
+application$add_get(path = "/factorial-json", function(.req, .res) {
+  x = as.integer(.req$get_param_query("x"))
   result = factorial(x)
-  res$set_body(list(result = result))
-  res$set_content_type("application/json")
+  .res$set_body(list(result = result))
+  .res$set_content_type("application/json")
 })
 ```
 
@@ -102,12 +102,12 @@ response$body
 And here is a little bit more complex example where we store a binary object in the body. We will use R's native serialization, but one can use `protobuf`, `messagepack`, etc.
 
 ```{r}
-application$add_get(path = "/factorial-rds", function(req, res) {
-  x = as.integer(req$get_param_query("x"))
+application$add_get(path = "/factorial-rds", function(.req, .res) {
+  x = as.integer(.req$get_param_query("x"))
   result = factorial(x)
   body_rds = serialize(list(result = result), connection = NULL)
-  res$set_body(body_rds)
-  res$set_content_type("application/x-rds")
+  .res$set_body(body_rds)
+  .res$set_content_type("application/x-rds")
 })
 
 ```
@@ -124,13 +124,13 @@ response$body
 In order to resolve problem above we would need to either register `application/x-rds` content handler with `ContentHandlers$set_encode()` or manually specify `encode` function (`identity` in our case):
 
 ```{r}
-application$add_get(path = "/factorial-rds2", function(req, res) {
-  x = as.integer(req$get_param_query("x"))
+application$add_get(path = "/factorial-rds2", function(.req, .res) {
+  x = as.integer(.req$get_param_query("x"))
   result = factorial(x)
   body_rds = serialize(list(result = result), connection = NULL)
-  res$set_body(body_rds)
-  res$set_content_type("application/x-rds")
-  res$encode = identity
+  .res$set_body(body_rds)
+  .res$set_content_type("application/x-rds")
+  .res$encode = identity
 })
 ```
 Now the answer is valid:
@@ -150,8 +150,8 @@ RestRserve facilitates with parsing incoming request body as well. Consider a se
 
 ```{r}
 application = Application$new(content_type = "application/json")
-application$add_post("/echo", function(req, res) {
-  res$set_body(req$body)
+application$add_post("/echo", function(.req, .res) {
+  .res$set_body(.req$body)
 })
 
 request = Request$new(path = "/echo", method = "POST", body = '{"hello":"world"}', content_type = "application/json")
@@ -204,9 +204,9 @@ app = Application$new(middleware = list(encode_decode_middleware))
 Now let's test it:
 
 ```{r}
-app$add_get("/iris", FUN = function(req, res) {
-  res$set_content_type("text/csv")
-  res$set_body(iris)
+app$add_get("/iris", FUN = function(.req, .res) {
+  .res$set_content_type("text/csv")
+  .res$set_body(iris)
 })
 
 req = Request$new(path = "/iris", method = "GET")
@@ -217,8 +217,8 @@ head(iris_out)
 ```
 
 ```{r}
-app$add_post("/in", FUN = function(req, res) {
-  str(req$body)
+app$add_post("/in", FUN = function(.req, .res) {
+  str(.req$body)
 })
 req = Request$new(path = "/in", method = "POST", body = res$body, content_type = "text/csv")
 app$process_request(req)

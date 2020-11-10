@@ -47,8 +47,8 @@ Moreover `Logger` mimics loggers from fully-featured [lgr](https://cran.r-projec
 Consider following example. We develop a method which takes a square root of a number:
 ```{r}
 application = Application$new()
-application$add_get("/sqrt", function(request, response) {
-  response$body = sqrt(x)
+application$add_get("/sqrt", function(.req, .res) {
+  .res$set_body(sqrt(x))
 })
 ```
 Now let's query it:
@@ -82,8 +82,8 @@ Which is not very useful when you try to debug server application.
 
 In contrast let's call it within RestRserve application:
 ```{r}
-application$add_get("/sqrt2", function(request, response) {
-  response$body = fun1(x)
+application$add_get("/sqrt2", function(.req, .res) {
+  .res$set_body(fun1(x))
 })
 request = Request$new(path = "/sqrt2", method = "GET", parameters_query = list(x = "10")) 
 response = application$process_request(request)

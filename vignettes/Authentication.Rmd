@@ -58,10 +58,10 @@ app = Application$new(middleware = list(auth_mw))
 ```
 Let's add two endpoints - first public (`/factorial`) and second with restricted access (`/secure/factorial`):
 ```{r}
-factorial_handler = function(request, response) {
-  x = request$get_param_query("x")
+factorial_handler = function(.req, .res) {
+  x = .req$get_param_query("x")
   x = as.integer(x)
-  response$set_body(factorial(x))
+  .res$set_body(factorial(x))
 }
 app$add_get("/factorial", factorial_handler)
 app$add_get("/secure/factorial", factorial_handler)

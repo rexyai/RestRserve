@@ -58,24 +58,35 @@ we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = funct
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-  
+
   for (i in 3L:n) \{
-   x[[i]] = x[[i - 1]] + x[[i - 2]] 
+   x[[i]] = x[[i - 1]] + x[[i - 2]]
   \}
-  
+
   return(x[[n]])
 \}
 }\if{html}{\out{</div>}}
 
-Create function which will handle requests.\if{html}{\out{<div class="r">}}\preformatted{fib_handler = function(request, response) \{
-  n = as.integer(request$parameters_query[["n"]])
+Create function which will handle requests.\if{html}{\out{<div class="r">}}\preformatted{fib_handler = function(.req, .res) \{
+  n = as.integer(.req$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) \{
     raise(HTTPError$bad_request())
   \}
-  response$set_body(as.character(calc_fib(n)))
-  response$set_content_type("text/plain")
+  .res$set_body(as.character(calc_fib(n)))
+  .res$set_content_type("text/plain")
 \}
 }\if{html}{\out{</div>}}
+
+You may have noticed strange \code{.req} and \code{.res} argument names. Starting
+from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
+autocomplete:\if{html}{\out{
+<img src="https://d7pznrjo7uk5c.cloudfront.net/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
+}}
+
+
+Technically \code{.req} and \code{.res} are just empty instances of \code{?Request} and
+\code{?Response} classes exported by \code{RestRserve} in order to make
+autocomplete work.
 }
 
 \subsection{2. Register endpoint}{\if{html}{\out{<div class="r">}}\preformatted{app$add_get(path = "/fib", FUN = fib_handler)
@@ -144,9 +155,9 @@ backend$start(app, http_port = 8080)
 }\if{html}{\out{</div>}}
 }
 
-\subsection{6. Check it works}{
+\subsection{6. Test it}{
 
-Check app can calculate fibonacci numbers:\if{html}{\out{<div class="bash">}}\preformatted{curl localhost:8080/fib?n=10
+Send request to calculate fibonacci number:\if{html}{\out{<div class="bash">}}\preformatted{curl localhost:8080/fib?n=10
 }\if{html}{\out{</div>}}
 
 Check out a swagger UI in the browser: \verb{http://localhost:8080/doc}

@@ -20,17 +20,17 @@ library(RestRserve)
 app = Application$new()
 
 app$add_get(
-  path = "/hello", 
-  FUN = function(request, response) {
-    response$set_body("Hello from RestRserve")
+  path = "/health", 
+  FUN = function(.req, .res) {
+    .res$set_body("OK")
   })
 
 app$add_post(
   path = "/addone", 
-  FUN = function(request, response) {
-    result = list(x = request$body$x + 1L)
-    response$set_content_type("application/json")
-    response$set_body(result)
+  FUN = function(.req, .res) {
+    result = list(x = .req$body$x + 1L)
+    .res$set_content_type("application/json")
+    .res$set_body(result)
   })
 
 
@@ -46,8 +46,11 @@ curl localhost:8080/hello
 curl -H "Content-Type: application/json" -d '{"x":10}' localhost:8080/addone
 # {"x":11}
 ```
+### Autcomplete
 
+Using convenient `.req`, `.res` names for handler arguments allows to leverage autocomplete.
 
+<img src="https://d7pznrjo7uk5c.cloudfront.net/assets/req-res.gif" width="100%" style="vertical-align:bottom">
 
 ## Learn RestRserve
 
@@ -90,7 +93,7 @@ docker pull rexyai/restrserve
 Or install specific version:
 
 ```sh
-docker pull rexyai/restrserve:0.3.0-minimal
+docker pull rexyai/restrserve:0.4.0-minimal
 ```
 
 ## Contributing

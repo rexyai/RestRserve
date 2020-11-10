@@ -1,6 +1,7 @@
 ## Changelog
 
-* 2020-09-11 - dev
+* 2020-11-10 - dev
+    * using convenient `.req` and `.res` placeholders as handler argument names allows to leverage autocomplete
     * update benchmarking vignette to compare plumber and plumber + future. See #170
     * improve `multipart/form-data` parsing, see #160 for details
     * don't allow to start app which uses Rserve backend from within RStudio. This is useless since it blocks R sessions, but also dangerous since it can crash RStudio. See discussion in #158

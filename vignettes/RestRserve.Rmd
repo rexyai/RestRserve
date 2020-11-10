@@ -71,16 +71,22 @@ calc_fib = function(n) {
 
 Create function which will handle requests.
 
-```{r}
-fib_handler = function(request, response) {
-  n = as.integer(request$parameters_query[["n"]])
+```{r, req_res}
+fib_handler = function(.req, .res) {
+  n = as.integer(.req$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) {
     raise(HTTPError$bad_request())
   }
-  response$set_body(as.character(calc_fib(n)))
-  response$set_content_type("text/plain")
+  .res$set_body(as.character(calc_fib(n)))
+  .res$set_content_type("text/plain")
 }
 ```
+
+You may have noticed strange `.req` and `.res` argument names. Starting from `RestRserve` v0.4.0 these "reserved" names allows to benefit from autocomplete:
+
+<img src="https://d7pznrjo7uk5c.cloudfront.net/assets/req-res.gif" width="100%" style="vertical-align:bottom">
+
+Technically `.req` and `.res` are just empty instances of `?Request` and `?Response` classes exported by `RestRserve` in order to make autocomplete work.
 
 ## 2. Register endpoint
 
@@ -152,9 +158,9 @@ backend = BackendRserve$new()
 backend$start(app, http_port = 8080)
 ```
 
-## 6. Check it works
+## 6. Test it 
 
-Check app can calculate fibonacci numbers:
+Send request to calculate fibonacci number:
 
 ```{bash eval = FALSE}
 curl localhost:8080/fib?n=10
@@ -176,13 +182,13 @@ pid = run_bg({
     x[[n]]
   }
 
-  fib_handler = function(request, response) {
-    n = as.integer(request$parameters_query[["n"]])
+  fib_handler = function(.req, .res) {
+    n = as.integer(.req$parameters_query[["n"]])
     if (length(n) == 0L || is.na(n)) {
       raise(HTTPError$bad_request())
     }
-    response$set_body(as.character(calc_fib(n)))
-    response$set_content_type("text/plain")
+    .res$set_body(as.character(calc_fib(n)))
+    .res$set_content_type("text/plain")
   }
 
   app = RestRserve::Application$new()
