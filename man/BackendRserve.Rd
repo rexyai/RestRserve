@@ -34,7 +34,7 @@ Creates BackendRserve object which can start \link{Application} using Rserve bac
 \subsection{Method \code{new()}}{
 Creates BackendRserve object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackendRserve$new(..., jit_level = 0L, precompile = TRUE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackendRserve$new(..., jit_level = 0L, precompile = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

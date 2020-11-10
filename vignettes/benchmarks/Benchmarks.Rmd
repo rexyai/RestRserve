@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
   comment = "#>", 
   results = "markup", 
   # to regenerate the images and clear the output, set eval = TRUE
-  eval = TRUE
+  eval = FALSE
 )
 ```
 *\*All benchmarks below are done on a pretty old Intel Xeon X3470 CPU with 4 cores, 8 threads @ 2.93GHz *. You can expect ~2x better performance on modern CPUs.
