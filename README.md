@@ -41,8 +41,8 @@ backend$start(app, http_port = 8080)
 Test it with `curl`:
 
 ```sh
-curl localhost:8080/hello
-# Hello from RestRserve
+curl localhost:8080/health
+# OK
 curl -H "Content-Type: application/json" -d '{"x":10}' localhost:8080/addone
 # {"x":11}
 ```
