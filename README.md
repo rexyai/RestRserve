@@ -46,7 +46,7 @@ curl localhost:8080/health
 curl -H "Content-Type: application/json" -d '{"x":10}' localhost:8080/addone
 # {"x":11}
 ```
-### Autcomplete
+### Autocomplete
 
 Using convenient `.req`, `.res` names for handler arguments allows to leverage autocomplete.
 
