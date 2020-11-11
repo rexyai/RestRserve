@@ -80,7 +80,7 @@ Create function which will handle requests.\if{html}{\out{<div class="r">}}\pref
 You may have noticed strange \code{.req} and \code{.res} argument names. Starting
 from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
 autocomplete:\if{html}{\out{
-<img src="https://d7pznrjo7uk5c.cloudfront.net/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
 }}
 
 

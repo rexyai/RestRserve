@@ -50,7 +50,7 @@ curl -H "Content-Type: application/json" -d '{"x":10}' localhost:8080/addone
 
 Using convenient `.req`, `.res` names for handler arguments allows to leverage autocomplete.
 
-<img src="https://d7pznrjo7uk5c.cloudfront.net/assets/req-res.gif" width="100%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom">
 
 ## Learn RestRserve
 
