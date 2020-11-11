@@ -37,6 +37,7 @@ r_packages:
   - covr
   - lintr
   - pkgdown
+  - microbenchmark
 
 before_install:
   - mkdir -p ~/.R && touch ~/.R/Makevars
