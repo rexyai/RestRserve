@@ -4,7 +4,7 @@
 
 ### Test environments
 
-- local ubuntu install, R 3.6.0
+- local mac os, R 4.0.3
 - Ubuntu 16.04.6 LTS (on travis-ci), R 4.0
 - win-builder (devel)
 
