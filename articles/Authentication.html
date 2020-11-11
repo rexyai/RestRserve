@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Authentication">
 <meta property="og:description" content="RestRserve">
-<meta property="og:image" content="http://restrserve.org/logo.png">
+<meta property="og:image" content="https://restrserve.org/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -101,7 +101,8 @@
 
       
 
-      </header><div class="row">
+      </header><link href="Authentication_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet">
+<script src="Authentication_files/anchor-sections-1.0.1/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Authentication</h1>
@@ -120,135 +121,149 @@
 <a href="#basic" class="anchor"></a>Basic</h2>
 <p><strong>Note that Basic authentication, should only be used over HTTPS (SSL) or within secure network.</strong> In HTTP protocol <code>Authorization</code> header (as well as other parts of the HTTP request) are plain text and are not encrypted!</p>
 <p>According to <code>AuthBackendBasic</code> documentation first of all we need to provide an authentication function. It should take 2 arguments - <code>user</code> and <code>password</code> and return <code>logical</code> value - whether access is allowed for a given user or not.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RestRserve</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
 
-<span class="no">allowed_access</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-  <span class="st">"user-1"</span> <span class="kw">=</span> <span class="st">"password-1"</span>,
-  <span class="st">"user-2"</span> <span class="kw">=</span> <span class="st">"password-2"</span>
-)
+<span class="va">allowed_access</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  <span class="st">"user-1"</span> <span class="op">=</span> <span class="st">"password-1"</span>,
+  <span class="st">"user-2"</span> <span class="op">=</span> <span class="st">"password-2"</span>
+<span class="op">)</span>
 
-<span class="no">auth_fun</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">user</span>, <span class="no">password</span>) {
-  <span class="no">res</span> <span class="kw">=</span> <span class="fl">FALSE</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>({
-    <span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">allowed_access</span><span class="kw">[[</span><span class="no">user</span>]], <span class="no">password</span>)
-  }, <span class="kw">silent</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">res</span>)
-}</pre></body></html></div>
+<span class="va">auth_fun</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">user</span>, <span class="va">password</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">res</span> <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">allowed_access</span><span class="op">[[</span><span class="va">user</span><span class="op">]</span><span class="op">]</span>, <span class="va">password</span><span class="op">)</span>
+  <span class="op">}</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
 <p>Now we can create authentication backend.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">basic_auth_backend</span> <span class="kw">=</span> <span class="no">AuthBackendBasic</span>$<span class="fu">new</span>(<span class="kw">FUN</span> <span class="kw">=</span> <span class="no">auth_fun</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">basic_auth_backend</span> <span class="op">=</span> <span class="va"><a href="../reference/AuthBackendBasic.html">AuthBackendBasic</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">auth_fun</span><span class="op">)</span></code></pre></div>
 <p>Now let’s create application which requires authorization in order to use <code>/secure/factorial</code> endpoint:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">
-<span class="no">auth_mw</span> <span class="kw">=</span> <span class="no">AuthMiddleware</span>$<span class="fu">new</span>(
-  <span class="kw">auth_backend</span> <span class="kw">=</span> <span class="no">basic_auth_backend</span>,
-  <span class="kw">routes</span> <span class="kw">=</span> <span class="st">"/secure/factorial"</span>,
-  <span class="kw">id</span> <span class="kw">=</span> <span class="st">"auth_middleware"</span>
-)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
+<span class="va">auth_mw</span> <span class="op">=</span> <span class="va"><a href="../reference/AuthMiddleware.html">AuthMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  auth_backend <span class="op">=</span> <span class="va">basic_auth_backend</span>, 
+  routes <span class="op">=</span> <span class="st">"/secure/factorial"</span>, 
+  id <span class="op">=</span> <span class="st">"auth_middleware"</span>
+<span class="op">)</span>
 
-<span class="no">app</span> <span class="kw">=</span> <span class="no">Application</span>$<span class="fu">new</span>(<span class="kw">middleware</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">auth_mw</span>))</pre></body></html></div>
+<span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">auth_mw</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>Let’s add two endpoints - first public (<code>/factorial</code>) and second with restricted access (<code>/secure/factorial</code>):</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">factorial_handler</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-  <span class="no">x</span> <span class="kw">=</span> <span class="no">request</span>$<span class="fu">get_param_query</span>(<span class="st">"x"</span>)
-  <span class="no">x</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span>(<span class="no">x</span>)
-  <span class="no">response</span>$<span class="fu">set_body</span>(<span class="fu"><a href="https://rdrr.io/r/base/Special.html">factorial</a></span>(<span class="no">x</span>))
-}
-<span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/factorial"</span>, <span class="no">factorial_handler</span>)
-<span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/secure/factorial"</span>, <span class="no">factorial_handler</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">factorial_handler</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">x</span> <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span>
+  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html">as.integer</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
+  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/factorial"</span>, <span class="va">factorial_handler</span><span class="op">)</span>
+<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/secure/factorial"</span>, <span class="va">factorial_handler</span><span class="op">)</span></code></pre></div>
 <p>As we can see first endpoint doesn’t require any authentication:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/factorial"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"5"</span>))
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] 120</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"5"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] 120</span></code></pre></div>
 <p>Let’s try to send a request without credentials to the second endpoint:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/secure/factorial"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"5"</span>))
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "401 Missing Authorization Header"</span></pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/secure/factorial"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"5"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "401 Missing Authorization Header"</span></code></pre></div>
 <p>As expected this gives <code>405</code> error.</p>
 <p>Now let’s add correct credentials:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">credentials</span> <span class="kw">=</span> <span class="kw pkg">jsonlite</span><span class="kw ns">::</span><span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-1"</span>)
-<span class="no">headers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"Basic %s"</span>, <span class="no">credentials</span>))
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">credentials</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html">base64_enc</a></span><span class="op">(</span><span class="st">"user-1:password-1"</span><span class="op">)</span>
+<span class="va">headers</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Basic %s"</span>, <span class="va">credentials</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="st">"/secure/factorial"</span>,
-  <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"5"</span>),
-  <span class="kw">headers</span> <span class="kw">=</span> <span class="no">headers</span>
-)
+<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  path <span class="op">=</span> <span class="st">"/secure/factorial"</span>, 
+  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"5"</span><span class="op">)</span>, 
+  headers <span class="op">=</span> <span class="va">headers</span>
+<span class="op">)</span>
 
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] 120</span></pre></body></html></div>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] 120</span></code></pre></div>
 <p>Success!</p>
 <p>Let’s see what happens if password is wrong:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">credentials</span> <span class="kw">=</span> <span class="kw pkg">jsonlite</span><span class="kw ns">::</span><span class="fu"><a href="https://jeroen.cran.dev/jsonlite/reference/base64.html">base64_enc</a></span>(<span class="st">"user-1:password-2"</span>)
-<span class="no">headers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span>(<span class="st">"Basic %s"</span>, <span class="no">credentials</span>))
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">credentials</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html">base64_enc</a></span><span class="op">(</span><span class="st">"user-1:password-2"</span><span class="op">)</span>
+<span class="va">headers</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Basic %s"</span>, <span class="va">credentials</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="st">"/secure/factorial"</span>,
-  <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"5"</span>),
-  <span class="kw">headers</span> <span class="kw">=</span> <span class="no">headers</span>
-)
+<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  path <span class="op">=</span> <span class="st">"/secure/factorial"</span>, 
+  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"5"</span><span class="op">)</span>, 
+  headers <span class="op">=</span> <span class="va">headers</span>
+<span class="op">)</span>
 
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "401 Invalid Username/Password"</span></pre></body></html></div>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "401 Invalid Username/Password"</span></code></pre></div>
 </div>
 <div id="bearer" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bearer" class="anchor"></a>Bearer</h2>
 <p><code>Bearer</code> authentication (also called “token” authentication) is an HTTP authentication scheme that involves security tokens called bearer tokens. The name “Bearer authentication” can be understood as “give access to the bearer of this token.” The bearer token is a cryptic string, usually generated by the server in response to a login request. The client must send this token in the Authorization header when making requests to protected resources.</p>
 <p>The <code>Bearer</code> authentication scheme was originally created as part of <code>OAuth 2.0</code> in <a href="https://tools.ietf.org/html/rfc6750">RFC 6750</a>, but is sometimes also used on its own. Similarly to Basic authentication, Bearer authentication should only be used over HTTPS (SSL).</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R">
 
-<span class="no">allowed_tokens</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
+<span class="va">allowed_tokens</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>
   <span class="st">"super_secure_token_1"</span>,
   <span class="st">"super_secure_token_2"</span>
-)
+<span class="op">)</span>
 
-<span class="no">auth_fun</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">token</span>) {
-  <span class="no">res</span> <span class="kw">=</span> <span class="fl">FALSE</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/try.html">try</a></span>({
-    <span class="no">res</span> <span class="kw">=</span> <span class="no">token</span> <span class="kw">%in%</span> <span class="no">allowed_tokens</span>
-  }, <span class="kw">silent</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-  <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">res</span>)
-}
-<span class="no">basic_auth_backend</span> <span class="kw">=</span> <span class="no">AuthBackendBearer</span>$<span class="fu">new</span>(<span class="kw">FUN</span> <span class="kw">=</span> <span class="no">auth_fun</span>)</pre></body></html></div>
+<span class="va">auth_fun</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">token</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">res</span> <span class="op">=</span> <span class="cn">FALSE</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="va">res</span> <span class="op">=</span> <span class="va">token</span> <span class="op">%in%</span> <span class="va">allowed_tokens</span>
+  <span class="op">}</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">basic_auth_backend</span> <span class="op">=</span> <span class="va"><a href="../reference/AuthBackendBearer.html">AuthBackendBearer</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">auth_fun</span><span class="op">)</span></code></pre></div>
 <p>As an alternative to requiring authentication for a single endpoint we can make it mandatory for all endpoints which start with certain pattern:</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">auth_mw</span> <span class="kw">=</span> <span class="no">AuthMiddleware</span>$<span class="fu">new</span>(
-  <span class="kw">auth_backend</span> <span class="kw">=</span> <span class="no">basic_auth_backend</span>,
-  <span class="kw">routes</span> <span class="kw">=</span> <span class="st">"/secure/"</span>,
-  <span class="kw">match</span> <span class="kw">=</span> <span class="st">"partial"</span>,
-  <span class="kw">id</span> <span class="kw">=</span> <span class="st">"auth_middleware"</span>
-)
-<span class="no">app</span> <span class="kw">=</span> <span class="no">Application</span>$<span class="fu">new</span>(<span class="kw">middleware</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">auth_mw</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">auth_mw</span> <span class="op">=</span> <span class="va"><a href="../reference/AuthMiddleware.html">AuthMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  auth_backend <span class="op">=</span> <span class="va">basic_auth_backend</span>, 
+  routes <span class="op">=</span> <span class="st">"/secure/"</span>, 
+  match <span class="op">=</span> <span class="st">"partial"</span>,
+  id <span class="op">=</span> <span class="st">"auth_middleware"</span>
+<span class="op">)</span>
+<span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">auth_mw</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>For example:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/hello0"</span>, <span class="kw">function</span>(<span class="no">req</span>, <span class="no">res</span>) {<span class="no">res</span>$<span class="no">body</span> <span class="kw">=</span> <span class="st">"OK"</span>})
-<span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/secure/hello1"</span>, <span class="kw">function</span>(<span class="no">req</span>, <span class="no">res</span>) {<span class="no">res</span>$<span class="no">body</span> <span class="kw">=</span> <span class="st">"OK"</span>})
-<span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/secure/hello2"</span>, <span class="kw">function</span>(<span class="no">req</span>, <span class="no">res</span>) {<span class="no">res</span>$<span class="no">body</span> <span class="kw">=</span> <span class="st">"OK"</span>})</pre></body></html></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/hello0"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span><span class="va">res</span><span class="op">$</span><span class="va">body</span> <span class="op">=</span> <span class="st">"OK"</span><span class="op">}</span><span class="op">)</span>
+<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/secure/hello1"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span><span class="va">res</span><span class="op">$</span><span class="va">body</span> <span class="op">=</span> <span class="st">"OK"</span><span class="op">}</span><span class="op">)</span>
+<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/secure/hello2"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span><span class="va">res</span><span class="op">$</span><span class="va">body</span> <span class="op">=</span> <span class="st">"OK"</span><span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>Request with valid token to <code>/secure/hello1</code>:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">headers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> <span class="kw">=</span> <span class="st">"Bearer super_secure_token_1"</span>)
-<span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="st">"/secure/hello1"</span>,
-  <span class="kw">headers</span> <span class="kw">=</span> <span class="no">headers</span>
-)
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">headers</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="st">"Bearer super_secure_token_1"</span><span class="op">)</span>
+<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  path <span class="op">=</span> <span class="st">"/secure/hello1"</span>, 
+  headers <span class="op">=</span> <span class="va">headers</span>
+<span class="op">)</span>
 
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "OK"</span></pre></body></html></div>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "OK"</span></code></pre></div>
 <p>Request with invalid token to <code>/secure/hello2</code>:</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">headers</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="st">"Authorization"</span> <span class="kw">=</span> <span class="st">"Bearer abcd"</span>)
-<span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(
-  <span class="kw">path</span> <span class="kw">=</span> <span class="st">"/secure/hello2"</span>,
-  <span class="kw">headers</span> <span class="kw">=</span> <span class="no">headers</span>
-)
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">headers</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="st">"Bearer abcd"</span><span class="op">)</span>
+<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  path <span class="op">=</span> <span class="st">"/secure/hello2"</span>, 
+  headers <span class="op">=</span> <span class="va">headers</span>
+<span class="op">)</span>
 
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "401 Invalid Token"</span></pre></body></html></div>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "401 Invalid Token"</span></code></pre></div>
 <p>Request to endpoint which doesn’t require authorization: <code>/hello0</code>:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/hello0"</span>)
-<span class="no">res</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">res</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "OK"</span></pre></body></html></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/hello0"</span><span class="op">)</span>
+<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">res</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "OK"</span></code></pre></div>
 </div>
   </div>
 
@@ -267,7 +282,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

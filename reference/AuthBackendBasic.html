@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Basic authorization backend — AuthBackendBasic" />
 <meta property="og:description" content="Creates AuthBackendBasic class object." />
-<meta property="og:image" content="http://restrserve.org/logo.png" />
+<meta property="og:image" content="https://restrserve.org/logo.png" />
 
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -174,7 +174,7 @@
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>AuthBackendBasic$new()</code></a></p></li>
@@ -187,38 +187,38 @@
 </details>
 
 <hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Creates AuthBackendBasic class object.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>new</span>(<span class='no'>FUN</span>)</pre><p></div></p>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Creates AuthBackendBasic class object.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AuthBackendBasic</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>FUN</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>FUN</code></dt><dd><p>Function to perform authentication which takes two arguments -
 <code>user</code> and <code>password</code>.  Returns boolean - whether access is allowed for
 a requested <code>user</code> or not.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-authenticate"></a></p><h3>Method <code>authenticate()</code></h3>
-<p>Provide authentication for the given request.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>authenticate</span>(<span class='no'>request</span>, <span class='no'>response</span>)</pre><p></div></p>
+<a id="method-authenticate"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>authenticate()</code></h3>
+<p>Provide authentication for the given request.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AuthBackendBasic</span><span class='op'>$</span><span class='fu'>authenticate</span><span class='op'>(</span><span class='va'>request</span>, <span class='va'>response</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>request</code></dt><dd><p><a href='Request.html'>Request</a> object.</p></dd>
 
 <dt><code>response</code></dt><dd><p><a href='Response.html'>Response</a> object.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Boolean - whether access is allowed for a requested <code>user</code> or not.</p>
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>AuthBackendBasic</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>AuthBackendBasic</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -227,30 +227,32 @@ a requested <code>user</code> or not.</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># init users database</span>
-<span class='no'>user_db</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(
-  <span class='st'>"user-1"</span> <span class='kw'>=</span> <span class='st'>"password-1"</span>,
-  <span class='st'>"user-2"</span> <span class='kw'>=</span> <span class='st'>"password-2"</span>
-)
+<span class='va'>user_db</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
+  <span class='st'>"user-1"</span> <span class='op'>=</span> <span class='st'>"password-1"</span>,
+  <span class='st'>"user-2"</span> <span class='op'>=</span> <span class='st'>"password-2"</span>
+<span class='op'>)</span>
 <span class='co'># define authentication handler</span>
-<span class='no'>auth_fun</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>user</span>, <span class='no'>password</span>) {
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='no'>user_db</span><span class='kw'>[[</span><span class='no'>user</span>]])) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>FALSE</span>) <span class='co'># not found</span>
-  <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span>(<span class='no'>user_db</span><span class='kw'>[[</span><span class='no'>user</span>]], <span class='no'>password</span>)) <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>FALSE</span>) <span class='co'># incorrect</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='fl'>TRUE</span>)
-}
+<span class='va'>auth_fun</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>user</span>, <span class='va'>password</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='va'>user_db</span><span class='op'>[[</span><span class='va'>user</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># not found</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/identical.html'>identical</a></span><span class='op'>(</span><span class='va'>user_db</span><span class='op'>[[</span><span class='va'>user</span><span class='op'>]</span><span class='op'>]</span>, <span class='va'>password</span><span class='op'>)</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='co'># incorrect</span>
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='op'>}</span>
 <span class='co'># init backend</span>
-<span class='no'>auth_backend</span> <span class='kw'>=</span> <span class='no'>AuthBackendBasic</span>$<span class='fu'>new</span>(<span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>auth_fun</span>)
+<span class='va'>auth_backend</span> <span class='op'>=</span> <span class='va'>AuthBackendBasic</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>FUN <span class='op'>=</span> <span class='va'>auth_fun</span><span class='op'>)</span>
 
 <span class='co'># test backend</span>
 <span class='co'># define credentials (see RFC)</span>
-<span class='no'>creds</span> <span class='kw'>=</span> <span class='kw pkg'>jsonlite</span><span class='kw ns'>::</span><span class='fu'><a href='https://jeroen.cran.dev/jsonlite/reference/base64.html'>base64_enc</a></span>(<span class='st'>"user-1:password-1"</span>)
+<span class='va'>creds</span> <span class='op'>=</span> <span class='fu'>jsonlite</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/jsonlite/man/base64.html'>base64_enc</a></span><span class='op'>(</span><span class='st'>"user-1:password-1"</span><span class='op'>)</span>
 <span class='co'># generate request headers</span>
-<span class='no'>h</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"Authorization"</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span>(<span class='st'>"Basic %s"</span>, <span class='no'>creds</span>))
+<span class='va'>h</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Authorization"</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sprintf.html'>sprintf</a></span><span class='op'>(</span><span class='st'>"Basic %s"</span>, <span class='va'>creds</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># simulate request</span>
-<span class='no'>rq</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/"</span>, <span class='kw'>headers</span> <span class='kw'>=</span> <span class='no'>h</span>)
+<span class='va'>rq</span> <span class='op'>=</span> <span class='va'><a href='Request.html'>Request</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/"</span>, headers <span class='op'>=</span> <span class='va'>h</span><span class='op'>)</span>
 <span class='co'># init response object</span>
-<span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
+<span class='va'>rs</span> <span class='op'>=</span> <span class='va'><a href='Response.html'>Response</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># perform authentication</span>
-<span class='no'>auth_backend</span>$<span class='fu'>authenticate</span>(<span class='no'>rq</span>, <span class='no'>rs</span>) <span class='co'># TRUE</span></pre>
+<span class='va'>auth_backend</span><span class='op'>$</span><span class='fu'>authenticate</span><span class='op'>(</span><span class='va'>rq</span>, <span class='va'>rs</span><span class='op'>)</span> <span class='co'># TRUE</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -266,7 +268,7 @@ a requested <code>user</code> or not.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -54,7 +54,7 @@ Allows to easily create high-performance full featured HTTP APIs from R
   application development. Out of the box allows to serve requests using
   'Rserve' package, but flexible enough to integrate with other HTTP servers
   such as 'httpuv'." />
-<meta property="og:image" content="http://restrserve.org/logo.png" />
+<meta property="og:image" content="https://restrserve.org/logo.png" />
 
 
 
@@ -86,7 +86,7 @@ Allows to easily create high-performance full featured HTTP APIs from R
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -172,7 +172,7 @@ Allows to easily create high-performance full featured HTTP APIs from R
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     
-<h3>Introduction</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Introduction</h3>
 
 
 <p>Suppose you’ve developed a very useful algorithm or statistical model
@@ -181,7 +181,7 @@ became de facto a lingua-franca for this kind of tasks.</p>
 <p>In this article we will demonstrate how to use RestRserve to build a
 basic REST API.</p>
 
-<h3>Workflow overview</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Workflow overview</h3>
 
 
 <p>Generally RestRserve workflow consists of several major steps:</p><ol>
@@ -199,54 +199,66 @@ of error</p></li>
 </ol>
 
 
-<h3>1. Create application</h3>
-<p><div class="r"></p><pre><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>RestRserve</span>)
-<span class='no'>app</span> <span class='kw'>=</span> <span class='no'>Application</span>$<span class='fu'>new</span>()</pre><p></div></p>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>1. Create application</h3>
+<p><div class="r"></p><pre><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://restrserve.org'>RestRserve</a></span><span class='op'>)</span>
+<span class='va'>app</span> <span class='op'>=</span> <span class='va'><a href='Application.html'>Application</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+</pre><p></div></p>
 
-<h3>2. Define logic</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>2. Define logic</h3>
 
 
 <p>For simplicity we will use Fibonacci number calculation as an algorithm
-we want to expose.<div class="r"></p><pre>calc_fib = function(n) {
-  if (n &amp;lt; 0L) stop("n should be &amp;gt;= 0")
-  if (n == 0L) return(0L)
-  if (n == 1L || n == 2L) return(1L)
-  x = rep(1L, n)
-  
-  for (i in 3L:n) {
-   x[[i]] = x[[i - 1]] + x[[i - 2]] 
-  }
-  
-  return(x[[n]])
-}
+we want to expose.<div class="r"></p><pre><span class='va'>calc_fib</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>n</span> <span class='op'>&lt;</span> <span class='fl'>0L</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/stop.html'>stop</a></span><span class='op'>(</span><span class='st'>"n should be &gt;= 0"</span><span class='op'>)</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>n</span> <span class='op'>==</span> <span class='fl'>0L</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>0L</span><span class='op'>)</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='va'>n</span> <span class='op'>==</span> <span class='fl'>1L</span> <span class='op'>||</span> <span class='va'>n</span> <span class='op'>==</span> <span class='fl'>2L</span><span class='op'>)</span> <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='fl'>1L</span><span class='op'>)</span>
+  <span class='va'>x</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1L</span>, <span class='va'>n</span><span class='op'>)</span>
+
+  <span class='kw'>for</span> <span class='op'>(</span><span class='va'>i</span> <span class='kw'>in</span> <span class='fl'>3L</span><span class='op'>:</span><span class='va'>n</span><span class='op'>)</span> <span class='op'>{</span>
+   <span class='va'>x</span><span class='op'>[[</span><span class='va'>i</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>=</span> <span class='va'>x</span><span class='op'>[[</span><span class='va'>i</span> <span class='op'>-</span> <span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>+</span> <span class='va'>x</span><span class='op'>[[</span><span class='va'>i</span> <span class='op'>-</span> <span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span>
+  <span class='op'>}</span>
+
+  <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[[</span><span class='va'>n</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+<span class='op'>}</span>
 </pre><p></div></p>
-<p>Create function which will handle requests.<div class="r"></p><pre><span class='no'>fib_handler</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>request</span>, <span class='no'>response</span>) {
-  <span class='no'>n</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span>(<span class='no'>request</span>$<span class='no'>parameters_query</span><span class='kw'>[[</span><span class='st'>"n"</span>]])
-  <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>n</span>) <span class='kw'>==</span> <span class='fl'>0L</span> <span class='kw'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span>(<span class='no'>n</span>)) {
-    <span class='fu'><a href='raise.html'>raise</a></span>(<span class='no'>HTTPError</span>$<span class='fu'>bad_request</span>())
-  }
-  <span class='no'>response</span>$<span class='fu'>set_body</span>(<span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span>(<span class='fu'>calc_fib</span>(<span class='no'>n</span>)))
-  <span class='no'>response</span>$<span class='fu'>set_content_type</span>(<span class='st'>"text/plain"</span>)
-}</pre><p></div></p>
+<p>Create function which will handle requests.<div class="r"></p><pre><span class='va'>fib_handler</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>.req</span>, <span class='va'>.res</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>n</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/integer.html'>as.integer</a></span><span class='op'>(</span><span class='va'>.req</span><span class='op'>$</span><span class='va'>parameters_query</span><span class='op'>[[</span><span class='st'>"n"</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span> <span class='op'>==</span> <span class='fl'>0L</span> <span class='op'>||</span> <span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'><a href='raise.html'>raise</a></span><span class='op'>(</span><span class='va'>HTTPError</span><span class='op'>$</span><span class='fu'>bad_request</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='op'>}</span>
+  <span class='va'>.res</span><span class='op'>$</span><span class='fu'>set_body</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='fu'>calc_fib</span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='va'>.res</span><span class='op'>$</span><span class='fu'>set_content_type</span><span class='op'>(</span><span class='st'>"text/plain"</span><span class='op'>)</span>
+<span class='op'>}</span>
+</pre><p></div></p>
+<p>You may have noticed strange <code>.req</code> and <code>.res</code> argument names. Starting
+from <code>RestRserve</code> v0.4.0 these “reserved” names allows to benefit from
+autocomplete:
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom"></p>
 
-<h3>2. Register endpoint</h3>
-<p><div class="r"></p><pre><span class='no'>app</span>$<span class='fu'>add_get</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/fib"</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>fib_handler</span>)</pre><p></div></p>
+<p>Technically <code>.req</code> and <code>.res</code> are just empty instances of <code><a href='Request.html'>?Request</a></code> and
+<code><a href='Response.html'>?Response</a></code> classes exported by <code>RestRserve</code> in order to make
+autocomplete work.</p>
 
-<h3>3. Test endpoints</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>2. Register endpoint</h3>
+<p><div class="r"></p><pre><span class='va'>app</span><span class='op'>$</span><span class='fu'>add_get</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/fib"</span>, FUN <span class='op'>=</span> <span class='va'>fib_handler</span><span class='op'>)</span>
+</pre><p></div></p>
+
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>3. Test endpoints</h3>
 
 
-<p>Now we can test our application without starting it:<div class="r"></p><pre><span class='no'>request</span> <span class='kw'>=</span> <span class='no'>Request</span>$<span class='fu'>new</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/fib"</span>, <span class='kw'>parameters_query</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>))
-<span class='no'>response</span> <span class='kw'>=</span> <span class='no'>app</span>$<span class='fu'>process_request</span>(<span class='no'>request</span>)
+<p>Now we can test our application without starting it:<div class="r"></p><pre><span class='va'>request</span> <span class='op'>=</span> <span class='va'><a href='Request.html'>Request</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/fib"</span>, parameters_query <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>response</span> <span class='op'>=</span> <span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>request</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Response status:"</span>, <span class='no'>response</span>$<span class='no'>status</span>)
-<span class='co'>#&amp;gt; Response status: 200 OK</span>
-<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='st'>"Response body:"</span>, <span class='no'>response</span>$<span class='no'>body</span>)
-<span class='co'>#&amp;gt; Response body: 55</span></pre><p></div></p>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"Response status:"</span>, <span class='va'>response</span><span class='op'>$</span><span class='va'>status</span><span class='op'>)</span>
+<span class='co'>#&gt; Response status: 200 OK</span>
+<span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span><span class='op'>(</span><span class='st'>"Response body:"</span>, <span class='va'>response</span><span class='op'>$</span><span class='va'>body</span><span class='op'>)</span>
+<span class='co'>#&gt; Response body: 55</span>
+</pre><p></div></p>
 <p>It is generally a good idea to write unit tests against application. One
 can use a common framework such as
 <a href='https://cran.r-project.org/package=tinytest'>tinytest</a>.</p>
 
-<h3>4. Add OpenAPI description and Swagger UI</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>4. Add OpenAPI description and Swagger UI</h3>
 
 
 <p>Generally it is a good idea to provide documentation along with the API.
@@ -279,33 +291,47 @@ paths:
                 example: 5
         400:
           description: Bad Request
-</pre><p></div><div class="r"></p><pre><span class='no'>yaml_file</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"examples"</span>, <span class='st'>"openapi"</span>, <span class='st'>"openapi.yaml"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"RestRserve"</span>)
-<span class='no'>app</span>$<span class='fu'>add_openapi</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/openapi.yaml"</span>, <span class='kw'>file_path</span> <span class='kw'>=</span> <span class='no'>yaml_file</span>)
-<span class='no'>app</span>$<span class='fu'>add_swagger_ui</span>(<span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"/doc"</span>, <span class='kw'>path_openapi</span> <span class='kw'>=</span> <span class='st'>"/openapi.yaml"</span>, <span class='kw'>use_cdn</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre><p></div></p>
+</pre><p></div><div class="r"></p><pre><span class='va'>yaml_file</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"examples"</span>, <span class='st'>"openapi"</span>, <span class='st'>"openapi.yaml"</span>, package <span class='op'>=</span> <span class='st'>"RestRserve"</span><span class='op'>)</span>
+<span class='va'>app</span><span class='op'>$</span><span class='fu'>add_openapi</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/openapi.yaml"</span>, file_path <span class='op'>=</span> <span class='va'>yaml_file</span><span class='op'>)</span>
+<span class='va'>app</span><span class='op'>$</span><span class='fu'>add_swagger_ui</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/doc"</span>, path_openapi <span class='op'>=</span> <span class='st'>"/openapi.yaml"</span>, use_cdn <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</pre><p></div></p>
 
-<h3>5. Start the app</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>5. Start the app</h3>
 
 
 <p>Now all is ready and we can start application with Rserve backend. It
-will block R session and start listening for incoming requests.<div class="r"></p><pre><span class='no'>backend</span> <span class='kw'>=</span> <span class='no'>BackendRserve</span>$<span class='fu'>new</span>()
-<span class='no'>backend</span>$<span class='fu'><a href='https://rdrr.io/r/stats/start.html'>start</a></span>(<span class='no'>app</span>, <span class='kw'>http_port</span> <span class='kw'>=</span> <span class='fl'>8080</span>)</pre><p></div></p>
+will block R session and start listening for incoming requests.<div class="r"></p><pre><span class='va'>backend</span> <span class='op'>=</span> <span class='va'><a href='BackendRserve.html'>BackendRserve</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>backend</span><span class='op'>$</span><span class='fu'>start</span><span class='op'>(</span><span class='va'>app</span>, http_port <span class='op'>=</span> <span class='fl'>8080</span><span class='op'>)</span>
+</pre><p></div></p>
 
-<h3>6. Check it works</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>6. Test it</h3>
 
 
-<p>Check app can calculate fibonacci numbers:<div class="bash"></p><pre>curl localhost:8080/fib?n=10
+<p>Send request to calculate fibonacci number:<div class="bash"></p><pre>curl localhost:8080/fib?n=10
 </pre><p></div></p>
 <p>Check out a swagger UI in the browser: <code>http://localhost:8080/doc</code></p>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Useful links:</p><ul>
-<li><p><a href='http://restrserve.org'>http://restrserve.org</a></p></li>
+<li><p><a href='https://restrserve.org'>https://restrserve.org</a></p></li>
 <li><p><a href='https://github.com/rexyai/RestRserve'>https://github.com/rexyai/RestRserve</a></p></li>
 <li><p>Report bugs at <a href='https://github.com/rexyai/RestRserve/issues'>https://github.com/rexyai/RestRserve/issues</a></p></li>
 </ul>
 
 </div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p><strong>Maintainer</strong>: Dmitriy Selivanov <a href='mailto:ds@rexy.ai'>ds@rexy.ai</a> (<a href='https://orcid.org/0000-0001-5413-1506'>ORCID</a>)</p>
+<p>Authors:</p><ul>
+<li><p>Artem Klevtsov <a href='mailto:a.a.klevtsov@gmail.com'>a.a.klevtsov@gmail.com</a> (<a href='https://orcid.org/0000-0003-0492-6647'>ORCID</a>)</p></li>
+</ul>
+
+<p>Other contributors:</p><ul>
+<li><p>rexy.ai [copyright holder, funder]</p></li>
+</ul>
+
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -322,7 +348,7 @@ will block R session and start listening for incoming requests.<div class="r"></
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

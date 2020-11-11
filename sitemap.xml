@@ -1,90 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://restrserve.org/index.html</loc>
+    <loc>https://restrserve.org/index.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Application.html</loc>
+    <loc>https://restrserve.org/reference/Application.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/ApplicationProcess.html</loc>
+    <loc>https://restrserve.org/reference/ApplicationProcess.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/AuthBackend.html</loc>
+    <loc>https://restrserve.org/reference/AuthBackend.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/AuthBackendBasic.html</loc>
+    <loc>https://restrserve.org/reference/AuthBackendBasic.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/AuthBackendBearer.html</loc>
+    <loc>https://restrserve.org/reference/AuthBackendBearer.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/AuthMiddleware.html</loc>
+    <loc>https://restrserve.org/reference/AuthMiddleware.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Backend.html</loc>
+    <loc>https://restrserve.org/reference/Backend.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/BackendRserve.html</loc>
+    <loc>https://restrserve.org/reference/BackendRserve.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/CORSMiddleware.html</loc>
+    <loc>https://restrserve.org/reference/CORSMiddleware.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/ContentHandlers.html</loc>
+    <loc>https://restrserve.org/reference/ContentHandlers.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/EncodeDecodeMiddleware.html</loc>
+    <loc>https://restrserve.org/reference/EncodeDecodeMiddleware.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/HTTPDate-class.html</loc>
+    <loc>https://restrserve.org/reference/HTTPDate-class.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/HTTPError.html</loc>
+    <loc>https://restrserve.org/reference/HTTPError.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Logger.html</loc>
+    <loc>https://restrserve.org/reference/IDE-hints.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Middleware.html</loc>
+    <loc>https://restrserve.org/reference/Logger.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Request.html</loc>
+    <loc>https://restrserve.org/reference/Middleware.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Response.html</loc>
+    <loc>https://restrserve.org/reference/Request.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/RestRserve-package.html</loc>
+    <loc>https://restrserve.org/reference/Response.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/Router.html</loc>
+    <loc>https://restrserve.org/reference/RestRserve-package.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/openapi.html</loc>
+    <loc>https://restrserve.org/reference/Router.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/raise.html</loc>
+    <loc>https://restrserve.org/reference/openapi.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/reference/to_json.html</loc>
+    <loc>https://restrserve.org/reference/raise.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/Authentication.html</loc>
+    <loc>https://restrserve.org/reference/to_json.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/ContentHandlers.html</loc>
+    <loc>https://restrserve.org/articles/Authentication.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/Logging.html</loc>
+    <loc>https://restrserve.org/articles/ContentHandlers.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/Middleware.html</loc>
+    <loc>https://restrserve.org/articles/Logging.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/RestRserve.html</loc>
+    <loc>https://restrserve.org/articles/Middleware.html</loc>
   </url>
   <url>
-    <loc>http://restrserve.org/articles/benchmarks/Benchmarks.html</loc>
+    <loc>https://restrserve.org/articles/RestRserve.html</loc>
+  </url>
+  <url>
+    <loc>https://restrserve.org/articles/benchmarks/Benchmarks.html</loc>
   </url>
 </urlset>

@@ -53,7 +53,7 @@ For example calling
 raise(HTTPError$bad_request(body = &quot;request is invalid&quot;)) from any place in the user code will
 interrupt request processing and return response with status code = 404 and body = &quot;request is invalid&quot;.
 Class to generate HTTP error responses." />
-<meta property="og:image" content="http://restrserve.org/logo.png" />
+<meta property="og:image" content="https://restrserve.org/logo.png" />
 
 
 
@@ -85,7 +85,7 @@ Class to generate HTTP error responses." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -165,7 +165,7 @@ interrupt request processing and return response with status code = 404 and body
 <p>Class to generate HTTP error responses.</p>
     </div>
 
-    <pre class="usage"><span class='no'>HTTPError</span></pre>
+    <pre class="usage"><span class='va'>HTTPError</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
@@ -182,7 +182,7 @@ interrupt request processing and return response with status code = 404 and body
     <div class='dont-index'><p><a href='raise.html'>raise</a> <a href='Application.html'>Application</a></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><div class="r6-fields"></p><dl'>
+    <p><div class="r6-fields"></p><dl>
 <dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
 
 <dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
@@ -191,7 +191,7 @@ interrupt request processing and return response with status code = 404 and body
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>HTTPErrorFactory$new()</code></a></p></li>
@@ -232,28 +232,28 @@ interrupt request processing and return response with status code = 404 and body
 <li><p><a href='#method-clone'><code>HTTPErrorFactory$clone()</code></a></p></li>
 </ul>
 <p><hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Creates HTTPError object.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>new</span>(<span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>, <span class='kw'>encode</span> <span class='kw'>=</span> <span class='no'>as.character</span>)</pre><p></div></p>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Creates HTTPError object.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>content_type <span class='op'>=</span> <span class='st'>"text/plain"</span>, encode <span class='op'>=</span> <span class='va'>as.character</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
 
 <dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_content_type"></a></p><h3>Method <code>set_content_type()</code></h3>
-<p>Set content type of response.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>set_content_type</span>(<span class='no'>content_type</span>)</pre><p></div></p>
+<a id="method-set_content_type"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_content_type()</code></h3>
+<p>Set content type of response.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>set_content_type</span><span class='op'>(</span><span class='va'>content_type</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>content_type</code></dt><dd><p>Type of the error response.</p></dd>
 
 </dl><p></div></p>
-<h3>Details</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Details</h4>
 <p>Modifying HTTPError will have global impact on RestRserve functionality.</p>
 <p>By default <code>HTTPError</code> is used by <a href='Application.html'>Application</a> in order to produce http
 errors (404, 500, etc). Hence changing <code>HTTPError</code> with
@@ -262,27 +262,27 @@ also the errors format produced by RestRserve. Same holds for
 <code>HTTPErrorFactory$set_encode()</code> method below.</p>
 
 <p><hr>
-<a id="method-set_encode"></a></p><h3>Method <code>set_encode()</code></h3>
-<p>Set encode for the given content type.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>set_encode</span>(<span class='no'>encode</span>)</pre><p></div></p>
+<a id="method-set_encode"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_encode()</code></h3>
+<p>Set encode for the given content type.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>set_encode</span><span class='op'>(</span><span class='va'>encode</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>encode</code></dt><dd><p>Function to encode response body.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-reset"></a></p><h3>Method <code>reset()</code></h3>
-<p>Resets <code>HTTPError</code> to the default RestRserve state.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>reset</span>()</pre><p></div></p>
+<a id="method-reset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>reset()</code></h3>
+<p>Resets <code>HTTPError</code> to the default RestRserve state.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-error"></a></p><h3>Method <code>error()</code></h3>
-<p>Generate HTTP error response with a given status code and body.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>error</span>(<span class='no'>status_code</span>, <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre><p></div></p>
+<a id="method-error"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>error()</code></h3>
+<p>Generate HTTP error response with a given status code and body.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>error</span><span class='op'>(</span><span class='va'>status_code</span>, body <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>status_code</code></dt><dd><p>HTTP status code.</p></dd>
 
 <dt><code>body</code></dt><dd><p>Response body.</p></dd>
@@ -291,375 +291,375 @@ also the errors format produced by RestRserve. Same holds for
 <code>headers</code> may be particularly useful.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-bad_request"></a></p><h3>Method <code>bad_request()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>bad_request</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-bad_request"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>bad_request()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>bad_request</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-unauthorized"></a></p><h3>Method <code>unauthorized()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unauthorized</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-unauthorized"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unauthorized()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>unauthorized</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-forbidden"></a></p><h3>Method <code>forbidden()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>forbidden</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-forbidden"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>forbidden()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>forbidden</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-not_found"></a></p><h3>Method <code>not_found()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_found</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-not_found"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>not_found()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>not_found</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-method_not_allowed"></a></p><h3>Method <code>method_not_allowed()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>method_not_allowed</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-method_not_allowed"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>method_not_allowed()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>method_not_allowed</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-not_acceptable"></a></p><h3>Method <code>not_acceptable()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_acceptable</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-not_acceptable"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>not_acceptable()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>not_acceptable</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-conflict"></a></p><h3>Method <code>conflict()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>conflict</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-conflict"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>conflict()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>conflict</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-gone"></a></p><h3>Method <code>gone()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>gone</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-gone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>gone()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>gone</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-length_required"></a></p><h3>Method <code>length_required()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>length_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-length_required"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>length_required()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>length_required</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-precondition_failed"></a></p><h3>Method <code>precondition_failed()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>precondition_failed</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-precondition_failed"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>precondition_failed()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>precondition_failed</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-payload_too_large"></a></p><h3>Method <code>payload_too_large()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>payload_too_large</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-payload_too_large"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>payload_too_large()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>payload_too_large</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-uri_too_long"></a></p><h3>Method <code>uri_too_long()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>uri_too_long</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-uri_too_long"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>uri_too_long()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>uri_too_long</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-unsupported_media_type"></a></p><h3>Method <code>unsupported_media_type()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unsupported_media_type</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-unsupported_media_type"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unsupported_media_type()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>unsupported_media_type</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-range_not_satisfiable"></a></p><h3>Method <code>range_not_satisfiable()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>range_not_satisfiable</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-range_not_satisfiable"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>range_not_satisfiable()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>range_not_satisfiable</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-unprocessable_entity"></a></p><h3>Method <code>unprocessable_entity()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unprocessable_entity</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-unprocessable_entity"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unprocessable_entity()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>unprocessable_entity</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-locked"></a></p><h3>Method <code>locked()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>locked</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-locked"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>locked()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>locked</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-failed_dependency"></a></p><h3>Method <code>failed_dependency()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>failed_dependency</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-failed_dependency"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>failed_dependency()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>failed_dependency</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-precondition_required"></a></p><h3>Method <code>precondition_required()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>precondition_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-precondition_required"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>precondition_required()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>precondition_required</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-too_many_requests"></a></p><h3>Method <code>too_many_requests()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>too_many_requests</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-too_many_requests"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>too_many_requests()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>too_many_requests</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-request_header_fields_too_large"></a></p><h3>Method <code>request_header_fields_too_large()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>request_header_fields_too_large</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-request_header_fields_too_large"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>request_header_fields_too_large()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>request_header_fields_too_large</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-unavailable_for_legal_reasons"></a></p><h3>Method <code>unavailable_for_legal_reasons()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>unavailable_for_legal_reasons</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-unavailable_for_legal_reasons"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unavailable_for_legal_reasons()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>unavailable_for_legal_reasons</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-internal_server_error"></a></p><h3>Method <code>internal_server_error()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>internal_server_error</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-internal_server_error"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>internal_server_error()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>internal_server_error</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-not_implemented"></a></p><h3>Method <code>not_implemented()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>not_implemented</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-not_implemented"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>not_implemented()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>not_implemented</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-bad_gateway"></a></p><h3>Method <code>bad_gateway()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>bad_gateway</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-bad_gateway"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>bad_gateway()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>bad_gateway</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-service_unavailable"></a></p><h3>Method <code>service_unavailable()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>service_unavailable</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-service_unavailable"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>service_unavailable()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>service_unavailable</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-gateway_timeout"></a></p><h3>Method <code>gateway_timeout()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>gateway_timeout</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-gateway_timeout"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>gateway_timeout()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>gateway_timeout</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-version_not_supported"></a></p><h3>Method <code>version_not_supported()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>version_not_supported</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-version_not_supported"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>version_not_supported()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>version_not_supported</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-insufficient_storage"></a></p><h3>Method <code>insufficient_storage()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>insufficient_storage</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-insufficient_storage"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>insufficient_storage()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>insufficient_storage</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-loop_detected"></a></p><h3>Method <code>loop_detected()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>loop_detected</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-loop_detected"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>loop_detected()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>loop_detected</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-network_authentication_required"></a></p><h3>Method <code>network_authentication_required()</code></h3>
-<p>Generates corresponding http error.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>network_authentication_required</span>(<span class='no'>...</span>)</pre><p></div></p>
+<a id="method-network_authentication_required"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>network_authentication_required()</code></h3>
+<p>Generates corresponding http error.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>network_authentication_required</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>...</code></dt><dd><p>Additional named arguments which will be passed to <code>Response$new()</code>.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><a href='Response.html'>Response</a> object.</p>
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>HTTPErrorFactory</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>HTTPErrorFactory</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -667,12 +667,14 @@ also the errors format produced by RestRserve. Same holds for
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='no'>check_list</span> <span class='kw'>=</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
-  <span class='kw'>if</span> (!<span class='fu'><a href='https://rdrr.io/r/base/list.html'>is.list</a></span>(<span class='no'>x</span>)) <span class='fu'><a href='raise.html'>raise</a></span>(<span class='no'>HTTPError</span>$<span class='fu'>bad_request</span>())
-  <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span>(<span class='fl'>TRUE</span>)
-}
-<span class='fu'>check_list</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
-<span class='fu'><a href='https://rdrr.io/r/base/try.html'>try</a></span>(<span class='fu'>check_list</span>(<span class='fl'>1</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="examples"><span class='va'>check_list</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>is.list</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'><a href='raise.html'>raise</a></span><span class='op'>(</span><span class='va'>HTTPError</span><span class='op'>$</span><span class='fu'>bad_request</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='op'>}</span>
+<span class='fu'>check_list</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>check_list</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -688,7 +690,7 @@ also the errors format produced by RestRserve. Same holds for
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

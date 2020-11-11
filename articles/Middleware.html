@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Middleware">
 <meta property="og:description" content="RestRserve">
-<meta property="og:image" content="http://restrserve.org/logo.png">
+<meta property="og:image" content="https://restrserve.org/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -101,7 +101,8 @@
 
       
 
-      </header><div class="row">
+      </header><link href="Middleware_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet">
+<script src="Middleware_files/anchor-sections-1.0.1/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Middleware</h1>
@@ -125,62 +126,67 @@
 <h2 class="hasAnchor">
 <a href="#logging" class="anchor"></a>Logging</h2>
 <p>Let’s say you have a simple app which has only a single endpoint - it simply convert query string parameters into a JSON format and sends it back:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">RestRserve</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
 
-<span class="no">app</span> <span class="kw">=</span> <span class="no">Application</span>$<span class="fu">new</span>(<span class="kw">content_type</span> <span class="kw">=</span> <span class="st">"application/json"</span>)
+<span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span>
 
-<span class="no">backend</span> <span class="kw">=</span> <span class="no">BackendRserve</span>$<span class="fu">new</span>()
+<span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
 
-<span class="no">app</span>$<span class="fu">add_get</span>(<span class="st">"/foo"</span>, <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-  <span class="no">body</span> <span class="kw">=</span> <span class="kw pkg">RestRserve</span><span class="kw ns">::</span><span class="fu"><a href="../reference/to_json.html">to_json</a></span>(<span class="no">request</span>$<span class="no">parameters_query</span>)
-  <span class="no">response</span>$<span class="fu">set_body</span>(<span class="no">body</span>)
+<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/foo"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">body</span> <span class="op">=</span> <span class="fu">RestRserve</span><span class="fu">::</span><span class="fu"><a href="../reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="va">parameters_query</span><span class="op">)</span>
+  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body</span><span class="op">)</span>
   <span class="co"># specify that there is no need to specially encode the body as</span>
   <span class="co"># we've already set it to a JSON</span>
-  <span class="no">response</span>$<span class="no">encode</span> <span class="kw">=</span> <span class="no">identity</span>
-})</pre></body></html></div>
+  <span class="va">.res</span><span class="op">$</span><span class="va">encode</span> <span class="op">=</span> <span class="va">identity</span>
+<span class="op">}</span><span class="op">)</span></code></pre></div>
 <p>See it in action:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/foo"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">key1</span> <span class="kw">=</span> <span class="st">"value1"</span>, <span class="kw">key2</span> <span class="kw">=</span> <span class="st">"value2"</span>))
-<span class="no">resp</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="no">resp</span>$<span class="no">body</span>
-<span class="co">#&gt; [1] "{\"key1\":\"value1\",\"key2\":\"value2\"}"</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="va">resp</span><span class="op">$</span><span class="va">body</span>
+<span class="co">#&gt; [1] "{\"key1\":\"value1\",\"key2\":\"value2\"}"</span></code></pre></div>
 <p>Assume you would like to analyze how your web service works. For that you may need log every request and response in order to see whether service replies with errors and what can cause these errors. This is a perfect task for a middleware and here is how you can achieve this with <code>RestRserve</code>:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">logging_middleware</span> <span class="kw">=</span> <span class="no">Middleware</span>$<span class="fu">new</span>(
-  <span class="kw">process_request</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-      <span class="kw">middleware</span> <span class="kw">=</span> <span class="st">"logging_middleware"</span>,
-      <span class="kw">request_id</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">id</span>,
-      <span class="kw">request</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">headers</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">headers</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">method</span>, <span class="kw">path</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">path</span>),
-      <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-    )
-    <span class="no">msg</span> <span class="kw">=</span> <span class="kw pkg">RestRserve</span><span class="kw ns">::</span><span class="fu"><a href="../reference/to_json.html">to_json</a></span>(<span class="no">msg</span>)
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="no">msg</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">'\n'</span>)
-  },
-  <span class="kw">process_response</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-      <span class="kw">middleware</span> <span class="kw">=</span> <span class="st">"logging_middleware"</span>,
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">logging_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      middleware <span class="op">=</span> <span class="st">"logging_middleware"</span>,
+      request_id <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">id</span>,
+      request <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>headers <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">headers</span>, method <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">method</span>, path <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">path</span><span class="op">)</span>, 
+      timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu">RestRserve</span><span class="fu">::</span><span class="fu"><a href="../reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">msg</span>, sep <span class="op">=</span> <span class="st">'\n'</span><span class="op">)</span>
+  <span class="op">}</span>,
+  process_response <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      middleware <span class="op">=</span> <span class="st">"logging_middleware"</span>,
       <span class="co"># we would like to have a request_id for each response in order to correlate</span>
       <span class="co"># request and response</span>
-      <span class="kw">request_id</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">id</span>,
-      <span class="kw">response</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">headers</span> <span class="kw">=</span> <span class="no">response</span>$<span class="no">headers</span>, <span class="kw">status_code</span> <span class="kw">=</span> <span class="no">response</span>$<span class="no">status_code</span>, <span class="kw">body</span> <span class="kw">=</span> <span class="no">response</span>$<span class="no">body</span>),
-      <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-    )
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span>(<span class="no">msg</span>)
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="no">msg</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">'\n'</span>)
-  },
-  <span class="kw">id</span> <span class="kw">=</span> <span class="st">"logging"</span>
-)
+      request_id <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">id</span>,
+      response <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>headers <span class="op">=</span> <span class="va">.res</span><span class="op">$</span><span class="va">headers</span>, status_code <span class="op">=</span> <span class="va">.res</span><span class="op">$</span><span class="va">status_code</span>, body <span class="op">=</span> <span class="va">.res</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>,
+      timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">msg</span>, sep <span class="op">=</span> <span class="st">'\n'</span><span class="op">)</span>
+  <span class="op">}</span>,
+  id <span class="op">=</span> <span class="st">"logging"</span>
+<span class="op">)</span>
 
-<span class="no">app</span>$<span class="fu">append_middleware</span>(<span class="no">logging_middleware</span>)</pre></body></html></div>
+<span class="va">app</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">logging_middleware</span><span class="op">)</span></code></pre></div>
 <p>Let’s test again:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/foo"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">key1</span> <span class="kw">=</span> <span class="st">"value1"</span>, <span class="kw">key2</span> <span class="kw">=</span> <span class="st">"value2"</span>))
-<span class="no">resp</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8eb5691a-ae2f-11ea-a241-42010a1400ad","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-06-14 11:09:46"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8eb5691a-ae2f-11ea-a241-42010a1400ad","response":{"headers":{"Server":"RestRserve/0.3.0"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2020-06-14 11:09:46"}</span></pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9aed946e-2409-11eb-ac7c-42010a140046","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-11-11 10:35:23"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9aed946e-2409-11eb-ac7c-42010a140046","response":{"headers":{"Server":"RestRserve/0.4.0"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2020-11-11 10:35:23"}</span></code></pre></div>
 <p>Let’s see what will happen if we will send request to nonexistent endpoint:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/foo2"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">key1</span> <span class="kw">=</span> <span class="st">"value1"</span>, <span class="kw">key2</span> <span class="kw">=</span> <span class="st">"value2"</span>))
-<span class="no">resp</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8ec0a28a-ae2f-11ea-a241-42010a1400ad","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2020-06-14 11:09:46"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8ec0a28a-ae2f-11ea-a241-42010a1400ad","response":{"headers":{"Server":"RestRserve/0.3.0"},"status_code":404,"body":"404 Not Found"},"timestamp":"2020-06-14 11:09:47"}</span></pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9b0223de-2409-11eb-ac7c-42010a140046","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2020-11-11 10:35:23"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9b0223de-2409-11eb-ac7c-42010a140046","response":{"headers":{"Server":"RestRserve/0.4.0"},"status_code":404,"body":"404 Not Found"},"timestamp":"2020-11-11 10:35:23"}</span></code></pre></div>
 <p>Later you will see all the responses with errors in the log (<code>status_code</code> &gt;= 400). Also you will be able to find corresponding requests by inspecting <code>request_id</code> field.</p>
 </div>
 <div id="middleware-order" class="section level2">
@@ -194,42 +200,45 @@
 <a href="#compression" class="anchor"></a>Compression</h2>
 <p>To demonstrate the order in which middleware called let’s consider another example.</p>
 <p>Sometimes it it useful to compress response body in order to send less data over the wire. Here we will implement a middleware which will compress response with <code>gzip</code>.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">gzip_middleware</span> <span class="kw">=</span> <span class="no">Middleware</span>$<span class="fu">new</span>(
-  <span class="kw">process_request</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-      <span class="kw">middleware</span> <span class="kw">=</span> <span class="st">"gzip_middleware"</span>,
-      <span class="kw">request_id</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">id</span>,
-      <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-    )
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span>(<span class="no">msg</span>)
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="no">msg</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">'\n'</span>)
-  },
-  <span class="kw">process_response</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">request</span>, <span class="no">response</span>) {
-
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">gzip_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
+  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      middleware <span class="op">=</span> <span class="st">"gzip_middleware"</span>,
+      request_id <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">id</span>,
+      timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">msg</span>, sep <span class="op">=</span> <span class="st">'\n'</span><span class="op">)</span>
+  <span class="op">}</span>,
+  process_response <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
+    
     <span class="co"># compress body</span>
-    <span class="no">response</span>$<span class="fu">set_header</span>(<span class="st">"Content-encoding"</span>, <span class="st">"gzip"</span>)
-    <span class="no">response</span>$<span class="fu">set_body</span>(<span class="fu"><a href="https://rdrr.io/r/base/memCompress.html">memCompress</a></span>(<span class="no">response</span>$<span class="no">body</span>, <span class="st">"gzip"</span>))
-
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
-      <span class="kw">middleware</span> <span class="kw">=</span> <span class="st">"gzip_middleware"</span>,
-      <span class="kw">request_id</span> <span class="kw">=</span> <span class="no">request</span>$<span class="no">id</span>,
-      <span class="kw">timestamp</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span>()
-    )
-    <span class="no">msg</span> <span class="kw">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span>(<span class="no">msg</span>)
-    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="no">msg</span>, <span class="kw">sep</span> <span class="kw">=</span> <span class="st">'\n'</span>)
-  },
-  <span class="kw">id</span> <span class="kw">=</span> <span class="st">"gzip"</span>
-)
-<span class="no">app</span>$<span class="fu">append_middleware</span>(<span class="no">gzip_middleware</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">req</span> <span class="kw">=</span> <span class="no">Request</span>$<span class="fu">new</span>(<span class="kw">path</span> <span class="kw">=</span> <span class="st">"/foo"</span>, <span class="kw">method</span> <span class="kw">=</span> <span class="st">"GET"</span>, <span class="kw">parameters_query</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">key1</span> <span class="kw">=</span> <span class="st">"value1"</span>, <span class="kw">key2</span> <span class="kw">=</span> <span class="st">"value2"</span>))
-<span class="no">resp</span> <span class="kw">=</span> <span class="no">app</span>$<span class="fu">process_request</span>(<span class="no">req</span>)
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8ec42e0a-ae2f-11ea-a241-42010a1400ad","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-06-14 11:09:47"}</span>
-<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"8ec42e0a-ae2f-11ea-a241-42010a1400ad","timestamp":"2020-06-14 11:09:47"}</span>
-<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"8ec42e0a-ae2f-11ea-a241-42010a1400ad","timestamp":"2020-06-14 11:09:47"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"8ec42e0a-ae2f-11ea-a241-42010a1400ad","response":{"headers":{"Server":"RestRserve/0.3.0","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2020-06-14 11:09:47"}</span></pre></body></html></div>
+    <span class="va">.res</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="st">"Content-encoding"</span>, <span class="st">"gzip"</span><span class="op">)</span>
+    <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/memCompress.html">memCompress</a></span><span class="op">(</span><span class="va">.res</span><span class="op">$</span><span class="va">body</span>, <span class="st">"gzip"</span><span class="op">)</span><span class="op">)</span>
+    
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+      middleware <span class="op">=</span> <span class="st">"gzip_middleware"</span>,
+      request_id <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">id</span>,
+      timestamp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="op">)</span>
+    <span class="va">msg</span> <span class="op">=</span> <span class="fu"><a href="../reference/to_json.html">to_json</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="va">msg</span>, sep <span class="op">=</span> <span class="st">'\n'</span><span class="op">)</span>
+  <span class="op">}</span>,
+  id <span class="op">=</span> <span class="st">"gzip"</span>
+<span class="op">)</span>
+<span class="va">app</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">gzip_middleware</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9b19bf62-2409-11eb-ac7c-42010a140046","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-11-11 10:35:24"}</span>
+<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"9b19bf62-2409-11eb-ac7c-42010a140046","timestamp":"2020-11-11 10:35:24"}</span>
+<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"9b19bf62-2409-11eb-ac7c-42010a140046","timestamp":"2020-11-11 10:35:24"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"9b19bf62-2409-11eb-ac7c-42010a140046","response":{"headers":{"Server":"RestRserve/0.4.0","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2020-11-11 10:35:24"}</span></code></pre></div>
 <p>And now check what is actual decoded response body:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/memCompress.html">memDecompress</a></span>(<span class="no">resp</span>$<span class="no">body</span>, <span class="st">"gzip"</span>))
-<span class="co">#&gt; [1] "{\"key1\":\"value1\",\"key2\":\"value2\"}"</span></pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/memCompress.html">memDecompress</a></span><span class="op">(</span><span class="va">resp</span><span class="op">$</span><span class="va">body</span>, <span class="st">"gzip"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] "{\"key1\":\"value1\",\"key2\":\"value2\"}"</span></code></pre></div>
 </div>
   </div>
 
@@ -248,7 +257,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

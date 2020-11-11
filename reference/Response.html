@@ -48,7 +48,7 @@
 
 <meta property="og:title" content="Creates Response object — Response" />
 <meta property="og:description" content="Creates response object." />
-<meta property="og:image" content="http://restrserve.org/logo.png" />
+<meta property="og:image" content="https://restrserve.org/logo.png" />
 
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
       </span>
     </div>
 
@@ -162,7 +162,7 @@
     <div class='dont-index'><p><a href='Request.html'>Request</a> <a href='Application.html'>Application</a></p></div>
     <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
 
-    <p><div class="r6-fields"></p><dl'>
+    <p><div class="r6-fields"></p><dl>
 <dt><code>body</code></dt><dd><p>Response body.<br />
 If it is a named character with a name <code>file</code> or <code>tmpfile</code>
 then the value is considered as a path to a file and content oh this file
@@ -184,14 +184,14 @@ to <code>Content-type</code> header.</p></dd>
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
-    <p><div class="r6-active-bindings"></p><dl'>
+    <p><div class="r6-active-bindings"></p><dl>
 <dt><code>status</code></dt><dd><p>Paste together status code and description.</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-new'><code>Response$new()</code></a></p></li>
@@ -213,19 +213,19 @@ to <code>Content-type</code> header.</p></dd>
 <li><p><a href='#method-clone'><code>Response$clone()</code></a></p></li>
 </ul>
 <p><hr>
-<a id="method-new"></a></p><h3>Method <code>new()</code></h3>
-<p>Creates Response object</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>new</span>(
-  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>,
-  <span class='kw'>headers</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>Server</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"RestRserve.headers.server"</span>)),
-  <span class='kw'>status_code</span> <span class='kw'>=</span> <span class='fl'>200L</span>,
-  <span class='kw'>encode</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre><p></div></p>
+<a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
+<p>Creates Response object</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  body <span class='op'>=</span> <span class='cn'>NULL</span>,
+  content_type <span class='op'>=</span> <span class='st'>"text/plain"</span>,
+  headers <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>Server <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"RestRserve.headers.server"</span><span class='op'>)</span><span class='op'>)</span>,
+  status_code <span class='op'>=</span> <span class='fl'>200L</span>,
+  encode <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>body</code></dt><dd><p>Response body.</p></dd>
 
 <dt><code>content_type</code></dt><dd><p>Response body content (media) type.</p></dd>
@@ -240,128 +240,128 @@ to <code>Content-type</code> header.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-reset"></a></p><h3>Method <code>reset()</code></h3>
+<a id="method-reset"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>reset()</code></h3>
 <p>Resets response object. This is not useful for end user, but useful for
-RestRserve internals - resetting R6 class is much faster then initialize it.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>reset</span>()</pre><p></div></p>
+RestRserve internals - resetting R6 class is much faster then initialize it.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>reset</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-set_content_type"></a></p><h3>Method <code>set_content_type()</code></h3>
-<p>Set content type for response body.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_content_type</span>(<span class='kw'>content_type</span> <span class='kw'>=</span> <span class='st'>"text/plain"</span>)</pre><p></div></p>
+<a id="method-set_content_type"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_content_type()</code></h3>
+<p>Set content type for response body.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_content_type</span><span class='op'>(</span>content_type <span class='op'>=</span> <span class='st'>"text/plain"</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>content_type</code></dt><dd><p>Response body content (media) type.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_status_code"></a></p><h3>Method <code>set_status_code()</code></h3>
-<p>Set HTTP status code for response. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'>docs on MDN</a>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_status_code</span>(<span class='no'>code</span>)</pre><p></div></p>
+<a id="method-set_status_code"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_status_code()</code></h3>
+<p>Set HTTP status code for response. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Status'>docs on MDN</a>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_status_code</span><span class='op'>(</span><span class='va'>code</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>code</code></dt><dd><p>Status code as integer number.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-has_header"></a></p><h3>Method <code>has_header()</code></h3>
-<p>Determine whether or not the response header exists.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>has_header</span>(<span class='no'>name</span>)</pre><p></div></p>
+<a id="method-has_header"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>has_header()</code></h3>
+<p>Determine whether or not the response header exists.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>has_header</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Header field name.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Logical value.</p>
 <p><hr>
-<a id="method-get_header"></a></p><h3>Method <code>get_header()</code></h3>
-<p>Get HTTP response header value. If requested header is empty returns <code>default</code>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>get_header</span>(<span class='no'>name</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre><p></div></p>
+<a id="method-get_header"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>get_header()</code></h3>
+<p>Get HTTP response header value. If requested header is empty returns <code>default</code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>get_header</span><span class='op'>(</span><span class='va'>name</span>, default <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Header field name.</p></dd>
 
 <dt><code>default</code></dt><dd><p>Default value if header does not exists.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Header field values (character string).</p>
 <p><hr>
-<a id="method-set_header"></a></p><h3>Method <code>set_header()</code></h3>
+<a id="method-set_header"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_header()</code></h3>
 <p>Set HTTP response header. <code>Content-type</code> and <code>Content-length</code> headers not
-allowed (use <code>content_type</code> field instead).</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_header</span>(<span class='no'>name</span>, <span class='no'>value</span>)</pre><p></div></p>
+allowed (use <code>content_type</code> field instead).</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_header</span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>value</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Header field name.</p></dd>
 
 <dt><code>value</code></dt><dd><p>Header field value.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-delete_header"></a></p><h3>Method <code>delete_header()</code></h3>
-<p>Unset HTTP response header.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>delete_header</span>(<span class='no'>name</span>)</pre><p></div></p>
+<a id="method-delete_header"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>delete_header()</code></h3>
+<p>Unset HTTP response header.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>delete_header</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Header field name.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Logical value.</p>
 <p><hr>
-<a id="method-append_header"></a></p><h3>Method <code>append_header()</code></h3>
+<a id="method-append_header"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>append_header()</code></h3>
 <p>Append HTTP response header. If header exists <code>,</code> separator will be used.
-Don't use this method to set cookie (use <code>set_cookie</code> method instead).</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>append_header</span>(<span class='no'>name</span>, <span class='no'>value</span>)</pre><p></div></p>
+Don't use this method to set cookie (use <code>set_cookie</code> method instead).</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>append_header</span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>value</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Header field name.</p></dd>
 
 <dt><code>value</code></dt><dd><p>Header field value.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_date"></a></p><h3>Method <code>set_date()</code></h3>
-<p>Set <code>Date</code> HTTP header. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date'>docs on MDN</a>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_date</span>(<span class='kw'>dtm</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>())</pre><p></div></p>
+<a id="method-set_date"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_date()</code></h3>
+<p>Set <code>Date</code> HTTP header. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date'>docs on MDN</a>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_date</span><span class='op'>(</span>dtm <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>dtm</code></dt><dd><p>POSIXct value.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-unset_date"></a></p><h3>Method <code>unset_date()</code></h3>
-<p>Unset <code>Date</code> HTTP header.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>unset_date</span>()</pre><p></div></p>
+<a id="method-unset_date"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unset_date()</code></h3>
+<p>Unset <code>Date</code> HTTP header.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>unset_date</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Logical value.</p>
 <p><hr>
-<a id="method-set_cookie"></a></p><h3>Method <code>set_cookie()</code></h3>
-<p>Set cookie. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie'>docs on MDN</a>.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_cookie</span>(
-  <span class='no'>name</span>,
-  <span class='no'>value</span>,
-  <span class='kw'>expires</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>max_age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>domain</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>path</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>secure</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>http_only</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<a id="method-set_cookie"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_cookie()</code></h3>
+<p>Set cookie. See <a href='https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie'>docs on MDN</a>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_cookie</span><span class='op'>(</span>
+  <span class='va'>name</span>,
+  <span class='va'>value</span>,
+  expires <span class='op'>=</span> <span class='cn'>NULL</span>,
+  max_age <span class='op'>=</span> <span class='cn'>NULL</span>,
+  domain <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path <span class='op'>=</span> <span class='cn'>NULL</span>,
+  secure <span class='op'>=</span> <span class='cn'>NULL</span>,
+  http_only <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Cookie name.</p></dd>
 
 <dt><code>value</code></dt><dd><p>Cookie value.</p></dd>
@@ -380,38 +380,38 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-unset_cookie"></a></p><h3>Method <code>unset_cookie()</code></h3>
-<p>Unset cookie with given name.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>unset_cookie</span>(<span class='no'>name</span>)</pre><p></div></p>
+<a id="method-unset_cookie"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>unset_cookie()</code></h3>
+<p>Unset cookie with given name.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>unset_cookie</span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>name</code></dt><dd><p>Cookie name.</p></dd>
 
 </dl><p></div></p>
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p>Logical value.</p>
 <p><hr>
-<a id="method-set_body"></a></p><h3>Method <code>set_body()</code></h3>
-<p>Set response body.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_body</span>(<span class='no'>body</span>)</pre><p></div></p>
+<a id="method-set_body"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_body()</code></h3>
+<p>Set response body.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_body</span><span class='op'>(</span><span class='va'>body</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>body</code></dt><dd><p>Response body.</p></dd>
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-set_response"></a></p><h3>Method <code>set_response()</code></h3>
-<p>Set response fields.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>set_response</span>(
-  <span class='no'>status_code</span>,
-  <span class='kw'>body</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>content_type</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>content_type</span>
-)</pre><p></div></p>
+<a id="method-set_response"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_response()</code></h3>
+<p>Set response fields.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>set_response</span><span class='op'>(</span>
+  <span class='va'>status_code</span>,
+  body <span class='op'>=</span> <span class='cn'>NULL</span>,
+  content_type <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>content_type</span>
+<span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>status_code</code></dt><dd><p>Response HTTP status code.</p></dd>
 
 <dt><code>body</code></dt><dd><p>Response body.</p></dd>
@@ -420,17 +420,17 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 
 </dl><p></div></p>
 <p><hr>
-<a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
-<p>Print method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>()</pre><p></div></p>
+<a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
+<p>Print method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
-<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
-<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>Response</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-clone"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>Response</span><span class='op'>$</span><span class='fu'>clone</span><span class='op'>(</span>deep <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre><p></div></p>
 
-<h3>Arguments</h3>
-<p><div class="arguments"></p><dl'>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
 <dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
 
 </dl><p></div></p>
@@ -439,32 +439,34 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># init response</span>
-<span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
+<span class='va'>rs</span> <span class='op'>=</span> <span class='va'>Response</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># set body media type</span>
-<span class='no'>rs</span>$<span class='fu'>set_content_type</span>(<span class='st'>"text/plain"</span>)
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_content_type</span><span class='op'>(</span><span class='st'>"text/plain"</span><span class='op'>)</span>
 <span class='co'># set body content</span>
-<span class='no'>rs</span>$<span class='fu'>set_body</span>(<span class='st'>"OK"</span>)
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_body</span><span class='op'>(</span><span class='st'>"OK"</span><span class='op'>)</span>
 <span class='co'># set response status code</span>
-<span class='no'>rs</span>$<span class='fu'>set_status_code</span>(<span class='fl'>200L</span>)
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_status_code</span><span class='op'>(</span><span class='fl'>200L</span><span class='op'>)</span>
 <span class='co'># print response</span>
-<span class='no'>rs</span>
+<span class='va'>rs</span>
 
 <span class='co'># init response</span>
-<span class='no'>rs</span> <span class='kw'>=</span> <span class='no'>Response</span>$<span class='fu'>new</span>()
+<span class='va'>rs</span> <span class='op'>=</span> <span class='va'>Response</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># static file path</span>
-<span class='no'>file_path</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"DESCRIPTION"</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>"RestRserve"</span>)
+<span class='va'>file_path</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"DESCRIPTION"</span>, package <span class='op'>=</span> <span class='st'>"RestRserve"</span><span class='op'>)</span>
 <span class='co'># get last file modification timestamp</span>
-<span class='no'>file_mtime</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.mtime</a></span>(<span class='no'>file_path</span>)
+<span class='va'>file_mtime</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.mtime</a></span><span class='op'>(</span><span class='va'>file_path</span><span class='op'>)</span>
 <span class='co'># set body</span>
-<span class='no'>rs</span>$<span class='fu'>set_body</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"file"</span> <span class='kw'>=</span> <span class='no'>file_path</span>))
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_body</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"file"</span> <span class='op'>=</span> <span class='va'>file_path</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># set content type</span>
-<span class='no'>rs</span>$<span class='fu'>set_content_type</span>(<span class='st'>"text/plain"</span>)
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_content_type</span><span class='op'>(</span><span class='st'>"text/plain"</span><span class='op'>)</span>
 <span class='co'># set current timestamp</span>
-<span class='no'>rs</span>$<span class='fu'>set_date</span>()
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_date</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># set 'last-modified' header</span>
-<span class='no'>rs</span>$<span class='fu'>set_header</span>(<span class='st'>"Last-Modified"</span>, <span class='fu'>as</span>(<span class='no'>file_mtime</span>, <span class='st'>"HTTPDate"</span>))
+<span class='va'>rs</span><span class='op'>$</span><span class='fu'>set_header</span><span class='op'>(</span><span class='st'>"Last-Modified"</span>, <span class='fu'>as</span><span class='op'>(</span><span class='va'>file_mtime</span>, <span class='st'>"HTTPDate"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># print response</span>
-<span class='no'>rs</span></pre>
+<span class='va'>rs</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -480,7 +482,7 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
