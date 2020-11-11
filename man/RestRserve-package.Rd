@@ -166,7 +166,7 @@ Check out a swagger UI in the browser: \verb{http://localhost:8080/doc}
 \seealso{
 Useful links:
 \itemize{
-  \item \url{http://restrserve.org}
+  \item \url{https://restrserve.org}
   \item \url{https://github.com/rexyai/RestRserve}
   \item Report bugs at \url{https://github.com/rexyai/RestRserve/issues}
 }

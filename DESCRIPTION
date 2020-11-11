@@ -8,7 +8,7 @@ Description:
   application development. Out of the box allows to serve requests using
   'Rserve' package, but flexible enough to integrate with other HTTP servers
   such as 'httpuv'.
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(
   person(given = "Dmitriy",
          family = "Selivanov",
@@ -22,7 +22,7 @@ Authors@R: c(
          comment = c(ORCID = "0000-0003-0492-6647")),
   person(given = "rexy.ai",
          role = c("cph", "fnd")))
-URL: http://restrserve.org, https://github.com/rexyai/RestRserve
+URL: https://restrserve.org, https://github.com/rexyai/RestRserve
 BugReports: https://github.com/rexyai/RestRserve/issues
 License: GPL (>= 2)
 Depends:

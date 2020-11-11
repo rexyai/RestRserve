@@ -1,4 +1,4 @@
-# RestRserve <a href='http://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
+# RestRserve <a href='https://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
 <a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
 [![CRAN status](https://www.r-pkg.org/badges/version/RestRserve)](https://cran.r-project.org/package=RestRserve)
@@ -54,8 +54,8 @@ Using convenient `.req`, `.res` names for handler arguments allows to leverage a
 
 ## Learn RestRserve
 
-- follow [quick start guide on http://restrserve.org/](http://restrserve.org/articles/RestRserve.html) for more details.
-- check out "Articles" section on http://restrserve.org/
+- follow [quick start guide on http://restrserve.org/](https://restrserve.org/articles/RestRserve.html) for more details.
+- check out "Articles" section on https://restrserve.org/
 - browse [examples on https://github.com/rexyai/RestRserve](https://github.com/rexyai/RestRserve/tree/master/inst/examples)
 
 ## Features
@@ -71,7 +71,7 @@ Using convenient `.req`, `.res` names for handler arguments allows to leverage a
   - automatically encodes response body to the common formats
   - automatically parses URI templates (such as `/get/{item_id}`)
   - helps to expose OpenAPI and Swagger/Redoc/Rapidoc UI
-- It is [fast](http://restrserve.org/articles/benchmarks/Benchmarks.html)!
+- It is [fast](https://restrserve.org/articles/benchmarks/Benchmarks.html)!
 
 ![](vignettes/img/bench-rps.png)
 
@@ -103,7 +103,7 @@ Guidelines for filing issues / pull requests - [CONTRIBUTING.md](https://github.
 ## Acknowledgements
 
 - [Simon Urbanek](https://github.com/s-u/) (@s-u) for awesome [Rserve](https://github.com/s-u/Rserve) and all the work on R itself and on his other packages
-- [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on Swagger UI in [plumber](https://github.com/trestletech/plumber) (from where we took inspiration for our implementation)
+- [Jeff Allen](https://github.com/trestletech) (@trestletech) for his work on Swagger UI in [plumber](https://github.com/rstudio/plumber) (from where we took inspiration for our implementation)
 - [Brodie Gaslam](https://github.com/brodieG) (@brodieG) for help with understanding on how to get traceback from try-catch function calls. Also thanks [Hadley Wickham](https://github.com/hadley) (@hadley) for `evaluate::try_capture_stack` function which we use for this purpose.
 
 ## Known limitations
