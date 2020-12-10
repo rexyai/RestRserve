@@ -4,8 +4,8 @@
 mw = Middleware$new()
 expect_true(inherits(mw, "Middleware"))
 expect_equal(mw$id, "Middleware")
-expect_equal(mw$process_request, function(request, response) TRUE)
-expect_equal(mw$process_response, function(request, response) TRUE)
+expect_true(is.function(mw$process_request))
+expect_true(is.function(mw$process_response))
 
 # Test defined object
 freq = function(request, response) 1
