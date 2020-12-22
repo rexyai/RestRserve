@@ -82,7 +82,7 @@ REST API by registering R functions as handlers http requests." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -90,7 +90,7 @@ REST API by registering R functions as handlers http requests." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -131,7 +131,7 @@ REST API by registering R functions as handlers http requests." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -415,7 +415,7 @@ Useful for tests your handlers before deploy application.</p></dd>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># init logger</span>
+    <pre class="examples"><div class='input'><span class='co'># init logger</span>
 <span class='va'>app_logger</span> <span class='op'>=</span> <span class='va'><a href='Logger.html'>Logger</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># set log level for the middleware</span>
 <span class='va'>app_logger</span><span class='op'>$</span><span class='fu'>set_log_level</span><span class='op'>(</span><span class='st'>"debug"</span><span class='op'>)</span>
@@ -466,7 +466,15 @@ Useful for tests your handlers before deploy application.</p></dd>
 
 <span class='co'># print application info</span>
 <span class='va'>app</span>
-
+</div><div class='output co'>#&gt; &lt;RestRserve Application&gt;
+#&gt;   &lt;Middlewares&gt;
+#&gt;  [request][response]: awesome-app-logger
+#&gt;   &lt;Endpoints&gt;
+#&gt;     HEAD [exact]: /status
+#&gt;     HEAD [regex]: /say/{user}
+#&gt;     GET [exact]: /status
+#&gt;     GET [exact]: /desc
+#&gt;     GET [regex]: /say/{user}</div><div class='input'>
 <span class='co'># test app</span>
 <span class='co'># simulate requests</span>
 <span class='va'>not_found_rq</span> <span class='op'>=</span> <span class='va'><a href='Request.html'>Request</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/no"</span><span class='op'>)</span>
@@ -475,10 +483,30 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class='va'>say_rq</span> <span class='op'>=</span> <span class='va'><a href='Request.html'>Request</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"/say/anonym"</span>, parameters_query <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"message"</span> <span class='op'>=</span> <span class='st'>"Hola"</span><span class='op'>)</span><span class='op'>)</span>
 <span class='co'># process prepared requests</span>
 <span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>not_found_rq</span><span class='op'>)</span>
-<span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>status_rq</span><span class='op'>)</span>
-<span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>desc_rq</span><span class='op'>)</span>
-<span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>say_rq</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; {"timestamp":"2020-12-22 13:46:43.454946","level":"INFO","name":"MW Logger","pid":2074,"msg":"Incomming request (id 2049e35c-445c-11eb-8128-005056883786): /no"}
+#&gt; {"timestamp":"2020-12-22 13:46:43.457632","level":"INFO","name":"MW Logger","pid":2074,"msg":"Outgoing response (id 2049e35c-445c-11eb-8128-005056883786): 404 Not Found"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
+#&gt;   status code: 404 Not Found
+#&gt;   content-type: text/plain
+#&gt;   &lt;Headers&gt;
+#&gt;     Server: RestRserve/0.4.1</div><div class='input'><span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>status_rq</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {"timestamp":"2020-12-22 13:46:43.496637","level":"INFO","name":"MW Logger","pid":2074,"msg":"Incomming request (id 204a11a6-445c-11eb-8128-005056883786): /status"}
+#&gt; {"timestamp":"2020-12-22 13:46:43.542433","level":"INFO","name":"MW Logger","pid":2074,"msg":"Outgoing response (id 204a11a6-445c-11eb-8128-005056883786): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
+#&gt;   status code: 200 OK
+#&gt;   content-type: text/plain
+#&gt;   &lt;Headers&gt;
+#&gt;     Server: RestRserve/0.4.1</div><div class='input'><span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>desc_rq</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {"timestamp":"2020-12-22 13:46:43.569911","level":"INFO","name":"MW Logger","pid":2074,"msg":"Incomming request (id 204a3d48-445c-11eb-8128-005056883786): /desc"}
+#&gt; {"timestamp":"2020-12-22 13:46:43.571023","level":"INFO","name":"MW Logger","pid":2074,"msg":"Outgoing response (id 204a3d48-445c-11eb-8128-005056883786): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
+#&gt;   status code: 200 OK
+#&gt;   content-type: text/plain
+#&gt;   &lt;Headers&gt;
+#&gt;     Server: RestRserve/0.4.1</div><div class='input'><span class='va'>app</span><span class='op'>$</span><span class='fu'>process_request</span><span class='op'>(</span><span class='va'>say_rq</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; {"timestamp":"2020-12-22 13:46:43.573847","level":"INFO","name":"MW Logger","pid":2074,"msg":"Incomming request (id 204a6bb0-445c-11eb-8128-005056883786): /say/anonym"}
+#&gt; {"timestamp":"2020-12-22 13:46:43.575320","level":"INFO","name":"MW Logger","pid":2074,"msg":"Outgoing response (id 204a6bb0-445c-11eb-8128-005056883786): 200 OK"}</div><div class='output co'>#&gt; &lt;RestRserve Response&gt;
+#&gt;   status code: 200 OK
+#&gt;   content-type: text/plain
+#&gt;   &lt;Headers&gt;
+#&gt;     Server: RestRserve/0.4.1</div><div class='input'>
 <span class='co'># run app</span>
 <span class='va'>backend</span> <span class='op'>=</span> <span class='va'><a href='BackendRserve.html'>BackendRserve</a></span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='op'>)</span>
 <span class='co'># \donttest{</span>
@@ -487,7 +515,7 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class='op'>}</span>
 <span class='co'># }</span>
 
-</pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -1,4 +1,4 @@
-pandoc: '2.2'
+pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
@@ -8,7 +8,7 @@ articles:
   Middleware: Middleware.html
   RestRserve: RestRserve.html
   benchmarks/Benchmarks: Benchmarks.html
-last_built: 2020-11-11T12:39Z
+last_built: 2020-12-22T13:46Z
 urls:
   reference: https://restrserve.org/reference
   article: https://restrserve.org/articles

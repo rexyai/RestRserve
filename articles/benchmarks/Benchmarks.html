@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -87,7 +87,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,14 +101,13 @@
 
       
 
-      </header><link href="Benchmarks_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet">
-<script src="Benchmarks_files/anchor-sections-1.0.1/anchor-sections.js"></script><div class="row">
+      </header><script src="Benchmarks_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benchmarks</h1>
                         <h4 class="author">Dmitriy Selivanov</h4>
             
-            <h4 class="date">11 November, 2020</h4>
+            <h4 class="date">22 December, 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rexyai/RestRserve/blob/master/vignettes/benchmarks/Benchmarks.Rmd"><code>vignettes/benchmarks/Benchmarks.Rmd</code></a></small>
       <div class="hidden name"><code>Benchmarks.Rmd</code></div>
@@ -155,8 +154,8 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; Unit: microseconds</span>
-<span class="co">#&gt;  expr   min   lq     mean median   uq      max neval</span>
-<span class="co">#&gt;   low 1.792 1.84 2172.567  2.021 2.18 21705.85    10</span></code></pre></div>
+<span class="co">#&gt;  expr   min    lq     mean median    uq      max neval</span>
+<span class="co">#&gt;   low 2.751 2.774 3161.961  2.806 3.408 31591.76    10</span></code></pre></div>
 </div>
 <div id="benchmarking-rserve-backend" class="section level2">
 <h2 class="hasAnchor">
@@ -282,10 +281,10 @@
   high <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;    expr       min         lq       mean    median        uq        max neval</span>
-<span class="co">#&gt;     low   1.22227   1.226833   1.275505   1.24058   1.26727   1.541892    10</span>
-<span class="co">#&gt;  medium  13.31058  13.778131  15.644158  14.11204  16.75416  23.356164    10</span>
-<span class="co">#&gt;    high 157.35906 157.838729 159.420306 159.29593 160.33193 162.591958    10</span></code></pre></div>
+<span class="co">#&gt;    expr        min         lq       mean     median         uq        max neval</span>
+<span class="co">#&gt;     low   1.636784   1.648522   1.779946   1.657252   1.895359   2.284233    10</span>
+<span class="co">#&gt;  medium  18.674322  20.178332  23.941548  23.493920  26.861773  34.164662    10</span>
+<span class="co">#&gt;    high 211.718554 217.628704 232.909443 236.330903 244.028977 262.070674    10</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>

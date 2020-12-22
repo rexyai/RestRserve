@@ -85,7 +85,7 @@ Class to generate HTTP error responses." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@ Class to generate HTTP error responses." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -134,7 +134,7 @@ Class to generate HTTP error responses." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -667,14 +667,14 @@ also the errors format produced by RestRserve. Same holds for
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='va'>check_list</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
+    <pre class="examples"><div class='input'><span class='va'>check_list</span> <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='kw'>if</span> <span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>is.list</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>)</span> <span class='fu'><a href='raise.html'>raise</a></span><span class='op'>(</span><span class='va'>HTTPError</span><span class='op'>$</span><span class='fu'>bad_request</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
   <span class='fu'><a href='https://rdrr.io/r/base/invisible.html'>invisible</a></span><span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 <span class='fu'>check_list</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='kw'><a href='https://rdrr.io/r/base/try.html'>try</a></span><span class='op'>(</span><span class='fu'>check_list</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-</pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

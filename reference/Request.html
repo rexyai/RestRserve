@@ -81,7 +81,7 @@ Also useful for testing." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@ Also useful for testing." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -130,7 +130,7 @@ Also useful for testing." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -370,7 +370,7 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># init simply request</span>
+    <pre class="examples"><div class='input'><span class='co'># init simply request</span>
 <span class='va'>rq</span> <span class='op'>=</span> <span class='va'>Request</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
   path <span class='op'>=</span> <span class='st'>"/"</span>,
   parameters_query <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>
@@ -387,18 +387,30 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <span class='op'>)</span>
 <span class='co'># get request UUID</span>
 <span class='va'>rq</span><span class='op'>$</span><span class='va'>id</span>
-<span class='co'># get content accept</span>
+</div><div class='output co'>#&gt; [1] "23296b4c-445c-11eb-8128-005056883786"</div><div class='input'><span class='co'># get content accept</span>
 <span class='va'>rq</span><span class='op'>$</span><span class='va'>accept</span>
-<span class='co'># get request content type</span>
+</div><div class='output co'>#&gt; [1] "*/*"</div><div class='input'><span class='co'># get request content type</span>
 <span class='va'>rq</span><span class='op'>$</span><span class='va'>content_type</span>
-<span class='co'># get header by name (lower case)</span>
+</div><div class='output co'>#&gt; NULL</div><div class='input'><span class='co'># get header by name (lower case)</span>
 <span class='va'>rq</span><span class='op'>$</span><span class='fu'>get_header</span><span class='op'>(</span><span class='st'>"custom-field"</span><span class='op'>)</span>
-<span class='co'># get query param by name</span>
+</div><div class='output co'>#&gt; [1] "value"</div><div class='input'><span class='co'># get query param by name</span>
 <span class='va'>rq</span><span class='op'>$</span><span class='fu'>get_param_query</span><span class='op'>(</span><span class='st'>"param1"</span><span class='op'>)</span>
-<span class='co'># print request</span>
+</div><div class='output co'>#&gt; [1] "value1"</div><div class='input'><span class='co'># print request</span>
 <span class='va'>rq</span>
-
-</pre>
+</div><div class='output co'>#&gt; &lt;RestRserve Request&gt;
+#&gt;   method: GET
+#&gt;   path: /
+#&gt;   accept: */*
+#&gt;   content-type:
+#&gt;   &lt;Query Parameters&gt;
+#&gt;     param1: value1
+#&gt;     param2: value2
+#&gt;   &lt;Headers&gt;
+#&gt;     content-encoding: identity
+#&gt;     custom-field: value
+#&gt;   &lt;Cookies&gt;
+#&gt;     sessionid: 1</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

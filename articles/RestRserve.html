@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -87,7 +87,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,8 +101,7 @@
 
       
 
-      </header><link href="RestRserve_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet">
-<script src="RestRserve_files/anchor-sections-1.0.1/anchor-sections.js"></script><div class="row">
+      </header><script src="RestRserve_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Quick Start Guide</h1>
@@ -200,34 +199,34 @@
 <h2 class="hasAnchor">
 <a href="#add-openapi-description-and-swagger-ui" class="anchor"></a>4. Add OpenAPI description and Swagger UI</h2>
 <p>Generally it is a good idea to provide documentation along with the API. Convenient way to do that is to supply a <a href="https://swagger.io/docs/specification/about/">openapi specification</a>. This as simple as adding a yaml file as an additional endpoint:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="fu">openapi:</span><span class="at"> 3.0.1</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="fu">info:</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="fu">title:</span><span class="at"> RestRserve OpenAPI</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="fu">version:</span><span class="at"> </span><span class="st">'1.0'</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="fu">servers:</span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6">  <span class="kw">-</span> <span class="fu">url:</span><span class="at"> /</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="fu">paths:</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">  <span class="fu">/fib:</span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">    <span class="fu">get:</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">      <span class="fu">description:</span><span class="at"> Calculates Fibonacci number</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">      <span class="fu">parameters:</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">        <span class="kw">-</span> <span class="fu">name:</span><span class="at"> </span><span class="st">"n"</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">          <span class="fu">description:</span><span class="at"> </span><span class="st">"x for Fibonnacci number"</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">          <span class="fu">in:</span><span class="at"> query</span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">          <span class="fu">schema:</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">            <span class="fu">type:</span><span class="at"> integer</span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">          <span class="fu">example:</span><span class="at"> 10</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">          <span class="fu">required:</span><span class="at"> true</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">      <span class="fu">responses:</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">        <span class="fu">200:</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">          <span class="fu">description:</span><span class="at"> API response</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22">          <span class="fu">content:</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">            <span class="fu">text/plain:</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24">              <span class="fu">schema:</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25">                <span class="fu">type:</span><span class="at"> string</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">                <span class="fu">example:</span><span class="at"> 5</span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27">        <span class="fu">400:</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28">          <span class="fu">description:</span><span class="at"> Bad Request</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">openapi</span><span class="kw">:</span><span class="at"> </span><span class="fl">3.0.1</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">info</span><span class="kw">:</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="at">  </span><span class="fu">title</span><span class="kw">:</span><span class="at"> RestRserve OpenAPI</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="at">  </span><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">'1.0'</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">servers</span><span class="kw">:</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="at">  </span><span class="kw">-</span><span class="at"> </span><span class="fu">url</span><span class="kw">:</span><span class="at"> /</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">paths</span><span class="kw">:</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="at">  </span><span class="fu">/fib</span><span class="kw">:</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="at">    </span><span class="fu">get</span><span class="kw">:</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="at">      </span><span class="fu">description</span><span class="kw">:</span><span class="at"> Calculates Fibonacci number</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="at">      </span><span class="fu">parameters</span><span class="kw">:</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="at">        </span><span class="kw">-</span><span class="at"> </span><span class="fu">name</span><span class="kw">:</span><span class="at"> </span><span class="st">"n"</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="at">          </span><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"x for Fibonnacci number"</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="at">          </span><span class="fu">in</span><span class="kw">:</span><span class="at"> query</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="at">          </span><span class="fu">schema</span><span class="kw">:</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="at">            </span><span class="fu">type</span><span class="kw">:</span><span class="at"> integer</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="at">          </span><span class="fu">example</span><span class="kw">:</span><span class="at"> </span><span class="dv">10</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="at">          </span><span class="fu">required</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="at">      </span><span class="fu">responses</span><span class="kw">:</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="at">        </span><span class="fu">200</span><span class="kw">:</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="at">          </span><span class="fu">description</span><span class="kw">:</span><span class="at"> API response</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="at">          </span><span class="fu">content</span><span class="kw">:</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="at">            </span><span class="fu">text/plain</span><span class="kw">:</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="at">              </span><span class="fu">schema</span><span class="kw">:</span></span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="at">                </span><span class="fu">type</span><span class="kw">:</span><span class="at"> string</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="at">                </span><span class="fu">example</span><span class="kw">:</span><span class="at"> </span><span class="dv">5</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="at">        </span><span class="fu">400</span><span class="kw">:</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a><span class="at">          </span><span class="fu">description</span><span class="kw">:</span><span class="at"> Bad Request</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">yaml_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"openapi"</span>, <span class="st">"openapi.yaml"</span>, package <span class="op">=</span> <span class="st">"RestRserve"</span><span class="op">)</span>
 <span class="va">app</span><span class="op">$</span><span class="fu">add_openapi</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/openapi.yaml"</span>, file_path <span class="op">=</span> <span class="va">yaml_file</span><span class="op">)</span>
@@ -245,7 +244,7 @@
 <h2 class="hasAnchor">
 <a href="#test-it" class="anchor"></a>6. Test it</h2>
 <p>Send request to calculate fibonacci number:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="ex">curl</span> localhost:8080/fib?n=10</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="ex">curl</span> localhost:8080/fib?n=10</span></code></pre></div>
 <p>Check out a swagger UI in the browser: <code>http://localhost:8080/doc</code></p>
 </div>
   </div>

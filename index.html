@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -93,7 +93,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,10 +109,11 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="restrserve" class="section level1">
+<div id="restrserve-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#restrserve" class="anchor"></a>RestRserve <a href="https://restrserve.org"><img src="reference/figures/logo.png" align="right" height="128"></a>
+<a href="#restrserve-" class="anchor"></a>RestRserve <a href="https://restrserve.org"><img src="reference/figures/logo.png" align="right" height="128"></a>
 </h1></div>
+<!-- badges: start -->
 
 <p><a href="https://github.com/rexyai/RestRserve">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. With <a href="https://github.com/s-u/Rserve">Rserve</a> backend on UNIX-like systems it is <strong>parallel by design</strong>. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to <a href="https://github.com/s-u">Simon Urbanek</a>).</p>
 <div id="quick-start" class="section level2">
@@ -141,10 +142,10 @@
 <span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
 <span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></code></pre></div>
 <p>Test it with <code>curl</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">curl</span> localhost:8080/health</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co"># OK</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">curl</span> -H <span class="st">"Content-Type: application/json"</span> -d <span class="st">'{"x":10}'</span> localhost:8080/addone</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># {"x":11}</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">curl</span> localhost:8080/health</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># OK</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="ex">curl</span> -H <span class="st">"Content-Type: application/json"</span> -d <span class="st">'{"x":10}'</span> localhost:8080/addone</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># {"x":11}</span></span></code></pre></div>
 <div id="autocomplete" class="section level3">
 <h3 class="hasAnchor">
 <a href="#autocomplete" class="anchor"></a>Autocomplete</h3>
@@ -200,10 +201,10 @@
 <div id="docker" class="section level3">
 <h3 class="hasAnchor">
 <a href="#docker" class="anchor"></a>Docker</h3>
-<p>Debian and Alpine based images are available from docker-hub: <a href="https://hub.docker.com/r/rexyai/restrserve/" class="uri">https://hub.docker.com/r/rexyai/restrserve/</a></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="ex">docker</span> pull rexyai/restrserve</a></code></pre></div>
+<p>Debian and Alpine based images are available from docker-hub: <a href="https://hub.docker.com/r/rexyai/restrserve/">https://hub.docker.com/r/rexyai/restrserve/</a></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">docker</span> pull rexyai/restrserve</span></code></pre></div>
 <p>Or install specific version:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="ex">docker</span> pull rexyai/restrserve:0.4.0-minimal</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">docker</span> pull rexyai/restrserve:0.4.0-minimal</span></code></pre></div>
 </div>
 </div>
 <div id="contributing" class="section level2">
@@ -284,9 +285,9 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="https://github.com/rexyai/RestRserve/actions"><img src="https://github.com/rexyai/RestRserve/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a></li>
 <li><a href="https://cran.r-project.org/package=RestRserve"><img src="https://www.r-pkg.org/badges/version/RestRserve" alt="CRAN status"></a></li>
-<li><a href="https://travis-ci.org/rexyai/RestRserve"><img src="https://travis-ci.org/rexyai/RestRserve.svg?branch=master" alt="Travis-CI Build Status"></a></li>
 <li><a href="https://ci.appveyor.com/project/dselivanov/restrserve/branch/master"><img src="https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/master?svg=true" alt="Build status"></a></li>
 <li><a href="https://codecov.io/gh/rexyai/RestRserve/branch/master"><img src="https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="http://www.gnu.org/licenses/gpl-2.0.html"><img src="https://eddelbuettel.github.io/badges/GPL2+.svg" alt="License"></a></li>

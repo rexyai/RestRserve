@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
       </span>
     </div>
 
@@ -46,7 +46,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -87,7 +87,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rexyai/RestRserve/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -101,8 +101,7 @@
 
       
 
-      </header><link href="Middleware_files/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet">
-<script src="Middleware_files/anchor-sections-1.0.1/anchor-sections.js"></script><div class="row">
+      </header><script src="Middleware_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Middleware</h1>
@@ -179,14 +178,14 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05ab258a-241b-11eb-86d5-42010a1400f2","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-11-11 12:40:04"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05ab258a-241b-11eb-86d5-42010a1400f2","response":{"headers":{"Server":"RestRserve/0.4.0"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2020-11-11 12:40:04"}</span></code></pre></div>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2dda9ea8-445c-11eb-991d-005056883786","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-12-22 13:47:06"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2dda9ea8-445c-11eb-991d-005056883786","response":{"headers":{"Server":"RestRserve/0.4.1"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2020-12-22 13:47:06"}</span></code></pre></div>
 <p>Let’s see what will happen if we will send request to nonexistent endpoint:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05bfa73a-241b-11eb-86d5-42010a1400f2","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2020-11-11 12:40:04"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05bfa73a-241b-11eb-86d5-42010a1400f2","response":{"headers":{"Server":"RestRserve/0.4.0"},"status_code":404,"body":"404 Not Found"},"timestamp":"2020-11-11 12:40:04"}</span></code></pre></div>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2df7f14c-445c-11eb-991d-005056883786","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2020-12-22 13:47:06"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2df7f14c-445c-11eb-991d-005056883786","response":{"headers":{"Server":"RestRserve/0.4.1"},"status_code":404,"body":"404 Not Found"},"timestamp":"2020-12-22 13:47:06"}</span></code></pre></div>
 <p>Later you will see all the responses with errors in the log (<code>status_code</code> &gt;= 400). Also you will be able to find corresponding requests by inspecting <code>request_id</code> field.</p>
 </div>
 <div id="middleware-order" class="section level2">
@@ -231,10 +230,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05d72de2-241b-11eb-86d5-42010a1400f2","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-11-11 12:40:04"}</span>
-<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"05d72de2-241b-11eb-86d5-42010a1400f2","timestamp":"2020-11-11 12:40:04"}</span>
-<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"05d72de2-241b-11eb-86d5-42010a1400f2","timestamp":"2020-11-11 12:40:04"}</span>
-<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"05d72de2-241b-11eb-86d5-42010a1400f2","response":{"headers":{"Server":"RestRserve/0.4.0","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2020-11-11 12:40:04"}</span></code></pre></div>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2e1414c6-445c-11eb-991d-005056883786","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2020-12-22 13:47:06"}</span>
+<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"2e1414c6-445c-11eb-991d-005056883786","timestamp":"2020-12-22 13:47:06"}</span>
+<span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"2e1414c6-445c-11eb-991d-005056883786","timestamp":"2020-12-22 13:47:06"}</span>
+<span class="co">#&gt; {"middleware":"logging_middleware","request_id":"2e1414c6-445c-11eb-991d-005056883786","response":{"headers":{"Server":"RestRserve/0.4.1","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2020-12-22 13:47:06"}</span></code></pre></div>
 <p>And now check what is actual decoded response body:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html">rawToChar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/memCompress.html">memDecompress</a></span><span class="op">(</span><span class="va">resp</span><span class="op">$</span><span class="va">body</span>, <span class="st">"gzip"</span><span class="op">)</span><span class="op">)</span>
