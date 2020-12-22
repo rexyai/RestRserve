@@ -8,11 +8,9 @@ CONTRIBUTING.md
 ^.*[.]tar.gz$
 ^\.lintr$
 ^\.codecov\.yml
-^\.travis\.yml$
 ^\.openapi\.yaml$
 ^pkgdown$
 ^\.dockerignore$
-^\.appveyor.yml$
 cran-comments.md
 ^\.github/*
 ^CRAN-RELEASE$

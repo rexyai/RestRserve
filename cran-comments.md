@@ -1,11 +1,11 @@
 ## New submission
 
-- new version, primarily bugfixes 
+- fixes failing tests on r-devel
 
 ### Test environments
 
 - local mac os, R 4.0.3
-- Ubuntu 16.04.6 LTS (on travis-ci), R 4.0
+- Ubuntu 20.04 (gh-actions), R 4.0.3
 - win-builder (devel)
 
 ### R CMD check results

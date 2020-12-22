@@ -235,4 +235,3 @@ if (.Platform == "windows" && (Sys.getenv("GITHUB_ACTIONS") == "true")) {
 } else {
   do_test_external()
 }
-

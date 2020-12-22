@@ -4,7 +4,6 @@
 [![R build status](https://github.com/rexyai/RestRserve/workflows/R-CMD-check/badge.svg)](https://github.com/rexyai/RestRserve/actions)
 <a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
 [![CRAN status](https://www.r-pkg.org/badges/version/RestRserve)](https://cran.r-project.org/package=RestRserve)
-[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=master)](https://travis-ci.org/rexyai/RestRserve)
 [![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/master?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/master)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/master)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
