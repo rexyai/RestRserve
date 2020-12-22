@@ -154,8 +154,8 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html">microbenchmark</a></span><span class="op">(</span>low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; Unit: microseconds</span>
-<span class="co">#&gt;  expr   min    lq     mean median    uq      max neval</span>
-<span class="co">#&gt;   low 2.751 2.774 3161.961  2.806 3.408 31591.76    10</span></code></pre></div>
+<span class="co">#&gt;  expr   min    lq   mean median    uq      max neval</span>
+<span class="co">#&gt;   low 2.742 2.775 2741.7 2.9005 3.155 27389.09    10</span></code></pre></div>
 </div>
 <div id="benchmarking-rserve-backend" class="section level2">
 <h2 class="hasAnchor">
@@ -281,10 +281,10 @@
   high <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span>
 <span class="op">)</span>
 <span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;    expr        min         lq       mean     median         uq        max neval</span>
-<span class="co">#&gt;     low   1.636784   1.648522   1.779946   1.657252   1.895359   2.284233    10</span>
-<span class="co">#&gt;  medium  18.674322  20.178332  23.941548  23.493920  26.861773  34.164662    10</span>
-<span class="co">#&gt;    high 211.718554 217.628704 232.909443 236.330903 244.028977 262.070674    10</span></code></pre></div>
+<span class="co">#&gt;    expr        min         lq       mean     median         uq       max neval</span>
+<span class="co">#&gt;     low   1.628965   1.665165   1.961229   1.709877   1.883368   3.99810    10</span>
+<span class="co">#&gt;  medium  17.980518  18.064687  19.137693  18.701701  19.901418  21.69651    10</span>
+<span class="co">#&gt;    high 205.433081 208.374331 214.003756 211.384552 214.320303 236.57212    10</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
   <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>

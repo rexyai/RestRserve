@@ -121,7 +121,7 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
 <span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
 <span class="va">application</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"hello from logger"</span><span class="op">)</span>
-<span class="co">#&gt; {"timestamp":"2020-12-22 13:47:02.441658","level":"INFO","name":"Application","pid":2149,"msg":"hello from logger"}</span></code></pre></div>
+<span class="co">#&gt; {"timestamp":"2020-12-22 14:05:57.639226","level":"INFO","name":"Application","pid":2180,"msg":"hello from logger"}</span></code></pre></div>
 <p><code>logger</code> is an instance of <code>Logger</code> class. We believe it is important to have logs in a machine readable format, so by default logger writes messages to <code>stdout</code> in JSON format.</p>
 <p>Amount of logging can be adjusted with <code>set_log_level</code> method:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -143,7 +143,7 @@
 <code class="sourceCode R"><span class="co"># let's emulate query string "/sqrt?x=10"</span>
 <span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> 
 <span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="co">#&gt; {"timestamp":"2020-12-22 13:47:02.921983","level":"ERROR","name":"Application","pid":2149,"msg":"","context":{"request_id":"2bcc2104-445c-11eb-8382-005056883786","message":{"error":"object 'x' not found","call":".res$set_body(sqrt(x))","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span>
+<span class="co">#&gt; {"timestamp":"2020-12-22 14:05:58.016068","level":"ERROR","name":"Application","pid":2180,"msg":"","context":{"request_id":"d0646990-445e-11eb-928f-005056a883ae","message":{"error":"object 'x' not found","call":".res$set_body(sqrt(x))","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span>
 <span class="va">response</span><span class="op">$</span><span class="va">body</span>
 <span class="co">#&gt; [1] "500 Internal Server Error"</span></code></pre></div>
 <p>Surprise! (or not?)</p>
@@ -171,7 +171,7 @@
 <span class="op">}</span><span class="op">)</span>
 <span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> 
 <span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="co">#&gt; {"timestamp":"2020-12-22 13:47:03.230496","level":"ERROR","name":"Application","pid":2149,"msg":"","context":{"request_id":"2be89a78-445c-11eb-8382-005056883786","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)",".res$set_body(fun1(x))",".res$set_body(fun1(x))","fun2(x)"]}}}</span></code></pre></div>
+<span class="co">#&gt; {"timestamp":"2020-12-22 14:05:58.299988","level":"ERROR","name":"Application","pid":2180,"msg":"","context":{"request_id":"d07a22e4-445e-11eb-928f-005056a883ae","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)",".res$set_body(fun1(x))",".res$set_body(fun1(x))","fun2(x)"]}}}</span></code></pre></div>
 <p>Now we clearly see that error happens inside <code>fun2</code></p>
   </div>
 
