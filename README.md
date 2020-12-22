@@ -1,14 +1,16 @@
 # RestRserve <a href='https://restrserve.org'><img src='man/figures/logo.png' align="right" height="128" /></a>
 
+<!-- badges: start -->
+[![R build status](https://github.com/rexyai/RestRserve/workflows/R-CMD-check/badge.svg)](https://github.com/rexyai/RestRserve/actions)
 <a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
 [![CRAN status](https://www.r-pkg.org/badges/version/RestRserve)](https://cran.r-project.org/package=RestRserve)
-[![Travis-CI Build Status](https://travis-ci.org/rexyai/RestRserve.svg?branch=master)](https://travis-ci.org/rexyai/RestRserve)
 [![Build status](https://ci.appveyor.com/api/projects/status/diyn9rjeh6wbwm1g/branch/master?svg=true)](https://ci.appveyor.com/project/dselivanov/restrserve/branch/master)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/master)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![gitter](https://img.shields.io/gitter/room/RestRserve/community.svg?color=61D6AD&style=popout)](https://gitter.im/RestRserve/community)
 ![tinyverse](https://tinyverse.netlify.com/badge/RestRserve)
+<!-- badges: end -->
 
 [RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. With [Rserve](https://github.com/s-u/Rserve) backend on UNIX-like systems it is **parallel by design**. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to [Simon Urbanek](https://github.com/s-u)).
 

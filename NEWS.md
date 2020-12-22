@@ -1,5 +1,9 @@
 ## Changelog
 
+* 2020-12-22 - 0.4.1
+    * Fix r-devel failing tests (due to upstream R changes)
+    * move to CI to github actions
+
 * 2020-11-11 - 0.4.0
     * using convenient `.req` and `.res` placeholders as handler argument names allows to leverage autocomplete
     * update benchmarking vignette to compare plumber and plumber + future. See #170
