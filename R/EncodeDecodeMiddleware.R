@@ -47,17 +47,20 @@ EncodeDecodeMiddleware = R6::R6Class(
         # this means that response wants RestRerveApplication to select
         # how to encode automatically
         encode = response$encode
-        if (!is.function(encode)) {
-          encode = self$ContentHandlers$get_encode(response$content_type)
-        }
 
         if (!is_string(response$body)) {
+          if (!is.function(encode)) {
+            encode = self$ContentHandlers$get_encode(response$content_type)
+          }
           response$body = encode(response$body)
         } else {
           body_name = names(response$body)
           if (isTRUE(body_name ==  "file" || body_name == "tmpfile")) {
             # do nothing - body cosnidered as file path
           } else {
+            if (!is.function(encode)) {
+              encode = self$ContentHandlers$get_encode(response$content_type)
+            }
             response$body = encode(response$body)
           }
         }
