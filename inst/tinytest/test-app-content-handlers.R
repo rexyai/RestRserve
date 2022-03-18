@@ -1,6 +1,6 @@
 # Test app "Hello, World!"
 
-# source helpsers
+# source helpers
 source("setup.R")
 
 # import application example
@@ -62,5 +62,22 @@ err_msg = paste0("lexical error: invalid char in json text.\n",
                  "                     (right here) ------^\n")
 expect_equal(rs[[1]], err_msg)
 expect_equal(rs[[2]], "text/plain")
+
+
+# Test static files
+files <- c("test.R", "test.txt", "testdata.csv", "testdata.rds", "testplot.jpg",
+           "testplot.pdf", "testplot.png")
+request_static_files = Request$new(path = "/list_static_files")
+rs = backend$convert_response(app$process_request(request_static_files))
+expect_equal(jsonlite::fromJSON(rs[[1]]), files)
+
+for (file in files) {
+  request_file = Request$new(path = paste0("/static/", file))
+  rs = backend$convert_response(app$process_request(request_file))
+  expect_true(grepl(paste0(file, "$"), rs[[1]]))
+  mime <- mime::guess_type(file)
+  expect_equal(rs[[2]], mime)
+}
+
 
 cleanup_app()
