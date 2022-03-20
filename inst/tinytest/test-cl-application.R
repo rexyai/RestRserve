@@ -229,7 +229,7 @@ do_test_external = function() {
 }
 
 # FIXME
-if (.Platform == "windows" && (Sys.getenv("GITHUB_ACTIONS") == "true")) {
+if (.Platform$OS.type == "windows" && (Sys.getenv("GITHUB_ACTIONS") == "true")) {
   # don't on windows github actions CI for as it fails
   # for no reason with "connection refused"
 } else {
