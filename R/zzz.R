@@ -1,5 +1,6 @@
 #' @import methods
 #' @importFrom R6 R6Class
+#' @importFrom Rserve Rserve
 #' @import parallel
 #' @importFrom uuid UUIDgenerate
 #' @importFrom mime guess_type
@@ -42,7 +43,11 @@
   runtime_asserts = isTRUE(as.logical(runtime_asserts))
   restrserve_options = list(
     "RestRserve.runtime.asserts" = runtime_asserts,
-    "RestRserve.headers.server" = paste("RestRserve", packageVersion("RestRserve"), sep = "/")
+    "RestRserve.headers.server" = paste(
+      paste("RestRserve", packageVersion("RestRserve"), sep = "/"),
+      paste("Rserve", packageVersion("Rserve"), sep = "/"),
+      sep='; '
+    )
   )
 
   toset = !(names(restrserve_options) %in% names(default_options))
