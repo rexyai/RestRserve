@@ -11,10 +11,10 @@ data = data.frame(
   x = seq(100),
   y = cumsum(rnorm(100))
 )
-static_dir <- file.path(tempdir(check = TRUE), "static")
+static_dir = file.path(tempdir(check = TRUE), "static")
 if (!dir.exists(static_dir)) dir.create(static_dir)
 
-a <- capture.output({
+a = capture.output({
   png(file.path(static_dir, "testplot.png"))
   plot(data$x, data$y, type = "l")
   dev.off()
