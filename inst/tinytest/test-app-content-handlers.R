@@ -69,7 +69,7 @@ files = c("test.R", "test.txt", "testdata.csv", "testdata.rds", "testplot.jpg",
           "testplot.pdf", "testplot.png")
 request_static_files = Request$new(path = "/list_static_files")
 rs = backend$convert_response(app$process_request(request_static_files))
-expect_equal(jsonlite::fromJSON(rs[[1]]), files)
+expect_equal(sort(jsonlite::fromJSON(rs[[1]])), sort(files))
 
 for (file in files) {
   request_file = Request$new(path = paste0("/static/", file))
