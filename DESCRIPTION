@@ -36,7 +36,8 @@ Imports:
   uuid (>= 0.1-2),
   checkmate (>= 1.9.4),
   mime (>= 0.7),
-  jsonlite (>= 1.6)
+  jsonlite (>= 1.6),
+  digest (>= 0.6.29)
 Suggests:
   tinytest (>= 1.0.0),
   lgr (>= 0.3.2),
