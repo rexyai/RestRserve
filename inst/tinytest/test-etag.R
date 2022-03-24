@@ -21,7 +21,8 @@ expect_no_cached_file <- function(rs, file, last_modified) {
   expect_equal(rs$status_code, 200)
   expect_true(all(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$headers$ETag, digest::digest(file = file, algo = "crc32"))
-  expect_equal(rs$headers$`Last-Modified`, format(last_modified, "%FT%TZ"))
+  expect_equal(rs$headers$`Last-Modified`,
+               format(last_modified, "%a, %d %b %Y %H:%M:%S GMT"))
   expect_equal(gsub("/+", "\\\\", rs$body), c(file = gsub("/+", "\\\\", file)))
 }
 
@@ -30,6 +31,7 @@ expect_no_cached_file <- function(rs, file, last_modified) {
 app = ex_app("etag")
 # loads also the variables: static_dir, file_path
 last_modified = as.POSIXlt(file.info(file_path)[["mtime"]], tz = "UTC")
+time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
 
 
 # Test Etag for non-file but R objects -----
@@ -80,7 +82,7 @@ expect_no_cached_file(rs, file_path, last_modified)
 req = Request$new(
   path = "/static/example.txt",
   method = "GET",
-  headers = list("If-Modified-Since" = format(last_modified + 1, "%FT%TZ"))
+  headers = list("If-Modified-Since" = format(last_modified + 1, time_fmt))
 )
 rs = app$process_request(req)
 expect_cached(rs)
@@ -91,7 +93,7 @@ expect_cached(rs)
 req = Request$new(
   path = "/static/example.txt",
   method = "GET",
-  headers = list("If-Modified-Since" = format(last_modified - 1, "%FT%TZ"))
+  headers = list("If-Modified-Since" = format(last_modified - 1, time_fmt))
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
@@ -128,7 +130,7 @@ req = Request$new(
   path = "/static/example.txt",
   method = "GET",
   headers = list("If-None-Match" = "CLEARLY WRONG",
-                 "If-Modified-Since" = format(last_modified + 1, "%FT%TZ"))
+                 "If-Modified-Since" = format(last_modified + 1, time_fmt))
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)

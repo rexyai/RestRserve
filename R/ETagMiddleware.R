@@ -159,12 +159,24 @@ ETagMiddleware = R6::R6Class(
       if (is.function(last_modified_function))
         self$last_modified_function = last_modified_function
 
+
+      # check if the time is printed correctly (Eg Thursday is Thu and not Do)
+      date = format(as.Date("2000-03-07"), "%a %d %b %Y")
+      if (date != "Tue 07 Mar 2000") {
+        warning(sprintf(paste(
+          "Your LC_TIME locale is set to 'C' to format dates correctly.",
+          "Reset with: Sys.setlocale(\"LC_TIME\", \"%s\")",
+          sep = "\n"), Sys.getlocale("LC_TIME")))
+        Sys.setlocale("LC_TIME", "C")
+      }
+
+
       self$process_request =  function(request, response) {
         invisible(TRUE)
       }
 
       self$process_response = function(request, response) {
-
+        time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
 
         # Check for If-None-Match Header
         inm = request$get_header("if-none-match", NULL)
@@ -186,13 +198,10 @@ ETagMiddleware = R6::R6Class(
         # INM takes precedence over IMS,
         # that is if IMS is only checked if INM is NOT GIVEN!
         if (!is.null(ims) && is.null(inm)) {
-          ims_date = as.POSIXlt(
-            ims,
-            tryFormats = c("%FT%TZ", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
-                           "%Y-%m-%d %H:%M", "%Y/%m/%d %H:%M", "%Y-%m-%d",
-                           "%Y/%m/%d"),
-            tz = "GMT"
-          )
+          ims_date = as.POSIXlt(ims, tryFormats = c(
+            time_fmt, "%FT%TZ", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
+            "%Y-%m-%d %H:%M", "%Y/%m/%d %H:%M", "%Y-%m-%d", "%Y/%m/%d"
+          ), tz = "GMT")
 
           # if ims_date is after modified date, it should be cached
           if (last_modified <= ims_date) {
@@ -204,7 +213,7 @@ ETagMiddleware = R6::R6Class(
 
 
         # No Caching... Add Last Modified and ETag header
-        response$set_header("Last-Modified", format(last_modified, "%FT%TZ"))
+        response$set_header("Last-Modified", format(last_modified, time_fmt))
         response$set_header("ETag", actual_hash)
         invisible(TRUE)
       }
