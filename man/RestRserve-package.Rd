@@ -182,6 +182,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item David Zimmermann \email{david_j_zimmermann@hotmail.com} [contributor]
   \item rexy.ai [copyright holder, funder]
 }
 

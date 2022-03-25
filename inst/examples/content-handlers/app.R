@@ -5,6 +5,33 @@
 
 library(RestRserve)
 
+## ---- Write sample data for static route -----
+set.seed(123)
+data = data.frame(
+  x = seq(100),
+  y = cumsum(rnorm(100))
+)
+static_dir = file.path(tempdir(check = TRUE), "static")
+if (!dir.exists(static_dir)) dir.create(static_dir)
+
+a = capture.output({
+  png(file.path(static_dir, "testplot.png"))
+  plot(data$x, data$y, type = "l")
+  dev.off()
+  jpeg(file.path(static_dir, "testplot.jpg"))
+  plot(data$x, data$y, type = "l")
+  dev.off()
+  pdf(file.path(static_dir, "testplot.pdf"))
+  plot(data$x, data$y, type = "l")
+  dev.off()
+})
+rm(a)
+
+writeLines("Hello World", file.path(static_dir, "test.txt"))
+writeLines("print('Hello World')", file.path(static_dir, "test.R"))
+write.csv(data, file.path(static_dir, "testdata.csv"))
+saveRDS(data, file.path(static_dir, "testdata.rds"))
+
 
 ## ---- create application -----
 
@@ -46,6 +73,17 @@ app$add_post("/json", function(request, response) {
   response$content_type = "application/rds"
   response$body = serialize(request$body, NULL)
 })
+
+app$add_get("/csv", function(request, response) {
+  response$content_type = "text/csv"
+  response$body = list(answer = "head1,head2\nval1,val2")
+})
+
+
+app$add_get("/list_static_files", function(request, response) {
+  response$body = list.files(static_dir)
+})
+app$add_static("/static", static_dir)
 
 
 ## ---- register custom content handlers ----
