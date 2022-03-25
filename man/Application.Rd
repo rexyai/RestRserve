@@ -50,7 +50,7 @@ app$add_static("/desc", desc_file, "text/plain")
 say_handler = function(rq, rs) {
   who = rq$parameters_path[["user"]]
   msg = rq$parameters_query[["message"]]
-  if (is.null(msg)) msg <- "Hello"
+  if (is.null(msg)) msg = "Hello"
   rs$set_body(paste(who, "say", dQuote(msg)))
   rs$set_content_type("text/plain")
   rs$set_status_code(200L)
