@@ -8,12 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
-Allows to easily create high-performance full featured HTTP APIs from R
-  functions. Provides high-level classes such as 'Request', 'Response',
-  'Application', 'Middleware' in order to streamline server side
-  application development. Out of the box allows to serve requests using
-  'Rserve' package, but flexible enough to integrate with other HTTP servers
-  such as 'httpuv'.
+Allows to easily create high-performance full featured HTTP APIs from R functions. Provides high-level classes such as 'Request', 'Response', 'Application', 'Middleware' in order to streamline server side application development. Out of the box allows to serve requests using 'Rserve' package, but flexible enough to integrate with other HTTP servers such as 'httpuv'.
 }
 \details{
 \subsection{Introduction}{
@@ -58,11 +53,11 @@ we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = funct
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-
+  
   for (i in 3L:n) \{
-   x[[i]] = x[[i - 1]] + x[[i - 2]]
+   x[[i]] = x[[i - 1]] + x[[i - 2]] 
   \}
-
+  
   return(x[[n]])
 \}
 }\if{html}{\out{</div>}}
@@ -80,7 +75,7 @@ Create function which will handle requests.\if{html}{\out{<div class="r">}}\pref
 You may have noticed strange \code{.req} and \code{.res} argument names. Starting
 from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
 autocomplete:\if{html}{\out{
-<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom">
 }}
 
 

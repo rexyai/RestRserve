@@ -229,13 +229,3 @@ do_test_external = function() {
 }
 
 do_test_external()
-
-# if (!identical(Sys.getenv("NOT_CRAN"), "")) {
-#   # FIXME
-#   if (.Platform$OS.type == "windows" && (Sys.getenv("GITHUB_ACTIONS") == "true")) {
-#     # don't on windows github actions CI for as it fails
-#     # for no reason with "connection refused"
-#   } else {
-#     do_test_external()
-#   }
-# }
