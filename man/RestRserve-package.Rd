@@ -53,11 +53,11 @@ we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = funct
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-  
+
   for (i in 3L:n) \{
-   x[[i]] = x[[i - 1]] + x[[i - 2]] 
+   x[[i]] = x[[i - 1]] + x[[i - 2]]
   \}
-  
+
   return(x[[n]])
 \}
 }\if{html}{\out{</div>}}
@@ -75,7 +75,7 @@ Create function which will handle requests.\if{html}{\out{<div class="r">}}\pref
 You may have noticed strange \code{.req} and \code{.res} argument names. Starting
 from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
 autocomplete:\if{html}{\out{
-<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
 }}
 
 
