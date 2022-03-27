@@ -11,7 +11,7 @@ This object is typically constructed via a derived classes, e.g.
 \link{AuthBackendBasic} or \link{AuthBackendBearer}.
 }
 \references{
-\href{https://github.com/loanzen/falcon-auth}{falcon-auth}
+\href{https://github.com/vertexcover-io/falcon-auth}{falcon-auth}
 }
 \seealso{
 Other AuthBackend: 

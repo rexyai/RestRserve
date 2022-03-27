@@ -10,7 +10,7 @@ Description:
   such as 'httpuv'.
 Version: 1.0.0
 Authors@R: c(
-  person(given = "Dmitriy",
+  person(given = "Dmitry",
          family = "Selivanov",
          role = c("aut", "cre"),
          email = "ds@rexy.ai",

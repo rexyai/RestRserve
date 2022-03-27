@@ -53,11 +53,11 @@ we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = funct
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
   x = rep(1L, n)
-
+  
   for (i in 3L:n) \{
-   x[[i]] = x[[i - 1]] + x[[i - 2]]
+   x[[i]] = x[[i - 1]] + x[[i - 2]] 
   \}
-
+  
   return(x[[n]])
 \}
 }\if{html}{\out{</div>}}
@@ -168,7 +168,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dmitriy Selivanov \email{ds@rexy.ai} (\href{https://orcid.org/0000-0001-5413-1506}{ORCID})
+\strong{Maintainer}: Dmitry Selivanov \email{ds@rexy.ai} (\href{https://orcid.org/0000-0001-5413-1506}{ORCID})
 
 Authors:
 \itemize{

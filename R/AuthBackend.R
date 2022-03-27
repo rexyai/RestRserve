@@ -7,7 +7,7 @@
 #' Creates AuthBackend class object.
 #'
 #' @references
-#' [falcon-auth](https://github.com/loanzen/falcon-auth)
+#' [falcon-auth](https://github.com/vertexcover-io/falcon-auth)
 #'
 #' @family AuthBackend
 #'

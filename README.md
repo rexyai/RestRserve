@@ -2,11 +2,11 @@
 
 <!-- badges: start -->
 [![R build status](https://github.com/rexyai/RestRserve/workflows/R-CMD-check/badge.svg)](https://github.com/rexyai/RestRserve/actions)
-<a href="https://www.rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
+<a href="https://rexy.ai"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a>
 [![CRAN status](https://www.r-pkg.org/badges/version/RestRserve)](https://cran.r-project.org/package=RestRserve)
 [![codecov](https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg)](https://codecov.io/gh/rexyai/RestRserve/branch/master)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle: stable](https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 [![gitter](https://img.shields.io/gitter/room/RestRserve/community.svg?color=61D6AD&style=popout)](https://gitter.im/RestRserve/community)
 ![tinyverse](https://tinyverse.netlify.com/badge/RestRserve)
 <!-- badges: end -->
