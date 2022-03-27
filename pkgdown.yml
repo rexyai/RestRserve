@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   Authentication: Authentication.html
@@ -7,8 +7,8 @@ articles:
   Logging: Logging.html
   Middleware: Middleware.html
   RestRserve: RestRserve.html
-  benchmarks/Benchmarks: Benchmarks.html
-last_built: 2020-12-22T14:05Z
+  Benchmarks: benchmarks/Benchmarks.html
+last_built: 2022-03-27T18:55Z
 urls:
   reference: https://restrserve.org/reference
   article: https://restrserve.org/articles
