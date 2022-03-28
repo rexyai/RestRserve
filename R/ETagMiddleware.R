@@ -176,6 +176,16 @@ ETagMiddleware = R6::R6Class(
       }
 
       self$process_response = function(request, response) {
+
+        # Check the path of the request
+        prefixes_mask = match == "partial"
+        if (!((request$path %in% routes[!prefixes_mask]) ||
+              any(startsWith(request$path, routes[prefixes_mask])) &&
+              # response successful
+              response$status_code < 300)) {
+          return()
+        }
+
         time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
 
         # Check for If-None-Match Header

@@ -6,24 +6,29 @@ source("setup.R")
 # define three helper functions to test if a response is cached (304)
 # not cached for an object (200 with ETag but without Last-Modified header)
 # or cached for a file (200 with Last-Modified and ETag header)
-expect_cached <- function(rs) {
+expect_cached = function(rs) {
   expect_equal(rs$status_code, 304)
   expect_true(!any(c("ETag", "Last-Modified") %in% names(rs$headers)))
   expect_equal(rs$body, NULL)
 }
-expect_no_cached_obj <- function(rs, obj) {
+expect_no_cached_obj = function(rs, obj) {
   expect_equal(rs$status_code, 200)
   expect_true(all(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$headers$ETag, digest::digest(obj, algo = "crc32"))
   expect_equal(rs$body, obj)
 }
-expect_no_cached_file <- function(rs, file, last_modified) {
+expect_no_cached_file = function(rs, file, last_modified) {
   expect_equal(rs$status_code, 200)
   expect_true(all(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$headers$ETag, digest::digest(file = file, algo = "crc32"))
   expect_equal(rs$headers$`Last-Modified`,
                format(last_modified, "%a, %d %b %Y %H:%M:%S GMT"))
   expect_equal(gsub("/+", "\\\\", rs$body), c(file = gsub("/+", "\\\\", file)))
+}
+expect_no_etag = function(rs, obj) {
+  expect_equal(rs$status_code, 200)
+  expect_true(!any(c("Last-Modified", "ETag") %in% names(rs$headers)))
+  expect_equal(rs$body, obj)
 }
 
 
@@ -134,6 +139,15 @@ req = Request$new(
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
+
+
+
+# Check that the /no_etag route does not return etag information
+rq = Request$new(
+  path = "/no_etag"
+)
+rs = app$process_request(rq)
+expect_no_etag(rs, data.frame(x = "Here you find no ETag!"))
 
 
 

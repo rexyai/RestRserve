@@ -15,7 +15,7 @@ writeLines("Hello World", file_path)
 
 ## ---- create middleware ----
 
-etag_mid = ETagMiddleware$new()
+etag_mid = ETagMiddleware$new(routes = c("/static", "/data.frame"))
 
 
 ## ---- create application -----
@@ -31,6 +31,9 @@ app = Application$new(
 app$add_static(path = "/static", static_dir)
 app$add_get(path = "/data.frame",  function(.req, .res) {
   .res$set_body(data.frame(x = "hello world"))
+})
+app$add_get(path = "/no_etag",  function(.req, .res) {
+  .res$set_body(data.frame(x = "Here you find no ETag!"))
 })
 
 
