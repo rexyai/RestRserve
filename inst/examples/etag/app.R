@@ -7,9 +7,9 @@ library(RestRserve)
 
 ## ---- create a directory to serve as static folder ----
 
-static_dir = paste(tempdir(), "static", sep = "\\")
+static_dir = paste(tempdir(), "static", sep = "/")
 if (!dir.exists(static_dir)) dir.create(static_dir)
-file_path = paste(static_dir, "example.txt", sep = "\\")
+file_path = paste(static_dir, "example.txt", sep = "/")
 writeLines("Hello World", file_path)
 
 

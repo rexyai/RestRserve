@@ -58,6 +58,7 @@ expect_no_etag = function(rs, obj) {
 app = ex_app("etag")
 # loads also the variables: static_dir, file_path
 last_modified = as.POSIXlt(file.info(file_path)[["mtime"]], tz = "UTC")
+actual_hash = digest::digest(file = file_path, algo = "crc32")
 time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
 
 
@@ -131,7 +132,7 @@ expect_no_cached_file(rs, file_path, last_modified)
 req = Request$new(
   path = "/static/example.txt",
   method = "GET",
-  headers = list("If-None-Match" = "4425b673")
+  headers = list("If-None-Match" = actual_hash)
 )
 rs = app$process_request(req)
 expect_cached(rs)
