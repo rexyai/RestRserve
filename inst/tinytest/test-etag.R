@@ -18,12 +18,20 @@ expect_no_cached_obj = function(rs, obj) {
   expect_equal(rs$body, obj)
 }
 expect_no_cached_file = function(rs, file, last_modified) {
+  clean_tempdir = function(x) {
+    # remove the tempfile directory
+    x = gsub("^.*Rtmp[A-Za-z0-9]+[\\/]+", "", x)
+    # replace / with \\ to standardise path separator
+    gsub("/+", "\\\\", x)
+  }
   expect_equal(rs$status_code, 200)
   expect_true(all(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$headers$ETag, digest::digest(file = file, algo = "crc32"))
   expect_equal(rs$headers$`Last-Modified`,
                format(last_modified, "%a, %d %b %Y %H:%M:%S GMT"))
-  expect_equal(gsub("/+", "\\\\", rs$body), c(file = gsub("/+", "\\\\", file)))
+  expect_true(file.exists(rs$body))
+  expect_equal(clean_tempdir(rs$body),
+               clean_tempdir(c(file = file)))
 }
 expect_no_etag = function(rs, obj) {
   expect_equal(rs$status_code, 200)
