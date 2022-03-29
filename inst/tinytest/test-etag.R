@@ -1,22 +1,31 @@
 # Test app with ETag Middleware
 
+
+## --- Setup the prerequisites and create some helper functions for testing ----
+
 # source helpers
 source("setup.R")
 
-# define three helper functions to test if a response is cached (304)
-# not cached for an object (200 with ETag but without Last-Modified header)
-# or cached for a file (200 with Last-Modified and ETag header)
+# test that the response is cached, ie status code 304 with no body
 expect_cached = function(rs) {
   expect_equal(rs$status_code, 304)
   expect_true(!any(c("ETag", "Last-Modified") %in% names(rs$headers)))
   expect_equal(rs$body, NULL)
 }
+
+# test that the response is not cached and the body is an R object (not a file)
+# ie status code is 200 with a body
+# but the headers for ETag and Last Modified are provided
 expect_no_cached_obj = function(rs, obj) {
   expect_equal(rs$status_code, 200)
   expect_true(all(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$headers$ETag, digest::digest(obj, algo = "crc32"))
   expect_equal(rs$body, obj)
 }
+
+# test that the response is not cached and the body is a file
+# ie status code is 200 with a body
+# but the headers for ETag and Last Modified are provided
 expect_no_cached_file = function(rs, file, last_modified) {
   clean_tempdir = function(x) {
     # remove the tempfile directory
@@ -33,12 +42,17 @@ expect_no_cached_file = function(rs, file, last_modified) {
   expect_equal(clean_tempdir(rs$body),
                clean_tempdir(c(file = file)))
 }
+
+# test that the response is not cached and does not contain ETag related headers
+# ie status code is 200 with a body and no ETag or Last Modified headers
 expect_no_etag = function(rs, obj) {
   expect_equal(rs$status_code, 200)
   expect_true(!any(c("Last-Modified", "ETag") %in% names(rs$headers)))
   expect_equal(rs$body, obj)
 }
 
+
+## ---- Create the App and some variables that will be used for testing ----
 
 # import application example
 app = ex_app("etag")
@@ -47,7 +61,7 @@ last_modified = as.POSIXlt(file.info(file_path)[["mtime"]], tz = "UTC")
 time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
 
 
-# Test Etag for non-file but R objects -----
+## ---- Test Etag for non-file but R objects ----
 
 # test /data.frame endpoint with ETag and Last-Modified Endpoint
 rq = Request$new(
@@ -79,7 +93,7 @@ expect_no_cached_obj(rs, data.frame(x = "hello world"))
 
 
 
-# Test / (static files) ETag + Header functionality ----
+## ---- Test / (static files) ETag + Header functionality ----
 
 # No Headers returns the ETag + Last Modified Header
 req = Request$new(
@@ -149,6 +163,8 @@ rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
 
 
+
+## ---- Routes not included in the ETag Middleware do not contain ETags ----
 
 # Check that the /no_etag route does not return etag information
 rq = Request$new(
