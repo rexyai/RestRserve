@@ -16,6 +16,13 @@ request_text = Request$new(path = "/text")
 rs = backend$convert_response(app$process_request(request_text))
 expect_equal(rs[[1]], "text")
 
+request_xwfu = Request$new(path = "/x-www-form-urlencoded", method = "POST",
+                           content_type = "application/x-www-form-urlencoded",
+                           body = "foo=bar&a=b")
+rs = backend$convert_response(app$process_request(request_xwfu))
+rs = unserialize(rs[[1]])
+expect_equal(rs, list(answer = "x-www-form-urlencoded"))
+
 request_uct = Request$new(path = "/unknown-content-type")
 rs = backend$convert_response(app$process_request(request_uct))
 expect_true(is.character(rs[[1]]))

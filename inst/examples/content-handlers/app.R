@@ -49,6 +49,12 @@ app$add_get("/text", function(request, response) {
   response$body = list(answer = "text")
 })
 
+app$add_post("/x-www-form-urlencoded", function(request, response) {
+  response$content_type = "application/x-www-form-urlencoded"
+  response$body = serialize(list(answer = "x-www-form-urlencoded"), NULL)
+  response$encode = identity
+})
+
 app$add_get("/unknown-content-type", function(request, response) {
   response$content_type = "application/x-unknown-content-type"
   # content types which are not registered in ContentHandlers
