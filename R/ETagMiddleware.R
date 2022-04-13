@@ -154,10 +154,13 @@ ETagMiddleware = R6::R6Class(
 
       self$id = id
 
-      if (is.function(hash_function))
-        self$hash_function = hash_function
-      if (is.function(last_modified_function))
-        self$last_modified_function = last_modified_function
+      if (!is.function(hash_function))
+        stop("hash_function must be a function returning a hash of an object")
+      if (!is.function(last_modified_function))
+        stop("last_modified_function must be a function returning a POSIXlt")
+
+      self$hash_function = hash_function
+      self$last_modified_function = last_modified_function
 
 
       # check if the time is printed correctly (Eg Thursday is Thu and not Do)

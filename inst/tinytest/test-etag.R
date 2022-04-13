@@ -176,4 +176,14 @@ expect_no_etag(rs, data.frame(x = "Here you find no ETag!"))
 
 
 
+## ---- Providing non functions to ETag functions throws error ----
+
+not_a_function <- "Clearly"
+expect_error(ETagMiddleware$new(routes = c("/static", "/data.frame"),
+                                hash_function = not_a_function))
+expect_error(ETagMiddleware$new(routes = c("/static", "/data.frame"),
+                                last_modified_function = not_a_function))
+
+
+
 cleanup_app()
