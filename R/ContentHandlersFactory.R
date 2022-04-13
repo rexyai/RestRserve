@@ -84,7 +84,7 @@ ContentHandlersFactory = R6::R6Class(
       }
       content_type = tolower(content_type)
       # ignore content types (exact match)
-      if (content_type %in% private$ingore$equal) {
+      if (content_type %in% private$ignore$equal) {
         return(identity)
       }
       # ignore content types (prefix match)
