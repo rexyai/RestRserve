@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 Many web API frameworks contain a concept called "middleware" (but every language/framework calls it differently - filters, middleware, etc). Essentially, the middleware performs some specific function on the HTTP request or response before or after the handler. Common tasks to offload to a middleware would be logging, authorization, body compression, etc.
 
-`RestRserve` comes with several build-in middlewares (`AuthMiddleware`, `CORSMiddleware`) and generic `Middleware` class which facilitates user to create a custom middleware. 
+`RestRserve` comes with several build-in middlewares (`AuthMiddleware`, `CORSMiddleware`, `ETagMiddleware`) and generic `Middleware` class which facilitates user to create a custom middleware. 
 
 Let's see it in action in example below.
 
