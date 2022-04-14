@@ -1,5 +1,14 @@
 ## Changelog
 
+* 2022-04-14 - 1.1.0
+    * Added ETag Middleware [#182](https://github.com/rexyai/RestRserve/pull/182)
+    * fix content-type for `application/x-www-form-urlencoded` response, [#184](https://github.com/rexyai/RestRserve/pull/184)
+
+* 2022-03-27 - 1.0.0
+    * major stable release!
+    * fix CRAN notes and failing test on Windows
+    * fix bug in content-type when serving files
+
 * 2020-12-22 - 0.4.1
     * Fix r-devel failing tests (due to upstream R changes)
     * move to CI to github actions

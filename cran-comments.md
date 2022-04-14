@@ -1,6 +1,7 @@
 ## New submission
 
-- fixes failing tests on r-devel
+- adds Etag Middleware
+- fixes content-encoding bug
 
 ### Test environments
 
