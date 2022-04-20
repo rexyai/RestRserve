@@ -19,7 +19,7 @@ REST API by registering R functions as handlers http requests."><meta property="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -514,37 +514,37 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class="r-in"><span class="va">say_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/say/anonym"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"message"</span> <span class="op">=</span> <span class="st">"Hola"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># process prepared requests</span></span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">not_found_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.793488","level":"INFO","name":"MW Logger","pid":2759,"msg":"Incomming request (id 754a5e32-adff-11ec-bf34-00505688ff1c): /no"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.796155","level":"INFO","name":"MW Logger","pid":2759,"msg":"Outgoing response (id 754a5e32-adff-11ec-bf34-00505688ff1c): 404 Not Found"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.697302","level":"INFO","name":"MW Logger","pid":3658,"msg":"Incomming request (id 8092479e-c08a-11ec-a706-005056b9e128): /no"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.700241","level":"INFO","name":"MW Logger","pid":3658,"msg":"Outgoing response (id 8092479e-c08a-11ec-a706-005056b9e128): 404 Not Found"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 404 Not Found</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.0.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">status_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.839401","level":"INFO","name":"MW Logger","pid":2759,"msg":"Incomming request (id 754a9622-adff-11ec-bf34-00505688ff1c): /status"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.878335","level":"INFO","name":"MW Logger","pid":2759,"msg":"Outgoing response (id 754a9622-adff-11ec-bf34-00505688ff1c): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.746376","level":"INFO","name":"MW Logger","pid":3658,"msg":"Incomming request (id 80928402-c08a-11ec-a706-005056b9e128): /status"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.796664","level":"INFO","name":"MW Logger","pid":3658,"msg":"Outgoing response (id 80928402-c08a-11ec-a706-005056b9e128): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.0.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">desc_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.901515","level":"INFO","name":"MW Logger","pid":2759,"msg":"Incomming request (id 754acd68-adff-11ec-bf34-00505688ff1c): /desc"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.902652","level":"INFO","name":"MW Logger","pid":2759,"msg":"Outgoing response (id 754acd68-adff-11ec-bf34-00505688ff1c): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.822973","level":"INFO","name":"MW Logger","pid":3658,"msg":"Incomming request (id 8092c570-c08a-11ec-a706-005056b9e128): /desc"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.824069","level":"INFO","name":"MW Logger","pid":3658,"msg":"Outgoing response (id 8092c570-c08a-11ec-a706-005056b9e128): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.0.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">say_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.904959","level":"INFO","name":"MW Logger","pid":2759,"msg":"Incomming request (id 754b054e-adff-11ec-bf34-00505688ff1c): /say/anonym"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-03-27 18:55:23.906193","level":"INFO","name":"MW Logger","pid":2759,"msg":"Outgoing response (id 754b054e-adff-11ec-bf34-00505688ff1c): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.826710","level":"INFO","name":"MW Logger","pid":3658,"msg":"Incomming request (id 8093026a-c08a-11ec-a706-005056b9e128): /say/anonym"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-04-20 09:16:03.828051","level":"INFO","name":"MW Logger","pid":3658,"msg":"Outgoing response (id 8093026a-c08a-11ec-a706-005056b9e128): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.0.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.0; Rserve/1.8.10</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># run app</span></span>
 <span class="r-in"><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>

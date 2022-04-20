@@ -67,6 +67,9 @@
     <loc>https://restrserve.org/reference/ContentHandlers.html</loc>
   </url>
   <url>
+    <loc>https://restrserve.org/reference/ETagMiddleware.html</loc>
+  </url>
+  <url>
     <loc>https://restrserve.org/reference/EncodeDecodeMiddleware.html</loc>
   </url>
   <url>
