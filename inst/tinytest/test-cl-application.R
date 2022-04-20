@@ -228,4 +228,7 @@ do_test_external = function() {
   expect_equal(rawToChar(ans$content), "OK!")
 }
 
-do_test_external()
+if (identical(Sys.getenv('NOT_CRAN', 'FALSE'), 'TRUE')) {
+  do_test_external()
+}
+
