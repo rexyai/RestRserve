@@ -1,5 +1,8 @@
 ## Changelog
 
+* 2022-04-20 - 1.1.1
+    * Skip tests on the live Rserve http server on CRAN which caused spurious test errors
+
 * 2022-04-14 - 1.1.0
     * Added ETag Middleware [#182](https://github.com/rexyai/RestRserve/pull/182)
     * fix content-type for `application/x-www-form-urlencoded` response, [#184](https://github.com/rexyai/RestRserve/pull/184)
