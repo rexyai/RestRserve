@@ -1,7 +1,7 @@
 ## New submission
 
-- adds Etag Middleware
-- fixes content-encoding bug
+- fix CRAN failing test of the live Rserve http server (don't run it on CRAN as this error is spurious and related to the env/not being able to start process)
+- import digest::digest
 
 ### Test environments
 
