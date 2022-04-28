@@ -232,6 +232,25 @@ ETagMiddleware = R6::R6Class(
         }
 
 
+        # Check If-Unmodified-Since Header
+        ius = request$get_header("if-unmodified-since", NULL)
+
+        if (!is.null(ius) && is.null(inm)) {
+          ius_date = as.POSIXlt(paste(ius, sep = ", "), tryFormats = c(
+            time_fmt, "%FT%TZ", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
+            "%Y-%m-%d %H:%M", "%Y/%m/%d %H:%M", "%Y-%m-%d", "%Y/%m/%d"
+          ), tz = "GMT")
+
+          # if ius_date is after modified date, it triggers
+          if (last_modified > ius_date) {
+            response$set_body(NULL)
+            response$set_status_code(412)
+            return()
+          }
+        }
+
+
+
         # No Caching... Add Last Modified and ETag header
         response$set_header("Last-Modified", format(last_modified, time_fmt))
         response$set_header("ETag", actual_hash)

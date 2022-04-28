@@ -138,6 +138,7 @@ rs = app$process_request(req)
 expect_cached(rs)
 
 
+
 # Multiple If-None-Match
 req = Request$new(
   path = "/static/example.txt",
@@ -146,6 +147,7 @@ req = Request$new(
 )
 rs = app$process_request(req)
 expect_cached(rs)
+
 
 
 # Only If None Match but WRONG resulting in the file to be returned
@@ -158,6 +160,7 @@ rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
 
 
+
 # Check If-Match Header
 req = Request$new(
   path = "/static/example.txt",
@@ -166,6 +169,7 @@ req = Request$new(
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
+
 
 
 # Check If-Match Header with other hash
@@ -178,6 +182,7 @@ rs = app$process_request(req)
 expect_equal(rs$status_code, 412)
 
 
+
 # Check If-Match Header with multiple values
 req = Request$new(
   path = "/static/example.txt",
@@ -186,6 +191,7 @@ req = Request$new(
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
+
 
 
 # Check If-Match Header matching any
@@ -198,6 +204,7 @@ rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
 
 
+
 # Check If-Match Header wrong hash
 req = Request$new(
   path = "/static/example.txt",
@@ -206,6 +213,29 @@ req = Request$new(
 )
 rs = app$process_request(req)
 expect_equal(rs$status_code, 412)
+
+
+
+# Check If-Unmodified-Since Header
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Unmodified-Since" = format(last_modified - 1, time_fmt))
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
+
+
+# Check If-Unmodified-Since Header other case
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Unmodified-Since" = format(last_modified + 1, time_fmt))
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
 
 
 # if-none-match takes precedence over If-modified-since
