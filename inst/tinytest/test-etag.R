@@ -158,6 +158,55 @@ rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)
 
 
+# Check If-Match Header
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = actual_hash)
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+# Check If-Match Header with other hash
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "OTHER HASH")
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
+
+# Check If-Match Header with multiple values
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = c("SOME HASH", actual_hash, "OTHER HASH"))
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+# Check If-Match Header matching any
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "*")
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+# Check If-Match Header wrong hash
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "WRONG HASH")
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
 
 # if-none-match takes precedence over If-modified-since
 # In this test, the if-none-match header is clearly wrong

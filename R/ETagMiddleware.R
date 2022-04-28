@@ -200,6 +200,14 @@ ETagMiddleware = R6::R6Class(
           response$set_status_code(304)
           return()
         }
+
+
+        # Check If-Match Header
+        im = request$get_header("if-match", NULL)
+        if (!is.null(im) && !actual_hash %in% im && !"*" %in% im) {
+          response$set_body(NULL)
+          response$set_status_code(412)
+          return()
         }
 
 
