@@ -195,12 +195,11 @@ ETagMiddleware = R6::R6Class(
         inm = request$get_header("if-none-match", NULL)
         actual_hash = self$hash_function(response$body)
 
-        if (!is.null(inm)) {
-          if (inm == actual_hash) {
-            response$set_body(NULL)
-            response$set_status_code(304)
-            return()
-          }
+        if (!is.null(inm) && actual_hash %in% inm) {
+          response$set_body(NULL)
+          response$set_status_code(304)
+          return()
+        }
         }
 
 

@@ -138,6 +138,15 @@ rs = app$process_request(req)
 expect_cached(rs)
 
 
+# Multiple If-None-Match
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-None-Match" = c("SOME HASH", actual_hash, "OTHER HASH"))
+)
+rs = app$process_request(req)
+expect_cached(rs)
+
 
 # Only If None Match but WRONG resulting in the file to be returned
 req = Request$new(
