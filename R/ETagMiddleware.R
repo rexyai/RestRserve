@@ -2,14 +2,17 @@
 #'
 #'
 #' @description
-#' Adds ETag to [Application]. TBD. \cr
+#' Adds ETag to an [Application]. \cr
 #'
 #' ETags are header information that enable the caching of content.
 #' If enabled, RestRserve will return an ETag (eg a hash of a file) alongside
 #' the last time it was modified.
 #' When a request is sent, additional headers such as
-#' [`If-None-Match`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match)
-#' or [`If-Modified-Since`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since)
+#' [`If-None-Match`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-None-Match),
+#' [`If-Match`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Match),
+#' [`If-Modified-Since`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-Modified-Since),
+#' and
+#' [`If-Unmodified-Since`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/If-UnModified-Since),
 #' can be passed to the server as well.
 #'
 #' If the conditions are met (different hash in case of a `If-None-Match` header
@@ -20,6 +23,15 @@
 #'
 #' Note that if both headers are provided, the `If-None-Match` header takes
 #' precedence.
+#'
+#' Furthermore, the middleware also supports the headers `If-Match`, which
+#' returns the object if the hash matches (it also supports "*" to always return
+#' the file), as well as `If-Unmodified-Since`, which returns the object if it
+#' has not been modified since a certain time.
+#' If the conditions are not met, a
+#' [412](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412) status
+#' code is returned (Precondition Failed).
+#' See examples below.
 #'
 #' See examples below for further clarifications.
 #'
@@ -32,23 +44,39 @@
 #' [MDN](https://developer.mozilla.org/en/docs/Web/HTTP/Headers/ETag)
 #'
 #' @examples
+#' #############################################################################
 #' # setup a static directory with ETag caching
+#'
 #' static_dir = file.path(tempdir(), "static")
 #' if (!dir.exists(static_dir)) dir.create(static_dir)
+#'
 #' file_path = file.path(static_dir, "example.txt")
 #' writeLines("Hello World", file_path)
-#' last_modified = file.info(file_path)[["mtime"]]
+#'
+#' # get the time the file was last modified in UTC time
+#' last_modified = as.POSIXlt(file.info(file_path)[["mtime"]], tz = "UTC")
 #' file_hash = digest::digest(file = file_path, algo = "crc32")
+#'
+#' time_fmt = "%a, %d %b %Y %H:%M:%S GMT"
+#'
+#'
 #'
 #' #############################################################################
 #' # setup the Application with the ETag Middleware
-#' app = Application$new(middleware = list(ETagMiddleware$new()))
+#' app = Application$new()
+#' app$append_middleware(ETagMiddleware$new())
 #' app$add_static(path = "/", static_dir)
+#'
+#'
+#'
+#' #############################################################################
+#' # Example Requests
 #'
 #' # Request the file returns the file with ETag headers
 #' req = Request$new(path = "/example.txt")
 #' # note that it also returns the Last-Modified and ETag headers
 #' app$process_request(req)
+#'
 #'
 #' # provide matching hash of the file in the If-None-Match header to check Etag
 #' # => 304 Not Modified (Can be cached)
@@ -57,28 +85,50 @@
 #' # note status_code 304 Not Modified
 #' app$process_request(req)
 #'
+#'
 #' # provide a wrong hash, returns the file normally
 #' req = Request$new(path = "/example.txt",
 #'                   headers = list("If-None-Match" = "WRONG HASH"))
 #' app$process_request(req)
 #'
+#'
 #' # alternatively, you can provide a timestamp in the If-Modified-Since header
 #' # => 304 Not Modified (Can be cached)
-#' modified_since = format(last_modified + 1, "%FT%TZ")
+#' modified_since = format(last_modified + 1, time_fmt)
 #' req = Request$new(path = "/example.txt",
 #'                   headers = list("If-Modified-Since" = modified_since))
 #' app$process_request(req)
+#'
 #'
 #' # provide both headers: If-None-Match takes precedence
 #' # in this case:
 #' #  - if none match => modified (No cache)
 #' #  - if modified since => NOT MODIFIED (cached)
 #' # => Overall: modified = no cache
-#' modified_since = format(last_modified + 1, "%FT%TZ")
+#' modified_since = format(last_modified + 1, time_fmt)
 #' req = Request$new(path = "/example.txt",
 #'                   headers = list("If-None-Match" = "CLEARLY WRONG",
 #'                                  "If-Modified-Since" = modified_since))
 #' app$process_request(req)
+#'
+#'
+#' # provide matching hash of the file in the If-Match header to check Etag
+#' # => 412 Precondition Failed
+#' req = Request$new(path = "/example.txt",
+#'                   headers = list("If-Match" = "OTHER HASH"))
+#' # note status_code 412 Precondition Failed
+#' app$process_request(req)
+#'
+#'
+#' # Use If-Unmodified-Since
+#' unmodified_since = format(last_modified - 1, time_fmt)
+#' req = Request$new(path = "/example.txt",
+#'                   headers = list("If-Unmodified-Since" = unmodified_since)
+#' )
+#' # note status_code 412 Precondition Failed
+#' app$process_request(req)
+#'
+#'
 #'
 #' #############################################################################
 #'
@@ -87,12 +137,16 @@
 #' # also use an alternate last_modified time function
 #' always_1900 = function(x) as.POSIXlt("1900-01-01 12:34:56", tz = "GMT")
 #'
+#'
+#' # setup the app again
 #' app = Application$new(middleware = list(
 #'   ETagMiddleware$new(hash_function = hash_on_filename,
 #'                      last_modified_function = always_1900)
 #' ))
 #' app$add_static(path = "/", file_path = static_dir)
 #'
+#'
+#' # test the requests
 #' req = Request$new(path = "/example.txt")
 #' (res = app$process_request(req))
 #'
