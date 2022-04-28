@@ -211,7 +211,7 @@ ETagMiddleware = R6::R6Class(
         # INM takes precedence over IMS,
         # that is if IMS is only checked if INM is NOT GIVEN!
         if (!is.null(ims) && is.null(inm)) {
-          ims_date = as.POSIXlt(ims, tryFormats = c(
+          ims_date = as.POSIXlt(paste(ims, sep = ", "), tryFormats = c(
             time_fmt, "%FT%TZ", "%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
             "%Y-%m-%d %H:%M", "%Y/%m/%d %H:%M", "%Y-%m-%d", "%Y/%m/%d"
           ), tz = "GMT")
