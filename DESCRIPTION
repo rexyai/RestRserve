@@ -8,7 +8,7 @@ Description:
   application development. Out of the box allows to serve requests using
   'Rserve' package, but flexible enough to integrate with other HTTP servers
   such as 'httpuv'.
-Version: 1.1.0
+Version: 1.1.1
 Authors@R: c(
   person(given = "Dmitry",
          family = "Selivanov",

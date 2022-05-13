@@ -11,6 +11,7 @@
 #'   assert_function check_raw assert_raw assert_int assert_class assert_list
 #'   assert_file_exists check_file_exists check_directory_exists
 #' @importFrom Rcpp sourceCpp
+#' @importFrom digest digest
 #' @useDynLib RestRserve, .registration=TRUE
 .onAttach = function(libname, pkgname) { # nocov start
   recent_rserve = as.numeric_version("1.8.6")
