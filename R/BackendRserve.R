@@ -19,9 +19,12 @@ BackendRserve = R6::R6Class(
     #' @param jit_level changes R's byte compiler level to this value before app
     #' start.
     #' @param precompile try to use R's byte compiler to pre-compile
-    initialize = function(..., jit_level = 0L, precompile = FALSE) {
+    #' @param headers_to_split a vector of header names which are split on comma.
+    #' For the default list, see also [http_headers_to_split_default]
+    initialize = function(..., jit_level = 0L, precompile = FALSE, headers_to_split = http_headers_to_split_default()) {
       private$jit_level = checkmate::assert_int(jit_level, lower = 0L, upper = 3L)
       private$precompile = checkmate::assert_logical(precompile)
+      private$headers_to_split = checkmate::assert_character(headers_to_split)
       invisible(self)
     },
     #' @description
@@ -229,6 +232,7 @@ BackendRserve = R6::R6Class(
     jit_level = NULL,
     precompile = NULL,
     request = NULL,
+    headers_to_split = NULL,
     parse_form_urlencoded = function(body, request) {
       if (length(body) > 0L) {
         # Named character vector. Body parameters key-value pairs.
@@ -281,7 +285,7 @@ BackendRserve = R6::R6Class(
         headers = rawToChar(headers)
       }
       if (is_string(headers)) {
-        headers = cpp_parse_headers(headers)
+        headers = cpp_parse_headers(headers, private$headers_to_split)
       }
       request$headers = headers
       return(request)
