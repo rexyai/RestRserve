@@ -252,6 +252,7 @@ ETagMiddleware = R6::R6Class(
         if (!is.null(inm) && actual_hash %in% inm) {
           response$set_body(NULL)
           response$set_status_code(304)
+          response$set_content_type("text/plain")
           return()
         }
 
@@ -261,6 +262,7 @@ ETagMiddleware = R6::R6Class(
         if (!is.null(im) && !actual_hash %in% im && !"*" %in% im) {
           response$set_body(NULL)
           response$set_status_code(412)
+          response$set_content_type("text/plain")
           return()
         }
 
@@ -281,6 +283,7 @@ ETagMiddleware = R6::R6Class(
           if (last_modified <= ims_date) {
             response$set_body(NULL)
             response$set_status_code(304)
+            response$set_content_type("text/plain")
             return()
           }
         }
@@ -299,6 +302,7 @@ ETagMiddleware = R6::R6Class(
           if (last_modified > ius_date) {
             response$set_body(NULL)
             response$set_status_code(412)
+            response$set_content_type("text/plain")
             return()
           }
         }
