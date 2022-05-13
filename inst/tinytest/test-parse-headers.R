@@ -87,4 +87,13 @@ for (h in split_headers) {
     expect_equal(parsed[[h]], exp)
 }
 
+
+# cpp_parse_headers accepts header argument for which headers to split
+parsed = cpp_parse_headers(paste0("test-header:", "some,more,values"), headers_to_split = "test-header")
+expect_equal(parsed, list("test-header" = c("some", "more", "values")))
+
+# headers_to_split overrides existing headers to split... eg accept wont be split anymore
+parsed = cpp_parse_headers(paste0("accept:", "some,more,values"), headers_to_split = "test-header")
+expect_equal(parsed, list("accept" = "some,more,values"))
+
 # nolint end

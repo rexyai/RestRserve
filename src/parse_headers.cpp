@@ -2,7 +2,6 @@
 #include <string>
 #include <sstream>
 #include <unordered_map>
-#include <unordered_set>
 #include <Rcpp.h>
 #include "utils.h"
 
@@ -12,44 +11,59 @@ bool validate_header_name(const std::string& x) {
   const char* valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890!#$%&'*+-.^_`|~";
   return x.find_first_not_of(valid) == std::string::npos;
 }
-// see also: https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
-// also: https://stackoverflow.com/a/29550711/3048453
-const std::unordered_set<std::string> headers_to_split = {
-  "accept",
-  "accept-charset",
-  "access-control-request-headers",
-  "accept-encoding",
-  "accept-language",
-  "accept-patch",
-  "accept-ranges",
-  "allow",
-  "cache-control",
-  "connection",
-  "content-encoding",
-  "content-language",
-  "cookie",
-  "expect",
-  "forwarded",
-  "if-match",
-  "if-none-match",
-  "pragma",
-  "proxy-authenticate",
-  "te",
-  "trailer",
-  "transfer-encoding",
-  "upgrade",
-  "vary",
-  "via",
-  "warning",
-  "www-authenticate",
-  "x-forwarded-for"
-};
-bool split_header(const std::string& key) {
-  return headers_to_split.count(key) != 0;
+
+bool split_header(const std::string& key, const std::vector<std::string>& h) {
+  // h being the header names for which we split the headers
+  return std::find(h.begin(), h.end(), key) != h.end();
+  // return std::count_if(h.begin(), h.end(), key) != 0;
+}
+
+
+//' Returns a vector of http header names which are split by default
+//'
+//' @return A vector of http header names
+//' @seealso https://en.wikipedia.org/wiki/List_of_HTTP_header_fields and
+//' https://stackoverflow.com/a/29550711/3048453
+// [[Rcpp::export]]
+Rcpp::CharacterVector http_headers_to_split_default() {
+  return Rcpp::CharacterVector({
+    "accept",
+    "accept-charset",
+    "access-control-request-headers",
+    "accept-encoding",
+    "accept-language",
+    "accept-patch",
+    "accept-ranges",
+    "allow",
+    "cache-control",
+    "connection",
+    "content-encoding",
+    "content-language",
+    "cookie",
+    "expect",
+    "forwarded",
+    "if-match",
+    "if-none-match",
+    "pragma",
+    "proxy-authenticate",
+    "te",
+    "trailer",
+    "transfer-encoding",
+    "upgrade",
+    "vary",
+    "via",
+    "warning",
+    "www-authenticate",
+    "x-forwarded-for"
+  });
 }
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::List cpp_parse_headers(const char* headers) {
+Rcpp::List cpp_parse_headers(const char* headers,
+                             Rcpp::CharacterVector headers_to_split = http_headers_to_split_default()) {
+
+  std::vector<std::string> h_to_split = Rcpp::as<std::vector<std::string>>(headers_to_split);
+
   Headers res;
   std::istringstream stream(headers);
   std::string buffer;
@@ -72,7 +86,7 @@ Rcpp::List cpp_parse_headers(const char* headers) {
       char sep = key == "cookie" ? ';' : ',';
       std::vector<std::string> val_vec;
 
-      if (split_header(key)) {
+      if (split_header(key, h_to_split)) {
         str_split(val_str, val_vec, sep, true);
       } else {
         str_trim(val_str);
