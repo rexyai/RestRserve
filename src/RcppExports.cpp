@@ -51,12 +51,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_parse_headers
-Rcpp::List cpp_parse_headers(const char* headers, Rcpp::CharacterVector headers_to_split);
+Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split);
 RcppExport SEXP _RestRserve_cpp_parse_headers(SEXP headersSEXP, SEXP headers_to_splitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::traits::input_parameter< const char* >::type headers(headersSEXP);
-    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type headers_to_split(headers_to_splitSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::CharacterVector> >::type headers_to_split(headers_to_splitSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_parse_headers(headers, headers_to_split));
     return rcpp_result_gen;
 END_RCPP

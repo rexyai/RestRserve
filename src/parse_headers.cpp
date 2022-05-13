@@ -18,12 +18,13 @@ bool split_header(const std::string& key, const std::vector<std::string>& h) {
   // return std::count_if(h.begin(), h.end(), key) != 0;
 }
 
-
 //' Returns a vector of http header names which are split by default
 //'
 //' @return A vector of http header names
-//' @seealso https://en.wikipedia.org/wiki/List_of_HTTP_header_fields and
-//' https://stackoverflow.com/a/29550711/3048453
+//' @export
+//'
+//' @seealso [https://en.wikipedia.org/wiki/List_of_HTTP_header_fields]() and
+//' [https://stackoverflow.com/a/29550711/3048453]()
 // [[Rcpp::export]]
 Rcpp::CharacterVector http_headers_to_split_default() {
   return Rcpp::CharacterVector({
@@ -60,9 +61,14 @@ Rcpp::CharacterVector http_headers_to_split_default() {
 
 // [[Rcpp::export(rng=false)]]
 Rcpp::List cpp_parse_headers(const char* headers,
-                             Rcpp::CharacterVector headers_to_split = http_headers_to_split_default()) {
-
-  std::vector<std::string> h_to_split = Rcpp::as<std::vector<std::string>>(headers_to_split);
+                             Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split = R_NilValue) {
+  Rcpp::CharacterVector hts;
+  if (!headers_to_split.isNotNull()) {
+    hts = http_headers_to_split_default();
+  } else {
+    hts = Rcpp::CharacterVector(headers_to_split);
+  }
+  std::vector<std::string> h_to_split = Rcpp::as<std::vector<std::string>>(hts);
 
   Headers res;
   std::istringstream stream(headers);
