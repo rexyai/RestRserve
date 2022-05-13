@@ -34,8 +34,6 @@ If the conditions are not met, a
 \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/412}{412} status
 code is returned (Precondition Failed).
 See examples below.
-
-See examples below for further clarifications.
 }
 \examples{
 #############################################################################

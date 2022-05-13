@@ -33,8 +33,6 @@
 #' code is returned (Precondition Failed).
 #' See examples below.
 #'
-#' See examples below for further clarifications.
-#'
 #' @export
 #'
 #' @seealso
