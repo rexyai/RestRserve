@@ -10,6 +10,7 @@ source("setup.R")
 expect_cached = function(rs) {
   expect_equal(rs$status_code, 304)
   expect_true(!any(c("ETag", "Last-Modified") %in% names(rs$headers)))
+  expect_equal(rs$content_type, "text/plain")
   expect_equal(rs$body, NULL)
 }
 
