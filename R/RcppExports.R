@@ -13,17 +13,6 @@ cpp_parse_cookies <- function(x) {
     .Call(`_RestRserve_cpp_parse_cookies`, x)
 }
 
-#' Returns a vector of http header names which are split by default
-#'
-#' @return A vector of http header names
-#' @export
-#'
-#' @seealso [https://en.wikipedia.org/wiki/List_of_HTTP_header_fields]() and
-#' [https://stackoverflow.com/a/29550711/3048453]()
-http_headers_to_split_default <- function() {
-    .Call(`_RestRserve_http_headers_to_split_default`)
-}
-
 cpp_parse_headers <- function(headers, headers_to_split = NULL) {
     .Call(`_RestRserve_cpp_parse_headers`, headers, headers_to_split)
 }

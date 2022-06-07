@@ -12,63 +12,13 @@ bool validate_header_name(const std::string& x) {
   return x.find_first_not_of(valid) == std::string::npos;
 }
 
-bool split_header(const std::string& key, const std::vector<std::string>& h) {
-  // h being the header names for which we split the headers
-  return std::find(h.begin(), h.end(), key) != h.end();
-  // return std::count_if(h.begin(), h.end(), key) != 0;
-}
-
-//' Returns a vector of http header names which are split by default
-//'
-//' @return A vector of http header names
-//' @export
-//'
-//' @seealso [https://en.wikipedia.org/wiki/List_of_HTTP_header_fields]() and
-//' [https://stackoverflow.com/a/29550711/3048453]()
-// [[Rcpp::export]]
-Rcpp::CharacterVector http_headers_to_split_default() {
-  return Rcpp::CharacterVector({
-    "accept",
-    "accept-charset",
-    "access-control-request-headers",
-    "accept-encoding",
-    "accept-language",
-    "accept-patch",
-    "accept-ranges",
-    "allow",
-    "cache-control",
-    "connection",
-    "content-encoding",
-    "content-language",
-    "cookie",
-    "expect",
-    "forwarded",
-    "if-match",
-    "if-none-match",
-    "pragma",
-    "proxy-authenticate",
-    "te",
-    "trailer",
-    "transfer-encoding",
-    "upgrade",
-    "vary",
-    "via",
-    "warning",
-    "www-authenticate",
-    "x-forwarded-for"
-  });
-}
-
 // [[Rcpp::export(rng=false)]]
-Rcpp::List cpp_parse_headers(const char* headers,
-                             Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split = R_NilValue) {
-  Rcpp::CharacterVector hts;
-  if (!headers_to_split.isNotNull()) {
-    hts = http_headers_to_split_default();
-  } else {
-    hts = Rcpp::CharacterVector(headers_to_split);
+Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split = R_NilValue) {
+  std::unordered_set<std::string> h_to_split;
+  if (headers_to_split.isNotNull()) {
+    Rcpp::CharacterVector hts = Rcpp::CharacterVector(headers_to_split);
+    h_to_split.insert(hts.begin(), hts.end());
   }
-  std::vector<std::string> h_to_split = Rcpp::as<std::vector<std::string>>(hts);
 
   Headers res;
   std::istringstream stream(headers);
@@ -91,8 +41,7 @@ Rcpp::List cpp_parse_headers(const char* headers,
       }
       char sep = key == "cookie" ? ';' : ',';
       std::vector<std::string> val_vec;
-
-      if (split_header(key, h_to_split)) {
+      if (h_to_split.find(key) != h_to_split.end()) {
         str_split(val_str, val_vec, sep, true);
       } else {
         str_trim(val_str);

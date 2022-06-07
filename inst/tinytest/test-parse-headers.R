@@ -1,7 +1,10 @@
 # Test parse headers
 
+split_default = getOption("RestRserve.headers.split", NULL)
 # import functions
-cpp_parse_headers = RestRserve:::cpp_parse_headers
+cpp_parse_headers = function(x) {
+  RestRserve:::cpp_parse_headers(x, split_default)
+}
 
 # Empty input
 expect_error(cpp_parse_headers(NA))
@@ -48,38 +51,7 @@ expect_equal(parsed[["if-none-match"]], c("abc", "def", "ghi", "jkl"))
 
 
 # automatically test that all headers which are splittable are split correctly
-split_headers = c(
-  "accept",
-  "accept-charset",
-  "access-control-request-headers",
-  "accept-encoding",
-  "accept-language",
-  "accept-patch",
-  "accept-ranges",
-  "allow",
-  "cache-control",
-  "connection",
-  "content-encoding",
-  "content-language",
-  "cookie",
-  "expect",
-  "forwarded",
-  "if-match",
-  "if-none-match",
-  "pragma",
-  "proxy-authenticate",
-  "te",
-  "trailer",
-  "transfer-encoding",
-  "upgrade",
-  "vary",
-  "via",
-  "warning",
-  "www-authenticate",
-  "x-forwarded-for"
-)
-
-for (h in split_headers) {
+for (h in split_default) {
     cont = "abc,def,ghi, jkl"
     sep = if (h == "cookie") "; ?" else ", ?"
     exp = strsplit(cont, sep)[[1]]
@@ -89,11 +61,11 @@ for (h in split_headers) {
 
 
 # cpp_parse_headers accepts header argument for which headers to split
-parsed = cpp_parse_headers(paste0("test-header:", "some,more,values"), headers_to_split = "test-header")
+parsed = RestRserve:::cpp_parse_headers(paste0("test-header:", "some,more,values"), headers_to_split = "test-header")
 expect_equal(parsed, list("test-header" = c("some", "more", "values")))
 
 # headers_to_split overrides existing headers to split... eg accept wont be split anymore
-parsed = cpp_parse_headers(paste0("accept:", "some,more,values"), headers_to_split = "test-header")
+parsed = RestRserve:::cpp_parse_headers(paste0("accept:", "some,more,values"), headers_to_split = "test-header")
 expect_equal(parsed, list("accept" = "some,more,values"))
 
 # nolint end

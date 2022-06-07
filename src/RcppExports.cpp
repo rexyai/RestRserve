@@ -40,16 +40,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// http_headers_to_split_default
-Rcpp::CharacterVector http_headers_to_split_default();
-RcppExport SEXP _RestRserve_http_headers_to_split_default() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(http_headers_to_split_default());
-    return rcpp_result_gen;
-END_RCPP
-}
 // cpp_parse_headers
 Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split);
 RcppExport SEXP _RestRserve_cpp_parse_headers(SEXP headersSEXP, SEXP headers_to_splitSEXP) {
@@ -121,7 +111,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_RestRserve_cpp_format_cookies", (DL_FUNC) &_RestRserve_cpp_format_cookies, 1},
     {"_RestRserve_cpp_format_headers", (DL_FUNC) &_RestRserve_cpp_format_headers, 1},
     {"_RestRserve_cpp_parse_cookies", (DL_FUNC) &_RestRserve_cpp_parse_cookies, 1},
-    {"_RestRserve_http_headers_to_split_default", (DL_FUNC) &_RestRserve_http_headers_to_split_default, 0},
     {"_RestRserve_cpp_parse_headers", (DL_FUNC) &_RestRserve_cpp_parse_headers, 2},
     {"_RestRserve_cpp_parse_multipart_boundary", (DL_FUNC) &_RestRserve_cpp_parse_multipart_boundary, 1},
     {"_RestRserve_cpp_parse_multipart_body", (DL_FUNC) &_RestRserve_cpp_parse_multipart_body, 2},

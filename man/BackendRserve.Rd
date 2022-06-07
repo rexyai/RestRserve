@@ -34,12 +34,7 @@ Creates BackendRserve object which can start \link{Application} using Rserve bac
 \subsection{Method \code{new()}}{
 Creates BackendRserve object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackendRserve$new(
-  ...,
-  jit_level = 0L,
-  precompile = FALSE,
-  headers_to_split = http_headers_to_split_default()
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackendRserve$new(..., jit_level = 0L, precompile = FALSE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,9 +46,6 @@ Creates BackendRserve object.
 start.}
 
 \item{\code{precompile}}{try to use R's byte compiler to pre-compile}
-
-\item{\code{headers_to_split}}{a vector of header names which are split on comma.
-For the default list, see also \link{http_headers_to_split_default}}
 }
 \if{html}{\out{</div>}}
 }

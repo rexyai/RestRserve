@@ -19,11 +19,10 @@ BackendRserve = R6::R6Class(
     #' @param jit_level changes R's byte compiler level to this value before app
     #' start.
     #' @param precompile try to use R's byte compiler to pre-compile
-    #' @param headers_to_split a vector of header names which are split on comma.
-    #' For the default list, see also [http_headers_to_split_default]
-    initialize = function(..., jit_level = 0L, precompile = FALSE, headers_to_split = http_headers_to_split_default()) {
+    initialize = function(..., jit_level = 0L, precompile = FALSE) {
       private$jit_level = checkmate::assert_int(jit_level, lower = 0L, upper = 3L)
       private$precompile = checkmate::assert_logical(precompile)
+      headers_to_split = getOption("RestRserve.headers.split", character())
       private$headers_to_split = checkmate::assert_character(headers_to_split)
       invisible(self)
     },
