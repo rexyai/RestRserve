@@ -13,11 +13,13 @@ bool validate_header_name(const std::string& x) {
 }
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<Rcpp::CharacterVector> headers_to_split = R_NilValue) {
+Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<const Rcpp::CharacterVector> headers_to_split = R_NilValue) {
   std::unordered_set<std::string> h_to_split;
   if (headers_to_split.isNotNull()) {
-    Rcpp::CharacterVector hts = Rcpp::CharacterVector(headers_to_split);
-    h_to_split.insert(hts.begin(), hts.end());
+    const Rcpp::CharacterVector hts = Rcpp::CharacterVector(headers_to_split);
+    for(Rcpp::CharacterVector::const_iterator ptr = hts.begin(); ptr != hts.end(); ptr++) {
+      h_to_split.insert(Rcpp::as<std::string>(*ptr));
+    }
   }
 
   Headers res;
