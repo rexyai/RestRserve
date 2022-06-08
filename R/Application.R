@@ -4,7 +4,19 @@
 #' Creates Application object.
 #' Application provides an interface for building high-performance
 #' REST API by registering R functions as handlers http requests.
+#' @details
+#' There are several advanced options to control how HTTP headers are
+#' processed:
+#' - `options("RestRserve.headers.server")` controls response `"Server"` header
+#' - `options("RestRserve.headers.split")` controls which header values
+#' split by comma during parsing. See
+#' [https://en.wikipedia.org/wiki/List_of_HTTP_header_fields](),
+#' [https://stackoverflow.com/a/29550711/3048453]()
 #'
+#' There is also an option to switch-off runtime types validation in
+#' the Request/Response handlers. This might provide some performance gains,
+#' but ultimately leads to less robust applications. Use at your own risk!
+#' See `options("RestRserve.runtime.asserts")`
 #' @export
 #'
 #' @seealso [HTTPError] [Middleware]

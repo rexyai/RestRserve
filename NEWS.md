@@ -1,5 +1,9 @@
 ## Changelog
 
+* 2022-06-08 - 1.2.0
+    * Expose option to control which HTTP headers need to be split by comma during parsing. See `options("RestRserve.headers.split")`. See #187, #189. Thanks @DavZim.
+    * Improved ETag Middleware - see #188. Thanks @DavZim.
+
 * 2022-04-20 - 1.1.1
     * Skip tests on the live Rserve http server on CRAN which caused spurious test errors
 
