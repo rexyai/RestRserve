@@ -13,7 +13,15 @@ bool validate_header_name(const std::string& x) {
 }
 
 // [[Rcpp::export(rng=false)]]
-Rcpp::List cpp_parse_headers(const char* headers) {
+Rcpp::List cpp_parse_headers(const char* headers, Rcpp::Nullable<const Rcpp::CharacterVector> headers_to_split = R_NilValue) {
+  std::unordered_set<std::string> h_to_split;
+  if (headers_to_split.isNotNull()) {
+    const Rcpp::CharacterVector hts = Rcpp::CharacterVector(headers_to_split);
+    for(Rcpp::CharacterVector::const_iterator ptr = hts.begin(); ptr != hts.end(); ptr++) {
+      h_to_split.insert(Rcpp::as<std::string>(*ptr));
+    }
+  }
+
   Headers res;
   std::istringstream stream(headers);
   std::string buffer;
@@ -35,7 +43,13 @@ Rcpp::List cpp_parse_headers(const char* headers) {
       }
       char sep = key == "cookie" ? ';' : ',';
       std::vector<std::string> val_vec;
-      str_split(val_str, val_vec, sep, true);
+      if (h_to_split.find(key) != h_to_split.end()) {
+        str_split(val_str, val_vec, sep, true);
+      } else {
+        str_trim(val_str);
+        val_vec.push_back(val_str);
+      }
+
       if (res.find(key) != res.end()) {
         res[key].insert(res[key].end(), val_vec.begin(), val_vec.end());
       }
