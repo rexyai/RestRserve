@@ -8,6 +8,22 @@ Creates Application object.
 Application provides an interface for building high-performance
 REST API by registering R functions as handlers http requests.
 }
+\details{
+There are several advanced options to control how HTTP headers are
+processed:
+\itemize{
+\item \code{options("RestRserve.headers.server")} controls response \code{"Server"} header
+\item \code{options("RestRserve.headers.split")} controls which header values
+split by comma during parsing. See
+\url{https://en.wikipedia.org/wiki/List_of_HTTP_header_fields},
+\url{https://stackoverflow.com/a/29550711/3048453}
+}
+
+There is also an option to switch-off runtime types validation in
+the Request/Response handlers. This might provide some performance gains,
+but ultimately leads to less robust applications. Use at your own risk!
+See \code{options("RestRserve.runtime.asserts")}
+}
 \examples{
 # init logger
 app_logger = Logger$new()
