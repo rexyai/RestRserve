@@ -14,13 +14,18 @@ data = data.frame(
 static_dir = file.path(tempdir(check = TRUE), "static")
 if (!dir.exists(static_dir)) dir.create(static_dir)
 
+cpb = capabilities()
 a = capture.output({
-  png(file.path(static_dir, "testplot.png"))
-  plot(data$x, data$y, type = "l")
-  dev.off()
-  jpeg(file.path(static_dir, "testplot.jpg"))
-  plot(data$x, data$y, type = "l")
-  dev.off()
+  if (isTRUE(cpb[['png']])) {
+    png(file.path(static_dir, "testplot.png"))
+    plot(data$x, data$y, type = "l")
+    dev.off()
+  }
+  if (isTRUE(cpb[['jpeg']])) {
+    jpeg(file.path(static_dir, "testplot.jpg"))
+    plot(data$x, data$y, type = "l")
+    dev.off()
+  }
   pdf(file.path(static_dir, "testplot.pdf"))
   plot(data$x, data$y, type = "l")
   dev.off()
