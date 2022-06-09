@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@
 <span class="co">#&gt;   status code: 200 OK</span>
 <span class="co">#&gt;   content-type: text/plain</span>
 <span class="co">#&gt;   &lt;Headers&gt;</span>
-<span class="co">#&gt;     Server: RestRserve/1.1.1; Rserve/1.8.10</span></code></pre></div>
+<span class="co">#&gt;     Server: RestRserve/1.2.0; Rserve/1.8.10</span></code></pre></div>
 <p>Let’s take a closer look to the <code>response</code> object and its <code>body</code> property:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
@@ -177,7 +177,7 @@
 <span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span>
 <span class="co">#&gt;   unclass(res)</span>
 <span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7fd454c536c8&gt;</span>
+<span class="co">#&gt; &lt;bytecode: 0x7ffc156ed8f0&gt;</span>
 <span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></code></pre></div>
 <p>We can manually override application default content-type:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -325,7 +325,7 @@
 <span class="co">#&gt;   status code: 200 OK</span>
 <span class="co">#&gt;   content-type: text/plain</span>
 <span class="co">#&gt;   &lt;Headers&gt;</span>
-<span class="co">#&gt;     Server: RestRserve/1.1.1; Rserve/1.8.10</span></code></pre></div>
+<span class="co">#&gt;     Server: RestRserve/1.2.0; Rserve/1.8.10</span></code></pre></div>
 </div>
   </div>
 

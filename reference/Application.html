@@ -19,7 +19,7 @@ REST API by registering R functions as handlers http requests."><meta property="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -82,6 +82,19 @@ REST API by registering R functions as handlers http requests.</p>
     </div>
 
 
+    <div id="details">
+    <h2>Details</h2>
+    <p>There are several advanced options to control how HTTP headers are
+processed:</p><ul><li><p><code>options("RestRserve.headers.server")</code> controls response <code>"Server"</code> header</p></li>
+<li><p><code>options("RestRserve.headers.split")</code> controls which header values
+split by comma during parsing. See
+<a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields" class="external-link">https://en.wikipedia.org/wiki/List_of_HTTP_header_fields</a>,
+<a href="https://stackoverflow.com/a/29550711/3048453" class="external-link">https://stackoverflow.com/a/29550711/3048453</a></p></li>
+</ul><p>There is also an option to switch-off runtime types validation in
+the Request/Response handlers. This might provide some performance gains,
+but ultimately leads to less robust applications. Use at your own risk!
+See <code>options("RestRserve.runtime.asserts")</code></p>
+    </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><a href="HTTPError.html">HTTPError</a> <a href="Middleware.html">Middleware</a>
@@ -514,37 +527,37 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class="r-in"><span class="va">say_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/say/anonym"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"message"</span> <span class="op">=</span> <span class="st">"Hola"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-in"><span class="co"># process prepared requests</span></span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">not_found_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.863661","level":"INFO","name":"MW Logger","pid":5732,"msg":"Incomming request (id 0fd4db76-e794-11ec-afad-005056b835e6): /no"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.866133","level":"INFO","name":"MW Logger","pid":5732,"msg":"Outgoing response (id 0fd4db76-e794-11ec-afad-005056b835e6): 404 Not Found"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.089899","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d68f208-e7de-11ec-abea-00505698ed98): /no"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.092468","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d68f208-e7de-11ec-abea-00505698ed98): 404 Not Found"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 404 Not Found</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">status_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.908073","level":"INFO","name":"MW Logger","pid":5732,"msg":"Incomming request (id 0fd513de-e794-11ec-afad-005056b835e6): /status"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.946373","level":"INFO","name":"MW Logger","pid":5732,"msg":"Outgoing response (id 0fd513de-e794-11ec-afad-005056b835e6): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.133550","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d692a5c-e7de-11ec-abea-00505698ed98): /status"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.171782","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d692a5c-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">desc_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.970232","level":"INFO","name":"MW Logger","pid":5732,"msg":"Incomming request (id 0fd54bb0-e794-11ec-afad-005056b835e6): /desc"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.971357","level":"INFO","name":"MW Logger","pid":5732,"msg":"Outgoing response (id 0fd54bb0-e794-11ec-afad-005056b835e6): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.194916","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d6962ce-e7de-11ec-abea-00505698ed98): /desc"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.196238","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d6962ce-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
 <span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">say_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.973972","level":"INFO","name":"MW Logger","pid":5732,"msg":"Incomming request (id 0fd584f4-e794-11ec-afad-005056b835e6): /say/anonym"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 01:32:44.975229","level":"INFO","name":"MW Logger","pid":5732,"msg":"Outgoing response (id 0fd584f4-e794-11ec-afad-005056b835e6): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.199295","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d699b86-e7de-11ec-abea-00505698ed98): /say/anonym"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.200536","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d699b86-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.1.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># run app</span></span>
 <span class="r-in"><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>

@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@
 <a class="anchor" aria-label="anchor" href="#restrserve-"></a>
 </h1></div>
 <!-- badges: start -->
-<p><a href="https://github.com/rexyai/RestRserve" class="external-link">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. With <a href="https://github.com/s-u/Rserve" class="external-link">Rserve</a> backend on UNIX-like systems it is <strong>parallel by design</strong>. It will handle incoming requests in parallel - each request in a separate fork (all the credits should go to <a href="https://github.com/s-u" class="external-link">Simon Urbanek</a>).</p>
+<p><a href="https://github.com/rexyai/RestRserve" class="external-link">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. On UNIX-like systems and <a href="https://github.com/s-u/Rserve" class="external-link">Rserve</a> backend RestRserve handles requests in parallel: each request in a separate fork. All credits for go to <a href="https://github.com/s-u" class="external-link">Simon Urbanek</a>.</p>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
@@ -153,9 +153,9 @@
 </h2>
 <ul>
 <li>follow <a href="https://restrserve.org/articles/RestRserve.html">quick start guide on http://restrserve.org/</a> for more details.</li>
-<li>check out “Articles” section on <a href="https://restrserve.org/" class="uri">https://restrserve.org/</a>
+<li>see “Articles” section on <a href="https://restrserve.org/" class="uri">https://restrserve.org/</a>
 </li>
-<li>browse <a href="https://github.com/rexyai/RestRserve/tree/master/inst/examples" class="external-link">examples on https://github.com/rexyai/RestRserve</a>
+<li>check out <a href="https://github.com/rexyai/RestRserve/tree/master/inst/examples" class="external-link">examples on https://github.com/rexyai/RestRserve</a>
 </li>
 </ul>
 </div>
@@ -163,15 +163,15 @@
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
-<li>Stable, easy to install, small number of dependencies</li>
+<li>Stable, easy to install, few dependencies</li>
+<li>Concise and intuitive syntax</li>
+<li>Well documented, comes with <strong>many examples</strong> - see <a href="https://github.com/rexyai/RestRserve/tree/master/inst/examples" class="external-link">inst/examples</a>
+</li>
 <li>Fully featured http server with the <strong>support for URL encoded and multipart forms</strong>
 </li>
 <li>Build <strong>safe and secure applications</strong> - RestRserve supports <em>https</em>, provides building blocks for basic/token authentication</li>
-<li>Concise and intuitive syntax</li>
 <li>
 <strong>Raise meaningful http errors</strong> and allows to interrupt request handling from any place of the user code</li>
-<li>Well documented, comes with <strong>many examples</strong> - see <a href="https://github.com/rexyai/RestRserve/tree/master/inst/examples" class="external-link">inst/examples</a>
-</li>
 <li>Saves you from boilerplate code:<ul>
 <li>automatically decodes request body from the common formats</li>
 <li>automatically encodes response body to the common formats</li>
@@ -181,7 +181,7 @@
 </li>
 <li>It is <a href="https://restrserve.org/articles/benchmarks/Benchmarks.html">fast</a>!</li>
 </ul>
-<p><img src="articles/img/bench-rps.png"></p>
+<p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps.png?raw=true"></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -195,10 +195,10 @@
 <div class="section level3">
 <h3 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
 </h3>
-<p>Debian and Alpine based images are available from docker-hub: <a href="https://hub.docker.com/r/rexyai/restrserve/" class="external-link">https://hub.docker.com/r/rexyai/restrserve/</a></p>
+<p>Debian and Alpine based images are available on docker-hub -<a href="https://hub.docker.com/r/rexyai/restrserve/" class="external-link">https://hub.docker.com/r/rexyai/restrserve/</a></p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">docker</span> pull rexyai/restrserve</span></code></pre></div>
-<p>Or install specific version:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">docker</span> pull rexyai/restrserve:0.4.0-minimal</span></code></pre></div>
+<p>You can also install specific version (and we encourage to do so):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">docker</span> pull rexyai/restrserve:1.2.0-alpine</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
