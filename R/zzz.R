@@ -32,6 +32,38 @@
   library.dynam.unload("RestRserve", libpath)
 } # nocov end
 
+# https://en.wikipedia.org/wiki/List_of_HTTP_header_fields
+# https://stackoverflow.com/a/29550711/3048453
+RestRserve.headers.split = c(
+  "accept",
+  "accept-charset",
+  "access-control-request-headers",
+  "accept-encoding",
+  "accept-language",
+  "accept-patch",
+  "accept-ranges",
+  "allow",
+  "cache-control",
+  "connection",
+  "content-encoding",
+  "content-language",
+  "cookie",
+  "expect",
+  "forwarded",
+  "if-match",
+  "if-none-match",
+  "pragma",
+  "proxy-authenticate",
+  "te",
+  "trailer",
+  "transfer-encoding",
+  "upgrade",
+  "vary",
+  "via",
+  "warning",
+  "www-authenticate",
+  "x-forwarded-for"
+)
 .onLoad = function(...) { # nocov start
   # make it TRUE because only this way comments inside functions can be printed during
   # non-interactive execution (Rscript for example). Whithout comments won't be possible to parse
@@ -48,7 +80,8 @@
       paste("RestRserve", packageVersion("RestRserve"), sep = "/"),
       paste("Rserve", packageVersion("Rserve"), sep = "/"),
       sep='; '
-    )
+    ),
+    "RestRserve.headers.split" = RestRserve.headers.split
   )
 
   toset = !(names(restrserve_options) %in% names(default_options))

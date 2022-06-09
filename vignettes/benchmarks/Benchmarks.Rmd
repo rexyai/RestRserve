@@ -221,7 +221,7 @@ plot_results(
   "../img/bench-rps.png"
 )
 ```
-<img src="../img/bench-rps.png" width="640"/>
+<img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps.png?raw=true" width="640"/>
 
 
 ## No keep-alive
@@ -239,7 +239,7 @@ plot_results(
   "../img/bench-rps-no-keep-alive.png"
 )
 ```
-<img src="../img/bench-rps-no-keep-alive.png" width="640"/>
+<img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-no-keep-alive.png?raw=true" width="640"/>
 
 Nonetheless one can always put application behind proxy (such as [HAproxy](http://www.haproxy.org/) or [nginx](https://www.nginx.com/)). It will 
 maintain pool of connections to RestRserve and hence won't suffer from creating new connections.
@@ -359,7 +359,7 @@ plot_results(
   facet = TRUE
 )
 ```
-<img src="../img/bench-rps-vs-plumber.png" width="640"/>
+<img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-vs-plumber.png?raw=true" width="640"/>
 
 As can be seen `RestRserce` performs very well on every workload and scales linearly with number of cores. 
 
@@ -383,6 +383,6 @@ plot_results(
 )
 ```
 
-<img src="../img/bench-rps-vs-plumber-no-keepalive.png" width="640"/>
+<img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-vs-plumber-no-keepalive.png?raw=true" width="640"/>
 
 Due to the overhead of creating a new process for each request and [R's byte compiler overhead](https://github.com/rexyai/RestRserve/issues/149) `RestRserve` with `Rserve` backend does not perform as quickly as `plumber` when computing instantaneous routes.  However, `RestRserve` still shows it's strength when executing routes that have high computational costs. No extra coding logic is needed to leverage `RestRserve`'s multi-threaded execution. Mixing `plumber` and `future` together for _high computation_ routes brings performance that scales with the number of concurrent requests, but at the cost of extra route logic and domain knowledge.

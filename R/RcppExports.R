@@ -13,8 +13,8 @@ cpp_parse_cookies <- function(x) {
     .Call(`_RestRserve_cpp_parse_cookies`, x)
 }
 
-cpp_parse_headers <- function(headers) {
-    .Call(`_RestRserve_cpp_parse_headers`, headers)
+cpp_parse_headers <- function(headers, headers_to_split = NULL) {
+    .Call(`_RestRserve_cpp_parse_headers`, headers, headers_to_split)
 }
 
 cpp_parse_multipart_boundary <- function(content_type) {

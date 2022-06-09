@@ -22,6 +22,8 @@ BackendRserve = R6::R6Class(
     initialize = function(..., jit_level = 0L, precompile = FALSE) {
       private$jit_level = checkmate::assert_int(jit_level, lower = 0L, upper = 3L)
       private$precompile = checkmate::assert_logical(precompile)
+      headers_to_split = getOption("RestRserve.headers.split", character())
+      private$headers_to_split = checkmate::assert_character(headers_to_split)
       invisible(self)
     },
     #' @description
@@ -229,6 +231,7 @@ BackendRserve = R6::R6Class(
     jit_level = NULL,
     precompile = NULL,
     request = NULL,
+    headers_to_split = NULL,
     parse_form_urlencoded = function(body, request) {
       if (length(body) > 0L) {
         # Named character vector. Body parameters key-value pairs.
@@ -281,7 +284,7 @@ BackendRserve = R6::R6Class(
         headers = rawToChar(headers)
       }
       if (is_string(headers)) {
-        headers = cpp_parse_headers(headers)
+        headers = cpp_parse_headers(headers, private$headers_to_split)
       }
       request$headers = headers
       return(request)

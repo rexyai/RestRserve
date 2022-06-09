@@ -10,6 +10,7 @@ source("setup.R")
 expect_cached = function(rs) {
   expect_equal(rs$status_code, 304)
   expect_true(!any(c("ETag", "Last-Modified") %in% names(rs$headers)))
+  expect_equal(rs$content_type, "text/plain")
   expect_equal(rs$body, NULL)
 }
 
@@ -139,11 +140,99 @@ expect_cached(rs)
 
 
 
+# Multiple If-None-Match
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-None-Match" = c("SOME HASH", actual_hash, "OTHER HASH"))
+)
+rs = app$process_request(req)
+expect_cached(rs)
+
+
+
 # Only If None Match but WRONG resulting in the file to be returned
 req = Request$new(
   path = "/static/example.txt",
   method = "GET",
   headers = list("If-None-Match" = "CERTAINLY WRONG")
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+
+# Check If-Match Header
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = actual_hash)
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+
+# Check If-Match Header with other hash
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "OTHER HASH")
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
+
+
+# Check If-Match Header with multiple values
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = c("SOME HASH", actual_hash, "OTHER HASH"))
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+
+# Check If-Match Header matching any
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "*")
+)
+rs = app$process_request(req)
+expect_no_cached_file(rs, file_path, last_modified)
+
+
+
+# Check If-Match Header wrong hash
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Match" = "WRONG HASH")
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
+
+
+# Check If-Unmodified-Since Header
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Unmodified-Since" = format(last_modified - 1, time_fmt))
+)
+rs = app$process_request(req)
+expect_equal(rs$status_code, 412)
+
+
+
+# Check If-Unmodified-Since Header other case
+req = Request$new(
+  path = "/static/example.txt",
+  method = "GET",
+  headers = list("If-Unmodified-Since" = format(last_modified + 1, time_fmt))
 )
 rs = app$process_request(req)
 expect_no_cached_file(rs, file_path, last_modified)

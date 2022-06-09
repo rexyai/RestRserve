@@ -1,21 +1,12 @@
-FROM rocker/r-ver:3.6.2
+FROM r-base:4.2.0
 
 ENV R_FORGE_PKGS Rserve
-ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
+ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite digest
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libssl-dev libjemalloc-dev wget && \
     install2.r -r http://www.rforge.net/ $R_FORGE_PKGS && \
     install2.r $R_CRAN_PKGS
-
-RUN cd /tmp && \
-    wget http://www.haproxy.org/download/2.0/src/haproxy-2.0.8.tar.gz && \
-    tar -xvzf haproxy-2.0.8.tar.gz && \
-    cd haproxy-2.0.8/ && \
-    make TARGET=linux-glibc && \
-    chmod +x haproxy && \
-    cp haproxy /bin/ && \
-    rm -rf /tmp/*
 
 COPY . /tmp/RestRserve
 

@@ -1,7 +1,6 @@
 ## New submission
 
-- fix CRAN failing test of the live Rserve http server (don't run it on CRAN as this error is spurious and related to the env/not being able to start process)
-- import digest::digest
+- new release adding new features
 
 ### Test environments
 

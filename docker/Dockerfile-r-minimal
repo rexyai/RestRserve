@@ -1,8 +1,10 @@
-FROM rexyai/r-minimal
+FROM docker.io/rhub/r-minimal:4.2.0
 
-ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite
+ENV R_CRAN_PKGS Rcpp R6 uuid checkmate mime jsonlite digest
 
 COPY . /tmp/RestRserve
+
+WORKDIR /
 
 RUN apk update && \
     apk add --no-cache --virtual .build-deps gcc g++ musl-dev openssl-dev && \
@@ -13,8 +15,6 @@ RUN apk update && \
     rm -rf /tmp/RestRserve* && \
     rm /RestRserve*.tar.gz && \
     apk del .build-deps
-
-WORKDIR /
 
 EXPOSE 8080
 
