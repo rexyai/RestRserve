@@ -8,15 +8,6 @@ RUN apt-get update && \
     install2.r -r http://www.rforge.net/ $R_FORGE_PKGS && \
     install2.r $R_CRAN_PKGS
 
-RUN cd /tmp && \
-    wget http://www.haproxy.org/download/2.0/src/haproxy-2.0.8.tar.gz && \
-    tar -xvzf haproxy-2.0.8.tar.gz && \
-    cd haproxy-2.0.8/ && \
-    make TARGET=linux-glibc && \
-    chmod +x haproxy && \
-    cp haproxy /bin/ && \
-    rm -rf /tmp/*
-
 COPY . /tmp/RestRserve
 
 RUN R CMD build --no-manual --no-build-vignettes /tmp/RestRserve && \
