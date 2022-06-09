@@ -44,6 +44,7 @@ jobs:
     - name: Build and push standard image
       uses: docker/build-push-action@v3
       with:
+        push: true
         context: .
         file: ./docker/Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
@@ -52,6 +53,7 @@ jobs:
     - name: Build and push alpine image
       uses: docker/build-push-action@v3
       with:
+        push: true
         context: .
         file: ./docker/Dockerfile-r-minimal
         tags: ${{ steps.meta_alpine.outputs.tags }}
