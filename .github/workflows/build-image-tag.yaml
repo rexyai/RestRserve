@@ -15,7 +15,7 @@ jobs:
       run: curl https://get.docker.com | sh
 
     - name: Set tag name
-      run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV && "DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
+      run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV && echo "DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
 
     - name: Build standard image
       run: docker build -t ${DOCKER_IMAGE} -f docker/Dockerfile .
