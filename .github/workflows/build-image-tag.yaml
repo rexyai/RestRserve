@@ -28,7 +28,7 @@ jobs:
       uses: docker/metadata-action@v4
       with:
         flavor: |
-          suffix=-alpine
+          suffix=-alpine,onlatest=true
         images: |
           rexyai/restrserve
         tags: |
