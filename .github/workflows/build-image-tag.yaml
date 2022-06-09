@@ -18,13 +18,13 @@ jobs:
       run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
     - name: Build image
-      run: docker build -t ${{ secrets.DOCKER_USER }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.') -f docker/Dockerfile .
+      run: docker build -t ${{ secrets.DOCKER_ORG }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.') -f docker/Dockerfile .
 
     - name: Push image
       run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }} && docker push ${{ secrets.DOCKER_ORG }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.')
 
     - name: Build minimal image
-      run: docker build -t ${{ secrets.DOCKER_USER }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.')-minimal -f docker/Dockerfile-r-minimal .
+      run: docker build -t ${{ secrets.DOCKER_ORG }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.')-minimal -f docker/Dockerfile-r-minimal .
 
     - name: Push minimal image
       run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_TOKEN }} && docker push ${{ secrets.DOCKER_ORG }}/${{ secrets.DOCKER_REPO }}:$(echo $TAG | tr -dc '0-9\.')-minimal
