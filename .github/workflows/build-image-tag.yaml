@@ -3,27 +3,71 @@ name: Build tag
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Docker
-      run: curl https://get.docker.com | sh
+    - name: Checkout
+      uses: actions/checkout@v2
 
-    - name: Set tag name
-      run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV && echo "DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        images: |
+          rexyai/restrserve
+        tags: |
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
 
-    - name: Build standard image
-      run: docker build -t ${DOCKER_IMAGE} -f docker/Dockerfile .
+    - name: Docker meta alpine
+      id: meta_alpine
+      uses: docker/metadata-action@v4
+      with:
+        flavor: |
+          suffix=-alpine
+        images: |
+          rexyai/restrserve
+        tags: |
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
 
-    - name: Build alpine image
-      run: docker build -t ${DOCKER_IMAGE}-alpine -f docker/Dockerfile-r-minimal .
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: dselivanov
+        password: ${{ secrets.DOCKER_TOKEN }}
 
-    - name: Push images
-      run: docker login -u dselivanov -p ${{ secrets.DOCKER_TOKEN }} && \
-        docker push ${DOCKER_IMAGE} && \
-        docker push ${DOCKER_IMAGE}-alpine
+    - name: Build and push standard image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./docker/Dockerfile
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+
+    - name: Build and push alpine image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./docker/Dockerfile-r-minimal
+        tags: ${{ steps.meta_alpine.outputs.tags }}
+        labels: ${{ steps.meta_alpine.outputs.labels }}
+
+#    - name: Set tag name
+#      run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV && \
+#           echo "DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
+
+#    - name: Build standard image
+#      run: docker build -t $(echo $DOCKER_IMAGE) -f docker/Dockerfile .
+
+#    - name: Build alpine image
+#      run: docker build -t $(echo $DOCKER_IMAGE)-alpine -f docker/Dockerfile-r-minimal .
+
+#    - name: Push images
+#      run:
+#        docker push $(echo $DOCKER_IMAGE) && \
+#        docker push $(echo $DOCKER_IMAGE)-alpine
