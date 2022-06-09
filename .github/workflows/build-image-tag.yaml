@@ -15,12 +15,15 @@ jobs:
       run: curl https://get.docker.com | sh
 
     - name: Set tag name
-      run: echo "TAG=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      run: echo "DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
+      run: echo "TAG=${GITHUB_REF#refs/*/} DOCKER_IMAGE=rexyai/restrserve:$(echo $TAG | tr -dc '0-9\.')" >> $GITHUB_ENV
 
-    - name: Build images
+    - name: Build standard image
       run: docker build -t $DOCKER_IMAGE -f docker/Dockerfile .
+
+    - name: Build alpine image
       run: docker build -t $DOCKER_IMAGE-alpine -f docker/Dockerfile-r-minimal .
 
     - name: Push images
-      run: docker login -u dselivanov -p ${{ secrets.DOCKER_TOKEN }} && docker push $DOCKER_IMAGE && docker push $DOCKER_IMAGE-alpine
+      run: docker login -u dselivanov -p ${{ secrets.DOCKER_TOKEN }} && \
+        docker push $DOCKER_IMAGE && \
+        docker push $DOCKER_IMAGE-alpine
