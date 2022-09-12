@@ -1,6 +1,5 @@
 #' @title Simple logging utility
 #'
-#'
 #' @description
 #' Creates Logger object which can be used for logging with different level of
 #' verbosity. Log messages are in JSON format.

@@ -16,14 +16,14 @@ Creates ApplicationProcess to hold PID of the runnung applicaiton.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ApplicationProcess$new()}}
-\item \href{#method-kill}{\code{ApplicationProcess$kill()}}
-\item \href{#method-clone}{\code{ApplicationProcess$clone()}}
+\item \href{#method-ApplicationProcess-new}{\code{ApplicationProcess$new()}}
+\item \href{#method-ApplicationProcess-kill}{\code{ApplicationProcess$kill()}}
+\item \href{#method-ApplicationProcess-clone}{\code{ApplicationProcess$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ApplicationProcess-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ApplicationProcess-new}{}}}
 \subsection{Method \code{new()}}{
 Creates ApplicationProcess object
 \subsection{Usage}{
@@ -39,8 +39,8 @@ Creates ApplicationProcess object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-kill"></a>}}
-\if{latex}{\out{\hypertarget{method-kill}{}}}
+\if{html}{\out{<a id="method-ApplicationProcess-kill"></a>}}
+\if{latex}{\out{\hypertarget{method-ApplicationProcess-kill}{}}}
 \subsection{Method \code{kill()}}{
 Send signal to process.
 \subsection{Usage}{
@@ -56,8 +56,8 @@ Send signal to process.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ApplicationProcess-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ApplicationProcess-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

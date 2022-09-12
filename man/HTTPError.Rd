@@ -23,8 +23,8 @@ Class to generate HTTP error responses.
 \section{Functions}{
 \itemize{
 \item \code{HTTPErrorFactory}: 
-}}
 
+}}
 \examples{
 check_list = function(x) {
   if (!is.list(x)) raise(HTTPError$bad_request())
@@ -51,47 +51,47 @@ try(check_list(1), silent = TRUE)
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{HTTPErrorFactory$new()}}
-\item \href{#method-set_content_type}{\code{HTTPErrorFactory$set_content_type()}}
-\item \href{#method-set_encode}{\code{HTTPErrorFactory$set_encode()}}
-\item \href{#method-reset}{\code{HTTPErrorFactory$reset()}}
-\item \href{#method-error}{\code{HTTPErrorFactory$error()}}
-\item \href{#method-bad_request}{\code{HTTPErrorFactory$bad_request()}}
-\item \href{#method-unauthorized}{\code{HTTPErrorFactory$unauthorized()}}
-\item \href{#method-forbidden}{\code{HTTPErrorFactory$forbidden()}}
-\item \href{#method-not_found}{\code{HTTPErrorFactory$not_found()}}
-\item \href{#method-method_not_allowed}{\code{HTTPErrorFactory$method_not_allowed()}}
-\item \href{#method-not_acceptable}{\code{HTTPErrorFactory$not_acceptable()}}
-\item \href{#method-conflict}{\code{HTTPErrorFactory$conflict()}}
-\item \href{#method-gone}{\code{HTTPErrorFactory$gone()}}
-\item \href{#method-length_required}{\code{HTTPErrorFactory$length_required()}}
-\item \href{#method-precondition_failed}{\code{HTTPErrorFactory$precondition_failed()}}
-\item \href{#method-payload_too_large}{\code{HTTPErrorFactory$payload_too_large()}}
-\item \href{#method-uri_too_long}{\code{HTTPErrorFactory$uri_too_long()}}
-\item \href{#method-unsupported_media_type}{\code{HTTPErrorFactory$unsupported_media_type()}}
-\item \href{#method-range_not_satisfiable}{\code{HTTPErrorFactory$range_not_satisfiable()}}
-\item \href{#method-unprocessable_entity}{\code{HTTPErrorFactory$unprocessable_entity()}}
-\item \href{#method-locked}{\code{HTTPErrorFactory$locked()}}
-\item \href{#method-failed_dependency}{\code{HTTPErrorFactory$failed_dependency()}}
-\item \href{#method-precondition_required}{\code{HTTPErrorFactory$precondition_required()}}
-\item \href{#method-too_many_requests}{\code{HTTPErrorFactory$too_many_requests()}}
-\item \href{#method-request_header_fields_too_large}{\code{HTTPErrorFactory$request_header_fields_too_large()}}
-\item \href{#method-unavailable_for_legal_reasons}{\code{HTTPErrorFactory$unavailable_for_legal_reasons()}}
-\item \href{#method-internal_server_error}{\code{HTTPErrorFactory$internal_server_error()}}
-\item \href{#method-not_implemented}{\code{HTTPErrorFactory$not_implemented()}}
-\item \href{#method-bad_gateway}{\code{HTTPErrorFactory$bad_gateway()}}
-\item \href{#method-service_unavailable}{\code{HTTPErrorFactory$service_unavailable()}}
-\item \href{#method-gateway_timeout}{\code{HTTPErrorFactory$gateway_timeout()}}
-\item \href{#method-version_not_supported}{\code{HTTPErrorFactory$version_not_supported()}}
-\item \href{#method-insufficient_storage}{\code{HTTPErrorFactory$insufficient_storage()}}
-\item \href{#method-loop_detected}{\code{HTTPErrorFactory$loop_detected()}}
-\item \href{#method-network_authentication_required}{\code{HTTPErrorFactory$network_authentication_required()}}
-\item \href{#method-clone}{\code{HTTPErrorFactory$clone()}}
+\item \href{#method-HTTPError-new}{\code{HTTPErrorFactory$new()}}
+\item \href{#method-HTTPError-set_content_type}{\code{HTTPErrorFactory$set_content_type()}}
+\item \href{#method-HTTPError-set_encode}{\code{HTTPErrorFactory$set_encode()}}
+\item \href{#method-HTTPError-reset}{\code{HTTPErrorFactory$reset()}}
+\item \href{#method-HTTPError-error}{\code{HTTPErrorFactory$error()}}
+\item \href{#method-HTTPError-bad_request}{\code{HTTPErrorFactory$bad_request()}}
+\item \href{#method-HTTPError-unauthorized}{\code{HTTPErrorFactory$unauthorized()}}
+\item \href{#method-HTTPError-forbidden}{\code{HTTPErrorFactory$forbidden()}}
+\item \href{#method-HTTPError-not_found}{\code{HTTPErrorFactory$not_found()}}
+\item \href{#method-HTTPError-method_not_allowed}{\code{HTTPErrorFactory$method_not_allowed()}}
+\item \href{#method-HTTPError-not_acceptable}{\code{HTTPErrorFactory$not_acceptable()}}
+\item \href{#method-HTTPError-conflict}{\code{HTTPErrorFactory$conflict()}}
+\item \href{#method-HTTPError-gone}{\code{HTTPErrorFactory$gone()}}
+\item \href{#method-HTTPError-length_required}{\code{HTTPErrorFactory$length_required()}}
+\item \href{#method-HTTPError-precondition_failed}{\code{HTTPErrorFactory$precondition_failed()}}
+\item \href{#method-HTTPError-payload_too_large}{\code{HTTPErrorFactory$payload_too_large()}}
+\item \href{#method-HTTPError-uri_too_long}{\code{HTTPErrorFactory$uri_too_long()}}
+\item \href{#method-HTTPError-unsupported_media_type}{\code{HTTPErrorFactory$unsupported_media_type()}}
+\item \href{#method-HTTPError-range_not_satisfiable}{\code{HTTPErrorFactory$range_not_satisfiable()}}
+\item \href{#method-HTTPError-unprocessable_entity}{\code{HTTPErrorFactory$unprocessable_entity()}}
+\item \href{#method-HTTPError-locked}{\code{HTTPErrorFactory$locked()}}
+\item \href{#method-HTTPError-failed_dependency}{\code{HTTPErrorFactory$failed_dependency()}}
+\item \href{#method-HTTPError-precondition_required}{\code{HTTPErrorFactory$precondition_required()}}
+\item \href{#method-HTTPError-too_many_requests}{\code{HTTPErrorFactory$too_many_requests()}}
+\item \href{#method-HTTPError-request_header_fields_too_large}{\code{HTTPErrorFactory$request_header_fields_too_large()}}
+\item \href{#method-HTTPError-unavailable_for_legal_reasons}{\code{HTTPErrorFactory$unavailable_for_legal_reasons()}}
+\item \href{#method-HTTPError-internal_server_error}{\code{HTTPErrorFactory$internal_server_error()}}
+\item \href{#method-HTTPError-not_implemented}{\code{HTTPErrorFactory$not_implemented()}}
+\item \href{#method-HTTPError-bad_gateway}{\code{HTTPErrorFactory$bad_gateway()}}
+\item \href{#method-HTTPError-service_unavailable}{\code{HTTPErrorFactory$service_unavailable()}}
+\item \href{#method-HTTPError-gateway_timeout}{\code{HTTPErrorFactory$gateway_timeout()}}
+\item \href{#method-HTTPError-version_not_supported}{\code{HTTPErrorFactory$version_not_supported()}}
+\item \href{#method-HTTPError-insufficient_storage}{\code{HTTPErrorFactory$insufficient_storage()}}
+\item \href{#method-HTTPError-loop_detected}{\code{HTTPErrorFactory$loop_detected()}}
+\item \href{#method-HTTPError-network_authentication_required}{\code{HTTPErrorFactory$network_authentication_required()}}
+\item \href{#method-HTTPError-clone}{\code{HTTPErrorFactory$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-HTTPError-new"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-new}{}}}
 \subsection{Method \code{new()}}{
 Creates HTTPError object.
 \subsection{Usage}{
@@ -109,8 +109,8 @@ Creates HTTPError object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_content_type"></a>}}
-\if{latex}{\out{\hypertarget{method-set_content_type}{}}}
+\if{html}{\out{<a id="method-HTTPError-set_content_type"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-set_content_type}{}}}
 \subsection{Method \code{set_content_type()}}{
 Set content type of response.
 \subsection{Usage}{
@@ -136,8 +136,8 @@ also the errors format produced by RestRserve. Same holds for
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_encode"></a>}}
-\if{latex}{\out{\hypertarget{method-set_encode}{}}}
+\if{html}{\out{<a id="method-HTTPError-set_encode"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-set_encode}{}}}
 \subsection{Method \code{set_encode()}}{
 Set encode for the given content type.
 \subsection{Usage}{
@@ -153,8 +153,8 @@ Set encode for the given content type.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-reset"></a>}}
-\if{latex}{\out{\hypertarget{method-reset}{}}}
+\if{html}{\out{<a id="method-HTTPError-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-reset}{}}}
 \subsection{Method \code{reset()}}{
 Resets \code{HTTPError} to the default RestRserve state.
 \subsection{Usage}{
@@ -163,8 +163,8 @@ Resets \code{HTTPError} to the default RestRserve state.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-error"></a>}}
-\if{latex}{\out{\hypertarget{method-error}{}}}
+\if{html}{\out{<a id="method-HTTPError-error"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-error}{}}}
 \subsection{Method \code{error()}}{
 Generate HTTP error response with a given status code and body.
 \subsection{Usage}{
@@ -188,8 +188,8 @@ Generate HTTP error response with a given status code and body.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-bad_request"></a>}}
-\if{latex}{\out{\hypertarget{method-bad_request}{}}}
+\if{html}{\out{<a id="method-HTTPError-bad_request"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-bad_request}{}}}
 \subsection{Method \code{bad_request()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -208,8 +208,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unauthorized"></a>}}
-\if{latex}{\out{\hypertarget{method-unauthorized}{}}}
+\if{html}{\out{<a id="method-HTTPError-unauthorized"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-unauthorized}{}}}
 \subsection{Method \code{unauthorized()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -228,8 +228,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-forbidden"></a>}}
-\if{latex}{\out{\hypertarget{method-forbidden}{}}}
+\if{html}{\out{<a id="method-HTTPError-forbidden"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-forbidden}{}}}
 \subsection{Method \code{forbidden()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -248,8 +248,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-not_found"></a>}}
-\if{latex}{\out{\hypertarget{method-not_found}{}}}
+\if{html}{\out{<a id="method-HTTPError-not_found"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-not_found}{}}}
 \subsection{Method \code{not_found()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -268,8 +268,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-method_not_allowed"></a>}}
-\if{latex}{\out{\hypertarget{method-method_not_allowed}{}}}
+\if{html}{\out{<a id="method-HTTPError-method_not_allowed"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-method_not_allowed}{}}}
 \subsection{Method \code{method_not_allowed()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -288,8 +288,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-not_acceptable"></a>}}
-\if{latex}{\out{\hypertarget{method-not_acceptable}{}}}
+\if{html}{\out{<a id="method-HTTPError-not_acceptable"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-not_acceptable}{}}}
 \subsection{Method \code{not_acceptable()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -308,8 +308,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-conflict"></a>}}
-\if{latex}{\out{\hypertarget{method-conflict}{}}}
+\if{html}{\out{<a id="method-HTTPError-conflict"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-conflict}{}}}
 \subsection{Method \code{conflict()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -328,8 +328,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-gone"></a>}}
-\if{latex}{\out{\hypertarget{method-gone}{}}}
+\if{html}{\out{<a id="method-HTTPError-gone"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-gone}{}}}
 \subsection{Method \code{gone()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -348,8 +348,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-length_required"></a>}}
-\if{latex}{\out{\hypertarget{method-length_required}{}}}
+\if{html}{\out{<a id="method-HTTPError-length_required"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-length_required}{}}}
 \subsection{Method \code{length_required()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -368,8 +368,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-precondition_failed"></a>}}
-\if{latex}{\out{\hypertarget{method-precondition_failed}{}}}
+\if{html}{\out{<a id="method-HTTPError-precondition_failed"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-precondition_failed}{}}}
 \subsection{Method \code{precondition_failed()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -388,8 +388,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-payload_too_large"></a>}}
-\if{latex}{\out{\hypertarget{method-payload_too_large}{}}}
+\if{html}{\out{<a id="method-HTTPError-payload_too_large"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-payload_too_large}{}}}
 \subsection{Method \code{payload_too_large()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -408,8 +408,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-uri_too_long"></a>}}
-\if{latex}{\out{\hypertarget{method-uri_too_long}{}}}
+\if{html}{\out{<a id="method-HTTPError-uri_too_long"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-uri_too_long}{}}}
 \subsection{Method \code{uri_too_long()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -428,8 +428,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unsupported_media_type"></a>}}
-\if{latex}{\out{\hypertarget{method-unsupported_media_type}{}}}
+\if{html}{\out{<a id="method-HTTPError-unsupported_media_type"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-unsupported_media_type}{}}}
 \subsection{Method \code{unsupported_media_type()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -448,8 +448,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-range_not_satisfiable"></a>}}
-\if{latex}{\out{\hypertarget{method-range_not_satisfiable}{}}}
+\if{html}{\out{<a id="method-HTTPError-range_not_satisfiable"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-range_not_satisfiable}{}}}
 \subsection{Method \code{range_not_satisfiable()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -468,8 +468,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unprocessable_entity"></a>}}
-\if{latex}{\out{\hypertarget{method-unprocessable_entity}{}}}
+\if{html}{\out{<a id="method-HTTPError-unprocessable_entity"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-unprocessable_entity}{}}}
 \subsection{Method \code{unprocessable_entity()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -488,8 +488,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-locked"></a>}}
-\if{latex}{\out{\hypertarget{method-locked}{}}}
+\if{html}{\out{<a id="method-HTTPError-locked"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-locked}{}}}
 \subsection{Method \code{locked()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -508,8 +508,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-failed_dependency"></a>}}
-\if{latex}{\out{\hypertarget{method-failed_dependency}{}}}
+\if{html}{\out{<a id="method-HTTPError-failed_dependency"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-failed_dependency}{}}}
 \subsection{Method \code{failed_dependency()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -528,8 +528,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-precondition_required"></a>}}
-\if{latex}{\out{\hypertarget{method-precondition_required}{}}}
+\if{html}{\out{<a id="method-HTTPError-precondition_required"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-precondition_required}{}}}
 \subsection{Method \code{precondition_required()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -548,8 +548,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-too_many_requests"></a>}}
-\if{latex}{\out{\hypertarget{method-too_many_requests}{}}}
+\if{html}{\out{<a id="method-HTTPError-too_many_requests"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-too_many_requests}{}}}
 \subsection{Method \code{too_many_requests()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -568,8 +568,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-request_header_fields_too_large"></a>}}
-\if{latex}{\out{\hypertarget{method-request_header_fields_too_large}{}}}
+\if{html}{\out{<a id="method-HTTPError-request_header_fields_too_large"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-request_header_fields_too_large}{}}}
 \subsection{Method \code{request_header_fields_too_large()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -588,8 +588,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unavailable_for_legal_reasons"></a>}}
-\if{latex}{\out{\hypertarget{method-unavailable_for_legal_reasons}{}}}
+\if{html}{\out{<a id="method-HTTPError-unavailable_for_legal_reasons"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-unavailable_for_legal_reasons}{}}}
 \subsection{Method \code{unavailable_for_legal_reasons()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -608,8 +608,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-internal_server_error"></a>}}
-\if{latex}{\out{\hypertarget{method-internal_server_error}{}}}
+\if{html}{\out{<a id="method-HTTPError-internal_server_error"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-internal_server_error}{}}}
 \subsection{Method \code{internal_server_error()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -628,8 +628,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-not_implemented"></a>}}
-\if{latex}{\out{\hypertarget{method-not_implemented}{}}}
+\if{html}{\out{<a id="method-HTTPError-not_implemented"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-not_implemented}{}}}
 \subsection{Method \code{not_implemented()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -648,8 +648,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-bad_gateway"></a>}}
-\if{latex}{\out{\hypertarget{method-bad_gateway}{}}}
+\if{html}{\out{<a id="method-HTTPError-bad_gateway"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-bad_gateway}{}}}
 \subsection{Method \code{bad_gateway()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -668,8 +668,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-service_unavailable"></a>}}
-\if{latex}{\out{\hypertarget{method-service_unavailable}{}}}
+\if{html}{\out{<a id="method-HTTPError-service_unavailable"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-service_unavailable}{}}}
 \subsection{Method \code{service_unavailable()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -688,8 +688,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-gateway_timeout"></a>}}
-\if{latex}{\out{\hypertarget{method-gateway_timeout}{}}}
+\if{html}{\out{<a id="method-HTTPError-gateway_timeout"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-gateway_timeout}{}}}
 \subsection{Method \code{gateway_timeout()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -708,8 +708,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-version_not_supported"></a>}}
-\if{latex}{\out{\hypertarget{method-version_not_supported}{}}}
+\if{html}{\out{<a id="method-HTTPError-version_not_supported"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-version_not_supported}{}}}
 \subsection{Method \code{version_not_supported()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -728,8 +728,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-insufficient_storage"></a>}}
-\if{latex}{\out{\hypertarget{method-insufficient_storage}{}}}
+\if{html}{\out{<a id="method-HTTPError-insufficient_storage"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-insufficient_storage}{}}}
 \subsection{Method \code{insufficient_storage()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -748,8 +748,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-loop_detected"></a>}}
-\if{latex}{\out{\hypertarget{method-loop_detected}{}}}
+\if{html}{\out{<a id="method-HTTPError-loop_detected"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-loop_detected}{}}}
 \subsection{Method \code{loop_detected()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -768,8 +768,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-network_authentication_required"></a>}}
-\if{latex}{\out{\hypertarget{method-network_authentication_required}{}}}
+\if{html}{\out{<a id="method-HTTPError-network_authentication_required"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-network_authentication_required}{}}}
 \subsection{Method \code{network_authentication_required()}}{
 Generates corresponding http error.
 \subsection{Usage}{
@@ -788,8 +788,8 @@ Generates corresponding http error.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-HTTPError-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-HTTPError-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

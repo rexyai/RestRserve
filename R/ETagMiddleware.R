@@ -1,6 +1,5 @@
 #' @title Creates ETag middleware object
 #'
-#'
 #' @description
 #' Adds ETag to an [Application]. \cr
 #'

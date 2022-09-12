@@ -31,14 +31,14 @@ Other AuthBackend:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AuthBackend$new()}}
-\item \href{#method-authenticate}{\code{AuthBackend$authenticate()}}
-\item \href{#method-clone}{\code{AuthBackend$clone()}}
+\item \href{#method-AuthBackend-new}{\code{AuthBackend$new()}}
+\item \href{#method-AuthBackend-authenticate}{\code{AuthBackend$authenticate()}}
+\item \href{#method-AuthBackend-clone}{\code{AuthBackend$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AuthBackend-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackend-new}{}}}
 \subsection{Method \code{new()}}{
 Creates AuthBackend class object.
 \subsection{Usage}{
@@ -56,8 +56,8 @@ Creates AuthBackend class object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-authenticate"></a>}}
-\if{latex}{\out{\hypertarget{method-authenticate}{}}}
+\if{html}{\out{<a id="method-AuthBackend-authenticate"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackend-authenticate}{}}}
 \subsection{Method \code{authenticate()}}{
 This placeholder. It must be implemented in the subclass.
 \subsection{Usage}{
@@ -66,8 +66,8 @@ This placeholder. It must be implemented in the subclass.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AuthBackend-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackend-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

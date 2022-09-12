@@ -10,14 +10,14 @@ Creates Backend object.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Backend$new()}}
-\item \href{#method-start}{\code{Backend$start()}}
-\item \href{#method-clone}{\code{Backend$clone()}}
+\item \href{#method-Backend-new}{\code{Backend$new()}}
+\item \href{#method-Backend-start}{\code{Backend$start()}}
+\item \href{#method-Backend-clone}{\code{Backend$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Backend-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Backend-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Backend object.
 \subsection{Usage}{
@@ -26,8 +26,8 @@ Creates Backend object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-start"></a>}}
-\if{latex}{\out{\hypertarget{method-start}{}}}
+\if{html}{\out{<a id="method-Backend-start"></a>}}
+\if{latex}{\out{\hypertarget{method-Backend-start}{}}}
 \subsection{Method \code{start()}}{
 Starts backend.
 \subsection{Usage}{
@@ -47,8 +47,8 @@ Starts backend.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Backend-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Backend-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

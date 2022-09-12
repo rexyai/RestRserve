@@ -52,20 +52,14 @@ Other AuthBackend:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AuthBackendBearer$new()}}
-\item \href{#method-authenticate}{\code{AuthBackendBearer$authenticate()}}
-\item \href{#method-clone}{\code{AuthBackendBearer$clone()}}
+\item \href{#method-AuthBackendBearer-new}{\code{AuthBackendBearer$new()}}
+\item \href{#method-AuthBackendBearer-authenticate}{\code{AuthBackendBearer$authenticate()}}
+\item \href{#method-AuthBackendBearer-clone}{\code{AuthBackendBearer$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AuthBackendBearer-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackendBearer-new}{}}}
 \subsection{Method \code{new()}}{
 Creates AuthBackendBearer class object.
 \subsection{Usage}{
@@ -82,8 +76,8 @@ Returns boolean - whether access is allowed for a requested \code{token} or not.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-authenticate"></a>}}
-\if{latex}{\out{\hypertarget{method-authenticate}{}}}
+\if{html}{\out{<a id="method-AuthBackendBearer-authenticate"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackendBearer-authenticate}{}}}
 \subsection{Method \code{authenticate()}}{
 Provide authentication for the given request.
 \subsection{Usage}{
@@ -104,8 +98,8 @@ Boolean - whether access is allowed for a requested \code{user} or not.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AuthBackendBearer-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AuthBackendBearer-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

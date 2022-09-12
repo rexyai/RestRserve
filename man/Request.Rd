@@ -95,21 +95,21 @@ the multipart body.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Request$new()}}
-\item \href{#method-set_id}{\code{Request$set_id()}}
-\item \href{#method-reset}{\code{Request$reset()}}
-\item \href{#method-get_header}{\code{Request$get_header()}}
-\item \href{#method-get_param_query}{\code{Request$get_param_query()}}
-\item \href{#method-get_param_body}{\code{Request$get_param_body()}}
-\item \href{#method-get_param_path}{\code{Request$get_param_path()}}
-\item \href{#method-get_file}{\code{Request$get_file()}}
-\item \href{#method-print}{\code{Request$print()}}
-\item \href{#method-clone}{\code{Request$clone()}}
+\item \href{#method-Request-new}{\code{Request$new()}}
+\item \href{#method-Request-set_id}{\code{Request$set_id()}}
+\item \href{#method-Request-reset}{\code{Request$reset()}}
+\item \href{#method-Request-get_header}{\code{Request$get_header()}}
+\item \href{#method-Request-get_param_query}{\code{Request$get_param_query()}}
+\item \href{#method-Request-get_param_body}{\code{Request$get_param_body()}}
+\item \href{#method-Request-get_param_path}{\code{Request$get_param_path()}}
+\item \href{#method-Request-get_file}{\code{Request$get_file()}}
+\item \href{#method-Request-print}{\code{Request$print()}}
+\item \href{#method-Request-clone}{\code{Request$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Request-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Request object
 \subsection{Usage}{
@@ -159,8 +159,8 @@ should be provided explicitly - it won't be derived from \code{headers}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_id"></a>}}
-\if{latex}{\out{\hypertarget{method-set_id}{}}}
+\if{html}{\out{<a id="method-Request-set_id"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-set_id}{}}}
 \subsection{Method \code{set_id()}}{
 Set request id.
 \subsection{Usage}{
@@ -176,8 +176,8 @@ Set request id.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-reset"></a>}}
-\if{latex}{\out{\hypertarget{method-reset}{}}}
+\if{html}{\out{<a id="method-Request-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-reset}{}}}
 \subsection{Method \code{reset()}}{
 Resets request object. This is not useful for end user, but useful for
 RestRserve internals - resetting R6 class is much faster then initialize it.
@@ -187,8 +187,8 @@ RestRserve internals - resetting R6 class is much faster then initialize it.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_header"></a>}}
-\if{latex}{\out{\hypertarget{method-get_header}{}}}
+\if{html}{\out{<a id="method-Request-get_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-get_header}{}}}
 \subsection{Method \code{get_header()}}{
 Get HTTP response header value. If requested header is empty returns \code{default}.
 \subsection{Usage}{
@@ -209,8 +209,8 @@ Header field values (character string).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_param_query"></a>}}
-\if{latex}{\out{\hypertarget{method-get_param_query}{}}}
+\if{html}{\out{<a id="method-Request-get_param_query"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-get_param_query}{}}}
 \subsection{Method \code{get_param_query()}}{
 Get request query parameter by name.
 \subsection{Usage}{
@@ -229,8 +229,8 @@ Query parameter value (character string).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_param_body"></a>}}
-\if{latex}{\out{\hypertarget{method-get_param_body}{}}}
+\if{html}{\out{<a id="method-Request-get_param_body"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-get_param_body}{}}}
 \subsection{Method \code{get_param_body()}}{
 Get request body parameter by name.
 \subsection{Usage}{
@@ -249,8 +249,8 @@ Body field value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_param_path"></a>}}
-\if{latex}{\out{\hypertarget{method-get_param_path}{}}}
+\if{html}{\out{<a id="method-Request-get_param_path"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-get_param_path}{}}}
 \subsection{Method \code{get_param_path()}}{
 Get templated path parameter by name.
 \subsection{Usage}{
@@ -269,8 +269,8 @@ Path parameter value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_file"></a>}}
-\if{latex}{\out{\hypertarget{method-get_file}{}}}
+\if{html}{\out{<a id="method-Request-get_file"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-get_file}{}}}
 \subsection{Method \code{get_file()}}{
 Extract specific file from multipart body.
 \subsection{Usage}{
@@ -289,8 +289,8 @@ Raw vector with \code{filname} and \code{content-type} attributes.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-Request-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-print}{}}}
 \subsection{Method \code{print()}}{
 Print method.
 \subsection{Usage}{
@@ -299,8 +299,8 @@ Print method.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Request-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Request-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

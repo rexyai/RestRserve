@@ -43,19 +43,13 @@ app$process_request(req)
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{CORSMiddleware$new()}}
-\item \href{#method-clone}{\code{CORSMiddleware$clone()}}
+\item \href{#method-CORSMiddleware-new}{\code{CORSMiddleware$new()}}
+\item \href{#method-CORSMiddleware-clone}{\code{CORSMiddleware$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-CORSMiddleware-new"></a>}}
+\if{latex}{\out{\hypertarget{method-CORSMiddleware-new}{}}}
 \subsection{Method \code{new()}}{
 Creates CORS middleware object
 \subsection{Usage}{
@@ -75,8 +69,8 @@ Creates CORS middleware object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-CORSMiddleware-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-CORSMiddleware-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

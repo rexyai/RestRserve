@@ -6,7 +6,7 @@
 \alias{RestRserve-package}
 \title{RestRserve: A Framework for Building HTTP API}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 Allows to easily create high-performance full featured HTTP APIs from R functions. Provides high-level classes such as 'Request', 'Response', 'Application', 'Middleware' in order to streamline server side application development. Out of the box allows to serve requests using 'Rserve' package, but flexible enough to integrate with other HTTP servers such as 'httpuv'.
 }
@@ -40,7 +40,9 @@ of error
 }
 }
 
-\subsection{1. Create application}{\if{html}{\out{<div class="r">}}\preformatted{library(RestRserve)
+\subsection{1. Create application}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{library(RestRserve)
 app = Application$new()
 }\if{html}{\out{</div>}}
 }
@@ -48,7 +50,9 @@ app = Application$new()
 \subsection{2. Define logic}{
 
 For simplicity we will use Fibonacci number calculation as an algorithm
-we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = function(n) \{
+we want to expose.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{calc_fib = function(n) \{
   if (n < 0L) stop("n should be >= 0")
   if (n == 0L) return(0L)
   if (n == 1L || n == 2L) return(1L)
@@ -62,7 +66,9 @@ we want to expose.\if{html}{\out{<div class="r">}}\preformatted{calc_fib = funct
 \}
 }\if{html}{\out{</div>}}
 
-Create function which will handle requests.\if{html}{\out{<div class="r">}}\preformatted{fib_handler = function(.req, .res) \{
+Create function which will handle requests.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{fib_handler = function(.req, .res) \{
   n = as.integer(.req$parameters_query[["n"]])
   if (length(n) == 0L || is.na(n)) \{
     raise(HTTPError$bad_request())
@@ -74,23 +80,27 @@ Create function which will handle requests.\if{html}{\out{<div class="r">}}\pref
 
 You may have noticed strange \code{.req} and \code{.res} argument names. Starting
 from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
-autocomplete:\if{html}{\out{
-<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100\%" style="vertical-align:bottom">
-}}
+autocomplete:
 
+<img src=“\url{https://cdn.rexy.ai/assets/req-res.gif}” width=“640”
+style=“vertical-align:bottom”, alt=“request-response autocomplete gif”>
 
 Technically \code{.req} and \code{.res} are just empty instances of \code{?Request} and
 \code{?Response} classes exported by \code{RestRserve} in order to make
 autocomplete work.
 }
 
-\subsection{2. Register endpoint}{\if{html}{\out{<div class="r">}}\preformatted{app$add_get(path = "/fib", FUN = fib_handler)
+\subsection{2. Register endpoint}{
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{app$add_get(path = "/fib", FUN = fib_handler)
 }\if{html}{\out{</div>}}
 }
 
 \subsection{3. Test endpoints}{
 
-Now we can test our application without starting it:\if{html}{\out{<div class="r">}}\preformatted{request = Request$new(path = "/fib", parameters_query = list(n = 10))
+Now we can test our application without starting it:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{request = Request$new(path = "/fib", parameters_query = list(n = 10))
 response = app$process_request(request)
 
 cat("Response status:", response$status)
@@ -108,7 +118,9 @@ can use a common framework such as
 
 Generally it is a good idea to provide documentation along with the API.
 Convenient way to do that is to supply a \href{https://swagger.io/docs/specification/about/}{openapi specification}. This as
-simple as adding a yaml file as an additional endpoint:\if{html}{\out{<div class="yaml">}}\preformatted{openapi: 3.0.1
+simple as adding a yaml file as an additional endpoint:
+
+\if{html}{\out{<div class="sourceCode yaml">}}\preformatted{openapi: 3.0.1
 info:
   title: RestRserve OpenAPI
   version: '1.0'
@@ -136,7 +148,9 @@ paths:
                 example: 5
         400:
           description: Bad Request
-}\if{html}{\out{</div>}}\if{html}{\out{<div class="r">}}\preformatted{yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
+}\if{html}{\out{</div>}}
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{yaml_file = system.file("examples", "openapi", "openapi.yaml", package = "RestRserve")
 app$add_openapi(path = "/openapi.yaml", file_path = yaml_file)
 app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE)
 }\if{html}{\out{</div>}}
@@ -145,14 +159,18 @@ app$add_swagger_ui(path = "/doc", path_openapi = "/openapi.yaml", use_cdn = TRUE
 \subsection{5. Start the app}{
 
 Now all is ready and we can start application with Rserve backend. It
-will block R session and start listening for incoming requests.\if{html}{\out{<div class="r">}}\preformatted{backend = BackendRserve$new()
+will block R session and start listening for incoming requests.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{backend = BackendRserve$new()
 backend$start(app, http_port = 8080)
 }\if{html}{\out{</div>}}
 }
 
 \subsection{6. Test it}{
 
-Send request to calculate fibonacci number:\if{html}{\out{<div class="bash">}}\preformatted{curl localhost:8080/fib?n=10
+Send request to calculate fibonacci number:
+
+\if{html}{\out{<div class="sourceCode bash">}}\preformatted{curl localhost:8080/fib?n=10
 }\if{html}{\out{</div>}}
 
 Check out a swagger UI in the browser: \verb{http://localhost:8080/doc}

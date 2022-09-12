@@ -22,22 +22,22 @@ logger$info("", context = list(message = "hello world", code = 0L))
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Logger$new()}}
-\item \href{#method-set_name}{\code{Logger$set_name()}}
-\item \href{#method-set_log_level}{\code{Logger$set_log_level()}}
-\item \href{#method-set_printer}{\code{Logger$set_printer()}}
-\item \href{#method-trace}{\code{Logger$trace()}}
-\item \href{#method-debug}{\code{Logger$debug()}}
-\item \href{#method-info}{\code{Logger$info()}}
-\item \href{#method-warn}{\code{Logger$warn()}}
-\item \href{#method-error}{\code{Logger$error()}}
-\item \href{#method-fatal}{\code{Logger$fatal()}}
-\item \href{#method-clone}{\code{Logger$clone()}}
+\item \href{#method-Logger-new}{\code{Logger$new()}}
+\item \href{#method-Logger-set_name}{\code{Logger$set_name()}}
+\item \href{#method-Logger-set_log_level}{\code{Logger$set_log_level()}}
+\item \href{#method-Logger-set_printer}{\code{Logger$set_printer()}}
+\item \href{#method-Logger-trace}{\code{Logger$trace()}}
+\item \href{#method-Logger-debug}{\code{Logger$debug()}}
+\item \href{#method-Logger-info}{\code{Logger$info()}}
+\item \href{#method-Logger-warn}{\code{Logger$warn()}}
+\item \href{#method-Logger-error}{\code{Logger$error()}}
+\item \href{#method-Logger-fatal}{\code{Logger$fatal()}}
+\item \href{#method-Logger-clone}{\code{Logger$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Logger-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Logger object.
 \subsection{Usage}{
@@ -64,8 +64,8 @@ By default when \code{printer = NULL} logger writes message in JSON format to \c
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_name"></a>}}
-\if{latex}{\out{\hypertarget{method-set_name}{}}}
+\if{html}{\out{<a id="method-Logger-set_name"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-set_name}{}}}
 \subsection{Method \code{set_name()}}{
 Sets logger name.
 \subsection{Usage}{
@@ -81,8 +81,8 @@ Sets logger name.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_log_level"></a>}}
-\if{latex}{\out{\hypertarget{method-set_log_level}{}}}
+\if{html}{\out{<a id="method-Logger-set_log_level"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-set_log_level}{}}}
 \subsection{Method \code{set_log_level()}}{
 Sets log level.
 \subsection{Usage}{
@@ -101,8 +101,8 @@ trace, off, all.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_printer"></a>}}
-\if{latex}{\out{\hypertarget{method-set_printer}{}}}
+\if{html}{\out{<a id="method-Logger-set_printer"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-set_printer}{}}}
 \subsection{Method \code{set_printer()}}{
 Sets function which defines how to print logs.
 \subsection{Usage}{
@@ -119,8 +119,8 @@ timestamp, level, logger_name, pid, message.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-trace"></a>}}
-\if{latex}{\out{\hypertarget{method-trace}{}}}
+\if{html}{\out{<a id="method-Logger-trace"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-trace}{}}}
 \subsection{Method \code{trace()}}{
 Write trace message.
 \subsection{Usage}{
@@ -138,8 +138,8 @@ Write trace message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-debug"></a>}}
-\if{latex}{\out{\hypertarget{method-debug}{}}}
+\if{html}{\out{<a id="method-Logger-debug"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-debug}{}}}
 \subsection{Method \code{debug()}}{
 Write debug message.
 \subsection{Usage}{
@@ -157,8 +157,8 @@ Write debug message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-info"></a>}}
-\if{latex}{\out{\hypertarget{method-info}{}}}
+\if{html}{\out{<a id="method-Logger-info"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-info}{}}}
 \subsection{Method \code{info()}}{
 Write information message.
 \subsection{Usage}{
@@ -176,8 +176,8 @@ Write information message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-warn"></a>}}
-\if{latex}{\out{\hypertarget{method-warn}{}}}
+\if{html}{\out{<a id="method-Logger-warn"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-warn}{}}}
 \subsection{Method \code{warn()}}{
 Write warning message.
 \subsection{Usage}{
@@ -195,8 +195,8 @@ Write warning message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-error"></a>}}
-\if{latex}{\out{\hypertarget{method-error}{}}}
+\if{html}{\out{<a id="method-Logger-error"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-error}{}}}
 \subsection{Method \code{error()}}{
 Write error message.
 \subsection{Usage}{
@@ -214,8 +214,8 @@ Write error message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-fatal"></a>}}
-\if{latex}{\out{\hypertarget{method-fatal}{}}}
+\if{html}{\out{<a id="method-Logger-fatal"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-fatal}{}}}
 \subsection{Method \code{fatal()}}{
 Write fatal error message.
 \subsection{Usage}{
@@ -233,8 +233,8 @@ Write fatal error message.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Logger-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Logger-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

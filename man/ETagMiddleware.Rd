@@ -170,19 +170,13 @@ computes the last time it was modified}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ETagMiddleware$new()}}
-\item \href{#method-clone}{\code{ETagMiddleware$clone()}}
+\item \href{#method-EtagMiddleware-new}{\code{ETagMiddleware$new()}}
+\item \href{#method-EtagMiddleware-clone}{\code{ETagMiddleware$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-EtagMiddleware-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EtagMiddleware-new}{}}}
 \subsection{Method \code{new()}}{
 Creates ETag middleware object
 \subsection{Usage}{
@@ -190,12 +184,26 @@ Creates ETag middleware object
   routes = "/",
   match = "partial",
   id = "ETagMiddleware",
-  hash_function = function(body) {     if ("file" \%in\% names(body)) {        
-    digest::digest(file = body[["file"]], algo = "crc32")     }     else {        
-    digest::digest(body, algo = "crc32")     } },
-  last_modified_function = function(body) {     if ("file" \%in\% names(body)) {       
-     as.POSIXlt(file.info(body[["file"]])[["mtime"]], tz = "GMT")     }     else {       
-     as.POSIXlt(Sys.time(), tz = "GMT")     } }
+  hash_function = function(body) {
+     if ("file" \%in\% names(body)) {
+        
+    digest::digest(file = body[["file"]], algo = "crc32")
+     }
+     else {
+        
+    digest::digest(body, algo = "crc32")
+     }
+ },
+  last_modified_function = function(body) {
+     if ("file" \%in\% names(body)) {
+       
+     as.POSIXlt(file.info(body[["file"]])[["mtime"]], tz = "GMT")
+     }
+     else {
+    
+        as.POSIXlt(Sys.time(), tz = "GMT")
+     }
+ }
 )}\if{html}{\out{</div>}}
 }
 
@@ -222,8 +230,8 @@ resulting in no caching)}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-EtagMiddleware-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-EtagMiddleware-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

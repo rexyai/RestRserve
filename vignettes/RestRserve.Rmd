@@ -84,7 +84,7 @@ fib_handler = function(.req, .res) {
 
 You may have noticed strange `.req` and `.res` argument names. Starting from `RestRserve` v0.4.0 these "reserved" names allows to benefit from autocomplete:
 
-<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="640" style="vertical-align:bottom", alt="request-response autocomplete gif">
 
 Technically `.req` and `.res` are just empty instances of `?Request` and `?Response` classes exported by `RestRserve` in order to make autocomplete work.
 
