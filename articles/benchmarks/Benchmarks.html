@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -103,7 +103,7 @@
       <h1 data-toc-skip>Benchmarks</h1>
                         <h4 data-toc-skip class="author">Dmitriy Selivanov</h4>
             
-            <h4 data-toc-skip class="date">09 June, 2022</h4>
+            <h4 data-toc-skip class="date">12 September, 2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rexyai/RestRserve/blob/HEAD/vignettes/benchmarks/Benchmarks.Rmd" class="external-link"><code>vignettes/benchmarks/Benchmarks.Rmd</code></a></small>
       <div class="hidden name"><code>Benchmarks.Rmd</code></div>
@@ -120,38 +120,38 @@
 </h2>
 <p>Our testing RestRserve application is implemented below:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calc_fib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&lt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"n should be &gt;= 0"</span><span class="op">)</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0L</span><span class="op">)</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">1L</span> <span class="op">||</span> <span class="va">n</span> <span class="op">==</span> <span class="fl">2L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span><span class="op">)</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">3L</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-  <span class="va">x</span><span class="op">[[</span><span class="va">n</span><span class="op">]</span><span class="op">]</span>
-<span class="op">}</span>
-
-<span class="va">bench_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span><span class="op">)</span> <span class="op">{</span>
-  
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
-  <span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-  
-  <span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span><span class="op">)</span>
-  <span class="va">app</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"off"</span><span class="op">)</span>
-  
-  <span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/fib"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span>, <span class="va">response</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">request</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span><span class="op">)</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0L</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="fu"><a href="../../reference/raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="va">response</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-  <span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>app <span class="op">=</span> <span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">calc_fib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&lt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"n should be &gt;= 0"</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0L</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">1L</span> <span class="op">||</span> <span class="va">n</span> <span class="op">==</span> <span class="fl">2L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span><span class="op">)</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">3L</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="va">x</span><span class="op">[[</span><span class="va">n</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">bench_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
+<span>  <span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span><span class="op">)</span></span>
+<span>  <span class="va">app</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"off"</span><span class="op">)</span></span>
+<span>  </span>
+<span>  <span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/fib"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">request</span>, <span class="va">response</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">request</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"n"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0L</span> <span class="op">||</span> <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="../../reference/raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="va">response</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>answer <span class="op">=</span> <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span>  <span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span>app <span class="op">=</span> <span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <p>Sample <code>calc_fib()</code> benchmarking:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span>low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="co">#&gt; Unit: microseconds</span>
-<span class="co">#&gt;  expr  min    lq     mean median    uq      max neval</span>
-<span class="co">#&gt;   low 2.59 2.621 2455.133 2.7075 2.996 24525.52    10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span>low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Unit: microseconds</span></span>
+<span><span class="co">#&gt;  expr   min    lq     mean median    uq      max neval</span></span>
+<span><span class="co">#&gt;   low 2.715 2.725 2707.879 3.0065 3.261 27050.97    10</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="benchmarking-rserve-backend">Benchmarking Rserve backend<a class="anchor" aria-label="anchor" href="#benchmarking-rserve-backend"></a>
@@ -165,82 +165,82 @@
 </ul>
 <p>Code below implements allows to test combinations options:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://callr.r-lib.org" class="external-link">callr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span>
-
-<span class="va">parse_apib_results</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">apib_executable_path</span> <span class="op">=</span> <span class="st">"apib"</span>
-  <span class="co">#apib_executable_path = path.expand("~/projects/apib/release/apib/apib")</span>
-  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html" class="external-link">system2</a></span><span class="op">(</span>command <span class="op">=</span> <span class="va">apib_executable_path</span>, 
-                       args <span class="op">=</span> <span class="st">"--header-line"</span>, stdout <span class="op">=</span> <span class="cn">T</span><span class="op">)</span>
-  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">csv_header</span>, <span class="st">","</span>, <span class="cn">T</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_threads"</span>, <span class="st">"fibonacci"</span>, <span class="st">"flavor"</span>, <span class="va">csv_header</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\n"</span><span class="op">)</span>
-  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">x</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>
-  <span class="fu">fread</span><span class="op">(</span><span class="va">results</span>, col.names <span class="op">=</span> <span class="va">csv_header</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">run_apib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span>
-  <span class="va">n_threads</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, 
-  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, 
-  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
-  <span class="va">flavor</span> <span class="op">=</span> <span class="st">""</span>, 
-  <span class="va">fib_count</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span>
-  
-  <span class="va">apib_executable_path</span> <span class="op">=</span> <span class="st">"apib"</span>
-  <span class="co">#apib_executable_path = path.expand("~/projects/apib/release/apib/apib")</span>
-  
-  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">n_thread</span> <span class="kw">in</span> <span class="va">n_threads</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html" class="external-link">system2</a></span><span class="op">(</span>
-      command <span class="op">=</span> <span class="va">apib_executable_path</span>, 
-      args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span>
-        <span class="st">"-c %d -d %d -k %d --csv-output \'http://127.0.0.1:8080/fib?n=%d\'"</span>, 
-        <span class="va">n_thread</span>, <span class="va">n_sec</span>, <span class="va">keep_alive</span>, <span class="va">fib_count</span>
-      <span class="op">)</span>,
-      stdout <span class="op">=</span> <span class="cn">TRUE</span>
-    <span class="op">)</span>
-    <span class="va">results</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">n_thread</span>, <span class="st">","</span>, <span class="va">fib_count</span>, <span class="st">","</span>, <span class="va">flavor</span>, <span class="va">res</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="va">results</span>
-<span class="op">}</span>
-
-<span class="va">apib_bench</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span>
-  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, 
-  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
-  <span class="va">fib_counts</span> <span class="op">=</span> <span class="fl">10</span>, 
-  <span class="va">runtime_checks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-  <span class="kw">for</span> <span class="op">(</span><span class="va">fib_count</span> <span class="kw">in</span> <span class="va">fib_counts</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">runtime_check</span> <span class="kw">in</span> <span class="va">runtime_checks</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">r_bg</a></span><span class="op">(</span>
-        <span class="va">bench_app</span>, 
-        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>calc_fn <span class="op">=</span> <span class="va">calc_fib</span><span class="op">)</span>,
-        env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RESTRSERVE_RUNTIME_ASSERTS"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">runtime_check</span><span class="op">)</span><span class="op">)</span>
-      <span class="op">)</span>
-      <span class="co"># Wait for R to start</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-      <span class="va">flavor</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">runtime_check</span><span class="op">)</span> <span class="st">"RestRserve + runtime checks"</span> <span class="kw">else</span> <span class="st">"RestRserve"</span>
-      <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-        <span class="va">results</span>, 
-        <span class="fu">run_apib</span><span class="op">(</span>
-          n_sec <span class="op">=</span> <span class="va">n_sec</span>, 
-          keep_alive <span class="op">=</span> <span class="va">keep_alive</span>, 
-          flavor <span class="op">=</span> <span class="va">flavor</span>, 
-          fib_count <span class="op">=</span> <span class="va">fib_count</span>
-        <span class="op">)</span>
-      <span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">""</span>,
-        <span class="st">"fibonacci: "</span>, <span class="va">fib_count</span>, <span class="st">"; flavor: "</span>, <span class="va">flavor</span>, <span class="st">"\n"</span>,
-        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">rr</span><span class="op">$</span><span class="fu">read_output</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>, <span class="st">"\n"</span>
-      <span class="op">)</span>
-      <span class="va">rr</span><span class="op">$</span><span class="fu">kill_tree</span><span class="op">(</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-  <span class="fu">parse_apib_results</span><span class="op">(</span><span class="va">results</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://callr.r-lib.org" class="external-link">callr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">parse_apib_results</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">apib_executable_path</span> <span class="op">=</span> <span class="st">"apib"</span></span>
+<span>  <span class="co">#apib_executable_path = path.expand("~/projects/apib/release/apib/apib")</span></span>
+<span>  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html" class="external-link">system2</a></span><span class="op">(</span>command <span class="op">=</span> <span class="va">apib_executable_path</span>, </span>
+<span>                       args <span class="op">=</span> <span class="st">"--header-line"</span>, stdout <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">csv_header</span>, <span class="st">","</span>, <span class="cn">T</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="va">csv_header</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n_threads"</span>, <span class="st">"fibonacci"</span>, <span class="st">"flavor"</span>, <span class="va">csv_header</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">x</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span>  <span class="fu">fread</span><span class="op">(</span><span class="va">results</span>, col.names <span class="op">=</span> <span class="va">csv_header</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">run_apib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>  <span class="va">n_threads</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, </span>
+<span>  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
+<span>  <span class="va">flavor</span> <span class="op">=</span> <span class="st">""</span>, </span>
+<span>  <span class="va">fib_count</span> <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  </span>
+<span>  <span class="va">apib_executable_path</span> <span class="op">=</span> <span class="st">"apib"</span></span>
+<span>  <span class="co">#apib_executable_path = path.expand("~/projects/apib/release/apib/apib")</span></span>
+<span>  </span>
+<span>  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">n_thread</span> <span class="kw">in</span> <span class="va">n_threads</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system2.html" class="external-link">system2</a></span><span class="op">(</span></span>
+<span>      command <span class="op">=</span> <span class="va">apib_executable_path</span>, </span>
+<span>      args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span></span>
+<span>        <span class="st">"-c %d -d %d -k %d --csv-output \'http://127.0.0.1:8080/fib?n=%d\'"</span>, </span>
+<span>        <span class="va">n_thread</span>, <span class="va">n_sec</span>, <span class="va">keep_alive</span>, <span class="va">fib_count</span></span>
+<span>      <span class="op">)</span>,</span>
+<span>      stdout <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>    <span class="op">)</span></span>
+<span>    <span class="va">results</span><span class="op">[[</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">n_thread</span>, <span class="st">","</span>, <span class="va">fib_count</span>, <span class="st">","</span>, <span class="va">flavor</span>, <span class="va">res</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">results</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">apib_bench</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, </span>
+<span>  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
+<span>  <span class="va">fib_counts</span> <span class="op">=</span> <span class="fl">10</span>, </span>
+<span>  <span class="va">runtime_checks</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">fib_count</span> <span class="kw">in</span> <span class="va">fib_counts</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">runtime_check</span> <span class="kw">in</span> <span class="va">runtime_checks</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">r_bg</a></span><span class="op">(</span></span>
+<span>        <span class="va">bench_app</span>, </span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>calc_fn <span class="op">=</span> <span class="va">calc_fib</span><span class="op">)</span>,</span>
+<span>        env <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"RESTRSERVE_RUNTIME_ASSERTS"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">runtime_check</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="co"># Wait for R to start</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span>      <span class="va">flavor</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">runtime_check</span><span class="op">)</span> <span class="st">"RestRserve + runtime checks"</span> <span class="kw">else</span> <span class="st">"RestRserve"</span></span>
+<span>      <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="va">results</span>, </span>
+<span>        <span class="fu">run_apib</span><span class="op">(</span></span>
+<span>          n_sec <span class="op">=</span> <span class="va">n_sec</span>, </span>
+<span>          keep_alive <span class="op">=</span> <span class="va">keep_alive</span>, </span>
+<span>          flavor <span class="op">=</span> <span class="va">flavor</span>, </span>
+<span>          fib_count <span class="op">=</span> <span class="va">fib_count</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">""</span>,</span>
+<span>        <span class="st">"fibonacci: "</span>, <span class="va">fib_count</span>, <span class="st">"; flavor: "</span>, <span class="va">flavor</span>, <span class="st">"\n"</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">rr</span><span class="op">$</span><span class="fu">read_output</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>, <span class="st">"\n"</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="va">rr</span><span class="op">$</span><span class="fu">kill_tree</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu">parse_apib_results</span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results_runtime</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, fib_counts <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results_runtime</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, fib_counts <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps.png?raw=true" width="640"></p>
 </div>
 <div class="section level2">
@@ -248,7 +248,7 @@
 </h2>
 <p>Keep in mind that creating new connections is quite expensive for any HTTP server. For <code>RestRserve</code>’s <code>Rserve</code> backend this is particularly true since for each new connection it forks a child process (which has relatively high cost). With other backends slow down might be less significant.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results_no_keep_alive</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>keep_alive <span class="op">=</span> <span class="fl">0</span>, fib_counts <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results_no_keep_alive</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>keep_alive <span class="op">=</span> <span class="fl">0</span>, fib_counts <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-no-keep-alive.png?raw=true" width="640"></p>
 <p>Nonetheless one can always put application behind proxy (such as <a href="http://www.haproxy.org/" class="external-link">HAproxy</a> or <a href="https://www.nginx.com/" class="external-link">nginx</a>). It will maintain pool of connections to RestRserve and hence won’t suffer from creating new connections.</p>
 </div>
@@ -258,101 +258,101 @@
 <p>Support for <a href="https://rstudio.github.io/promises/" class="external-link"><code>promises</code></a> and <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code></a> was added in <a href="https://www.rplumber.io/" class="external-link"><code>plumber</code></a> v1.0.0. Extra coding will need to be done within a plumber definition to distinguish which routes utilize promises.</p>
 <p>We will rewrite our <code>calc_fib</code> function in a less efficient way in order to simulate different amount of computation required by handler. We will benchmark frameworks against three styles of routes (low computation, <code>n = 15</code>; medium computation, <code>n = 20</code>; high computation, <code>n = 25</code>) using multiple <code>apib</code> testing threads (1, 2, 4).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">calc_fib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">calc_fib_rec</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&lt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"n should be &gt;= 0"</span><span class="op">)</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0L</span><span class="op">)</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">1L</span> <span class="op">||</span> <span class="va">n</span> <span class="op">==</span> <span class="fl">2L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span>
-    <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span><span class="op">)</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">3L</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">2</span><span class="op">]</span><span class="op">]</span>
-    <span class="va">x</span><span class="op">[[</span><span class="va">n</span><span class="op">]</span><span class="op">]</span>
-    <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span>
-  <span class="op">}</span>
-  <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">calc_fib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">calc_fib_rec</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">&lt;</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"n should be &gt;= 0"</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">0L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">0L</span><span class="op">)</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="va">n</span> <span class="op">==</span> <span class="fl">1L</span> <span class="op">||</span> <span class="va">n</span> <span class="op">==</span> <span class="fl">2L</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fl">1L</span><span class="op">)</span></span>
+<span>    <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="va">n</span><span class="op">)</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">3L</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="va">x</span><span class="op">[[</span><span class="va">i</span> <span class="op">-</span> <span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
+<span>    <span class="va">x</span><span class="op">[[</span><span class="va">n</span><span class="op">]</span><span class="op">]</span></span>
+<span>    <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu">calc_fib_rec</span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span>
-  low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">15</span><span class="op">)</span>,
-  medium <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>,
-  high <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span>
-<span class="op">)</span>
-<span class="co">#&gt; Unit: milliseconds</span>
-<span class="co">#&gt;    expr        min         lq       mean     median         uq        max neval</span>
-<span class="co">#&gt;     low   1.659465   1.675677   1.935955   1.691186   1.710719   4.117629    10</span>
-<span class="co">#&gt;  medium  17.913905  18.456416  20.466878  18.720425  20.753110  31.426583    10</span>
-<span class="co">#&gt;    high 206.219419 208.611413 212.685928 210.359669 213.849189 230.918711    10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span></span>
+<span>  low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">15</span><span class="op">)</span>,</span>
+<span>  medium <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">20</span><span class="op">)</span>,</span>
+<span>  high <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Unit: milliseconds</span></span>
+<span><span class="co">#&gt;    expr        min         lq       mean     median         uq       max neval</span></span>
+<span><span class="co">#&gt;     low   1.655223   1.666013   3.054922   1.682933   1.695059  15.44163    10</span></span>
+<span><span class="co">#&gt;  medium  18.522415  18.731804  20.274041  20.336675  21.292522  23.12150    10</span></span>
+<span><span class="co">#&gt;    high 215.234352 220.781271 267.756929 228.263895 271.408345 490.61548    10</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-    <span class="co"># multiple cores</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span>
-    <span class="fu">plan</span><span class="op">(</span><span class="fu">multiprocess</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># max number of threads</span>
-    <span class="va">fib_route</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"\"n\"must be integer number."</span><span class="op">)</span>
-      <span class="fu">future</span><span class="op">(</span><span class="op">{</span>
-        <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-      <span class="op">}</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-    <span class="co"># single core</span>
-    <span class="va">fib_route</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"\"n\"must be integer number."</span><span class="op">)</span>
-      <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-
-  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rplumber.io" class="external-link">plumber</a></span><span class="op">)</span>
-  <span class="fu">pr</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">pr_get</span><span class="op">(</span>
-      <span class="st">"/fib"</span>, 
-      <span class="va">fib_route</span>, 
-      serializer <span class="op">=</span> <span class="fu">plumber</span><span class="fu">::</span><span class="fu">serializer_text</span><span class="op">(</span><span class="op">)</span>
-    <span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">pr_run</span><span class="op">(</span>port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="va">apib_bench_plumber</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span>
-  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, 
-  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
-  <span class="va">fib_counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span>
-
-  <span class="kw">for</span> <span class="op">(</span><span class="va">fib_count</span> <span class="kw">in</span> <span class="va">fib_counts</span><span class="op">)</span> <span class="op">{</span>
-    <span class="kw">for</span> <span class="op">(</span><span class="va">use_future</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">r_bg</a></span><span class="op">(</span>
-        <span class="va">plumber_app</span>, 
-        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>calc_fn <span class="op">=</span> <span class="va">calc_fib</span>, use_future <span class="op">=</span> <span class="va">use_future</span><span class="op">)</span>, 
-        stdout <span class="op">=</span> <span class="st">"|"</span>, stderr <span class="op">=</span> <span class="st">"2&gt;&amp;1"</span>
-      <span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>
-      <span class="va">flavor</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">use_future</span><span class="op">)</span> <span class="st">"plumber + future"</span> <span class="kw">else</span> <span class="st">"plumber"</span>
-      <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
-        <span class="va">results</span>, 
-        <span class="fu">run_apib</span><span class="op">(</span>
-          n_threads <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, 
-          n_sec <span class="op">=</span> <span class="va">n_sec</span>, 
-          keep_alive <span class="op">=</span> <span class="va">keep_alive</span>, 
-          flavor <span class="op">=</span> <span class="va">flavor</span>, 
-          fib_count <span class="op">=</span> <span class="va">fib_count</span>
-        <span class="op">)</span>
-      <span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">""</span>,
-        <span class="st">"fibonacci: "</span>, <span class="va">fib_count</span>, <span class="st">"; flavor: "</span>, <span class="va">flavor</span>, <span class="st">"\n"</span>,
-        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">rr</span><span class="op">$</span><span class="fu">read_output</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>, <span class="st">"\n"</span>
-      <span class="op">)</span>
-      <span class="va">rr</span><span class="op">$</span><span class="fu">kill_tree</span><span class="op">(</span><span class="op">)</span>
-    <span class="op">}</span>
-  <span class="op">}</span>
-  <span class="fu">parse_apib_results</span><span class="op">(</span><span class="va">results</span><span class="op">)</span>
-<span class="op">}</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="co"># multiple cores</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://future.futureverse.org" class="external-link">future</a></span><span class="op">)</span></span>
+<span>    <span class="fu">plan</span><span class="op">(</span><span class="fu">multiprocess</span><span class="op">(</span>workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="co"># max number of threads</span></span>
+<span>    <span class="va">fib_route</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"\"n\"must be integer number."</span><span class="op">)</span></span>
+<span>      <span class="fu">future</span><span class="op">(</span><span class="op">{</span></span>
+<span>        <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span>      <span class="op">}</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
+<span>    <span class="co"># single core</span></span>
+<span>    <span class="va">fib_route</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">n</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span>      <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop</a></span><span class="op">(</span><span class="st">"\"n\"must be integer number."</span><span class="op">)</span></span>
+<span>      <span class="fu">calc_fn</span><span class="op">(</span><span class="va">n</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.rplumber.io" class="external-link">plumber</a></span><span class="op">)</span></span>
+<span>  <span class="fu">pr</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">pr_get</span><span class="op">(</span></span>
+<span>      <span class="st">"/fib"</span>, </span>
+<span>      <span class="va">fib_route</span>, </span>
+<span>      serializer <span class="op">=</span> <span class="fu">plumber</span><span class="fu">::</span><span class="fu">serializer_text</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">pr_run</span><span class="op">(</span>port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">apib_bench_plumber</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span></span>
+<span>  <span class="va">n_sec</span> <span class="op">=</span> <span class="fl">5</span>, </span>
+<span>  <span class="va">keep_alive</span> <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
+<span>  <span class="va">fib_counts</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">fib_count</span> <span class="kw">in</span> <span class="va">fib_counts</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw">for</span> <span class="op">(</span><span class="va">use_future</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">TRUE</span>, <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://callr.r-lib.org/reference/r_bg.html" class="external-link">r_bg</a></span><span class="op">(</span></span>
+<span>        <span class="va">plumber_app</span>, </span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>calc_fn <span class="op">=</span> <span class="va">calc_fib</span>, use_future <span class="op">=</span> <span class="va">use_future</span><span class="op">)</span>, </span>
+<span>        stdout <span class="op">=</span> <span class="st">"|"</span>, stderr <span class="op">=</span> <span class="st">"2&gt;&amp;1"</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/Sys.sleep.html" class="external-link">Sys.sleep</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span></span>
+<span>      <span class="va">flavor</span> <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">use_future</span><span class="op">)</span> <span class="st">"plumber + future"</span> <span class="kw">else</span> <span class="st">"plumber"</span></span>
+<span>      <span class="va">results</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        <span class="va">results</span>, </span>
+<span>        <span class="fu">run_apib</span><span class="op">(</span></span>
+<span>          n_threads <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, </span>
+<span>          n_sec <span class="op">=</span> <span class="va">n_sec</span>, </span>
+<span>          keep_alive <span class="op">=</span> <span class="va">keep_alive</span>, </span>
+<span>          flavor <span class="op">=</span> <span class="va">flavor</span>, </span>
+<span>          fib_count <span class="op">=</span> <span class="va">fib_count</span></span>
+<span>        <span class="op">)</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span>sep <span class="op">=</span> <span class="st">""</span>,</span>
+<span>        <span class="st">"fibonacci: "</span>, <span class="va">fib_count</span>, <span class="st">"; flavor: "</span>, <span class="va">flavor</span>, <span class="st">"\n"</span>,</span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">rr</span><span class="op">$</span><span class="fu">read_output</span><span class="op">(</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span>, <span class="st">"\n"</span></span>
+<span>      <span class="op">)</span></span>
+<span>      <span class="va">rr</span><span class="op">$</span><span class="fu">kill_tree</span><span class="op">(</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu">parse_apib_results</span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">N_SEC</span> <span class="op">=</span> <span class="fl">10</span>
-<span class="va">results_restrserve</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, 
-                                runtime_checks <span class="op">=</span> <span class="cn">FALSE</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span>
-<span class="va">results_plumber</span> <span class="op">=</span> <span class="fu">apib_bench_plumber</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span>
-<span class="va">results_compare</span> <span class="op">=</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">results_plumber</span>, <span class="va">results_restrserve</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">N_SEC</span> <span class="op">=</span> <span class="fl">10</span></span>
+<span><span class="va">results_restrserve</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, </span>
+<span>                                runtime_checks <span class="op">=</span> <span class="cn">FALSE</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
+<span><span class="va">results_plumber</span> <span class="op">=</span> <span class="fu">apib_bench_plumber</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
+<span><span class="va">results_compare</span> <span class="op">=</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">results_plumber</span>, <span class="va">results_restrserve</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h3>
@@ -364,10 +364,10 @@
 </h3>
 <p>Additionally we may explore environments where web-service exposed directly to many clients without having load balancer or proxy behind it. This is not very common across real-world deployments, but still worth to keep in mind. We can be simulate such scenario by setting <code>keep_alive = 0</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">results_restrserve</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, 
-                                runtime_checks <span class="op">=</span> <span class="cn">FALSE</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span>
-<span class="va">results_plumber</span> <span class="op">=</span> <span class="fu">apib_bench_plumber</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span>
-<span class="va">results_compare</span> <span class="op">=</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">results_plumber</span>, <span class="va">results_restrserve</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">results_restrserve</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>                                runtime_checks <span class="op">=</span> <span class="cn">FALSE</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
+<span><span class="va">results_plumber</span> <span class="op">=</span> <span class="fu">apib_bench_plumber</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
+<span><span class="va">results_compare</span> <span class="op">=</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">results_plumber</span>, <span class="va">results_restrserve</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-vs-plumber-no-keepalive.png?raw=true" width="640"></p>
 <p>Due to the overhead of creating a new process for each request and <a href="https://github.com/rexyai/RestRserve/issues/149" class="external-link">R’s byte compiler overhead</a> <code>RestRserve</code> with <code>Rserve</code> backend does not perform as quickly as <code>plumber</code> when computing instantaneous routes. However, <code>RestRserve</code> still shows it’s strength when executing routes that have high computational costs. No extra coding logic is needed to leverage <code>RestRserve</code>’s multi-threaded execution. Mixing <code>plumber</code> and <code>future</code> together for <em>high computation</em> routes brings performance that scales with the number of concurrent requests, but at the cost of extra route logic and domain knowledge.</p>
 </div>
@@ -391,7 +391,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

@@ -18,7 +18,7 @@ verbosity. Log messages are in JSON format."><meta property="og:image" content="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -90,26 +90,26 @@ verbosity. Log messages are in JSON format.</p>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Logger$new()</code></a></p></li>
-<li><p><a href="#method-set_name"><code>Logger$set_name()</code></a></p></li>
-<li><p><a href="#method-set_log_level"><code>Logger$set_log_level()</code></a></p></li>
-<li><p><a href="#method-set_printer"><code>Logger$set_printer()</code></a></p></li>
-<li><p><a href="#method-trace"><code>Logger$trace()</code></a></p></li>
-<li><p><a href="#method-debug"><code>Logger$debug()</code></a></p></li>
-<li><p><a href="#method-info"><code>Logger$info()</code></a></p></li>
-<li><p><a href="#method-warn"><code>Logger$warn()</code></a></p></li>
-<li><p><a href="#method-error"><code>Logger$error()</code></a></p></li>
-<li><p><a href="#method-fatal"><code>Logger$fatal()</code></a></p></li>
-<li><p><a href="#method-clone"><code>Logger$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Logger-new"><code>Logger$new()</code></a></p></li>
+<li><p><a href="#method-Logger-set_name"><code>Logger$set_name()</code></a></p></li>
+<li><p><a href="#method-Logger-set_log_level"><code>Logger$set_log_level()</code></a></p></li>
+<li><p><a href="#method-Logger-set_printer"><code>Logger$set_printer()</code></a></p></li>
+<li><p><a href="#method-Logger-trace"><code>Logger$trace()</code></a></p></li>
+<li><p><a href="#method-Logger-debug"><code>Logger$debug()</code></a></p></li>
+<li><p><a href="#method-Logger-info"><code>Logger$info()</code></a></p></li>
+<li><p><a href="#method-Logger-warn"><code>Logger$warn()</code></a></p></li>
+<li><p><a href="#method-Logger-error"><code>Logger$error()</code></a></p></li>
+<li><p><a href="#method-Logger-fatal"><code>Logger$fatal()</code></a></p></li>
+<li><p><a href="#method-Logger-clone"><code>Logger$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-Logger-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates Logger object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"info"</span>, <span class="st">"fatal"</span>, <span class="st">"error"</span>, <span class="st">"warn"</span>, <span class="st">"debug"</span>, <span class="st">"trace"</span>, <span class="st">"off"</span>, <span class="st">"all"</span><span class="op">)</span>,
-  name <span class="op">=</span> <span class="st">"ROOT"</span>,
-  printer <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"info"</span>, <span class="st">"fatal"</span>, <span class="st">"error"</span>, <span class="st">"warn"</span>, <span class="st">"debug"</span>, <span class="st">"trace"</span>, <span class="st">"off"</span>, <span class="st">"all"</span><span class="op">)</span>,</span>
+<span>  name <span class="op">=</span> <span class="st">"ROOT"</span>,</span>
+<span>  printer <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -132,11 +132,11 @@ By default when <code>printer = NULL</code> logger writes message in JSON format
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_name"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_name"></a><div class="section">
 <h3 id="method-set-name-">Method <code>set_name()</code><a class="anchor" aria-label="anchor" href="#method-set-name-"></a></h3>
 <p>Sets logger name.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_name</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"ROOT"</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_name</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"ROOT"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -148,13 +148,13 @@ By default when <code>printer = NULL</code> logger writes message in JSON format
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_log_level"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_log_level"></a><div class="section">
 <h3 id="method-set-log-level-">Method <code>set_log_level()</code><a class="anchor" aria-label="anchor" href="#method-set-log-level-"></a></h3>
 <p>Sets log level.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span>
-  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"info"</span>, <span class="st">"fatal"</span>, <span class="st">"error"</span>, <span class="st">"warn"</span>, <span class="st">"debug"</span>, <span class="st">"trace"</span>, <span class="st">"off"</span>, <span class="st">"all"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span></span>
+<span>  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"info"</span>, <span class="st">"fatal"</span>, <span class="st">"error"</span>, <span class="st">"warn"</span>, <span class="st">"debug"</span>, <span class="st">"trace"</span>, <span class="st">"off"</span>, <span class="st">"all"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -167,11 +167,11 @@ trace, off, all.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_printer"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-set_printer"></a><div class="section">
 <h3 id="method-set-printer-">Method <code>set_printer()</code><a class="anchor" aria-label="anchor" href="#method-set-printer-"></a></h3>
 <p>Sets function which defines how to print logs.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">set_printer</span><span class="op">(</span>FUN <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">set_printer</span><span class="op">(</span>FUN <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -184,11 +184,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-trace"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-trace"></a><div class="section">
 <h3 id="method-trace-">Method <code><a href="https://rdrr.io/r/base/trace.html" class="external-link">trace()</a></code><a class="anchor" aria-label="anchor" href="#method-trace-"></a></h3>
 <p>Write trace message.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">trace</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -204,11 +204,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-debug"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-debug"></a><div class="section">
 <h3 id="method-debug-">Method <code><a href="https://rdrr.io/r/base/debug.html" class="external-link">debug()</a></code><a class="anchor" aria-label="anchor" href="#method-debug-"></a></h3>
 <p>Write debug message.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">debug</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -224,11 +224,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-info"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-info"></a><div class="section">
 <h3 id="method-info-">Method <code>info()</code><a class="anchor" aria-label="anchor" href="#method-info-"></a></h3>
 <p>Write information message.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -244,11 +244,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-warn"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-warn"></a><div class="section">
 <h3 id="method-warn-">Method <code>warn()</code><a class="anchor" aria-label="anchor" href="#method-warn-"></a></h3>
 <p>Write warning message.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">warn</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -264,11 +264,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-error"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-error"></a><div class="section">
 <h3 id="method-error-">Method <code>error()</code><a class="anchor" aria-label="anchor" href="#method-error-"></a></h3>
 <p>Write error message.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -284,11 +284,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-fatal"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-fatal"></a><div class="section">
 <h3 id="method-fatal-">Method <code>fatal()</code><a class="anchor" aria-label="anchor" href="#method-fatal-"></a></h3>
 <p>Write fatal error message.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">fatal</span><span class="op">(</span><span class="va">msg</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -304,11 +304,11 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-Logger-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Logger</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Logger</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -326,15 +326,15 @@ timestamp, level, logger_name, pid, message.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># init logger</span></span>
-<span class="r-in"><span class="va">logger</span> <span class="op">=</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># write info message</span></span>
-<span class="r-in"><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"hello world"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:57.056245","level":"INFO","name":"ROOT","pid":2868,"msg":"hello world"}</span>
-<span class="r-in"><span class="co"># write extended log entry</span></span>
-<span class="r-in"><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">""</span>, context <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"hello world"</span>, code <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:57.058454","level":"INFO","name":"ROOT","pid":2868,"msg":"","context":{"message":"hello world","code":0}}</span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># init logger</span></span></span>
+<span class="r-in"><span><span class="va">logger</span> <span class="op">=</span> <span class="va">Logger</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="st">"info"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># write info message</span></span></span>
+<span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"hello world"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:32.117763","level":"INFO","name":"ROOT","pid":4872,"msg":"hello world"}</span>
+<span class="r-in"><span><span class="co"># write extended log entry</span></span></span>
+<span class="r-in"><span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">""</span>, context <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>message <span class="op">=</span> <span class="st">"hello world"</span>, code <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:32.120234","level":"INFO","name":"ROOT","pid":4872,"msg":"","context":{"message":"hello world","code":0}}</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -349,7 +349,7 @@ timestamp, level, logger_name, pid, message.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

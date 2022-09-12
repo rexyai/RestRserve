@@ -19,7 +19,7 @@ REST API by registering R functions as handlers http requests."><meta property="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -136,26 +136,26 @@ in the majority of the cases using <a href="HTTPError.html">HTTPError</a> will b
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Application$new()</code></a></p></li>
-<li><p><a href="#method-add_route"><code>Application$add_route()</code></a></p></li>
-<li><p><a href="#method-add_get"><code>Application$add_get()</code></a></p></li>
-<li><p><a href="#method-add_post"><code>Application$add_post()</code></a></p></li>
-<li><p><a href="#method-add_static"><code>Application$add_static()</code></a></p></li>
-<li><p><a href="#method-add_openapi"><code>Application$add_openapi()</code></a></p></li>
-<li><p><a href="#method-add_swagger_ui"><code>Application$add_swagger_ui()</code></a></p></li>
-<li><p><a href="#method-append_middleware"><code>Application$append_middleware()</code></a></p></li>
-<li><p><a href="#method-process_request"><code>Application$process_request()</code></a></p></li>
-<li><p><a href="#method-print"><code>Application$print()</code></a></p></li>
-<li><p><a href="#method-clone"><code>Application$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Application-new"><code>Application$new()</code></a></p></li>
+<li><p><a href="#method-Application-add_route"><code>Application$add_route()</code></a></p></li>
+<li><p><a href="#method-Application-add_get"><code>Application$add_get()</code></a></p></li>
+<li><p><a href="#method-Application-add_post"><code>Application$add_post()</code></a></p></li>
+<li><p><a href="#method-Application-add_static"><code>Application$add_static()</code></a></p></li>
+<li><p><a href="#method-Application-add_openapi"><code>Application$add_openapi()</code></a></p></li>
+<li><p><a href="#method-Application-add_swagger_ui"><code>Application$add_swagger_ui()</code></a></p></li>
+<li><p><a href="#method-Application-append_middleware"><code>Application$append_middleware()</code></a></p></li>
+<li><p><a href="#method-Application-process_request"><code>Application$process_request()</code></a></p></li>
+<li><p><a href="#method-Application-print"><code>Application$print()</code></a></p></li>
+<li><p><a href="#method-Application-clone"><code>Application$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-Application-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates Application object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,
-  content_type <span class="op">=</span> <span class="st">"text/plain"</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  content_type <span class="op">=</span> <span class="st">"text/plain"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -175,17 +175,17 @@ in the majority of the cases using <a href="HTTPError.html">HTTPError</a> will b
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_route"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_route"></a><div class="section">
 <h3 id="method-add-route-">Method <code>add_route()</code><a class="anchor" aria-label="anchor" href="#method-add-route-"></a></h3>
 <p>Adds endpoint and register user-supplied R function as a handler.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_route</span><span class="op">(</span>
-  <span class="va">path</span>,
-  <span class="va">method</span>,
-  <span class="va">FUN</span>,
-  match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_route</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">FUN</span>,</span>
+<span>  match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -222,17 +222,17 @@ passed further to RestRserve execution pipeline.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_get"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_get"></a><div class="section">
 <h3 id="method-add-get-">Method <code>add_get()</code><a class="anchor" aria-label="anchor" href="#method-add-get-"></a></h3>
 <p>Shorthand to <code>Application$add_route()</code> with <code>GET</code> method.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>
-  <span class="va">path</span>,
-  <span class="va">FUN</span>,
-  match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>,
-  <span class="va">...</span>,
-  add_head <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span></span>
+<span>  <span class="va">path</span>,</span>
+<span>  <span class="va">FUN</span>,</span>
+<span>  match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span>,</span>
+<span>  add_head <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -268,11 +268,11 @@ passed further to RestRserve execution pipeline.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_post"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_post"></a><div class="section">
 <h3 id="method-add-post-">Method <code>add_post()</code><a class="anchor" aria-label="anchor" href="#method-add-post-"></a></h3>
 <p>Shorthand to <code>Application$add_route()</code> with <code>POST</code> method.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="va">path</span>, <span class="va">FUN</span>, match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="va">path</span>, <span class="va">FUN</span>, match <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"exact"</span>, <span class="st">"partial"</span>, <span class="st">"regex"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -304,11 +304,11 @@ passed further to RestRserve execution pipeline.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_static"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_static"></a><div class="section">
 <h3 id="method-add-static-">Method <code>add_static()</code><a class="anchor" aria-label="anchor" href="#method-add-static-"></a></h3>
 <p>Adds <code>GET</code> method to serve file or directory at <code>file_path</code>.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span><span class="va">path</span>, <span class="va">file_path</span>, content_type <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span><span class="va">path</span>, <span class="va">file_path</span>, content_type <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -336,12 +336,12 @@ be set to <code>application/octet-stream</code>.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_openapi"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_openapi"></a><div class="section">
 <h3 id="method-add-openapi-">Method <code>add_openapi()</code><a class="anchor" aria-label="anchor" href="#method-add-openapi-"></a></h3>
 <p>Adds endpoint to serve <a href="https://www.openapis.org/" class="external-link">OpenAPI</a> description of
 available methods.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_openapi</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/openapi.yaml"</span>, file_path <span class="op">=</span> <span class="st">"openapi.yaml"</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_openapi</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/openapi.yaml"</span>, file_path <span class="op">=</span> <span class="st">"openapi.yaml"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -357,17 +357,17 @@ available methods.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-add_swagger_ui"></a><div class="section">
+</div><p></p><hr><a id="method-Application-add_swagger_ui"></a><div class="section">
 <h3 id="method-add-swagger-ui-">Method <code>add_swagger_ui()</code><a class="anchor" aria-label="anchor" href="#method-add-swagger-ui-"></a></h3>
 <p>Adds endpoint to show <a href="https://swagger.io/tools/swagger-ui/" class="external-link">Swagger UI</a>.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">add_swagger_ui</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/swagger"</span>,
-  path_openapi <span class="op">=</span> <span class="st">"/openapi.yaml"</span>,
-  use_cdn <span class="op">=</span> <span class="cn">TRUE</span>,
-  path_swagger_assets <span class="op">=</span> <span class="st">"/__swagger__/"</span>,
-  file_path <span class="op">=</span> <span class="st">"swagger-ui.html"</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">add_swagger_ui</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/swagger"</span>,</span>
+<span>  path_openapi <span class="op">=</span> <span class="st">"/openapi.yaml"</span>,</span>
+<span>  use_cdn <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  path_swagger_assets <span class="op">=</span> <span class="st">"/__swagger__/"</span>,</span>
+<span>  file_path <span class="op">=</span> <span class="st">"swagger-ui.html"</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -395,11 +395,11 @@ available methods.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-append_middleware"></a><div class="section">
+</div><p></p><hr><a id="method-Application-append_middleware"></a><div class="section">
 <h3 id="method-append-middleware-">Method <code>append_middleware()</code><a class="anchor" aria-label="anchor" href="#method-append-middleware-"></a></h3>
 <p>Appends middleware to handlers pipeline.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">mw</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">mw</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -411,11 +411,11 @@ available methods.</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-process_request"></a><div class="section">
+</div><p></p><hr><a id="method-Application-process_request"></a><div class="section">
 <h3 id="method-process-request-">Method <code>process_request()</code><a class="anchor" aria-label="anchor" href="#method-process-request-"></a></h3>
 <p>Process incoming request and generate <a href="Response.html">Response</a> object.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span>request <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span>request <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -428,19 +428,19 @@ Useful for tests your handlers before deploy application.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-Application-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Prints application details.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-Application-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Application</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Application</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -458,57 +458,57 @@ Useful for tests your handlers before deploy application.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># init logger</span></span>
-<span class="r-in"><span class="va">app_logger</span> <span class="op">=</span> <span class="va"><a href="Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set log level for the middleware</span></span>
-<span class="r-in"><span class="va">app_logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"debug"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set logger name</span></span>
-<span class="r-in"><span class="va">app_logger</span><span class="op">$</span><span class="fu">set_name</span><span class="op">(</span><span class="st">"MW Logger"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># init middleware to logging</span></span>
-<span class="r-in"><span class="va">mw</span> <span class="op">=</span> <span class="va"><a href="Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">app_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Incomming request (id %s): %s"</span>, <span class="va">rq</span><span class="op">$</span><span class="va">id</span>, <span class="va">rq</span><span class="op">$</span><span class="va">path</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span>,</span>
-<span class="r-in">  process_response <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">    <span class="va">app_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Outgoing response (id %s): %s"</span>, <span class="va">rq</span><span class="op">$</span><span class="va">id</span>, <span class="va">rs</span><span class="op">$</span><span class="va">status</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">}</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"awesome-app-logger"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># init application</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">=</span> <span class="va">Application</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mw</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># set internal log level</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># define simply request handler</span></span>
-<span class="r-in"><span class="va">status_handler</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># add route</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/status"</span>, <span class="va">status_handler</span>, <span class="st">"exact"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># add static file handler</span></span>
-<span class="r-in"><span class="va">desc_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, package <span class="op">=</span> <span class="st">"RestRserve"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># add route</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span><span class="st">"/desc"</span>, <span class="va">desc_file</span>, <span class="st">"text/plain"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># define say message handler</span></span>
-<span class="r-in"><span class="va">say_handler</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">who</span> <span class="op">=</span> <span class="va">rq</span><span class="op">$</span><span class="va">parameters_path</span><span class="op">[[</span><span class="st">"user"</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in">  <span class="va">msg</span> <span class="op">=</span> <span class="va">rq</span><span class="op">$</span><span class="va">parameters_query</span><span class="op">[[</span><span class="st">"message"</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span><span class="op">)</span> <span class="va">msg</span> <span class="op">=</span> <span class="st">"Hello"</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">who</span>, <span class="st">"say"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sQuote.html" class="external-link">dQuote</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span>
-<span class="r-in">  <span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># add route</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/say/{user}"</span>, <span class="va">say_handler</span>, <span class="st">"regex"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># print application info</span></span>
-<span class="r-in"><span class="va">app</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># init logger</span></span></span>
+<span class="r-in"><span><span class="va">app_logger</span> <span class="op">=</span> <span class="va"><a href="Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set log level for the middleware</span></span></span>
+<span class="r-in"><span><span class="va">app_logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"debug"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set logger name</span></span></span>
+<span class="r-in"><span><span class="va">app_logger</span><span class="op">$</span><span class="fu">set_name</span><span class="op">(</span><span class="st">"MW Logger"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># init middleware to logging</span></span></span>
+<span class="r-in"><span><span class="va">mw</span> <span class="op">=</span> <span class="va"><a href="Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">app_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Incomming request (id %s): %s"</span>, <span class="va">rq</span><span class="op">$</span><span class="va">id</span>, <span class="va">rq</span><span class="op">$</span><span class="va">path</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span>,</span></span>
+<span class="r-in"><span>  process_response <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="va">app_logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Outgoing response (id %s): %s"</span>, <span class="va">rq</span><span class="op">$</span><span class="va">id</span>, <span class="va">rs</span><span class="op">$</span><span class="va">status</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"awesome-app-logger"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># init application</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">=</span> <span class="va">Application</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">mw</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># set internal log level</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># define simply request handler</span></span></span>
+<span class="r-in"><span><span class="va">status_handler</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># add route</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/status"</span>, <span class="va">status_handler</span>, <span class="st">"exact"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># add static file handler</span></span></span>
+<span class="r-in"><span><span class="va">desc_file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, package <span class="op">=</span> <span class="st">"RestRserve"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># add route</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span><span class="st">"/desc"</span>, <span class="va">desc_file</span>, <span class="st">"text/plain"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># define say message handler</span></span></span>
+<span class="r-in"><span><span class="va">say_handler</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">who</span> <span class="op">=</span> <span class="va">rq</span><span class="op">$</span><span class="va">parameters_path</span><span class="op">[[</span><span class="st">"user"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="va">msg</span> <span class="op">=</span> <span class="va">rq</span><span class="op">$</span><span class="va">parameters_query</span><span class="op">[[</span><span class="st">"message"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span><span class="op">)</span> <span class="va">msg</span> <span class="op">=</span> <span class="st">"Hello"</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">who</span>, <span class="st">"say"</span>, <span class="fu"><a href="https://rdrr.io/r/base/sQuote.html" class="external-link">dQuote</a></span><span class="op">(</span><span class="va">msg</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># add route</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/say/{user}"</span>, <span class="va">say_handler</span>, <span class="st">"regex"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># print application info</span></span></span>
+<span class="r-in"><span><span class="va">app</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Application&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Middlewares&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [request][response]: awesome-app-logger</span>
@@ -518,55 +518,55 @@ Useful for tests your handlers before deploy application.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     GET [exact]: /status</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     GET [exact]: /desc</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     GET [regex]: /say/{user}</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># test app</span></span>
-<span class="r-in"><span class="co"># simulate requests</span></span>
-<span class="r-in"><span class="va">not_found_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/no"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">status_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/status"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">desc_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/desc"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">say_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/say/anonym"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"message"</span> <span class="op">=</span> <span class="st">"Hola"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># process prepared requests</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">not_found_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.089899","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d68f208-e7de-11ec-abea-00505698ed98): /no"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.092468","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d68f208-e7de-11ec-abea-00505698ed98): 404 Not Found"}</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># test app</span></span></span>
+<span class="r-in"><span><span class="co"># simulate requests</span></span></span>
+<span class="r-in"><span><span class="va">not_found_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/no"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">status_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/status"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">desc_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/desc"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">say_rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/say/anonym"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"message"</span> <span class="op">=</span> <span class="st">"Hola"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># process prepared requests</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">not_found_rq</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.149040","level":"INFO","name":"MW Logger","pid":4872,"msg":"Incomming request (id cfbeb092-3276-11ed-996d-005056964722): /no"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.151808","level":"INFO","name":"MW Logger","pid":4872,"msg":"Outgoing response (id cfbeb092-3276-11ed-996d-005056964722): 404 Not Found"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 404 Not Found</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">status_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.133550","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d692a5c-e7de-11ec-abea-00505698ed98): /status"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.171782","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d692a5c-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">status_rq</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.187304","level":"INFO","name":"MW Logger","pid":4872,"msg":"Incomming request (id cfbef16a-3276-11ed-996d-005056964722): /status"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.249089","level":"INFO","name":"MW Logger","pid":4872,"msg":"Outgoing response (id cfbef16a-3276-11ed-996d-005056964722): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">desc_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.194916","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d6962ce-e7de-11ec-abea-00505698ed98): /desc"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.196238","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d6962ce-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">desc_rq</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.284332","level":"INFO","name":"MW Logger","pid":4872,"msg":"Incomming request (id cfbf3350-3276-11ed-996d-005056964722): /desc"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.285474","level":"INFO","name":"MW Logger","pid":4872,"msg":"Outgoing response (id cfbf3350-3276-11ed-996d-005056964722): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">say_rq</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.199295","level":"INFO","name":"MW Logger","pid":2868,"msg":"Incomming request (id 3d699b86-e7de-11ec-abea-00505698ed98): /say/anonym"}</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-06-09 10:23:44.200536","level":"INFO","name":"MW Logger","pid":2868,"msg":"Outgoing response (id 3d699b86-e7de-11ec-abea-00505698ed98): 200 OK"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">say_rq</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.288224","level":"INFO","name":"MW Logger","pid":4872,"msg":"Incomming request (id cfbf741e-3276-11ed-996d-005056964722): /say/anonym"}</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> {"timestamp":"2022-09-12 08:42:19.289788","level":"INFO","name":"MW Logger","pid":4872,"msg":"Outgoing response (id cfbf741e-3276-11ed-996d-005056964722): 200 OK"}</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># run app</span></span>
-<span class="r-in"><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, <span class="fl">8080</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># }</span></span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># run app</span></span></span>
+<span class="r-in"><span><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, <span class="fl">8080</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -581,7 +581,7 @@ Useful for tests your handlers before deploy application.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

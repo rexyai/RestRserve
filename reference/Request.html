@@ -18,7 +18,7 @@ Also useful for testing."><meta property="og:image" content="https://restrserve.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -174,33 +174,33 @@ the multipart body.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Request$new()</code></a></p></li>
-<li><p><a href="#method-set_id"><code>Request$set_id()</code></a></p></li>
-<li><p><a href="#method-reset"><code>Request$reset()</code></a></p></li>
-<li><p><a href="#method-get_header"><code>Request$get_header()</code></a></p></li>
-<li><p><a href="#method-get_param_query"><code>Request$get_param_query()</code></a></p></li>
-<li><p><a href="#method-get_param_body"><code>Request$get_param_body()</code></a></p></li>
-<li><p><a href="#method-get_param_path"><code>Request$get_param_path()</code></a></p></li>
-<li><p><a href="#method-get_file"><code>Request$get_file()</code></a></p></li>
-<li><p><a href="#method-print"><code>Request$print()</code></a></p></li>
-<li><p><a href="#method-clone"><code>Request$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Request-new"><code>Request$new()</code></a></p></li>
+<li><p><a href="#method-Request-set_id"><code>Request$set_id()</code></a></p></li>
+<li><p><a href="#method-Request-reset"><code>Request$reset()</code></a></p></li>
+<li><p><a href="#method-Request-get_header"><code>Request$get_header()</code></a></p></li>
+<li><p><a href="#method-Request-get_param_query"><code>Request$get_param_query()</code></a></p></li>
+<li><p><a href="#method-Request-get_param_body"><code>Request$get_param_body()</code></a></p></li>
+<li><p><a href="#method-Request-get_param_path"><code>Request$get_param_path()</code></a></p></li>
+<li><p><a href="#method-Request-get_file"><code>Request$get_file()</code></a></p></li>
+<li><p><a href="#method-Request-print"><code>Request$print()</code></a></p></li>
+<li><p><a href="#method-Request-clone"><code>Request$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-Request-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates Request object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/"</span>,
-  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GET"</span>, <span class="st">"HEAD"</span>, <span class="st">"POST"</span>, <span class="st">"PUT"</span>, <span class="st">"DELETE"</span>, <span class="st">"CONNECT"</span>, <span class="st">"OPTIONS"</span>, <span class="st">"TRACE"</span>,
-    <span class="st">"PATCH"</span><span class="op">)</span>,
-  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  parameters_body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  cookies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,
-  content_type <span class="op">=</span> <span class="cn">NULL</span>,
-  decode <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GET"</span>, <span class="st">"HEAD"</span>, <span class="st">"POST"</span>, <span class="st">"PUT"</span>, <span class="st">"DELETE"</span>, <span class="st">"CONNECT"</span>, <span class="st">"OPTIONS"</span>, <span class="st">"TRACE"</span>,</span>
+<span>    <span class="st">"PATCH"</span><span class="op">)</span>,</span>
+<span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  parameters_body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cookies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  content_type <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  decode <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -252,11 +252,11 @@ should be provided explicitly - it won't be derived from <code>headers</code>.</
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_id"></a><div class="section">
+</div><p></p><hr><a id="method-Request-set_id"></a><div class="section">
 <h3 id="method-set-id-">Method <code>set_id()</code><a class="anchor" aria-label="anchor" href="#method-set-id-"></a></h3>
 <p>Set request id.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">set_id</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">set_id</span><span class="op">(</span>id <span class="op">=</span> <span class="fu">uuid</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/uuid/man/UUIDgenerate.html" class="external-link">UUIDgenerate</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -268,20 +268,20 @@ should be provided explicitly - it won't be derived from <code>headers</code>.</
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-reset"></a><div class="section">
+</div><p></p><hr><a id="method-Request-reset"></a><div class="section">
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Resets request object. This is not useful for end user, but useful for
 RestRserve internals - resetting R6 class is much faster then initialize it.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-get_header"></a><div class="section">
+</div><p></p><hr><a id="method-Request-get_header"></a><div class="section">
 <h3 id="method-get-header-">Method <code>get_header()</code><a class="anchor" aria-label="anchor" href="#method-get-header-"></a></h3>
 <p>Get HTTP response header value. If requested header is empty returns <code>default</code>.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="va">name</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="va">name</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -301,11 +301,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Header field values (character string).</p>
 </div>
 
-</div><p></p><hr><a id="method-get_param_query"></a><div class="section">
+</div><p></p><hr><a id="method-Request-get_param_query"></a><div class="section">
 <h3 id="method-get-param-query-">Method <code>get_param_query()</code><a class="anchor" aria-label="anchor" href="#method-get-param-query-"></a></h3>
 <p>Get request query parameter by name.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -321,11 +321,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Query parameter value (character string).</p>
 </div>
 
-</div><p></p><hr><a id="method-get_param_body"></a><div class="section">
+</div><p></p><hr><a id="method-Request-get_param_body"></a><div class="section">
 <h3 id="method-get-param-body-">Method <code>get_param_body()</code><a class="anchor" aria-label="anchor" href="#method-get-param-body-"></a></h3>
 <p>Get request body parameter by name.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_body</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_body</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -341,11 +341,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Body field value.</p>
 </div>
 
-</div><p></p><hr><a id="method-get_param_path"></a><div class="section">
+</div><p></p><hr><a id="method-Request-get_param_path"></a><div class="section">
 <h3 id="method-get-param-path-">Method <code>get_param_path()</code><a class="anchor" aria-label="anchor" href="#method-get-param-path-"></a></h3>
 <p>Get templated path parameter by name.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_path</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">get_param_path</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -361,11 +361,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Path parameter value.</p>
 </div>
 
-</div><p></p><hr><a id="method-get_file"></a><div class="section">
+</div><p></p><hr><a id="method-Request-get_file"></a><div class="section">
 <h3 id="method-get-file-">Method <code>get_file()</code><a class="anchor" aria-label="anchor" href="#method-get-file-"></a></h3>
 <p>Extract specific file from multipart body.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">get_file</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">get_file</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -381,19 +381,19 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Raw vector with <code>filname</code> and <code>content-type</code> attributes.</p>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-Request-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Print method.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-Request-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Request</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Request</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -411,38 +411,38 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># init simply request</span></span>
-<span class="r-in"><span class="va">rq</span> <span class="op">=</span> <span class="va">Request</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  path <span class="op">=</span> <span class="st">"/"</span>,</span>
-<span class="r-in">  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="st">"param1"</span> <span class="op">=</span> <span class="st">"value1"</span>,</span>
-<span class="r-in">    <span class="st">"param2"</span> <span class="op">=</span> <span class="st">"value2"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="st">"Content-encoding"</span> <span class="op">=</span> <span class="st">"identity"</span>,</span>
-<span class="r-in">    <span class="st">"Custom-field"</span> <span class="op">=</span> <span class="st">"value"</span></span>
-<span class="r-in">  <span class="op">)</span>,</span>
-<span class="r-in">  cookies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">    <span class="st">"sessionId"</span> <span class="op">=</span> <span class="st">"1"</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># get request UUID</span></span>
-<span class="r-in"><span class="va">rq</span><span class="op">$</span><span class="va">id</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "464cf662-e7de-11ec-abea-00505698ed98"</span>
-<span class="r-in"><span class="co"># get content accept</span></span>
-<span class="r-in"><span class="va">rq</span><span class="op">$</span><span class="va">accept</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># init simply request</span></span></span>
+<span class="r-in"><span><span class="va">rq</span> <span class="op">=</span> <span class="va">Request</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path <span class="op">=</span> <span class="st">"/"</span>,</span></span>
+<span class="r-in"><span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"param1"</span> <span class="op">=</span> <span class="st">"value1"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"param2"</span> <span class="op">=</span> <span class="st">"value2"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"Content-encoding"</span> <span class="op">=</span> <span class="st">"identity"</span>,</span></span>
+<span class="r-in"><span>    <span class="st">"Custom-field"</span> <span class="op">=</span> <span class="st">"value"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cookies <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="st">"sessionId"</span> <span class="op">=</span> <span class="st">"1"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get request UUID</span></span></span>
+<span class="r-in"><span><span class="va">rq</span><span class="op">$</span><span class="va">id</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "d86c0e10-3276-11ed-996d-005056964722"</span>
+<span class="r-in"><span><span class="co"># get content accept</span></span></span>
+<span class="r-in"><span><span class="va">rq</span><span class="op">$</span><span class="va">accept</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "*/*"</span>
-<span class="r-in"><span class="co"># get request content type</span></span>
-<span class="r-in"><span class="va">rq</span><span class="op">$</span><span class="va">content_type</span></span>
+<span class="r-in"><span><span class="co"># get request content type</span></span></span>
+<span class="r-in"><span><span class="va">rq</span><span class="op">$</span><span class="va">content_type</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span class="co"># get header by name (lower case)</span></span>
-<span class="r-in"><span class="va">rq</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="st">"custom-field"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># get header by name (lower case)</span></span></span>
+<span class="r-in"><span><span class="va">rq</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="st">"custom-field"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "value"</span>
-<span class="r-in"><span class="co"># get query param by name</span></span>
-<span class="r-in"><span class="va">rq</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"param1"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># get query param by name</span></span></span>
+<span class="r-in"><span><span class="va">rq</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"param1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "value1"</span>
-<span class="r-in"><span class="co"># print request</span></span>
-<span class="r-in"><span class="va">rq</span></span>
+<span class="r-in"><span><span class="co"># print request</span></span></span>
+<span class="r-in"><span><span class="va">rq</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Request&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   method: GET</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   path: /</span>
@@ -456,7 +456,7 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     custom-field: value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Cookies&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sessionid: 1</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -471,7 +471,7 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

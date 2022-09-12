@@ -19,7 +19,7 @@ https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md"><met
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -82,70 +82,99 @@ creating objects described in
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">openapi_create</span><span class="op">(</span>
-  openapi <span class="op">=</span> <span class="fu">openapi_openapi_version</span><span class="op">(</span><span class="op">)</span>,
-  info <span class="op">=</span> <span class="fu">openapi_info</span><span class="op">(</span><span class="op">)</span>,
-  servers <span class="op">=</span> <span class="fu">openapi_servers</span><span class="op">(</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">openapi_openapi_version</span><span class="op">(</span>openapi_version <span class="op">=</span> <span class="st">"3.0.1"</span><span class="op">)</span>
-
-<span class="fu">openapi_info</span><span class="op">(</span>
-  title <span class="op">=</span> <span class="st">"RestRserve OpenAPI"</span>,
-  version <span class="op">=</span> <span class="st">"1.0"</span>,
-  description <span class="op">=</span> <span class="cn">NULL</span>,
-  termsOfService <span class="op">=</span> <span class="cn">NULL</span>,
-  contact <span class="op">=</span> <span class="fu">openapi_contact</span><span class="op">(</span><span class="op">)</span>,
-  license <span class="op">=</span> <span class="fu">openapi_license</span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">openapi_servers</span><span class="op">(</span>servers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">openapi_server</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">openapi_server</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"/"</span>, description <span class="op">=</span> <span class="cn">NULL</span>, variables <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">openapi_contact</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, url <span class="op">=</span> <span class="cn">NULL</span>, email <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-
-<span class="fu">openapi_license</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, url <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">openapi_create</span><span class="op">(</span></span>
+<span>  openapi <span class="op">=</span> <span class="fu">openapi_openapi_version</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  info <span class="op">=</span> <span class="fu">openapi_info</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  servers <span class="op">=</span> <span class="fu">openapi_servers</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_openapi_version</span><span class="op">(</span>openapi_version <span class="op">=</span> <span class="st">"3.0.1"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_info</span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"RestRserve OpenAPI"</span>,</span>
+<span>  version <span class="op">=</span> <span class="st">"1.0"</span>,</span>
+<span>  description <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  termsOfService <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  contact <span class="op">=</span> <span class="fu">openapi_contact</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  license <span class="op">=</span> <span class="fu">openapi_license</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_servers</span><span class="op">(</span>servers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu">openapi_server</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_server</span><span class="op">(</span>url <span class="op">=</span> <span class="st">"/"</span>, description <span class="op">=</span> <span class="cn">NULL</span>, variables <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_contact</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, url <span class="op">=</span> <span class="cn">NULL</span>, email <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">openapi_license</span><span class="op">(</span>name <span class="op">=</span> <span class="cn">NULL</span>, url <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>openapi</dt>
 <dd><p>string, version of open api. For example <code>"3.0.1"</code></p></dd>
+
+
 <dt>info</dt>
 <dd><p>infoObject - <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject" class="external-link">https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject</a>.
 See openapi_info</p></dd>
+
+
 <dt>servers</dt>
 <dd><p>serverObject -
 <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject" class="external-link">https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#serverObject</a>
 See openapi_servers</p></dd>
+
+
 <dt>...</dt>
 <dd><p>other parameters - see
 <a href="https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject" class="external-link">https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#oasObject</a></p></dd>
+
+
 <dt>openapi_version</dt>
 <dd><p>version on OpenAPI</p></dd>
+
+
 <dt>title</dt>
 <dd><p>the title of the application</p></dd>
+
+
 <dt>version</dt>
 <dd><p>version of the application</p></dd>
+
+
 <dt>description</dt>
 <dd><p>description</p></dd>
+
+
 <dt>termsOfService</dt>
 <dd><p>termsOfService of the application</p></dd>
+
+
 <dt>contact</dt>
 <dd><p>contact of the maintainer - see openapi_contact</p></dd>
+
+
 <dt>license</dt>
 <dd><p>license of the api</p></dd>
+
+
 <dt>url</dt>
 <dd><p>url</p></dd>
+
+
 <dt>variables</dt>
 <dd><p>a map between a variable name and its value.
 #The value is used for substitution in the server's URL template.</p></dd>
+
+
 <dt>name</dt>
 <dd><p>name</p></dd>
+
+
 <dt>email</dt>
 <dd><p>contact email</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -164,7 +193,7 @@ See openapi_servers</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

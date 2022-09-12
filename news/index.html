@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -72,6 +72,80 @@
       <small>Source: <a href="https://github.com/rexyai/RestRserve/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.2.1" id="restrserve-121-2022-09-11">RestRserve 1.2.1 (2022-09-11)<a class="anchor" aria-label="anchor" href="#restrserve-121-2022-09-11"></a></h2>
+<ul><li>update NEWS.md file to follow CRAN specification</li>
+<li>update docs with new roxygen. Fixes CRAN notes in HTML5 compatibility</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.2.0" id="restrserve-120-2022-06-08">RestRserve 1.2.0 (2022-06-08)<small>2022-06-09</small><a class="anchor" aria-label="anchor" href="#restrserve-120-2022-06-08"></a></h2>
+<ul><li>Expose option to control which HTTP headers need to be split by comma during parsing. See <code>options("RestRserve.headers.split")</code>. See <a href="https://github.com/rexyai/RestRserve/issues/187" class="external-link">#187</a>, <a href="https://github.com/rexyai/RestRserve/issues/189" class="external-link">#189</a>. Thanks <a href="https://github.com/DavZim" class="external-link">@DavZim</a>.</li>
+<li>Improved ETag Middleware - see <a href="https://github.com/rexyai/RestRserve/issues/188" class="external-link">#188</a>. Thanks <a href="https://github.com/DavZim" class="external-link">@DavZim</a>.</li>
+<li>Fix automatic docker builds. Now builds are made with github actions.<ul><li>docker images are based on R 4.2.0 now</li>
+<li>minimal images are based on Alpine linux from <a href="https://github.com/r-hub/r-minimal" class="external-link">r-minimal</a>
+</li>
+<li>removed HAproxy from standard RestRserve image</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.1" id="restrserve-111-2022-04-20">RestRserve 1.1.1 (2022-04-20)<small>2022-04-20</small><a class="anchor" aria-label="anchor" href="#restrserve-111-2022-04-20"></a></h2>
+<ul><li>Skip tests on the live Rserve http server on CRAN which caused spurious test errors</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.1.0" id="restrserve-110-2022-04-14">RestRserve 1.1.0 (2022-04-14)<small>2022-04-14</small><a class="anchor" aria-label="anchor" href="#restrserve-110-2022-04-14"></a></h2>
+<ul><li>Added ETag Middleware <a href="https://github.com/rexyai/RestRserve/pull/182" class="external-link">#182</a>
+</li>
+<li>fix content-type for <code>application/x-www-form-urlencoded</code> response, <a href="https://github.com/rexyai/RestRserve/pull/184" class="external-link">#184</a>
+</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="1.0.0" id="restrserve-100-2022-03-27">RestRserve 1.0.0 (2022-03-27)<small>2022-03-27</small><a class="anchor" aria-label="anchor" href="#restrserve-100-2022-03-27"></a></h2>
+<ul><li>major stable release!</li>
+<li>fix CRAN notes and failing test on Windows</li>
+<li>fix bug in content-type when serving files</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.1" id="restrserve-041-2020-12-22">RestRserve 0.4.1 (2020-12-22)<small>2021-01-04</small><a class="anchor" aria-label="anchor" href="#restrserve-041-2020-12-22"></a></h2>
+<ul><li>Fix r-devel failing tests (due to upstream R changes)</li>
+<li>move to CI to github actions</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.4.0" id="restrserve-040-2020-11-11">RestRserve 0.4.0 (2020-11-11)<small>2020-11-11</small><a class="anchor" aria-label="anchor" href="#restrserve-040-2020-11-11"></a></h2>
+<ul><li>using convenient <code>.req</code> and <code>.res</code> placeholders as handler argument names allows to leverage autocomplete</li>
+<li>update benchmarking vignette to compare plumber and plumber + future. See <a href="https://github.com/rexyai/RestRserve/issues/170" class="external-link">#170</a></li>
+<li>improve <code>multipart/form-data</code> parsing, see <a href="https://github.com/rexyai/RestRserve/issues/160" class="external-link">#160</a> for details</li>
+<li>don’t allow to start app which uses Rserve backend from within RStudio. This is useless since it blocks R sessions, but also dangerous since it can crash RStudio. See discussion in <a href="https://github.com/rexyai/RestRserve/issues/158" class="external-link">#158</a></li>
+<li>
+<code>stdin</code> file descriptor is closed inside child processes</li>
+<li>logs are now flushed to <code>stdin</code> more reliably (but still there is race condition because multiple child processes write to the same stdout)</li>
+<li>use <code><a href="https://rdrr.io/pkg/jsonlite/man/read_json.html" class="external-link">jsonlite::parse_json</a></code> instead of <code><a href="https://rdrr.io/pkg/jsonlite/man/fromJSON.html" class="external-link">jsonlite::fromJSON</a></code> for safety reasons</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.3.0" id="restrserve-030-2020-06-14">RestRserve 0.3.0 (2020-06-14)<small>2020-06-14</small><a class="anchor" aria-label="anchor" href="#restrserve-030-2020-06-14"></a></h2>
+<ul><li>more efficient multipart handling - see <a href="https://github.com/rexyai/RestRserve/issues/150" class="external-link">#150</a>. Thanks <a href="https://github.com/rplati" class="external-link">@rplati</a> for reporting.</li>
+<li>substantially reduced latency when handling requests from new connection in a fresh fork - see <a href="https://github.com/rexyai/RestRserve/issues/149" class="external-link">#149</a>. Benchmarks updated. Thanks <a href="https://github.com/t-wojciech" class="external-link">@t-wojciech</a> and <a href="https://github.com/s-u" class="external-link">@s-u</a> for the discussion.</li>
+<li>fixed bug when wrong error code was returned for <em>Unprocessable Entity</em> http error - see <a href="https://github.com/rexyai/RestRserve/issues/141" class="external-link">#141</a>. Thanks <a href="https://github.com/junghwan-yun" class="external-link">@junghwan-yun</a> for reporting.</li>
+<li>fixed bug when path parameters were not properly parsed - see <a href="https://github.com/rexyai/RestRserve/issues/147" class="external-link">#147</a>.</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.2" id="restrserve-022-2020-04-09">RestRserve 0.2.2 (2020-04-09)<small>2020-04-12</small><a class="anchor" aria-label="anchor" href="#restrserve-022-2020-04-09"></a></h2>
+<ul><li>parse content-type directly from headers - see <a href="https://github.com/rexyai/RestRserve/issues/137" class="external-link">#137</a></li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.1" id="restrserve-021-2020-03-19">RestRserve 0.2.1 (2020-03-19)<small>2020-03-28</small><a class="anchor" aria-label="anchor" href="#restrserve-021-2020-03-19"></a></h2>
+<ul><li>update code for header names validation to conform to <a href="https://tools.ietf.org/html/rfc7230#section-3.2.6" class="external-link">rfc7230</a>, see <a href="https://github.com/rexyai/RestRserve/issues/132" class="external-link">#132</a></li>
+<li>generate documentation with roxygen2 7.1.0 which has support for R6 classes</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0.2" id="restrserve-0202-2020-03-06">RestRserve 0.2.0.2 (2020-03-06)<small>2020-03-09</small><a class="anchor" aria-label="anchor" href="#restrserve-0202-2020-03-06"></a></h2>
+<ul><li>set a timeout of 1 sec for checking open ports (see <a href="https://github.com/rexyai/RestRserve/issues/130" class="external-link">#130</a>)</li></ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0.1" id="restrserve-0201-2020-03-02">RestRserve 0.2.0.1 (2020-03-02)<small>2020-03-02</small><a class="anchor" aria-label="anchor" href="#restrserve-0201-2020-03-02"></a></h2>
+<ul><li>fixed memory access bug detected by CRAN ASAN checks (see <a href="https://github.com/rexyai/RestRserve/issues/127" class="external-link">#127</a>)</li>
+<li>docker image is based on <code>rocker/r-ver:3.6.2</code> now</li>
+<li>don’t run examples during website build</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="page-header" data-toc-text="0.2.0" id="restrserve-020-2020-01-28">RestRserve 0.2.0 (2020-01-28)<small>2020-02-28</small><a class="anchor" aria-label="anchor" href="#restrserve-020-2020-01-28"></a></h2>
+<ul><li>Initial CRAN version - RestRserve 0.2.0</li></ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -86,7 +160,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

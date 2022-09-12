@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -92,16 +92,16 @@
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>BackendRserve$new()</code></a></p></li>
-<li><p><a href="#method-start"><code>BackendRserve$start()</code></a></p></li>
-<li><p><a href="#method-set_request"><code>BackendRserve$set_request()</code></a></p></li>
-<li><p><a href="#method-convert_response"><code>BackendRserve$convert_response()</code></a></p></li>
-<li><p><a href="#method-clone"><code>BackendRserve$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul></ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-BackendRserve-new"><code>BackendRserve$new()</code></a></p></li>
+<li><p><a href="#method-BackendRserve-start"><code>BackendRserve$start()</code></a></p></li>
+<li><p><a href="#method-BackendRserve-set_request"><code>BackendRserve$set_request()</code></a></p></li>
+<li><p><a href="#method-BackendRserve-convert_response"><code>BackendRserve$convert_response()</code></a></p></li>
+<li><p><a href="#method-BackendRserve-clone"><code>BackendRserve$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-BackendRserve-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates BackendRserve object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">...</span>, jit_level <span class="op">=</span> <span class="fl">0L</span>, precompile <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">...</span>, jit_level <span class="op">=</span> <span class="fl">0L</span>, precompile <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -122,11 +122,11 @@ start.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-start"></a><div class="section">
+</div><p></p><hr><a id="method-BackendRserve-start"></a><div class="section">
 <h3 id="method-start-">Method <code><a href="https://rdrr.io/r/stats/start.html" class="external-link">start()</a></code><a class="anchor" aria-label="anchor" href="#method-start-"></a></h3>
 <p>Starts RestRserve application from current R session.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span>, <span class="va">...</span>, background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span>, <span class="va">...</span>, background <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -156,17 +156,17 @@ means not to expose plain http.</p></dd>
 <p><a href="ApplicationProcess.html">ApplicationProcess</a> object when <code>background = TRUE</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-set_request"></a><div class="section">
+</div><p></p><hr><a id="method-BackendRserve-set_request"></a><div class="section">
 <h3 id="method-set-request-">Method <code>set_request()</code><a class="anchor" aria-label="anchor" href="#method-set-request-"></a></h3>
 <p>Parse request and set to it fields.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">set_request</span><span class="op">(</span>
-  <span class="va">request</span>,
-  path <span class="op">=</span> <span class="st">"/"</span>,
-  parameters_query <span class="op">=</span> <span class="cn">NULL</span>,
-  headers <span class="op">=</span> <span class="cn">NULL</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">set_request</span><span class="op">(</span></span>
+<span>  <span class="va">request</span>,</span>
+<span>  path <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>  parameters_query <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  headers <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -200,11 +200,11 @@ vector for the URL encoded form (like a <code>parameters_query</code> parameter)
 <p><code>request</code> modified object.</p>
 </div>
 
-</div><p></p><hr><a id="method-convert_response"></a><div class="section">
+</div><p></p><hr><a id="method-BackendRserve-convert_response"></a><div class="section">
 <h3 id="method-convert-response-">Method <code>convert_response()</code><a class="anchor" aria-label="anchor" href="#method-convert-response-"></a></h3>
 <p>Convert <code>self</code> object to Rserve compatible structure.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">convert_response</span><span class="op">(</span><span class="va">response</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">convert_response</span><span class="op">(</span><span class="va">response</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -229,11 +229,11 @@ appended and neither <code>Content-type</code> nor <code>Content-length</code> m
 <li><p><code>status-code</code>: must be an integer if present (default is 200).</p></li>
 </ul></div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-BackendRserve-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">BackendRserve</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -261,7 +261,7 @@ appended and neither <code>Content-type</code> nor <code>Content-length</code> m
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

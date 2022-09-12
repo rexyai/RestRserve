@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -101,14 +101,14 @@
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>AuthBackendBasic$new()</code></a></p></li>
-<li><p><a href="#method-authenticate"><code>AuthBackendBasic$authenticate()</code></a></p></li>
-<li><p><a href="#method-clone"><code>AuthBackendBasic$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul></ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-AuthBackendBasic-new"><code>AuthBackendBasic$new()</code></a></p></li>
+<li><p><a href="#method-AuthBackendBasic-authenticate"><code>AuthBackendBasic$authenticate()</code></a></p></li>
+<li><p><a href="#method-AuthBackendBasic-clone"><code>AuthBackendBasic$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-AuthBackendBasic-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates AuthBackendBasic class object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/AuthBackendBasic.html">AuthBackendBasic</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">FUN</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AuthBackendBasic.html">AuthBackendBasic</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">FUN</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -122,11 +122,11 @@ a requested <code>user</code> or not.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-authenticate"></a><div class="section">
+</div><p></p><hr><a id="method-AuthBackendBasic-authenticate"></a><div class="section">
 <h3 id="method-authenticate-">Method <code>authenticate()</code><a class="anchor" aria-label="anchor" href="#method-authenticate-"></a></h3>
 <p>Provide authentication for the given request.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">authenticate</span><span class="op">(</span><span class="va">request</span>, <span class="va">response</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">authenticate</span><span class="op">(</span><span class="va">request</span>, <span class="va">response</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -146,11 +146,11 @@ a requested <code>user</code> or not.</p></dd>
 <p>Boolean - whether access is allowed for a requested <code>user</code> or not.</p>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-AuthBackendBasic-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -168,33 +168,33 @@ a requested <code>user</code> or not.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># init users database</span></span>
-<span class="r-in"><span class="va">user_db</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="st">"user-1"</span> <span class="op">=</span> <span class="st">"password-1"</span>,</span>
-<span class="r-in">  <span class="st">"user-2"</span> <span class="op">=</span> <span class="st">"password-2"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># define authentication handler</span></span>
-<span class="r-in"><span class="va">auth_fun</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">user</span>, <span class="va">password</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">user_db</span><span class="op">[[</span><span class="va">user</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># not found</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">user_db</span><span class="op">[[</span><span class="va">user</span><span class="op">]</span><span class="op">]</span>, <span class="va">password</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># incorrect</span></span>
-<span class="r-in">  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="co"># init backend</span></span>
-<span class="r-in"><span class="va">auth_backend</span> <span class="op">=</span> <span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">auth_fun</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># test backend</span></span>
-<span class="r-in"><span class="co"># define credentials (see RFC)</span></span>
-<span class="r-in"><span class="va">creds</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html" class="external-link">base64_enc</a></span><span class="op">(</span><span class="st">"user-1:password-1"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># generate request headers</span></span>
-<span class="r-in"><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Basic %s"</span>, <span class="va">creds</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># simulate request</span></span>
-<span class="r-in"><span class="va">rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, headers <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># init response object</span></span>
-<span class="r-in"><span class="va">rs</span> <span class="op">=</span> <span class="va"><a href="Response.html">Response</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># perform authentication</span></span>
-<span class="r-in"><span class="va">auth_backend</span><span class="op">$</span><span class="fu">authenticate</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="co"># TRUE</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># init users database</span></span></span>
+<span class="r-in"><span><span class="va">user_db</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"user-1"</span> <span class="op">=</span> <span class="st">"password-1"</span>,</span></span>
+<span class="r-in"><span>  <span class="st">"user-2"</span> <span class="op">=</span> <span class="st">"password-2"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># define authentication handler</span></span></span>
+<span class="r-in"><span><span class="va">auth_fun</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">user</span>, <span class="va">password</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">user_db</span><span class="op">[[</span><span class="va">user</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># not found</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">user_db</span><span class="op">[[</span><span class="va">user</span><span class="op">]</span><span class="op">]</span>, <span class="va">password</span><span class="op">)</span><span class="op">)</span> <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="co"># incorrect</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="co"># init backend</span></span></span>
+<span class="r-in"><span><span class="va">auth_backend</span> <span class="op">=</span> <span class="va">AuthBackendBasic</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">auth_fun</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># test backend</span></span></span>
+<span class="r-in"><span><span class="co"># define credentials (see RFC)</span></span></span>
+<span class="r-in"><span><span class="va">creds</span> <span class="op">=</span> <span class="fu">jsonlite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/jsonlite/man/base64.html" class="external-link">base64_enc</a></span><span class="op">(</span><span class="st">"user-1:password-1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># generate request headers</span></span></span>
+<span class="r-in"><span><span class="va">h</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Authorization"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Basic %s"</span>, <span class="va">creds</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># simulate request</span></span></span>
+<span class="r-in"><span><span class="va">rq</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, headers <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># init response object</span></span></span>
+<span class="r-in"><span><span class="va">rs</span> <span class="op">=</span> <span class="va"><a href="Response.html">Response</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># perform authentication</span></span></span>
+<span class="r-in"><span><span class="va">auth_backend</span><span class="op">$</span><span class="fu">authenticate</span><span class="op">(</span><span class="va">rq</span>, <span class="va">rs</span><span class="op">)</span> <span class="co"># TRUE</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -209,7 +209,7 @@ a requested <code>user</code> or not.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

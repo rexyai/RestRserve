@@ -42,7 +42,7 @@ See examples below.'><meta property="og:image" content="https://restrserve.org/l
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -160,23 +160,37 @@ computes the last time it was modified</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>ETagMiddleware$new()</code></a></p></li>
-<li><p><a href="#method-clone"><code>ETagMiddleware$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul></ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-EtagMiddleware-new"><code>ETagMiddleware$new()</code></a></p></li>
+<li><p><a href="#method-EtagMiddleware-clone"><code>ETagMiddleware$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-EtagMiddleware-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates ETag middleware object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/ETagMiddleware.html">ETagMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  routes <span class="op">=</span> <span class="st">"/"</span>,
-  match <span class="op">=</span> <span class="st">"partial"</span>,
-  id <span class="op">=</span> <span class="st">"ETagMiddleware"</span>,
-  hash_function <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">body</span><span class="op">)</span> <span class="op">{</span>     <span class="kw">if</span> <span class="op">(</span><span class="st">"file"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>        
-    <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span>     <span class="op">}</span>     <span class="kw">else</span> <span class="op">{</span>        
-    <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span><span class="va">body</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span>     <span class="op">}</span> <span class="op">}</span>,
-  last_modified_function <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">body</span><span class="op">)</span> <span class="op">{</span>     <span class="kw">if</span> <span class="op">(</span><span class="st">"file"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>       
-     <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.info</a></span><span class="op">(</span><span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[[</span><span class="st">"mtime"</span><span class="op">]</span><span class="op">]</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>     <span class="op">}</span>     <span class="kw">else</span> <span class="op">{</span>       
-     <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span>     <span class="op">}</span> <span class="op">}</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ETagMiddleware.html">ETagMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  routes <span class="op">=</span> <span class="st">"/"</span>,</span>
+<span>  match <span class="op">=</span> <span class="st">"partial"</span>,</span>
+<span>  id <span class="op">=</span> <span class="st">"ETagMiddleware"</span>,</span>
+<span>  hash_function <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">body</span><span class="op">)</span> <span class="op">{</span></span>
+<span>     <span class="kw">if</span> <span class="op">(</span><span class="st">"file"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>        </span>
+<span>    <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span>     <span class="kw">else</span> <span class="op">{</span></span>
+<span>        </span>
+<span>    <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span><span class="va">body</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span> <span class="op">}</span>,</span>
+<span>  last_modified_function <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">body</span><span class="op">)</span> <span class="op">{</span></span>
+<span>     <span class="kw">if</span> <span class="op">(</span><span class="st">"file"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">body</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>       </span>
+<span>     <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.info</a></span><span class="op">(</span><span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[[</span><span class="st">"mtime"</span><span class="op">]</span><span class="op">]</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span>     <span class="kw">else</span> <span class="op">{</span></span>
+<span>    </span>
+<span>        <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span></span>
+<span>     <span class="op">}</span></span>
+<span> <span class="op">}</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -210,11 +224,11 @@ resulting in no caching)</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-EtagMiddleware-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -232,169 +246,169 @@ resulting in no caching)</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">#############################################################################</span></span>
-<span class="r-in"><span class="co"># setup a static directory with ETag caching</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">static_dir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"static"</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">static_dir</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">static_dir</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">file_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">static_dir</span>, <span class="st">"example.txt"</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="st">"Hello World"</span>, <span class="va">file_path</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># get the time the file was last modified in UTC time</span></span>
-<span class="r-in"><span class="va">last_modified</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.info</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span><span class="op">[[</span><span class="st">"mtime"</span><span class="op">]</span><span class="op">]</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">file_hash</span> <span class="op">=</span> <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_path</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">time_fmt</span> <span class="op">=</span> <span class="st">"%a, %d %b %Y %H:%M:%S GMT"</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#############################################################################</span></span>
-<span class="r-in"><span class="co"># setup the Application with the ETag Middleware</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, <span class="va">static_dir</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#############################################################################</span></span>
-<span class="r-in"><span class="co"># Example Requests</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Request the file returns the file with ETag headers</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># note that it also returns the Last-Modified and ETag headers</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#############################################################################</span></span></span>
+<span class="r-in"><span><span class="co"># setup a static directory with ETag caching</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">static_dir</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"static"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists</a></span><span class="op">(</span><span class="va">static_dir</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.create</a></span><span class="op">(</span><span class="va">static_dir</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">file_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">static_dir</span>, <span class="st">"example.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="st">"Hello World"</span>, <span class="va">file_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># get the time the file was last modified in UTC time</span></span></span>
+<span class="r-in"><span><span class="va">last_modified</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.info</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span><span class="op">[[</span><span class="st">"mtime"</span><span class="op">]</span><span class="op">]</span>, tz <span class="op">=</span> <span class="st">"UTC"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">file_hash</span> <span class="op">=</span> <span class="fu">digest</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/digest/man/digest.html" class="external-link">digest</a></span><span class="op">(</span>file <span class="op">=</span> <span class="va">file_path</span>, algo <span class="op">=</span> <span class="st">"crc32"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">time_fmt</span> <span class="op">=</span> <span class="st">"%a, %d %b %Y %H:%M:%S GMT"</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#############################################################################</span></span></span>
+<span class="r-in"><span><span class="co"># setup the Application with the ETag Middleware</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, <span class="va">static_dir</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#############################################################################</span></span></span>
+<span class="r-in"><span><span class="co"># Example Requests</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Request the file returns the file with ETag headers</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note that it also returns the Last-Modified and ETag headers</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Thu, 09 Jun 2022 10:23:52 GMT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Mon, 12 Sep 2022 08:42:27 GMT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ETag: b095e5e3</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># provide matching hash of the file in the If-None-Match header to check Etag</span></span>
-<span class="r-in"><span class="co"># =&gt; 304 Not Modified (Can be cached)</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="va">file_hash</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># note status_code 304 Not Modified</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># provide matching hash of the file in the If-None-Match header to check Etag</span></span></span>
+<span class="r-in"><span><span class="co"># =&gt; 304 Not Modified (Can be cached)</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="va">file_hash</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note status_code 304 Not Modified</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 304 Not Modified</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># provide a wrong hash, returns the file normally</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="st">"WRONG HASH"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># provide a wrong hash, returns the file normally</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="st">"WRONG HASH"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Thu, 09 Jun 2022 10:23:52 GMT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Mon, 12 Sep 2022 08:42:27 GMT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ETag: b095e5e3</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># alternatively, you can provide a timestamp in the If-Modified-Since header</span></span>
-<span class="r-in"><span class="co"># =&gt; 304 Not Modified (Can be cached)</span></span>
-<span class="r-in"><span class="va">modified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">+</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Modified-Since"</span> <span class="op">=</span> <span class="va">modified_since</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># alternatively, you can provide a timestamp in the If-Modified-Since header</span></span></span>
+<span class="r-in"><span><span class="co"># =&gt; 304 Not Modified (Can be cached)</span></span></span>
+<span class="r-in"><span><span class="va">modified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">+</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Modified-Since"</span> <span class="op">=</span> <span class="va">modified_since</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 304 Not Modified</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># provide both headers: If-None-Match takes precedence</span></span>
-<span class="r-in"><span class="co"># in this case:</span></span>
-<span class="r-in"><span class="co">#  - if none match =&gt; modified (No cache)</span></span>
-<span class="r-in"><span class="co">#  - if modified since =&gt; NOT MODIFIED (cached)</span></span>
-<span class="r-in"><span class="co"># =&gt; Overall: modified = no cache</span></span>
-<span class="r-in"><span class="va">modified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">+</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="st">"CLEARLY WRONG"</span>,</span>
-<span class="r-in">                                 <span class="st">"If-Modified-Since"</span> <span class="op">=</span> <span class="va">modified_since</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># provide both headers: If-None-Match takes precedence</span></span></span>
+<span class="r-in"><span><span class="co"># in this case:</span></span></span>
+<span class="r-in"><span><span class="co">#  - if none match =&gt; modified (No cache)</span></span></span>
+<span class="r-in"><span><span class="co">#  - if modified since =&gt; NOT MODIFIED (cached)</span></span></span>
+<span class="r-in"><span><span class="co"># =&gt; Overall: modified = no cache</span></span></span>
+<span class="r-in"><span><span class="va">modified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">+</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="st">"CLEARLY WRONG"</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"If-Modified-Since"</span> <span class="op">=</span> <span class="va">modified_since</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Thu, 09 Jun 2022 10:23:52 GMT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Mon, 12 Sep 2022 08:42:27 GMT</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     ETag: b095e5e3</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># provide matching hash of the file in the If-Match header to check Etag</span></span>
-<span class="r-in"><span class="co"># =&gt; 412 Precondition Failed</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Match"</span> <span class="op">=</span> <span class="st">"OTHER HASH"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># note status_code 412 Precondition Failed</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># provide matching hash of the file in the If-Match header to check Etag</span></span></span>
+<span class="r-in"><span><span class="co"># =&gt; 412 Precondition Failed</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Match"</span> <span class="op">=</span> <span class="st">"OTHER HASH"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note status_code 412 Precondition Failed</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 412 Precondition Failed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use If-Unmodified-Since</span></span>
-<span class="r-in"><span class="va">unmodified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">-</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Unmodified-Since"</span> <span class="op">=</span> <span class="va">unmodified_since</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="co"># note status_code 412 Precondition Failed</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use If-Unmodified-Since</span></span></span>
+<span class="r-in"><span><span class="va">unmodified_since</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/format.html" class="external-link">format</a></span><span class="op">(</span><span class="va">last_modified</span> <span class="op">-</span> <span class="fl">1</span>, <span class="va">time_fmt</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-Unmodified-Since"</span> <span class="op">=</span> <span class="va">unmodified_since</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># note status_code 412 Precondition Failed</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 412 Precondition Failed</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">#############################################################################</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># use an alternative hash function (use name of the file)</span></span>
-<span class="r-in"><span class="va">hash_on_filename</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span></span>
-<span class="r-in"><span class="co"># also use an alternate last_modified time function</span></span>
-<span class="r-in"><span class="va">always_1900</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="st">"1900-01-01 12:34:56"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># setup the app again</span></span>
-<span class="r-in"><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>hash_function <span class="op">=</span> <span class="va">hash_on_filename</span>,</span>
-<span class="r-in">                     last_modified_function <span class="op">=</span> <span class="va">always_1900</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, file_path <span class="op">=</span> <span class="va">static_dir</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># test the requests</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">(</span><span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#############################################################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use an alternative hash function (use name of the file)</span></span></span>
+<span class="r-in"><span><span class="va">hash_on_filename</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span></span></span>
+<span class="r-in"><span><span class="co"># also use an alternate last_modified time function</span></span></span>
+<span class="r-in"><span><span class="va">always_1900</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXlt</a></span><span class="op">(</span><span class="st">"1900-01-01 12:34:56"</span>, tz <span class="op">=</span> <span class="st">"GMT"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># setup the app again</span></span></span>
+<span class="r-in"><span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">ETagMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>hash_function <span class="op">=</span> <span class="va">hash_on_filename</span>,</span></span>
+<span class="r-in"><span>                     last_modified_function <span class="op">=</span> <span class="va">always_1900</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_static</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/"</span>, file_path <span class="op">=</span> <span class="va">static_dir</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># test the requests</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Mon, 01 Jan 1900 12:34:56 GMT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     ETag: /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpQBx991/static/example.txt</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">filename</span> <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span>
-<span class="r-in">                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="va">filename</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     ETag: /private/var/folders/24/8k48jl6d249_n_qfxwsl6xvm0000gn/T/RtmpFXg2Dj/static/example.txt</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">filename</span> <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">body</span><span class="op">[[</span><span class="st">"file"</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/example.txt"</span>,</span></span>
+<span class="r-in"><span>                  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"If-None-Match"</span> <span class="op">=</span> <span class="va">filename</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 304 Not Modified</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
 </code></pre></div>
     </div>
   </div>
@@ -409,7 +423,7 @@ resulting in no caching)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

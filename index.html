@@ -46,7 +46,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -110,32 +110,32 @@
 <a class="anchor" aria-label="anchor" href="#restrserve-"></a>
 </h1></div>
 <!-- badges: start -->
-<p><a href="https://github.com/rexyai/RestRserve" class="external-link">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. On UNIX-like systems and <a href="https://github.com/s-u/Rserve" class="external-link">Rserve</a> backend RestRserve handles requests in parallel: each request in a separate fork. All credits for go to <a href="https://github.com/s-u" class="external-link">Simon Urbanek</a>.</p>
+<p><a href="https://github.com/rexyai/RestRserve" class="external-link">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. On UNIX-like systems and <a href="https://github.com/s-u/Rserve" class="external-link">Rserve</a> backend RestRserve handles requests in parallel: each request in a separate fork - credits go to <a href="https://github.com/s-u" class="external-link">Simon Urbanek</a>.</p>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
 <p>Creating application is as simple as:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
-<span class="va">app</span> <span class="op">=</span> <span class="va"><a href="reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/health"</span>, 
-  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-
-<span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/addone"</span>, 
-  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">$</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span>
-    <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/json"</span><span class="op">)</span>
-    <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">result</span><span class="op">)</span>
-  <span class="op">}</span><span class="op">)</span>
-
-
-<span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
+<span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/health"</span>, </span>
+<span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/addone"</span>, </span>
+<span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">$</span><span class="va">x</span> <span class="op">+</span> <span class="fl">1L</span><span class="op">)</span></span>
+<span>    <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/json"</span><span class="op">)</span></span>
+<span>    <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span>  <span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></span></code></pre></div>
 <p>Test it with <code>curl</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">curl</span> localhost:8080/health</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co"># OK</span></span>
@@ -145,7 +145,7 @@
 <h3 id="autocomplete">Autocomplete<a class="anchor" aria-label="anchor" href="#autocomplete"></a>
 </h3>
 <p>Using convenient <code>.req</code>, <code>.res</code> names for handler arguments allows to leverage autocomplete.</p>
-<p><img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom"></p>
+<p><img src="https://cdn.rexy.ai/assets/req-res.gif" width="640" style="vertical-align:bottom"></p>
 </div>
 </div>
 <div class="section level2">
@@ -190,7 +190,7 @@
 <h3 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"RestRserve"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"RestRserve"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
@@ -284,18 +284,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/rexyai/RestRserve/actions" class="external-link"><img src="https://github.com/rexyai/RestRserve/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://rexy.ai" class="external-link"><img src="https://s3-eu-west-1.amazonaws.com/rexy.ai/images/favicon.ico" height="32" width="32"></a></li>
-<li><a href="https://cran.r-project.org/package=RestRserve" class="external-link"><img src="https://www.r-pkg.org/badges/version/RestRserve" alt="CRAN status"></a></li>
-<li><a href="https://codecov.io/gh/rexyai/RestRserve/branch/master" class="external-link"><img src="https://codecov.io/gh/rexyai/RestRserve/branch/master/graph/badge.svg" alt="codecov"></a></li>
-<li><a href="http://www.gnu.org/licenses/gpl-2.0.html" class="external-link"><img src="https://eddelbuettel.github.io/badges/GPL2+.svg" alt="License"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://lifecycle.r-lib.org/articles/figures/lifecycle-stable.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://gitter.im/RestRserve/community" class="external-link"><img src="https://img.shields.io/gitter/room/RestRserve/community.svg?color=61D6AD&amp;style=popout" alt="gitter"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
@@ -308,7 +297,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

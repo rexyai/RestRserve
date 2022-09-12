@@ -25,7 +25,7 @@ just by providing CORSMiddleware as middleware to the Application."><meta proper
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -112,13 +112,13 @@ just by providing <code>CORSMiddleware</code> as middleware to the <a href="Appl
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>CORSMiddleware$new()</code></a></p></li>
-<li><p><a href="#method-clone"><code>CORSMiddleware$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul></ul></details></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-CORSMiddleware-new"><code>CORSMiddleware$new()</code></a></p></li>
+<li><p><a href="#method-CORSMiddleware-clone"><code>CORSMiddleware$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-CORSMiddleware-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates CORS middleware object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/CORSMiddleware.html">CORSMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>routes <span class="op">=</span> <span class="st">"/"</span>, match <span class="op">=</span> <span class="st">"partial"</span>, id <span class="op">=</span> <span class="st">"CORSMiddleware"</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/CORSMiddleware.html">CORSMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>routes <span class="op">=</span> <span class="st">"/"</span>, match <span class="op">=</span> <span class="st">"partial"</span>, id <span class="op">=</span> <span class="st">"CORSMiddleware"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -138,11 +138,11 @@ just by providing <code>CORSMiddleware</code> as middleware to the <a href="Appl
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-CORSMiddleware-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">CORSMiddleware</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">CORSMiddleware</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -160,29 +160,29 @@ just by providing <code>CORSMiddleware</code> as middleware to the <a href="Appl
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">CORSMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/hello"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="va">res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"Hello from RestRserve!"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">add_route</span><span class="op">(</span><span class="st">"/hello"</span>, method <span class="op">=</span> <span class="st">"OPTIONS"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"> <span class="va">res</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="st">"Allow"</span>, <span class="st">"POST, OPTIONS"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
-<span class="r-in">  path <span class="op">=</span> <span class="st">"/hello"</span>,</span>
-<span class="r-in">  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Access-Control-Request-Method"</span> <span class="op">=</span> <span class="st">"POST"</span><span class="op">)</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"OPTIONS"</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">CORSMiddleware</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/hello"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"Hello from RestRserve!"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_route</span><span class="op">(</span><span class="st">"/hello"</span>, method <span class="op">=</span> <span class="st">"OPTIONS"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">req</span>, <span class="va">res</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span> <span class="va">res</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="st">"Allow"</span>, <span class="st">"POST, OPTIONS"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  path <span class="op">=</span> <span class="st">"/hello"</span>,</span></span>
+<span class="r-in"><span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Access-Control-Request-Method"</span> <span class="op">=</span> <span class="st">"POST"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"OPTIONS"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Access-Control-Allow-Origin: *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Access-Control-Allow-Methods: POST, OPTIONS</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Access-Control-Allow-Headers: *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Access-Control-Max-Age: 86400</span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -197,7 +197,7 @@ just by providing <code>CORSMiddleware</code> as middleware to the <a href="Appl
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

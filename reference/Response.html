@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -132,35 +132,35 @@ to <code>Content-type</code> header.</p></dd>
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>Response$new()</code></a></p></li>
-<li><p><a href="#method-reset"><code>Response$reset()</code></a></p></li>
-<li><p><a href="#method-set_content_type"><code>Response$set_content_type()</code></a></p></li>
-<li><p><a href="#method-set_status_code"><code>Response$set_status_code()</code></a></p></li>
-<li><p><a href="#method-has_header"><code>Response$has_header()</code></a></p></li>
-<li><p><a href="#method-get_header"><code>Response$get_header()</code></a></p></li>
-<li><p><a href="#method-set_header"><code>Response$set_header()</code></a></p></li>
-<li><p><a href="#method-delete_header"><code>Response$delete_header()</code></a></p></li>
-<li><p><a href="#method-append_header"><code>Response$append_header()</code></a></p></li>
-<li><p><a href="#method-set_date"><code>Response$set_date()</code></a></p></li>
-<li><p><a href="#method-unset_date"><code>Response$unset_date()</code></a></p></li>
-<li><p><a href="#method-set_cookie"><code>Response$set_cookie()</code></a></p></li>
-<li><p><a href="#method-unset_cookie"><code>Response$unset_cookie()</code></a></p></li>
-<li><p><a href="#method-set_body"><code>Response$set_body()</code></a></p></li>
-<li><p><a href="#method-set_response"><code>Response$set_response()</code></a></p></li>
-<li><p><a href="#method-print"><code>Response$print()</code></a></p></li>
-<li><p><a href="#method-clone"><code>Response$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-Response-new"><code>Response$new()</code></a></p></li>
+<li><p><a href="#method-Response-reset"><code>Response$reset()</code></a></p></li>
+<li><p><a href="#method-Response-set_content_type"><code>Response$set_content_type()</code></a></p></li>
+<li><p><a href="#method-Response-set_status_code"><code>Response$set_status_code()</code></a></p></li>
+<li><p><a href="#method-Response-has_header"><code>Response$has_header()</code></a></p></li>
+<li><p><a href="#method-Response-get_header"><code>Response$get_header()</code></a></p></li>
+<li><p><a href="#method-Response-set_header"><code>Response$set_header()</code></a></p></li>
+<li><p><a href="#method-Response-delete_header"><code>Response$delete_header()</code></a></p></li>
+<li><p><a href="#method-Response-append_header"><code>Response$append_header()</code></a></p></li>
+<li><p><a href="#method-Response-set_date"><code>Response$set_date()</code></a></p></li>
+<li><p><a href="#method-Response-unset_date"><code>Response$unset_date()</code></a></p></li>
+<li><p><a href="#method-Response-set_cookie"><code>Response$set_cookie()</code></a></p></li>
+<li><p><a href="#method-Response-unset_cookie"><code>Response$unset_cookie()</code></a></p></li>
+<li><p><a href="#method-Response-set_body"><code>Response$set_body()</code></a></p></li>
+<li><p><a href="#method-Response-set_response"><code>Response$set_response()</code></a></p></li>
+<li><p><a href="#method-Response-print"><code>Response$print()</code></a></p></li>
+<li><p><a href="#method-Response-clone"><code>Response$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-Response-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates Response object</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/Response.html">Response</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  content_type <span class="op">=</span> <span class="st">"text/plain"</span>,
-  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Server <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"RestRserve.headers.server"</span><span class="op">)</span><span class="op">)</span>,
-  status_code <span class="op">=</span> <span class="fl">200L</span>,
-  encode <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Response.html">Response</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  content_type <span class="op">=</span> <span class="st">"text/plain"</span>,</span>
+<span>  headers <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Server <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"RestRserve.headers.server"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  status_code <span class="op">=</span> <span class="fl">200L</span>,</span>
+<span>  encode <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -192,20 +192,20 @@ to <code>Content-type</code> header.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-reset"></a><div class="section">
+</div><p></p><hr><a id="method-Response-reset"></a><div class="section">
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Resets response object. This is not useful for end user, but useful for
 RestRserve internals - resetting R6 class is much faster then initialize it.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_content_type"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_content_type"></a><div class="section">
 <h3 id="method-set-content-type-">Method <code>set_content_type()</code><a class="anchor" aria-label="anchor" href="#method-set-content-type-"></a></h3>
 <p>Set content type for response body.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -217,11 +217,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_status_code"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_status_code"></a><div class="section">
 <h3 id="method-set-status-code-">Method <code>set_status_code()</code><a class="anchor" aria-label="anchor" href="#method-set-status-code-"></a></h3>
 <p>Set HTTP status code for response. See <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" class="external-link">docs on MDN</a>.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="va">code</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="va">code</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -233,11 +233,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-has_header"></a><div class="section">
+</div><p></p><hr><a id="method-Response-has_header"></a><div class="section">
 <h3 id="method-has-header-">Method <code>has_header()</code><a class="anchor" aria-label="anchor" href="#method-has-header-"></a></h3>
 <p>Determine whether or not the response header exists.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">has_header</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">has_header</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -253,11 +253,11 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Logical value.</p>
 </div>
 
-</div><p></p><hr><a id="method-get_header"></a><div class="section">
+</div><p></p><hr><a id="method-Response-get_header"></a><div class="section">
 <h3 id="method-get-header-">Method <code>get_header()</code><a class="anchor" aria-label="anchor" href="#method-get-header-"></a></h3>
 <p>Get HTTP response header value. If requested header is empty returns <code>default</code>.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="va">name</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">get_header</span><span class="op">(</span><span class="va">name</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -277,12 +277,12 @@ RestRserve internals - resetting R6 class is much faster then initialize it.</p>
 <p>Header field values (character string).</p>
 </div>
 
-</div><p></p><hr><a id="method-set_header"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_header"></a><div class="section">
 <h3 id="method-set-header-">Method <code>set_header()</code><a class="anchor" aria-label="anchor" href="#method-set-header-"></a></h3>
 <p>Set HTTP response header. <code>Content-type</code> and <code>Content-length</code> headers not
 allowed (use <code>content_type</code> field instead).</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -298,11 +298,11 @@ allowed (use <code>content_type</code> field instead).</p><div class="section">
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-delete_header"></a><div class="section">
+</div><p></p><hr><a id="method-Response-delete_header"></a><div class="section">
 <h3 id="method-delete-header-">Method <code>delete_header()</code><a class="anchor" aria-label="anchor" href="#method-delete-header-"></a></h3>
 <p>Unset HTTP response header.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">delete_header</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">delete_header</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -318,12 +318,12 @@ allowed (use <code>content_type</code> field instead).</p><div class="section">
 <p>Logical value.</p>
 </div>
 
-</div><p></p><hr><a id="method-append_header"></a><div class="section">
+</div><p></p><hr><a id="method-Response-append_header"></a><div class="section">
 <h3 id="method-append-header-">Method <code>append_header()</code><a class="anchor" aria-label="anchor" href="#method-append-header-"></a></h3>
 <p>Append HTTP response header. If header exists <code>,</code> separator will be used.
 Don't use this method to set cookie (use <code>set_cookie</code> method instead).</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">append_header</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">append_header</span><span class="op">(</span><span class="va">name</span>, <span class="va">value</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -339,11 +339,11 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_date"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_date"></a><div class="section">
 <h3 id="method-set-date-">Method <code>set_date()</code><a class="anchor" aria-label="anchor" href="#method-set-date-"></a></h3>
 <p>Set <code>Date</code> HTTP header. See <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date" class="external-link">docs on MDN</a>.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_date</span><span class="op">(</span>dtm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_date</span><span class="op">(</span>dtm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -355,11 +355,11 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-unset_date"></a><div class="section">
+</div><p></p><hr><a id="method-Response-unset_date"></a><div class="section">
 <h3 id="method-unset-date-">Method <code>unset_date()</code><a class="anchor" aria-label="anchor" href="#method-unset-date-"></a></h3>
 <p>Unset <code>Date</code> HTTP header.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">unset_date</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">unset_date</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -367,20 +367,20 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 <p>Logical value.</p>
 </div>
 
-</div><p></p><hr><a id="method-set_cookie"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_cookie"></a><div class="section">
 <h3 id="method-set-cookie-">Method <code>set_cookie()</code><a class="anchor" aria-label="anchor" href="#method-set-cookie-"></a></h3>
 <p>Set cookie. See <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie" class="external-link">docs on MDN</a>.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_cookie</span><span class="op">(</span>
-  <span class="va">name</span>,
-  <span class="va">value</span>,
-  expires <span class="op">=</span> <span class="cn">NULL</span>,
-  max_age <span class="op">=</span> <span class="cn">NULL</span>,
-  domain <span class="op">=</span> <span class="cn">NULL</span>,
-  path <span class="op">=</span> <span class="cn">NULL</span>,
-  secure <span class="op">=</span> <span class="cn">NULL</span>,
-  http_only <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_cookie</span><span class="op">(</span></span>
+<span>  <span class="va">name</span>,</span>
+<span>  <span class="va">value</span>,</span>
+<span>  expires <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_age <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  domain <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  path <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  secure <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  http_only <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -420,11 +420,11 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-unset_cookie"></a><div class="section">
+</div><p></p><hr><a id="method-Response-unset_cookie"></a><div class="section">
 <h3 id="method-unset-cookie-">Method <code>unset_cookie()</code><a class="anchor" aria-label="anchor" href="#method-unset-cookie-"></a></h3>
 <p>Unset cookie with given name.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">unset_cookie</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">unset_cookie</span><span class="op">(</span><span class="va">name</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -440,11 +440,11 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 <p>Logical value.</p>
 </div>
 
-</div><p></p><hr><a id="method-set_body"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_body"></a><div class="section">
 <h3 id="method-set-body-">Method <code>set_body()</code><a class="anchor" aria-label="anchor" href="#method-set-body-"></a></h3>
 <p>Set response body.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -456,15 +456,15 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_response"></a><div class="section">
+</div><p></p><hr><a id="method-Response-set_response"></a><div class="section">
 <h3 id="method-set-response-">Method <code>set_response()</code><a class="anchor" aria-label="anchor" href="#method-set-response-"></a></h3>
 <p>Set response fields.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span>
-  <span class="va">status_code</span>,
-  body <span class="op">=</span> <span class="cn">NULL</span>,
-  content_type <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">content_type</span>
-<span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">set_response</span><span class="op">(</span></span>
+<span>  <span class="va">status_code</span>,</span>
+<span>  body <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  content_type <span class="op">=</span> <span class="va">self</span><span class="op">$</span><span class="va">content_type</span></span>
+<span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -484,19 +484,19 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-print"></a><div class="section">
+</div><p></p><hr><a id="method-Response-print"></a><div class="section">
 <h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
 <p>Print method.</p><div class="section">
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-Response-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">Response</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Response</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -514,46 +514,46 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># init response</span></span>
-<span class="r-in"><span class="va">rs</span> <span class="op">=</span> <span class="va">Response</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set body media type</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set body content</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set response status code</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># print response</span></span>
-<span class="r-in"><span class="va">rs</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># init response</span></span></span>
+<span class="r-in"><span><span class="va">rs</span> <span class="op">=</span> <span class="va">Response</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set body media type</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set body content</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="st">"OK"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set response status code</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_status_code</span><span class="op">(</span><span class="fl">200L</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># print response</span></span></span>
+<span class="r-in"><span><span class="va">rs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># init response</span></span>
-<span class="r-in"><span class="va">rs</span> <span class="op">=</span> <span class="va">Response</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># static file path</span></span>
-<span class="r-in"><span class="va">file_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, package <span class="op">=</span> <span class="st">"RestRserve"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># get last file modification timestamp</span></span>
-<span class="r-in"><span class="va">file_mtime</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.mtime</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set body</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"file"</span> <span class="op">=</span> <span class="va">file_path</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set content type</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set current timestamp</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_date</span><span class="op">(</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># set 'last-modified' header</span></span>
-<span class="r-in"><span class="va">rs</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="st">"Last-Modified"</span>, <span class="fu">as</span><span class="op">(</span><span class="va">file_mtime</span>, <span class="st">"HTTPDate"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="co"># print response</span></span>
-<span class="r-in"><span class="va">rs</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># init response</span></span></span>
+<span class="r-in"><span><span class="va">rs</span> <span class="op">=</span> <span class="va">Response</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># static file path</span></span></span>
+<span class="r-in"><span><span class="va">file_path</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"DESCRIPTION"</span>, package <span class="op">=</span> <span class="st">"RestRserve"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># get last file modification timestamp</span></span></span>
+<span class="r-in"><span><span class="va">file_mtime</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.info.html" class="external-link">file.mtime</a></span><span class="op">(</span><span class="va">file_path</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set body</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"file"</span> <span class="op">=</span> <span class="va">file_path</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set content type</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/plain"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set current timestamp</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_date</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># set 'last-modified' header</span></span></span>
+<span class="r-in"><span><span class="va">rs</span><span class="op">$</span><span class="fu">set_header</span><span class="op">(</span><span class="st">"Last-Modified"</span>, <span class="fu">as</span><span class="op">(</span><span class="va">file_mtime</span>, <span class="st">"HTTPDate"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># print response</span></span></span>
+<span class="r-in"><span><span class="va">rs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;RestRserve Response&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   status code: 200 OK</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   content-type: text/plain</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   &lt;Headers&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.0; Rserve/1.8.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Date: Thu, 09 Jun 2022 10:24:00 GMT</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Thu, 09 Jun 2022 10:22:16 GMT</span>
-<span class="r-in"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Server: RestRserve/1.2.1; Rserve/1.8.10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Date: Mon, 12 Sep 2022 08:42:35 GMT</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Last-Modified: Mon, 12 Sep 2022 08:40:56 GMT</span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -568,7 +568,7 @@ Don't use this method to set cookie (use <code>set_cookie</code> method instead)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

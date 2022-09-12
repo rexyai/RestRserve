@@ -22,7 +22,7 @@ Class to generate HTTP error responses.'><meta property="og:image" content="http
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@ interrupt request processing and return response with status code = 404 and body
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="va">HTTPError</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="va">HTTPError</span></span></code></pre></div>
     </div>
 
     <div id="format">
@@ -122,47 +122,47 @@ interrupt request processing and return response with status code = 404 and body
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>HTTPErrorFactory$new()</code></a></p></li>
-<li><p><a href="#method-set_content_type"><code>HTTPErrorFactory$set_content_type()</code></a></p></li>
-<li><p><a href="#method-set_encode"><code>HTTPErrorFactory$set_encode()</code></a></p></li>
-<li><p><a href="#method-reset"><code>HTTPErrorFactory$reset()</code></a></p></li>
-<li><p><a href="#method-error"><code>HTTPErrorFactory$error()</code></a></p></li>
-<li><p><a href="#method-bad_request"><code>HTTPErrorFactory$bad_request()</code></a></p></li>
-<li><p><a href="#method-unauthorized"><code>HTTPErrorFactory$unauthorized()</code></a></p></li>
-<li><p><a href="#method-forbidden"><code>HTTPErrorFactory$forbidden()</code></a></p></li>
-<li><p><a href="#method-not_found"><code>HTTPErrorFactory$not_found()</code></a></p></li>
-<li><p><a href="#method-method_not_allowed"><code>HTTPErrorFactory$method_not_allowed()</code></a></p></li>
-<li><p><a href="#method-not_acceptable"><code>HTTPErrorFactory$not_acceptable()</code></a></p></li>
-<li><p><a href="#method-conflict"><code>HTTPErrorFactory$conflict()</code></a></p></li>
-<li><p><a href="#method-gone"><code>HTTPErrorFactory$gone()</code></a></p></li>
-<li><p><a href="#method-length_required"><code>HTTPErrorFactory$length_required()</code></a></p></li>
-<li><p><a href="#method-precondition_failed"><code>HTTPErrorFactory$precondition_failed()</code></a></p></li>
-<li><p><a href="#method-payload_too_large"><code>HTTPErrorFactory$payload_too_large()</code></a></p></li>
-<li><p><a href="#method-uri_too_long"><code>HTTPErrorFactory$uri_too_long()</code></a></p></li>
-<li><p><a href="#method-unsupported_media_type"><code>HTTPErrorFactory$unsupported_media_type()</code></a></p></li>
-<li><p><a href="#method-range_not_satisfiable"><code>HTTPErrorFactory$range_not_satisfiable()</code></a></p></li>
-<li><p><a href="#method-unprocessable_entity"><code>HTTPErrorFactory$unprocessable_entity()</code></a></p></li>
-<li><p><a href="#method-locked"><code>HTTPErrorFactory$locked()</code></a></p></li>
-<li><p><a href="#method-failed_dependency"><code>HTTPErrorFactory$failed_dependency()</code></a></p></li>
-<li><p><a href="#method-precondition_required"><code>HTTPErrorFactory$precondition_required()</code></a></p></li>
-<li><p><a href="#method-too_many_requests"><code>HTTPErrorFactory$too_many_requests()</code></a></p></li>
-<li><p><a href="#method-request_header_fields_too_large"><code>HTTPErrorFactory$request_header_fields_too_large()</code></a></p></li>
-<li><p><a href="#method-unavailable_for_legal_reasons"><code>HTTPErrorFactory$unavailable_for_legal_reasons()</code></a></p></li>
-<li><p><a href="#method-internal_server_error"><code>HTTPErrorFactory$internal_server_error()</code></a></p></li>
-<li><p><a href="#method-not_implemented"><code>HTTPErrorFactory$not_implemented()</code></a></p></li>
-<li><p><a href="#method-bad_gateway"><code>HTTPErrorFactory$bad_gateway()</code></a></p></li>
-<li><p><a href="#method-service_unavailable"><code>HTTPErrorFactory$service_unavailable()</code></a></p></li>
-<li><p><a href="#method-gateway_timeout"><code>HTTPErrorFactory$gateway_timeout()</code></a></p></li>
-<li><p><a href="#method-version_not_supported"><code>HTTPErrorFactory$version_not_supported()</code></a></p></li>
-<li><p><a href="#method-insufficient_storage"><code>HTTPErrorFactory$insufficient_storage()</code></a></p></li>
-<li><p><a href="#method-loop_detected"><code>HTTPErrorFactory$loop_detected()</code></a></p></li>
-<li><p><a href="#method-network_authentication_required"><code>HTTPErrorFactory$network_authentication_required()</code></a></p></li>
-<li><p><a href="#method-clone"><code>HTTPErrorFactory$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-HTTPError-new"><code>HTTPErrorFactory$new()</code></a></p></li>
+<li><p><a href="#method-HTTPError-set_content_type"><code>HTTPErrorFactory$set_content_type()</code></a></p></li>
+<li><p><a href="#method-HTTPError-set_encode"><code>HTTPErrorFactory$set_encode()</code></a></p></li>
+<li><p><a href="#method-HTTPError-reset"><code>HTTPErrorFactory$reset()</code></a></p></li>
+<li><p><a href="#method-HTTPError-error"><code>HTTPErrorFactory$error()</code></a></p></li>
+<li><p><a href="#method-HTTPError-bad_request"><code>HTTPErrorFactory$bad_request()</code></a></p></li>
+<li><p><a href="#method-HTTPError-unauthorized"><code>HTTPErrorFactory$unauthorized()</code></a></p></li>
+<li><p><a href="#method-HTTPError-forbidden"><code>HTTPErrorFactory$forbidden()</code></a></p></li>
+<li><p><a href="#method-HTTPError-not_found"><code>HTTPErrorFactory$not_found()</code></a></p></li>
+<li><p><a href="#method-HTTPError-method_not_allowed"><code>HTTPErrorFactory$method_not_allowed()</code></a></p></li>
+<li><p><a href="#method-HTTPError-not_acceptable"><code>HTTPErrorFactory$not_acceptable()</code></a></p></li>
+<li><p><a href="#method-HTTPError-conflict"><code>HTTPErrorFactory$conflict()</code></a></p></li>
+<li><p><a href="#method-HTTPError-gone"><code>HTTPErrorFactory$gone()</code></a></p></li>
+<li><p><a href="#method-HTTPError-length_required"><code>HTTPErrorFactory$length_required()</code></a></p></li>
+<li><p><a href="#method-HTTPError-precondition_failed"><code>HTTPErrorFactory$precondition_failed()</code></a></p></li>
+<li><p><a href="#method-HTTPError-payload_too_large"><code>HTTPErrorFactory$payload_too_large()</code></a></p></li>
+<li><p><a href="#method-HTTPError-uri_too_long"><code>HTTPErrorFactory$uri_too_long()</code></a></p></li>
+<li><p><a href="#method-HTTPError-unsupported_media_type"><code>HTTPErrorFactory$unsupported_media_type()</code></a></p></li>
+<li><p><a href="#method-HTTPError-range_not_satisfiable"><code>HTTPErrorFactory$range_not_satisfiable()</code></a></p></li>
+<li><p><a href="#method-HTTPError-unprocessable_entity"><code>HTTPErrorFactory$unprocessable_entity()</code></a></p></li>
+<li><p><a href="#method-HTTPError-locked"><code>HTTPErrorFactory$locked()</code></a></p></li>
+<li><p><a href="#method-HTTPError-failed_dependency"><code>HTTPErrorFactory$failed_dependency()</code></a></p></li>
+<li><p><a href="#method-HTTPError-precondition_required"><code>HTTPErrorFactory$precondition_required()</code></a></p></li>
+<li><p><a href="#method-HTTPError-too_many_requests"><code>HTTPErrorFactory$too_many_requests()</code></a></p></li>
+<li><p><a href="#method-HTTPError-request_header_fields_too_large"><code>HTTPErrorFactory$request_header_fields_too_large()</code></a></p></li>
+<li><p><a href="#method-HTTPError-unavailable_for_legal_reasons"><code>HTTPErrorFactory$unavailable_for_legal_reasons()</code></a></p></li>
+<li><p><a href="#method-HTTPError-internal_server_error"><code>HTTPErrorFactory$internal_server_error()</code></a></p></li>
+<li><p><a href="#method-HTTPError-not_implemented"><code>HTTPErrorFactory$not_implemented()</code></a></p></li>
+<li><p><a href="#method-HTTPError-bad_gateway"><code>HTTPErrorFactory$bad_gateway()</code></a></p></li>
+<li><p><a href="#method-HTTPError-service_unavailable"><code>HTTPErrorFactory$service_unavailable()</code></a></p></li>
+<li><p><a href="#method-HTTPError-gateway_timeout"><code>HTTPErrorFactory$gateway_timeout()</code></a></p></li>
+<li><p><a href="#method-HTTPError-version_not_supported"><code>HTTPErrorFactory$version_not_supported()</code></a></p></li>
+<li><p><a href="#method-HTTPError-insufficient_storage"><code>HTTPErrorFactory$insufficient_storage()</code></a></p></li>
+<li><p><a href="#method-HTTPError-loop_detected"><code>HTTPErrorFactory$loop_detected()</code></a></p></li>
+<li><p><a href="#method-HTTPError-network_authentication_required"><code>HTTPErrorFactory$network_authentication_required()</code></a></p></li>
+<li><p><a href="#method-HTTPError-clone"><code>HTTPErrorFactory$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-HTTPError-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates HTTPError object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/HTTPError.html">HTTPErrorFactory</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span>, encode <span class="op">=</span> <span class="va">as.character</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/HTTPError.html">HTTPErrorFactory</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"text/plain"</span>, encode <span class="op">=</span> <span class="va">as.character</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -178,11 +178,11 @@ interrupt request processing and return response with status code = 404 and body
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_content_type"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-set_content_type"></a><div class="section">
 <h3 id="method-set-content-type-">Method <code>set_content_type()</code><a class="anchor" aria-label="anchor" href="#method-set-content-type-"></a></h3>
 <p>Set content type of response.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -204,11 +204,11 @@ also the errors format produced by RestRserve. Same holds for
 </div>
 
 
-</div><p></p><hr><a id="method-set_encode"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-set_encode"></a><div class="section">
 <h3 id="method-set-encode-">Method <code>set_encode()</code><a class="anchor" aria-label="anchor" href="#method-set-encode-"></a></h3>
 <p>Set encode for the given content type.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span><span class="va">encode</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span><span class="va">encode</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -220,19 +220,19 @@ also the errors format produced by RestRserve. Same holds for
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-reset"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-reset"></a><div class="section">
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Resets <code>HTTPError</code> to the default RestRserve state.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-error"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-error"></a><div class="section">
 <h3 id="method-error-">Method <code>error()</code><a class="anchor" aria-label="anchor" href="#method-error-"></a></h3>
 <p>Generate HTTP error response with a given status code and body.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">status_code</span>, body <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">error</span><span class="op">(</span><span class="va">status_code</span>, body <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -257,11 +257,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-bad_request"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-bad_request"></a><div class="section">
 <h3 id="method-bad-request-">Method <code>bad_request()</code><a class="anchor" aria-label="anchor" href="#method-bad-request-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -277,11 +277,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-unauthorized"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-unauthorized"></a><div class="section">
 <h3 id="method-unauthorized-">Method <code>unauthorized()</code><a class="anchor" aria-label="anchor" href="#method-unauthorized-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unauthorized</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unauthorized</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -297,11 +297,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-forbidden"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-forbidden"></a><div class="section">
 <h3 id="method-forbidden-">Method <code>forbidden()</code><a class="anchor" aria-label="anchor" href="#method-forbidden-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">forbidden</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">forbidden</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -317,11 +317,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-not_found"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-not_found"></a><div class="section">
 <h3 id="method-not-found-">Method <code>not_found()</code><a class="anchor" aria-label="anchor" href="#method-not-found-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_found</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_found</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -337,11 +337,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-method_not_allowed"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-method_not_allowed"></a><div class="section">
 <h3 id="method-method-not-allowed-">Method <code>method_not_allowed()</code><a class="anchor" aria-label="anchor" href="#method-method-not-allowed-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">method_not_allowed</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">method_not_allowed</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -357,11 +357,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-not_acceptable"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-not_acceptable"></a><div class="section">
 <h3 id="method-not-acceptable-">Method <code>not_acceptable()</code><a class="anchor" aria-label="anchor" href="#method-not-acceptable-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_acceptable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_acceptable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -377,11 +377,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-conflict"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-conflict"></a><div class="section">
 <h3 id="method-conflict-">Method <code>conflict()</code><a class="anchor" aria-label="anchor" href="#method-conflict-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-11">Usage<a class="anchor" aria-label="anchor" href="#usage-11"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">conflict</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">conflict</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -397,11 +397,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-gone"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-gone"></a><div class="section">
 <h3 id="method-gone-">Method <code>gone()</code><a class="anchor" aria-label="anchor" href="#method-gone-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-12">Usage<a class="anchor" aria-label="anchor" href="#usage-12"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">gone</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">gone</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -417,11 +417,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-length_required"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-length_required"></a><div class="section">
 <h3 id="method-length-required-">Method <code>length_required()</code><a class="anchor" aria-label="anchor" href="#method-length-required-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-13">Usage<a class="anchor" aria-label="anchor" href="#usage-13"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">length_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">length_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -437,11 +437,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-precondition_failed"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-precondition_failed"></a><div class="section">
 <h3 id="method-precondition-failed-">Method <code>precondition_failed()</code><a class="anchor" aria-label="anchor" href="#method-precondition-failed-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-14">Usage<a class="anchor" aria-label="anchor" href="#usage-14"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">precondition_failed</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">precondition_failed</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -457,11 +457,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-payload_too_large"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-payload_too_large"></a><div class="section">
 <h3 id="method-payload-too-large-">Method <code>payload_too_large()</code><a class="anchor" aria-label="anchor" href="#method-payload-too-large-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-15">Usage<a class="anchor" aria-label="anchor" href="#usage-15"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">payload_too_large</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">payload_too_large</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -477,11 +477,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-uri_too_long"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-uri_too_long"></a><div class="section">
 <h3 id="method-uri-too-long-">Method <code>uri_too_long()</code><a class="anchor" aria-label="anchor" href="#method-uri-too-long-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-16">Usage<a class="anchor" aria-label="anchor" href="#usage-16"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">uri_too_long</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">uri_too_long</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -497,11 +497,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-unsupported_media_type"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-unsupported_media_type"></a><div class="section">
 <h3 id="method-unsupported-media-type-">Method <code>unsupported_media_type()</code><a class="anchor" aria-label="anchor" href="#method-unsupported-media-type-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-17">Usage<a class="anchor" aria-label="anchor" href="#usage-17"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unsupported_media_type</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unsupported_media_type</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -517,11 +517,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-range_not_satisfiable"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-range_not_satisfiable"></a><div class="section">
 <h3 id="method-range-not-satisfiable-">Method <code>range_not_satisfiable()</code><a class="anchor" aria-label="anchor" href="#method-range-not-satisfiable-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-18">Usage<a class="anchor" aria-label="anchor" href="#usage-18"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">range_not_satisfiable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">range_not_satisfiable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -537,11 +537,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-unprocessable_entity"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-unprocessable_entity"></a><div class="section">
 <h3 id="method-unprocessable-entity-">Method <code>unprocessable_entity()</code><a class="anchor" aria-label="anchor" href="#method-unprocessable-entity-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-19">Usage<a class="anchor" aria-label="anchor" href="#usage-19"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unprocessable_entity</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unprocessable_entity</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -557,11 +557,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-locked"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-locked"></a><div class="section">
 <h3 id="method-locked-">Method <code>locked()</code><a class="anchor" aria-label="anchor" href="#method-locked-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-20">Usage<a class="anchor" aria-label="anchor" href="#usage-20"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">locked</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">locked</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -577,11 +577,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-failed_dependency"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-failed_dependency"></a><div class="section">
 <h3 id="method-failed-dependency-">Method <code>failed_dependency()</code><a class="anchor" aria-label="anchor" href="#method-failed-dependency-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-21">Usage<a class="anchor" aria-label="anchor" href="#usage-21"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">failed_dependency</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">failed_dependency</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -597,11 +597,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-precondition_required"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-precondition_required"></a><div class="section">
 <h3 id="method-precondition-required-">Method <code>precondition_required()</code><a class="anchor" aria-label="anchor" href="#method-precondition-required-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-22">Usage<a class="anchor" aria-label="anchor" href="#usage-22"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">precondition_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">precondition_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -617,11 +617,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-too_many_requests"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-too_many_requests"></a><div class="section">
 <h3 id="method-too-many-requests-">Method <code>too_many_requests()</code><a class="anchor" aria-label="anchor" href="#method-too-many-requests-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-23">Usage<a class="anchor" aria-label="anchor" href="#usage-23"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">too_many_requests</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">too_many_requests</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -637,11 +637,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-request_header_fields_too_large"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-request_header_fields_too_large"></a><div class="section">
 <h3 id="method-request-header-fields-too-large-">Method <code>request_header_fields_too_large()</code><a class="anchor" aria-label="anchor" href="#method-request-header-fields-too-large-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-24">Usage<a class="anchor" aria-label="anchor" href="#usage-24"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">request_header_fields_too_large</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">request_header_fields_too_large</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -657,11 +657,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-unavailable_for_legal_reasons"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-unavailable_for_legal_reasons"></a><div class="section">
 <h3 id="method-unavailable-for-legal-reasons-">Method <code>unavailable_for_legal_reasons()</code><a class="anchor" aria-label="anchor" href="#method-unavailable-for-legal-reasons-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-25">Usage<a class="anchor" aria-label="anchor" href="#usage-25"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unavailable_for_legal_reasons</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">unavailable_for_legal_reasons</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -677,11 +677,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-internal_server_error"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-internal_server_error"></a><div class="section">
 <h3 id="method-internal-server-error-">Method <code>internal_server_error()</code><a class="anchor" aria-label="anchor" href="#method-internal-server-error-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-26">Usage<a class="anchor" aria-label="anchor" href="#usage-26"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">internal_server_error</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">internal_server_error</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -697,11 +697,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-not_implemented"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-not_implemented"></a><div class="section">
 <h3 id="method-not-implemented-">Method <code>not_implemented()</code><a class="anchor" aria-label="anchor" href="#method-not-implemented-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-27">Usage<a class="anchor" aria-label="anchor" href="#usage-27"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_implemented</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">not_implemented</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -717,11 +717,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-bad_gateway"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-bad_gateway"></a><div class="section">
 <h3 id="method-bad-gateway-">Method <code>bad_gateway()</code><a class="anchor" aria-label="anchor" href="#method-bad-gateway-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-28">Usage<a class="anchor" aria-label="anchor" href="#usage-28"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">bad_gateway</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">bad_gateway</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -737,11 +737,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-service_unavailable"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-service_unavailable"></a><div class="section">
 <h3 id="method-service-unavailable-">Method <code>service_unavailable()</code><a class="anchor" aria-label="anchor" href="#method-service-unavailable-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-29">Usage<a class="anchor" aria-label="anchor" href="#usage-29"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">service_unavailable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">service_unavailable</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -757,11 +757,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-gateway_timeout"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-gateway_timeout"></a><div class="section">
 <h3 id="method-gateway-timeout-">Method <code>gateway_timeout()</code><a class="anchor" aria-label="anchor" href="#method-gateway-timeout-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-30">Usage<a class="anchor" aria-label="anchor" href="#usage-30"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">gateway_timeout</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">gateway_timeout</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -777,11 +777,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-version_not_supported"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-version_not_supported"></a><div class="section">
 <h3 id="method-version-not-supported-">Method <code>version_not_supported()</code><a class="anchor" aria-label="anchor" href="#method-version-not-supported-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-31">Usage<a class="anchor" aria-label="anchor" href="#usage-31"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">version_not_supported</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">version_not_supported</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -797,11 +797,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-insufficient_storage"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-insufficient_storage"></a><div class="section">
 <h3 id="method-insufficient-storage-">Method <code>insufficient_storage()</code><a class="anchor" aria-label="anchor" href="#method-insufficient-storage-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-32">Usage<a class="anchor" aria-label="anchor" href="#usage-32"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">insufficient_storage</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">insufficient_storage</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -817,11 +817,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-loop_detected"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-loop_detected"></a><div class="section">
 <h3 id="method-loop-detected-">Method <code>loop_detected()</code><a class="anchor" aria-label="anchor" href="#method-loop-detected-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-33">Usage<a class="anchor" aria-label="anchor" href="#usage-33"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">loop_detected</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">loop_detected</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -837,11 +837,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-network_authentication_required"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-network_authentication_required"></a><div class="section">
 <h3 id="method-network-authentication-required-">Method <code>network_authentication_required()</code><a class="anchor" aria-label="anchor" href="#method-network-authentication-required-"></a></h3>
 <p>Generates corresponding http error.</p><div class="section">
 <h4 id="usage-34">Usage<a class="anchor" aria-label="anchor" href="#usage-34"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">network_authentication_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">network_authentication_required</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -857,11 +857,11 @@ also the errors format produced by RestRserve. Same holds for
 <p><a href="Response.html">Response</a> object.</p>
 </div>
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-HTTPError-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-35">Usage<a class="anchor" aria-label="anchor" href="#usage-35"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">HTTPErrorFactory</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -879,13 +879,13 @@ also the errors format produced by RestRserve. Same holds for
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">check_list</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">is.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"><span class="fu">check_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_list</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">check_list</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">is.list</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">check_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">check_list</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -900,7 +900,7 @@ also the errors format produced by RestRserve. Same holds for
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

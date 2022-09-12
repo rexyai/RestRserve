@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -115,39 +115,39 @@
 </h2>
 <p>Let’s consider an example. We develop an application which calculates <code>factorial</code> of a number:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span>
-<span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
+<span><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Here is how request will be processed:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/factorial"</span>, 
-  method <span class="op">=</span> <span class="st">"GET"</span>, 
-  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="va">response</span>
-<span class="co">#&gt; &lt;RestRserve Response&gt;</span>
-<span class="co">#&gt;   status code: 200 OK</span>
-<span class="co">#&gt;   content-type: text/plain</span>
-<span class="co">#&gt;   &lt;Headers&gt;</span>
-<span class="co">#&gt;     Server: RestRserve/1.2.0; Rserve/1.8.10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/factorial"</span>, </span>
+<span>  method <span class="op">=</span> <span class="st">"GET"</span>, </span>
+<span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
+<span><span class="va">response</span></span>
+<span><span class="co">#&gt; &lt;RestRserve Response&gt;</span></span>
+<span><span class="co">#&gt;   status code: 200 OK</span></span>
+<span><span class="co">#&gt;   content-type: text/plain</span></span>
+<span><span class="co">#&gt;   &lt;Headers&gt;</span></span>
+<span><span class="co">#&gt;     Server: RestRserve/1.2.1; Rserve/1.8.10</span></span></code></pre></div>
 <p>Let’s take a closer look to the <code>response</code> object and its <code>body</code> property:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
-<span class="co">#&gt;  chr "3628800"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  chr "3628800"</span></span></code></pre></div>
 <p>As we can see it is a numeric value. HTTP response body however can’t be an arbitrary R object. It should be something that external systems can understand - either <code>character</code> vector or <code>raw</code> vector. Fortunately <code>application</code> helps to avoid writing boilerplate code to encode the body. Based on the <code>content_type</code> property it can find <code>encode</code> function which will be used to transform <code>body</code> into a http body.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response</span><span class="op">$</span><span class="va">content_type</span>
-<span class="co">#&gt; [1] "text/plain"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">content_type</span></span>
+<span><span class="co">#&gt; [1] "text/plain"</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response</span><span class="op">$</span><span class="va">encode</span>
-<span class="co">#&gt; NULL</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">encode</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <p>Two immediate questions can arise:</p>
 <ol style="list-style-type: decimal">
 <li>Why <code>content_type</code> is equal to <code>text/plain</code>?
@@ -163,95 +163,95 @@
 </ol>
 <p>For instance <code>app1</code> and <code>app2</code> are equal:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">encode_decode_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-<span class="va">app1</span>  <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">app1</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span>
-
-<span class="va">app2</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">encode_decode_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">app1</span>  <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">app1</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">app2</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Here is example on how you can get the actual function used for <code>application/json</code> encoding:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="va">FUN</span> <span class="op">=</span> <span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">get_encode</span><span class="op">(</span><span class="st">'application/json'</span><span class="op">)</span>
-<span class="va">FUN</span>
-<span class="co">#&gt; function(x, unbox = TRUE)  {</span>
-<span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span>
-<span class="co">#&gt;   unclass(res)</span>
-<span class="co">#&gt; }</span>
-<span class="co">#&gt; &lt;bytecode: 0x7ffc156ed8f0&gt;</span>
-<span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span><span class="va">FUN</span> <span class="op">=</span> <span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">get_encode</span><span class="op">(</span><span class="st">'application/json'</span><span class="op">)</span></span>
+<span><span class="va">FUN</span></span>
+<span><span class="co">#&gt; function(x, unbox = TRUE)  {</span></span>
+<span><span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span></span>
+<span><span class="co">#&gt;   unclass(res)</span></span>
+<span><span class="co">#&gt; }</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x7f88a5e9b4d8&gt;</span></span>
+<span><span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></span></code></pre></div>
 <p>We can manually override application default content-type:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-json"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/json"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-json"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/json"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/factorial-json"</span>, 
-  method <span class="op">=</span> <span class="st">"GET"</span>, 
-  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/factorial-json"</span>, </span>
+<span>  method <span class="op">=</span> <span class="st">"GET"</span>, </span>
+<span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">response</span><span class="op">$</span><span class="va">body</span>
-<span class="co">#&gt; [1] "{\"result\":3628800}"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
+<span><span class="co">#&gt; [1] "{\"result\":3628800}"</span></span></code></pre></div>
 <p>And here is a little bit more complex example where we store a binary object in the body. We will use R’s native serialization, but one can use <code>protobuf</code>, <code>messagepack</code>, etc.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">body_rds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body_rds</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/x-rds"</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">body_rds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body_rds</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/x-rds"</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>However function above won’t work correctly. Out of the box <code>ContentHndlers</code> doesn’t know anything about <code>application/x-rds</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, 
-  method <span class="op">=</span> <span class="st">"GET"</span>, 
-  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="va">response</span><span class="op">$</span><span class="va">body</span>
-<span class="co">#&gt; [1] "500 Internal Server Error: can't encode body with content_type = 'application/x-rds'"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, </span>
+<span>  method <span class="op">=</span> <span class="st">"GET"</span>, </span>
+<span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
+<span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
+<span><span class="co">#&gt; [1] "500 Internal Server Error: can't encode body with content_type = 'application/x-rds'"</span></span></code></pre></div>
 <p>In order to resolve problem above we would need to either register <code>application/x-rds</code> content handler with <code>ContentHandlers$set_encode()</code> or manually specify <code>encode</code> function (<code>identity</code> in our case):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds2"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span>
-  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
-  <span class="va">body_rds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body_rds</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/x-rds"</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="va">encode</span> <span class="op">=</span> <span class="va">identity</span>
-<span class="op">}</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds2"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Special.html" class="external-link">factorial</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="va">body_rds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">serialize</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>result <span class="op">=</span> <span class="va">result</span><span class="op">)</span>, connection <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body_rds</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/x-rds"</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="va">encode</span> <span class="op">=</span> <span class="va">identity</span></span>
+<span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 <p>Now the answer is valid:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>
-  path <span class="op">=</span> <span class="st">"/factorial-rds2"</span>, 
-  method <span class="op">=</span> <span class="st">"GET"</span>, 
-  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="op">)</span>
-<span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">unserialize</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
-<span class="co">#&gt; $result</span>
-<span class="co">#&gt; [1] 3628800</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
+<span>  path <span class="op">=</span> <span class="st">"/factorial-rds2"</span>, </span>
+<span>  method <span class="op">=</span> <span class="st">"GET"</span>, </span>
+<span>  parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/serialize.html" class="external-link">unserialize</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $result</span></span>
+<span><span class="co">#&gt; [1] 3628800</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="decoding">Decoding<a class="anchor" aria-label="anchor" href="#decoding"></a>
 </h2>
 <p>RestRserve facilitates with parsing incoming request body as well. Consider a service which expects JSON POST requests:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span>
-<span class="va">application</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="st">"/echo"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/echo"</span>, method <span class="op">=</span> <span class="st">"POST"</span>, body <span class="op">=</span> <span class="st">'{"hello":"world"}'</span>, content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span>
-<span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span>
-<span class="va">response</span><span class="op">$</span><span class="va">body</span>
-<span class="co">#&gt; [1] "{\"hello\":\"world\"}"</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span></span>
+<span><span class="va">application</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="st">"/echo"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/echo"</span>, method <span class="op">=</span> <span class="st">"POST"</span>, body <span class="op">=</span> <span class="st">'{"hello":"world"}'</span>, content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span></span>
+<span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
+<span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
+<span><span class="co">#&gt; [1] "{\"hello\":\"world\"}"</span></span></code></pre></div>
 <p>The logic behind decoding is also controlled by ?EncodeDecodeMiddleware and its <code>ContentHandlers</code> property.</p>
 </div>
 <div class="section level2">
@@ -259,73 +259,73 @@
 </h2>
 <p>Here is an example which demonstrates on how to extend ?EncodeDecodeMiddleware to handle additional content types:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">encode_decode_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span>
-
-<span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span>
-  <span class="st">"text/csv"</span>, 
-  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rawConnection.html" class="external-link">rawConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, <span class="st">"w"</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">con</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/base/rawConnection.html" class="external-link">rawConnectionValue</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">)</span>
-
-<span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">set_decode</span><span class="op">(</span>
-  <span class="st">"text/csv"</span>, 
-  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
-    <span class="va">res</span> <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span>
-      <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/textconnections.html" class="external-link">textConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">rawToChar</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, open <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span>
-      <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span>
-    <span class="op">}</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-    
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-      <span class="fu"><a href="../reference/raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span>body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">condition</span><span class="op">$</span><span class="va">message</span><span class="op">)</span><span class="op">)</span>
-    <span class="op">}</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">encode_decode_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span></span>
+<span>  <span class="st">"text/csv"</span>, </span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rawConnection.html" class="external-link">rawConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/raw.html" class="external-link">raw</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>, <span class="st">"w"</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">con</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/rawConnection.html" class="external-link">rawConnectionValue</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">set_decode</span><span class="op">(</span></span>
+<span>  <span class="st">"text/csv"</span>, </span>
+<span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="va">res</span> <span class="op">=</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>      <span class="va">con</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/textconnections.html" class="external-link">textConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">rawToChar</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, open <span class="op">=</span> <span class="st">"r"</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html" class="external-link">close</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="va">con</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>    </span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">res</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="../reference/raise.html">raise</a></span><span class="op">(</span><span class="va">HTTPError</span><span class="op">$</span><span class="fu">bad_request</span><span class="op">(</span>body <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span><span class="op">$</span><span class="va">condition</span><span class="op">$</span><span class="va">message</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p>Extended middleware needs to be provided to the application constructor:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Now let’s test it:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/iris"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/csv"</span><span class="op">)</span>
-  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-
-<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/iris"</span>, method <span class="op">=</span> <span class="st">"GET"</span><span class="op">)</span>
-<span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
-
-<span class="va">iris_out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/textconnections.html" class="external-link">textConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">rawToChar</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">body</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris_out</span><span class="op">)</span>
-<span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
-<span class="co">#&gt; 1          5.1         3.5          1.4         0.2  setosa</span>
-<span class="co">#&gt; 2          4.9         3.0          1.4         0.2  setosa</span>
-<span class="co">#&gt; 3          4.7         3.2          1.3         0.2  setosa</span>
-<span class="co">#&gt; 4          4.6         3.1          1.5         0.2  setosa</span>
-<span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa</span>
-<span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/iris"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"text/csv"</span><span class="op">)</span></span>
+<span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/iris"</span>, method <span class="op">=</span> <span class="st">"GET"</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">iris_out</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/textconnections.html" class="external-link">textConnection</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">rawToChar</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">body</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">iris_out</span><span class="op">)</span></span>
+<span><span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span></span>
+<span><span class="co">#&gt; 1          5.1         3.5          1.4         0.2  setosa</span></span>
+<span><span class="co">#&gt; 2          4.9         3.0          1.4         0.2  setosa</span></span>
+<span><span class="co">#&gt; 3          4.7         3.2          1.3         0.2  setosa</span></span>
+<span><span class="co">#&gt; 4          4.6         3.1          1.5         0.2  setosa</span></span>
+<span><span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa</span></span>
+<span><span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa</span></span></code></pre></div>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="st">"/in"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
-<span class="op">}</span><span class="op">)</span>
-<span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/in"</span>, method <span class="op">=</span> <span class="st">"POST"</span>, body <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">body</span>, content_type <span class="op">=</span> <span class="st">"text/csv"</span><span class="op">)</span>
-<span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span>
-<span class="co">#&gt; 'data.frame':    150 obs. of  5 variables:</span>
-<span class="co">#&gt;  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...</span>
-<span class="co">#&gt;  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...</span>
-<span class="co">#&gt;  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...</span>
-<span class="co">#&gt;  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...</span>
-<span class="co">#&gt;  $ Species     : chr  "setosa" "setosa" "setosa" "setosa" ...</span>
-<span class="co">#&gt; &lt;RestRserve Response&gt;</span>
-<span class="co">#&gt;   status code: 200 OK</span>
-<span class="co">#&gt;   content-type: text/plain</span>
-<span class="co">#&gt;   &lt;Headers&gt;</span>
-<span class="co">#&gt;     Server: RestRserve/1.2.0; Rserve/1.8.10</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">app</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="st">"/in"</span>, FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/in"</span>, method <span class="op">=</span> <span class="st">"POST"</span>, body <span class="op">=</span> <span class="va">res</span><span class="op">$</span><span class="va">body</span>, content_type <span class="op">=</span> <span class="st">"text/csv"</span><span class="op">)</span></span>
+<span><span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    150 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;  $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...</span></span>
+<span><span class="co">#&gt;  $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...</span></span>
+<span><span class="co">#&gt;  $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...</span></span>
+<span><span class="co">#&gt;  $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...</span></span>
+<span><span class="co">#&gt;  $ Species     : chr  "setosa" "setosa" "setosa" "setosa" ...</span></span>
+<span><span class="co">#&gt; &lt;RestRserve Response&gt;</span></span>
+<span><span class="co">#&gt;   status code: 200 OK</span></span>
+<span><span class="co">#&gt;   content-type: text/plain</span></span>
+<span><span class="co">#&gt;   &lt;Headers&gt;</span></span>
+<span><span class="co">#&gt;     Server: RestRserve/1.2.1; Rserve/1.8.10</span></span></code></pre></div>
 </div>
   </div>
 
@@ -346,7 +346,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>

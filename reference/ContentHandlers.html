@@ -18,7 +18,7 @@ Designed to work jointly with EncodeDecodeMiddleware"><meta property="og:image" 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
       </span>
     </div>
 
@@ -98,27 +98,27 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
 
-<ul><li><p><a href="#method-new"><code>ContentHandlersFactory$new()</code></a></p></li>
-<li><p><a href="#method-set_encode"><code>ContentHandlersFactory$set_encode()</code></a></p></li>
-<li><p><a href="#method-get_encode"><code>ContentHandlersFactory$get_encode()</code></a></p></li>
-<li><p><a href="#method-set_decode"><code>ContentHandlersFactory$set_decode()</code></a></p></li>
-<li><p><a href="#method-get_decode"><code>ContentHandlersFactory$get_decode()</code></a></p></li>
-<li><p><a href="#method-list"><code>ContentHandlersFactory$list()</code></a></p></li>
-<li><p><a href="#method-reset"><code>ContentHandlersFactory$reset()</code></a></p></li>
-<li><p><a href="#method-clone"><code>ContentHandlersFactory$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-new"></a><div class="section">
+<ul><li><p><a href="#method-ContentHandlers-new"><code>ContentHandlersFactory$new()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-set_encode"><code>ContentHandlersFactory$set_encode()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-get_encode"><code>ContentHandlersFactory$get_encode()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-set_decode"><code>ContentHandlersFactory$set_decode()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-get_decode"><code>ContentHandlersFactory$get_decode()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-list"><code>ContentHandlersFactory$list()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-reset"><code>ContentHandlersFactory$reset()</code></a></p></li>
+<li><p><a href="#method-ContentHandlers-clone"><code>ContentHandlersFactory$clone()</code></a></p></li>
+</ul></div><p></p><hr><a id="method-ContentHandlers-new"></a><div class="section">
 <h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
 <p>Creates ContentHandlersFactory object.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va"><a href="../reference/ContentHandlers.html">ContentHandlersFactory</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ContentHandlers.html">ContentHandlersFactory</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-set_encode"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-set_encode"></a><div class="section">
 <h3 id="method-set-encode-">Method <code>set_encode()</code><a class="anchor" aria-label="anchor" href="#method-set-encode-"></a></h3>
 <p>Set handler to encode body for the specific content type.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span><span class="va">content_type</span>, <span class="va">FUN</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">set_encode</span><span class="op">(</span><span class="va">content_type</span>, <span class="va">FUN</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -134,11 +134,11 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-get_encode"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-get_encode"></a><div class="section">
 <h3 id="method-get-encode-">Method <code>get_encode()</code><a class="anchor" aria-label="anchor" href="#method-get-encode-"></a></h3>
 <p>Get encoder function for the specific content type.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">get_encode</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">get_encode</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -150,11 +150,11 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-set_decode"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-set_decode"></a><div class="section">
 <h3 id="method-set-decode-">Method <code>set_decode()</code><a class="anchor" aria-label="anchor" href="#method-set-decode-"></a></h3>
 <p>Set handler to decode body for the specific content type.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">set_decode</span><span class="op">(</span><span class="va">content_type</span>, <span class="va">FUN</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">set_decode</span><span class="op">(</span><span class="va">content_type</span>, <span class="va">FUN</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -170,11 +170,11 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-get_decode"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-get_decode"></a><div class="section">
 <h3 id="method-get-decode-">Method <code>get_decode()</code><a class="anchor" aria-label="anchor" href="#method-get-decode-"></a></h3>
 <p>Get decoder function for the specific content type.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">get_decode</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">get_decode</span><span class="op">(</span><span class="va">content_type</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -186,11 +186,11 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-list"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-list"></a><div class="section">
 <h3 id="method-list-">Method <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code><a class="anchor" aria-label="anchor" href="#method-list-"></a></h3>
 <p>Convert handlers to list.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">list</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">list</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -198,19 +198,19 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 <p>List of handlers.</p>
 </div>
 
-</div><p></p><hr><a id="method-reset"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-reset"></a><div class="section">
 <h3 id="method-reset-">Method <code>reset()</code><a class="anchor" aria-label="anchor" href="#method-reset-"></a></h3>
 <p>Resets all the content handlers to RestRserve defaults.</p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">reset</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 
-</div><p></p><hr><a id="method-clone"></a><div class="section">
+</div><p></p><hr><a id="method-ContentHandlers-clone"></a><div class="section">
 <h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div><p></p></div>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContentHandlersFactory</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
 <div class="section">
@@ -238,7 +238,7 @@ Designed to work jointly with <a href="EncodeDecodeMiddleware.html">EncodeDecode
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
