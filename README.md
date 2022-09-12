@@ -11,7 +11,7 @@
 ![tinyverse](https://tinyverse.netlify.com/badge/RestRserve)
 <!-- badges: end -->
 
-[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. On UNIX-like systems and [Rserve](https://github.com/s-u/Rserve) backend RestRserve handles requests in parallel: each request in a separate fork. All credits for go to [Simon Urbanek](https://github.com/s-u).
+[RestRserve](https://github.com/rexyai/RestRserve) is an R web API framework for building **high-performance** AND **robust** microservices and app backends. On UNIX-like systems and [Rserve](https://github.com/s-u/Rserve) backend RestRserve handles requests in parallel: each request in a separate fork - credits go to [Simon Urbanek](https://github.com/s-u).
 
 ## Quick start
 
@@ -51,7 +51,7 @@ curl -H "Content-Type: application/json" -d '{"x":10}' localhost:8080/addone
 
 Using convenient `.req`, `.res` names for handler arguments allows to leverage autocomplete.
 
-<img src="https://cdn.rexy.ai/assets/req-res.gif" width="100%" style="vertical-align:bottom">
+<img src="https://cdn.rexy.ai/assets/req-res.gif" width="640" style="vertical-align:bottom">
 
 ## Learn RestRserve
 

@@ -1,6 +1,5 @@
 #' @title Creates CORS middleware object
 #'
-#'
 #' @description
 #' Adds CORS to [Application]. CORS Middleware out of the box in RestRserve to turn on/off the CORS
 #' Headers on preflight validation from the browser. \cr

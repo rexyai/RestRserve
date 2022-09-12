@@ -38,13 +38,13 @@ Usually \code{process_response} is used to perform logging, custom error handlin
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Middleware$new()}}
-\item \href{#method-clone}{\code{Middleware$clone()}}
+\item \href{#method-Middleware-new}{\code{Middleware$new()}}
+\item \href{#method-Middleware-clone}{\code{Middleware$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Middleware-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Middleware-new}{}}}
 \subsection{Method \code{new()}}{
 Creates middleware object
 \subsection{Usage}{
@@ -72,8 +72,8 @@ router handler called.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Middleware-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Middleware-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

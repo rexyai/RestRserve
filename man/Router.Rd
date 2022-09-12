@@ -28,16 +28,16 @@ attr(r$match_path("/template/12345"), "parameters_path") # variables values
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Router$new()}}
-\item \href{#method-size}{\code{Router$size()}}
-\item \href{#method-add_path}{\code{Router$add_path()}}
-\item \href{#method-match_path}{\code{Router$match_path()}}
-\item \href{#method-clone}{\code{Router$clone()}}
+\item \href{#method-Router-new}{\code{Router$new()}}
+\item \href{#method-Router-size}{\code{Router$size()}}
+\item \href{#method-Router-add_path}{\code{Router$add_path()}}
+\item \href{#method-Router-match_path}{\code{Router$match_path()}}
+\item \href{#method-Router-clone}{\code{Router$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Router-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Router-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Router object.
 \subsection{Usage}{
@@ -46,8 +46,8 @@ Creates Router object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-size"></a>}}
-\if{latex}{\out{\hypertarget{method-size}{}}}
+\if{html}{\out{<a id="method-Router-size"></a>}}
+\if{latex}{\out{\hypertarget{method-Router-size}{}}}
 \subsection{Method \code{size()}}{
 Returns number of paths added before.
 \subsection{Usage}{
@@ -59,8 +59,8 @@ Number of paths.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_path"></a>}}
-\if{latex}{\out{\hypertarget{method-add_path}{}}}
+\if{html}{\out{<a id="method-Router-add_path"></a>}}
+\if{latex}{\out{\hypertarget{method-Router-add_path}{}}}
 \subsection{Method \code{add_path()}}{
 Add path with their id.
 \subsection{Usage}{
@@ -85,8 +85,8 @@ Add path with their id.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-match_path"></a>}}
-\if{latex}{\out{\hypertarget{method-match_path}{}}}
+\if{html}{\out{<a id="method-Router-match_path"></a>}}
+\if{latex}{\out{\hypertarget{method-Router-match_path}{}}}
 \subsection{Method \code{match_path()}}{
 Find path within paths added before. Returns \code{NULL} if path not matched.
 \subsection{Usage}{
@@ -107,8 +107,8 @@ Handler id.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Router-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Router-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

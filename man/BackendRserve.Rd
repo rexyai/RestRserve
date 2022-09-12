@@ -15,22 +15,16 @@ Creates BackendRserve object which can start \link{Application} using Rserve bac
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{BackendRserve$new()}}
-\item \href{#method-start}{\code{BackendRserve$start()}}
-\item \href{#method-set_request}{\code{BackendRserve$set_request()}}
-\item \href{#method-convert_response}{\code{BackendRserve$convert_response()}}
-\item \href{#method-clone}{\code{BackendRserve$clone()}}
+\item \href{#method-BackendRserve-new}{\code{BackendRserve$new()}}
+\item \href{#method-BackendRserve-start}{\code{BackendRserve$start()}}
+\item \href{#method-BackendRserve-set_request}{\code{BackendRserve$set_request()}}
+\item \href{#method-BackendRserve-convert_response}{\code{BackendRserve$convert_response()}}
+\item \href{#method-BackendRserve-clone}{\code{BackendRserve$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-BackendRserve-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BackendRserve-new}{}}}
 \subsection{Method \code{new()}}{
 Creates BackendRserve object.
 \subsection{Usage}{
@@ -51,8 +45,8 @@ start.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-start"></a>}}
-\if{latex}{\out{\hypertarget{method-start}{}}}
+\if{html}{\out{<a id="method-BackendRserve-start"></a>}}
+\if{latex}{\out{\hypertarget{method-BackendRserve-start}{}}}
 \subsection{Method \code{start()}}{
 Starts RestRserve application from current R session.
 \subsection{Usage}{
@@ -79,8 +73,8 @@ means not to expose plain http.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_request"></a>}}
-\if{latex}{\out{\hypertarget{method-set_request}{}}}
+\if{html}{\out{<a id="method-BackendRserve-set_request"></a>}}
+\if{latex}{\out{\hypertarget{method-BackendRserve-set_request}{}}}
 \subsection{Method \code{set_request()}}{
 Parse request and set to it fields.
 \subsection{Usage}{
@@ -115,8 +109,8 @@ vector for the URL encoded form (like a \code{parameters_query} parameter).}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-convert_response"></a>}}
-\if{latex}{\out{\hypertarget{method-convert_response}{}}}
+\if{html}{\out{<a id="method-BackendRserve-convert_response"></a>}}
+\if{latex}{\out{\hypertarget{method-BackendRserve-convert_response}{}}}
 \subsection{Method \code{convert_response()}}{
 Convert \code{self} object to Rserve compatible structure.
 \subsection{Usage}{
@@ -147,8 +141,8 @@ appended and neither \code{Content-type} nor \code{Content-length} may be used.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-BackendRserve-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-BackendRserve-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

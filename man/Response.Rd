@@ -72,28 +72,28 @@ to \code{Content-type} header.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Response$new()}}
-\item \href{#method-reset}{\code{Response$reset()}}
-\item \href{#method-set_content_type}{\code{Response$set_content_type()}}
-\item \href{#method-set_status_code}{\code{Response$set_status_code()}}
-\item \href{#method-has_header}{\code{Response$has_header()}}
-\item \href{#method-get_header}{\code{Response$get_header()}}
-\item \href{#method-set_header}{\code{Response$set_header()}}
-\item \href{#method-delete_header}{\code{Response$delete_header()}}
-\item \href{#method-append_header}{\code{Response$append_header()}}
-\item \href{#method-set_date}{\code{Response$set_date()}}
-\item \href{#method-unset_date}{\code{Response$unset_date()}}
-\item \href{#method-set_cookie}{\code{Response$set_cookie()}}
-\item \href{#method-unset_cookie}{\code{Response$unset_cookie()}}
-\item \href{#method-set_body}{\code{Response$set_body()}}
-\item \href{#method-set_response}{\code{Response$set_response()}}
-\item \href{#method-print}{\code{Response$print()}}
-\item \href{#method-clone}{\code{Response$clone()}}
+\item \href{#method-Response-new}{\code{Response$new()}}
+\item \href{#method-Response-reset}{\code{Response$reset()}}
+\item \href{#method-Response-set_content_type}{\code{Response$set_content_type()}}
+\item \href{#method-Response-set_status_code}{\code{Response$set_status_code()}}
+\item \href{#method-Response-has_header}{\code{Response$has_header()}}
+\item \href{#method-Response-get_header}{\code{Response$get_header()}}
+\item \href{#method-Response-set_header}{\code{Response$set_header()}}
+\item \href{#method-Response-delete_header}{\code{Response$delete_header()}}
+\item \href{#method-Response-append_header}{\code{Response$append_header()}}
+\item \href{#method-Response-set_date}{\code{Response$set_date()}}
+\item \href{#method-Response-unset_date}{\code{Response$unset_date()}}
+\item \href{#method-Response-set_cookie}{\code{Response$set_cookie()}}
+\item \href{#method-Response-unset_cookie}{\code{Response$unset_cookie()}}
+\item \href{#method-Response-set_body}{\code{Response$set_body()}}
+\item \href{#method-Response-set_response}{\code{Response$set_response()}}
+\item \href{#method-Response-print}{\code{Response$print()}}
+\item \href{#method-Response-clone}{\code{Response$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Response-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Response object
 \subsection{Usage}{
@@ -126,8 +126,8 @@ Creates Response object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-reset"></a>}}
-\if{latex}{\out{\hypertarget{method-reset}{}}}
+\if{html}{\out{<a id="method-Response-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-reset}{}}}
 \subsection{Method \code{reset()}}{
 Resets response object. This is not useful for end user, but useful for
 RestRserve internals - resetting R6 class is much faster then initialize it.
@@ -137,8 +137,8 @@ RestRserve internals - resetting R6 class is much faster then initialize it.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_content_type"></a>}}
-\if{latex}{\out{\hypertarget{method-set_content_type}{}}}
+\if{html}{\out{<a id="method-Response-set_content_type"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_content_type}{}}}
 \subsection{Method \code{set_content_type()}}{
 Set content type for response body.
 \subsection{Usage}{
@@ -154,8 +154,8 @@ Set content type for response body.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_status_code"></a>}}
-\if{latex}{\out{\hypertarget{method-set_status_code}{}}}
+\if{html}{\out{<a id="method-Response-set_status_code"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_status_code}{}}}
 \subsection{Method \code{set_status_code()}}{
 Set HTTP status code for response. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Status}{docs on MDN}.
 \subsection{Usage}{
@@ -171,8 +171,8 @@ Set HTTP status code for response. See \href{https://developer.mozilla.org/en-US
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-has_header"></a>}}
-\if{latex}{\out{\hypertarget{method-has_header}{}}}
+\if{html}{\out{<a id="method-Response-has_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-has_header}{}}}
 \subsection{Method \code{has_header()}}{
 Determine whether or not the response header exists.
 \subsection{Usage}{
@@ -191,8 +191,8 @@ Logical value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_header"></a>}}
-\if{latex}{\out{\hypertarget{method-get_header}{}}}
+\if{html}{\out{<a id="method-Response-get_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-get_header}{}}}
 \subsection{Method \code{get_header()}}{
 Get HTTP response header value. If requested header is empty returns \code{default}.
 \subsection{Usage}{
@@ -213,8 +213,8 @@ Header field values (character string).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_header"></a>}}
-\if{latex}{\out{\hypertarget{method-set_header}{}}}
+\if{html}{\out{<a id="method-Response-set_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_header}{}}}
 \subsection{Method \code{set_header()}}{
 Set HTTP response header. \code{Content-type} and \code{Content-length} headers not
 allowed (use \code{content_type} field instead).
@@ -233,8 +233,8 @@ allowed (use \code{content_type} field instead).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-delete_header"></a>}}
-\if{latex}{\out{\hypertarget{method-delete_header}{}}}
+\if{html}{\out{<a id="method-Response-delete_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-delete_header}{}}}
 \subsection{Method \code{delete_header()}}{
 Unset HTTP response header.
 \subsection{Usage}{
@@ -253,8 +253,8 @@ Logical value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append_header"></a>}}
-\if{latex}{\out{\hypertarget{method-append_header}{}}}
+\if{html}{\out{<a id="method-Response-append_header"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-append_header}{}}}
 \subsection{Method \code{append_header()}}{
 Append HTTP response header. If header exists \verb{,} separator will be used.
 Don't use this method to set cookie (use \code{set_cookie} method instead).
@@ -273,8 +273,8 @@ Don't use this method to set cookie (use \code{set_cookie} method instead).
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_date"></a>}}
-\if{latex}{\out{\hypertarget{method-set_date}{}}}
+\if{html}{\out{<a id="method-Response-set_date"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_date}{}}}
 \subsection{Method \code{set_date()}}{
 Set \code{Date} HTTP header. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date}{docs on MDN}.
 \subsection{Usage}{
@@ -290,8 +290,8 @@ Set \code{Date} HTTP header. See \href{https://developer.mozilla.org/en-US/docs/
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unset_date"></a>}}
-\if{latex}{\out{\hypertarget{method-unset_date}{}}}
+\if{html}{\out{<a id="method-Response-unset_date"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-unset_date}{}}}
 \subsection{Method \code{unset_date()}}{
 Unset \code{Date} HTTP header.
 \subsection{Usage}{
@@ -303,8 +303,8 @@ Logical value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_cookie"></a>}}
-\if{latex}{\out{\hypertarget{method-set_cookie}{}}}
+\if{html}{\out{<a id="method-Response-set_cookie"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_cookie}{}}}
 \subsection{Method \code{set_cookie()}}{
 Set cookie. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie}{docs on MDN}.
 \subsection{Usage}{
@@ -343,8 +343,8 @@ Set cookie. See \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-unset_cookie"></a>}}
-\if{latex}{\out{\hypertarget{method-unset_cookie}{}}}
+\if{html}{\out{<a id="method-Response-unset_cookie"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-unset_cookie}{}}}
 \subsection{Method \code{unset_cookie()}}{
 Unset cookie with given name.
 \subsection{Usage}{
@@ -363,8 +363,8 @@ Logical value.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_body"></a>}}
-\if{latex}{\out{\hypertarget{method-set_body}{}}}
+\if{html}{\out{<a id="method-Response-set_body"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_body}{}}}
 \subsection{Method \code{set_body()}}{
 Set response body.
 \subsection{Usage}{
@@ -380,8 +380,8 @@ Set response body.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_response"></a>}}
-\if{latex}{\out{\hypertarget{method-set_response}{}}}
+\if{html}{\out{<a id="method-Response-set_response"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-set_response}{}}}
 \subsection{Method \code{set_response()}}{
 Set response fields.
 \subsection{Usage}{
@@ -405,8 +405,8 @@ Set response fields.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-Response-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-print}{}}}
 \subsection{Method \code{print()}}{
 Print method.
 \subsection{Usage}{
@@ -415,8 +415,8 @@ Print method.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Response-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Response-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

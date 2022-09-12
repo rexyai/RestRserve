@@ -22,19 +22,19 @@ Designed to work jointly with \link{EncodeDecodeMiddleware}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ContentHandlersFactory$new()}}
-\item \href{#method-set_encode}{\code{ContentHandlersFactory$set_encode()}}
-\item \href{#method-get_encode}{\code{ContentHandlersFactory$get_encode()}}
-\item \href{#method-set_decode}{\code{ContentHandlersFactory$set_decode()}}
-\item \href{#method-get_decode}{\code{ContentHandlersFactory$get_decode()}}
-\item \href{#method-list}{\code{ContentHandlersFactory$list()}}
-\item \href{#method-reset}{\code{ContentHandlersFactory$reset()}}
-\item \href{#method-clone}{\code{ContentHandlersFactory$clone()}}
+\item \href{#method-ContentHandlers-new}{\code{ContentHandlersFactory$new()}}
+\item \href{#method-ContentHandlers-set_encode}{\code{ContentHandlersFactory$set_encode()}}
+\item \href{#method-ContentHandlers-get_encode}{\code{ContentHandlersFactory$get_encode()}}
+\item \href{#method-ContentHandlers-set_decode}{\code{ContentHandlersFactory$set_decode()}}
+\item \href{#method-ContentHandlers-get_decode}{\code{ContentHandlersFactory$get_decode()}}
+\item \href{#method-ContentHandlers-list}{\code{ContentHandlersFactory$list()}}
+\item \href{#method-ContentHandlers-reset}{\code{ContentHandlersFactory$reset()}}
+\item \href{#method-ContentHandlers-clone}{\code{ContentHandlersFactory$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-new}{}}}
 \subsection{Method \code{new()}}{
 Creates ContentHandlersFactory object.
 \subsection{Usage}{
@@ -43,8 +43,8 @@ Creates ContentHandlersFactory object.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_encode"></a>}}
-\if{latex}{\out{\hypertarget{method-set_encode}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-set_encode"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-set_encode}{}}}
 \subsection{Method \code{set_encode()}}{
 Set handler to encode body for the specific content type.
 \subsection{Usage}{
@@ -62,8 +62,8 @@ Set handler to encode body for the specific content type.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_encode"></a>}}
-\if{latex}{\out{\hypertarget{method-get_encode}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-get_encode"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-get_encode}{}}}
 \subsection{Method \code{get_encode()}}{
 Get encoder function for the specific content type.
 \subsection{Usage}{
@@ -79,8 +79,8 @@ Get encoder function for the specific content type.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_decode"></a>}}
-\if{latex}{\out{\hypertarget{method-set_decode}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-set_decode"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-set_decode}{}}}
 \subsection{Method \code{set_decode()}}{
 Set handler to decode body for the specific content type.
 \subsection{Usage}{
@@ -98,8 +98,8 @@ Set handler to decode body for the specific content type.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_decode"></a>}}
-\if{latex}{\out{\hypertarget{method-get_decode}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-get_decode"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-get_decode}{}}}
 \subsection{Method \code{get_decode()}}{
 Get decoder function for the specific content type.
 \subsection{Usage}{
@@ -115,8 +115,8 @@ Get decoder function for the specific content type.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-list"></a>}}
-\if{latex}{\out{\hypertarget{method-list}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-list"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-list}{}}}
 \subsection{Method \code{list()}}{
 Convert handlers to list.
 \subsection{Usage}{
@@ -128,8 +128,8 @@ List of handlers.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-reset"></a>}}
-\if{latex}{\out{\hypertarget{method-reset}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-reset"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-reset}{}}}
 \subsection{Method \code{reset()}}{
 Resets all the content handlers to RestRserve defaults.
 \subsection{Usage}{
@@ -138,8 +138,8 @@ Resets all the content handlers to RestRserve defaults.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ContentHandlers-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ContentHandlers-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

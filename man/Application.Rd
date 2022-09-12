@@ -129,22 +129,22 @@ in the majority of the cases using \link{HTTPError} will be enough.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Application$new()}}
-\item \href{#method-add_route}{\code{Application$add_route()}}
-\item \href{#method-add_get}{\code{Application$add_get()}}
-\item \href{#method-add_post}{\code{Application$add_post()}}
-\item \href{#method-add_static}{\code{Application$add_static()}}
-\item \href{#method-add_openapi}{\code{Application$add_openapi()}}
-\item \href{#method-add_swagger_ui}{\code{Application$add_swagger_ui()}}
-\item \href{#method-append_middleware}{\code{Application$append_middleware()}}
-\item \href{#method-process_request}{\code{Application$process_request()}}
-\item \href{#method-print}{\code{Application$print()}}
-\item \href{#method-clone}{\code{Application$clone()}}
+\item \href{#method-Application-new}{\code{Application$new()}}
+\item \href{#method-Application-add_route}{\code{Application$add_route()}}
+\item \href{#method-Application-add_get}{\code{Application$add_get()}}
+\item \href{#method-Application-add_post}{\code{Application$add_post()}}
+\item \href{#method-Application-add_static}{\code{Application$add_static()}}
+\item \href{#method-Application-add_openapi}{\code{Application$add_openapi()}}
+\item \href{#method-Application-add_swagger_ui}{\code{Application$add_swagger_ui()}}
+\item \href{#method-Application-append_middleware}{\code{Application$append_middleware()}}
+\item \href{#method-Application-process_request}{\code{Application$process_request()}}
+\item \href{#method-Application-print}{\code{Application$print()}}
+\item \href{#method-Application-clone}{\code{Application$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Application-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-new}{}}}
 \subsection{Method \code{new()}}{
 Creates Application object.
 \subsection{Usage}{
@@ -168,8 +168,8 @@ Creates Application object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_route"></a>}}
-\if{latex}{\out{\hypertarget{method-add_route}{}}}
+\if{html}{\out{<a id="method-Application-add_route"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_route}{}}}
 \subsection{Method \code{add_route()}}{
 Adds endpoint and register user-supplied R function as a handler.
 \subsection{Usage}{
@@ -210,8 +210,8 @@ passed further to RestRserve execution pipeline.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_get"></a>}}
-\if{latex}{\out{\hypertarget{method-add_get}{}}}
+\if{html}{\out{<a id="method-Application-add_get"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_get}{}}}
 \subsection{Method \code{add_get()}}{
 Shorthand to \code{Application$add_route()} with \code{GET} method.
 \subsection{Usage}{
@@ -251,8 +251,8 @@ passed further to RestRserve execution pipeline.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_post"></a>}}
-\if{latex}{\out{\hypertarget{method-add_post}{}}}
+\if{html}{\out{<a id="method-Application-add_post"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_post}{}}}
 \subsection{Method \code{add_post()}}{
 Shorthand to \code{Application$add_route()} with \code{POST} method.
 \subsection{Usage}{
@@ -284,8 +284,8 @@ passed further to RestRserve execution pipeline.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_static"></a>}}
-\if{latex}{\out{\hypertarget{method-add_static}{}}}
+\if{html}{\out{<a id="method-Application-add_static"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_static}{}}}
 \subsection{Method \code{add_static()}}{
 Adds \code{GET} method to serve file or directory at \code{file_path}.
 \subsection{Usage}{
@@ -311,8 +311,8 @@ be set to \code{application/octet-stream}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_openapi"></a>}}
-\if{latex}{\out{\hypertarget{method-add_openapi}{}}}
+\if{html}{\out{<a id="method-Application-add_openapi"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_openapi}{}}}
 \subsection{Method \code{add_openapi()}}{
 Adds endpoint to serve \href{https://www.openapis.org/}{OpenAPI} description of
 available methods.
@@ -331,8 +331,8 @@ available methods.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-add_swagger_ui"></a>}}
-\if{latex}{\out{\hypertarget{method-add_swagger_ui}{}}}
+\if{html}{\out{<a id="method-Application-add_swagger_ui"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-add_swagger_ui}{}}}
 \subsection{Method \code{add_swagger_ui()}}{
 Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 \subsection{Usage}{
@@ -362,8 +362,8 @@ Adds endpoint to show \href{https://swagger.io/tools/swagger-ui/}{Swagger UI}.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-append_middleware"></a>}}
-\if{latex}{\out{\hypertarget{method-append_middleware}{}}}
+\if{html}{\out{<a id="method-Application-append_middleware"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-append_middleware}{}}}
 \subsection{Method \code{append_middleware()}}{
 Appends middleware to handlers pipeline.
 \subsection{Usage}{
@@ -379,8 +379,8 @@ Appends middleware to handlers pipeline.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-process_request"></a>}}
-\if{latex}{\out{\hypertarget{method-process_request}{}}}
+\if{html}{\out{<a id="method-Application-process_request"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-process_request}{}}}
 \subsection{Method \code{process_request()}}{
 Process incoming request and generate \link{Response} object.
 \subsection{Usage}{
@@ -397,8 +397,8 @@ Useful for tests your handlers before deploy application.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-Application-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-print}{}}}
 \subsection{Method \code{print()}}{
 Prints application details.
 \subsection{Usage}{
@@ -407,8 +407,8 @@ Prints application details.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Application-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Application-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
