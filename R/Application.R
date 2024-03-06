@@ -547,7 +547,7 @@ Application = R6::R6Class(
         # HTTPError response
         x = x$response
       } else {
-        if (inherits(x, "simpleError")) {
+        if (inherits(x, "error")) {
           # means UNHANDLED exception in middleware
           self$logger$error(
             "",
