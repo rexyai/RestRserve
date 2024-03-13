@@ -330,7 +330,7 @@ BackendRserve = R6::R6Class(
 #' @title Creates ApplicationProcess object
 #'
 #' @description
-#' Creates ApplicationProcess to hold PID of the runnung applicaiton.
+#' Creates ApplicationProcess to hold PID of the running application.
 #'
 ApplicationProcess = R6::R6Class(
   classname = "ApplicationProcess",
@@ -345,7 +345,7 @@ ApplicationProcess = R6::R6Class(
     },
     #' @description
     #' Send signal to process.
-    #' @param signal Singal code.
+    #' @param signal Signal code.
     kill = function(signal = 15L) {
       # get childs
       child_pids <- suppressWarnings(system(sprintf("pgrep -P %s", self$pid), intern = TRUE))
