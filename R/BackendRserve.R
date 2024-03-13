@@ -347,10 +347,10 @@ ApplicationProcess = R6::R6Class(
     #' Send signal to process.
     #' @param signal Singal code.
     kill = function(signal = 15L) {
-      # kill service
-      tools::pskill(self$pid, signal)
-      # kill childs
-      system(sprintf("pkill -%s -P %s", signal, self$pid), wait = FALSE)
+      # get childs
+      child_pids <- suppressWarnings(system(sprintf("pgrep -P %s", self$pid), intern = TRUE))
+      # kill all
+      tools::pskill(c(self$pid, child_pids), signal)
     }
   )
 )
