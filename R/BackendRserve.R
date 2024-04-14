@@ -348,7 +348,7 @@ ApplicationProcess = R6::R6Class(
     #' @param signal Signal code.
     kill = function(signal = 15L) {
       # get childs
-      child_pids <- suppressWarnings(system(sprintf("pgrep -P %s", self$pid), intern = TRUE))
+      child_pids = suppressWarnings(system(sprintf("pgrep -P %s", self$pid), intern = TRUE))
       # kill all
       tools::pskill(c(self$pid, child_pids), signal)
     }
