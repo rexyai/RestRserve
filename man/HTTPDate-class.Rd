@@ -20,6 +20,6 @@ class(dt) = "HTTPDate"
 as(dt, "POSIXct")
 }
 \references{
-\href{https://tools.ietf.org/html/rfc7231#section-7.1.1.1}{RFC7231}
+\href{https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.1.1}{RFC7231}
 \href{https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date}{MDN}
 }

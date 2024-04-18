@@ -1,3 +1,7 @@
+# RestRserve 1.2.2 (2024-04-15)
+* check inheritance from `error` Thanks @hafen for report #207 and PR #208
+* more robust kill of the child processes. Thanks @AbrJA for report #209 and PR #210
+
 # RestRserve 1.2.1 (2022-09-11)
 * update NEWS.md file to follow CRAN specification
 * update docs with new roxygen. Fixes CRAN notes in HTML5 compatibility
@@ -45,7 +49,7 @@
 * parse content-type directly from headers - see #137
 
 # RestRserve 0.2.1 (2020-03-19)
-* update code for header names validation to conform to [rfc7230](https://tools.ietf.org/html/rfc7230#section-3.2.6), see #132
+* update code for header names validation to conform to [rfc7230](https://datatracker.ietf.org/doc/html/rfc7230#section-3.2.6), see #132
 * generate documentation with roxygen2 7.1.0 which has support for R6 classes
 
 # RestRserve 0.2.0.2 (2020-03-06)

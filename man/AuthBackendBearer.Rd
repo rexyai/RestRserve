@@ -34,15 +34,15 @@ auth_backend$authenticate(rq, rs) # TRUE
 
 }
 \references{
-\href{https://tools.ietf.org/html/rfc6750}{RFC6750}
+\href{https://datatracker.ietf.org/doc/html/rfc6750}{RFC6750}
 \href{https://swagger.io/docs/specification/authentication/bearer-authentication/}{Specification}
 }
 \seealso{
 \link{AuthMiddleware} \link{Request} \link{Response}
 
 Other AuthBackend: 
-\code{\link{AuthBackendBasic}},
 \code{\link{AuthBackend}},
+\code{\link{AuthBackendBasic}},
 \code{\link{AuthMiddleware}}
 }
 \concept{AuthBackend}

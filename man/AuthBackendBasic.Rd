@@ -35,15 +35,15 @@ auth_backend$authenticate(rq, rs) # TRUE
 
 }
 \references{
-\href{https://tools.ietf.org/html/rfc7617}{RFC7617}
+\href{https://datatracker.ietf.org/doc/html/rfc7617}{RFC7617}
 \href{https://en.wikipedia.org/wiki/Basic_access_authentication}{Wikipedia}
 }
 \seealso{
 \link{AuthMiddleware} \link{Request} \link{Response}
 
 Other AuthBackend: 
-\code{\link{AuthBackendBearer}},
 \code{\link{AuthBackend}},
+\code{\link{AuthBackendBearer}},
 \code{\link{AuthMiddleware}}
 }
 \concept{AuthBackend}

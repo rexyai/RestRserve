@@ -6,7 +6,7 @@
 #' @export
 #'
 #' @references
-#' [RFC6750](https://tools.ietf.org/html/rfc6750)
+#' [RFC6750](https://datatracker.ietf.org/doc/html/rfc6750)
 #' [Specification](https://swagger.io/docs/specification/authentication/bearer-authentication/)
 #'
 #' @seealso [AuthMiddleware] [Request] [Response]

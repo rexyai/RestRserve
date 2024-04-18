@@ -11,7 +11,7 @@
 #' @exportClass HTTPDate
 #'
 #' @references
-#' [RFC7231](https://tools.ietf.org/html/rfc7231#section-7.1.1.1)
+#' [RFC7231](https://datatracker.ietf.org/doc/html/rfc7231#section-7.1.1.1)
 #' [MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date)
 #'
 #' @examples
