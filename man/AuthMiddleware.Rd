@@ -10,9 +10,9 @@ Adds various authorizations to \link{Application}.
 \link{Middleware} \link{Application}
 
 Other AuthBackend: 
+\code{\link{AuthBackend}},
 \code{\link{AuthBackendBasic}},
-\code{\link{AuthBackendBearer}},
-\code{\link{AuthBackend}}
+\code{\link{AuthBackendBearer}}
 }
 \concept{AuthBackend}
 \section{Super class}{

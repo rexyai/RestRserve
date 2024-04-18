@@ -4,7 +4,7 @@
 \alias{ApplicationProcess}
 \title{Creates ApplicationProcess object}
 \description{
-Creates ApplicationProcess to hold PID of the runnung applicaiton.
+Creates ApplicationProcess to hold PID of the running application.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -50,7 +50,7 @@ Send signal to process.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{signal}}{Singal code.}
+\item{\code{signal}}{Signal code.}
 }
 \if{html}{\out{</div>}}
 }

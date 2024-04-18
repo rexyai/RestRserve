@@ -4,7 +4,7 @@
 #' Creates AuthBackendBasic class object.
 #'
 #' @references
-#' [RFC7617](https://tools.ietf.org/html/rfc7617)
+#' [RFC7617](https://datatracker.ietf.org/doc/html/rfc7617)
 #' [Wikipedia](https://en.wikipedia.org/wiki/Basic_access_authentication)
 #'
 #' @export
