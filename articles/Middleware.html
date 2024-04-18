@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
       <a href="../articles/Authentication.html">Authentication</a>
     </li>
     <li>
+      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
+    </li>
+    <li>
       <a href="../articles/ContentHandlers.html">Body encoding and decoding</a>
     </li>
     <li>
@@ -70,9 +73,6 @@
     </li>
     <li>
       <a href="../articles/Middleware.html">Middleware</a>
-    </li>
-    <li>
-      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
     </li>
   </ul>
 </li>
@@ -97,7 +97,7 @@
 
       
 
-      </header><script src="Middleware_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Middleware</h1>
@@ -113,14 +113,24 @@
 <div class="section level2">
 <h2 id="middleware">Middleware<a class="anchor" aria-label="anchor" href="#middleware"></a>
 </h2>
-<p>Many web API frameworks contain a concept called “middleware” (but every language/framework calls it differently - filters, middleware, etc). Essentially, the middleware performs some specific function on the HTTP request or response before or after the handler. Common tasks to offload to a middleware would be logging, authorization, body compression, etc.</p>
-<p><code>RestRserve</code> comes with several build-in middlewares (<code>AuthMiddleware</code>, <code>CORSMiddleware</code>, <code>ETagMiddleware</code>) and generic <code>Middleware</code> class which facilitates user to create a custom middleware.</p>
+<p>Many web API frameworks contain a concept called “middleware” (but
+every language/framework calls it differently - filters, middleware,
+etc). Essentially, the middleware performs some specific function on the
+HTTP request or response before or after the handler. Common tasks to
+offload to a middleware would be logging, authorization, body
+compression, etc.</p>
+<p><code>RestRserve</code> comes with several build-in middlewares
+(<code>AuthMiddleware</code>, <code>CORSMiddleware</code>,
+<code>ETagMiddleware</code>) and generic <code>Middleware</code> class
+which facilitates user to create a custom middleware.</p>
 <p>Let’s see it in action in example below.</p>
 </div>
 <div class="section level2">
 <h2 id="logging">Logging<a class="anchor" aria-label="anchor" href="#logging"></a>
 </h2>
-<p>Let’s say you have a simple app which has only a single endpoint - it simply convert query string parameters into a JSON format and sends it back:</p>
+<p>Let’s say you have a simple app which has only a single endpoint - it
+simply convert query string parameters into a JSON format and sends it
+back:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
 <span></span>
@@ -141,7 +151,11 @@
 <span><span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
 <span><span class="va">resp</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "{\"key1\":\"value1\",\"key2\":\"value2\"}"</span></span></code></pre></div>
-<p>Assume you would like to analyze how your web service works. For that you may need log every request and response in order to see whether service replies with errors and what can cause these errors. This is a perfect task for a middleware and here is how you can achieve this with <code>RestRserve</code>:</p>
+<p>Assume you would like to analyze how your web service works. For that
+you may need log every request and response in order to see whether
+service replies with errors and what can cause these errors. This is a
+perfect task for a middleware and here is how you can achieve this with
+<code>RestRserve</code>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">logging_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -174,27 +188,35 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e6d6e10a-3276-11ed-9fd2-005056964722","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2022-09-12 08:42:57"}</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e6d6e10a-3276-11ed-9fd2-005056964722","response":{"headers":{"Server":"RestRserve/1.2.1; Rserve/1.8.10"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2022-09-12 08:42:57"}</span></span></code></pre></div>
-<p>Let’s see what will happen if we will send request to nonexistent endpoint:</p>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb4cb302-fd26-11ee-83a7-0050569e8e3c","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2024-04-18 01:55:55"}</span></span>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb4cb302-fd26-11ee-83a7-0050569e8e3c","response":{"headers":{"Server":"RestRserve/1.2.2; Rserve/1.8.13"},"status_code":200,"body":"{\"key1\":\"value1\",\"key2\":\"value2\"}"},"timestamp":"2024-04-18 01:55:55"}</span></span></code></pre></div>
+<p>Let’s see what will happen if we will send request to nonexistent
+endpoint:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e6f24a80-3276-11ed-9fd2-005056964722","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2022-09-12 08:42:58"}</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e6f24a80-3276-11ed-9fd2-005056964722","response":{"headers":{"Server":"RestRserve/1.2.1; Rserve/1.8.10"},"status_code":404,"body":"404 Not Found"},"timestamp":"2022-09-12 08:42:58"}</span></span></code></pre></div>
-<p>Later you will see all the responses with errors in the log (<code>status_code</code> &gt;= 400). Also you will be able to find corresponding requests by inspecting <code>request_id</code> field.</p>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb683e56-fd26-11ee-83a7-0050569e8e3c","request":{"headers":{},"method":"GET","path":"/foo2"},"timestamp":"2024-04-18 01:55:55"}</span></span>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb683e56-fd26-11ee-83a7-0050569e8e3c","response":{"headers":{"Server":"RestRserve/1.2.2; Rserve/1.8.13"},"status_code":404,"body":"404 Not Found"},"timestamp":"2024-04-18 01:55:55"}</span></span></code></pre></div>
+<p>Later you will see all the responses with errors in the log
+(<code>status_code</code> &gt;= 400). Also you will be able to find
+corresponding requests by inspecting <code>request_id</code> field.</p>
 </div>
 <div class="section level2">
 <h2 id="middleware-order">Middleware order<a class="anchor" aria-label="anchor" href="#middleware-order"></a>
 </h2>
-<p>It is important to understand that middlewares are executed in order you’ve added them (that’s why it is called <code>append_middleware</code>). Flow is shown on the diagram below.</p>
+<p>It is important to understand that middlewares are executed in order
+you’ve added them (that’s why it is called
+<code>append_middleware</code>). Flow is shown on the diagram below.</p>
 <p><img src="img/middleware-order.png" width="320"></p>
 </div>
 <div class="section level2">
 <h2 id="compression">Compression<a class="anchor" aria-label="anchor" href="#compression"></a>
 </h2>
-<p>To demonstrate the order in which middleware called let’s consider another example.</p>
-<p>Sometimes it it useful to compress response body in order to send less data over the wire. Here we will implement a middleware which will compress response with <code>gzip</code>.</p>
+<p>To demonstrate the order in which middleware called let’s consider
+another example.</p>
+<p>Sometimes it it useful to compress response body in order to send
+less data over the wire. Here we will implement a middleware which will
+compress response with <code>gzip</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">gzip_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/Middleware.html">Middleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  process_request <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -226,10 +248,10 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">req</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/foo"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>key1 <span class="op">=</span> <span class="st">"value1"</span>, key2 <span class="op">=</span> <span class="st">"value2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resp</span> <span class="op">=</span> <span class="va">app</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">req</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e70da3d4-3276-11ed-9fd2-005056964722","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2022-09-12 08:42:58"}</span></span>
-<span><span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"e70da3d4-3276-11ed-9fd2-005056964722","timestamp":"2022-09-12 08:42:58"}</span></span>
-<span><span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"e70da3d4-3276-11ed-9fd2-005056964722","timestamp":"2022-09-12 08:42:58"}</span></span>
-<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"e70da3d4-3276-11ed-9fd2-005056964722","response":{"headers":{"Server":"RestRserve/1.2.1; Rserve/1.8.10","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2022-09-12 08:42:58"}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb84cd96-fd26-11ee-83a7-0050569e8e3c","request":{"headers":{},"method":"GET","path":"/foo"},"timestamp":"2024-04-18 01:55:56"}</span></span>
+<span><span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"cb84cd96-fd26-11ee-83a7-0050569e8e3c","timestamp":"2024-04-18 01:55:56"}</span></span>
+<span><span class="co">#&gt; {"middleware":"gzip_middleware","request_id":"cb84cd96-fd26-11ee-83a7-0050569e8e3c","timestamp":"2024-04-18 01:55:56"}</span></span>
+<span><span class="co">#&gt; {"middleware":"logging_middleware","request_id":"cb84cd96-fd26-11ee-83a7-0050569e8e3c","response":{"headers":{"Server":"RestRserve/1.2.2; Rserve/1.8.13","Content-encoding":"gzip"},"status_code":200,"body":"eJyrVspOrTRUslIqS8wpTTVU0gHxjWB8I6VaAK3KCjs="},"timestamp":"2024-04-18 01:55:56"}</span></span></code></pre></div>
 <p>And now check what is actual decoded response body:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/rawConversion.html" class="external-link">rawToChar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/memCompress.html" class="external-link">memDecompress</a></span><span class="op">(</span><span class="va">resp</span><span class="op">$</span><span class="va">body</span>, <span class="st">"gzip"</span><span class="op">)</span><span class="op">)</span></span>
@@ -254,7 +276,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
       </footer>

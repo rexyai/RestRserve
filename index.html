@@ -12,19 +12,13 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="A Framework for Building HTTP API">
-<meta property="og:description" content="
-  Allows to easily create high-performance full featured HTTP APIs from R
-  functions. Provides high-level classes such as Request, Response,
-  Application, Middleware in order to streamline server side
-  application development. Out of the box allows to serve requests using
-  Rserve package, but flexible enough to integrate with other HTTP servers
-  such as httpuv.">
+<meta property="og:description" content="Allows to easily create high-performance full featured HTTP APIs from R functions. Provides high-level classes such as Request, Response, Application, Middleware in order to streamline server side application development. Out of the box allows to serve requests using Rserve package, but flexible enough to integrate with other HTTP servers such as httpuv.">
 <meta property="og:image" content="https://restrserve.org/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -46,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -69,6 +63,9 @@
       <a href="articles/Authentication.html">Authentication</a>
     </li>
     <li>
+      <a href="articles/benchmarks/Benchmarks.html">Benchmarks</a>
+    </li>
+    <li>
       <a href="articles/ContentHandlers.html">Body encoding and decoding</a>
     </li>
     <li>
@@ -76,9 +73,6 @@
     </li>
     <li>
       <a href="articles/Middleware.html">Middleware</a>
-    </li>
-    <li>
-      <a href="articles/benchmarks/Benchmarks.html">Benchmarks</a>
     </li>
   </ul>
 </li>
@@ -110,6 +104,7 @@
 <a class="anchor" aria-label="anchor" href="#restrserve-"></a>
 </h1></div>
 <!-- badges: start -->
+
 <p><a href="https://github.com/rexyai/RestRserve" class="external-link">RestRserve</a> is an R web API framework for building <strong>high-performance</strong> AND <strong>robust</strong> microservices and app backends. On UNIX-like systems and <a href="https://github.com/s-u/Rserve" class="external-link">Rserve</a> backend RestRserve handles requests in parallel: each request in a separate fork - credits go to <a href="https://github.com/s-u" class="external-link">Simon Urbanek</a>.</p>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -137,10 +132,10 @@
 <span><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">backend</span><span class="op">$</span><span class="fu">start</span><span class="op">(</span><span class="va">app</span>, http_port <span class="op">=</span> <span class="fl">8080</span><span class="op">)</span></span></code></pre></div>
 <p>Test it with <code>curl</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">curl</span> localhost:8080/health</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># OK</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="ex">curl</span> -H <span class="st">"Content-Type: application/json"</span> -d <span class="st">'{"x":10}'</span> localhost:8080/addone</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># {"x":11}</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">curl</span> localhost:8080/health</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># OK</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="at">-d</span> <span class="st">'{"x":10}'</span> localhost:8080/addone</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># {"x":11}</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="autocomplete">Autocomplete<a class="anchor" aria-label="anchor" href="#autocomplete"></a>
 </h3>
@@ -172,7 +167,8 @@
 <li>Build <strong>safe and secure applications</strong> - RestRserve supports <em>https</em>, provides building blocks for basic/token authentication</li>
 <li>
 <strong>Raise meaningful http errors</strong> and allows to interrupt request handling from any place of the user code</li>
-<li>Saves you from boilerplate code:<ul>
+<li>Saves you from boilerplate code:
+<ul>
 <li>automatically decodes request body from the common formats</li>
 <li>automatically encodes response body to the common formats</li>
 <li>automatically parses URI templates (such as <code>/get/{item_id}</code>)</li>
@@ -196,9 +192,9 @@
 <h3 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
 </h3>
 <p>Debian and Alpine based images are available on docker-hub -<a href="https://hub.docker.com/r/rexyai/restrserve/" class="external-link">https://hub.docker.com/r/rexyai/restrserve/</a></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1"></a><span class="ex">docker</span> pull rexyai/restrserve</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">docker</span> pull rexyai/restrserve</span></code></pre></div>
 <p>You can also install specific version (and we encourage to do so):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1"></a><span class="ex">docker</span> pull rexyai/restrserve:1.2.0-alpine</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">docker</span> pull rexyai/restrserve:1.2.0-alpine</span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -297,7 +293,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
       </footer>

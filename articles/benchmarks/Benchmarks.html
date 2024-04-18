@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../../bootstrap-toc.css">
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
       <a href="../../articles/Authentication.html">Authentication</a>
     </li>
     <li>
+      <a href="../../articles/benchmarks/Benchmarks.html">Benchmarks</a>
+    </li>
+    <li>
       <a href="../../articles/ContentHandlers.html">Body encoding and decoding</a>
     </li>
     <li>
@@ -70,9 +73,6 @@
     </li>
     <li>
       <a href="../../articles/Middleware.html">Middleware</a>
-    </li>
-    <li>
-      <a href="../../articles/benchmarks/Benchmarks.html">Benchmarks</a>
     </li>
   </ul>
 </li>
@@ -97,13 +97,14 @@
 
       
 
-      </header><script src="Benchmarks_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Benchmarks</h1>
-                        <h4 data-toc-skip class="author">Dmitriy Selivanov</h4>
+                        <h4 data-toc-skip class="author">Dmitriy
+Selivanov</h4>
             
-            <h4 data-toc-skip class="date">12 September, 2022</h4>
+            <h4 data-toc-skip class="date">18 April, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rexyai/RestRserve/blob/HEAD/vignettes/benchmarks/Benchmarks.Rmd" class="external-link"><code>vignettes/benchmarks/Benchmarks.Rmd</code></a></small>
       <div class="hidden name"><code>Benchmarks.Rmd</code></div>
@@ -112,9 +113,13 @@
 
     
     
-<p><em>*All benchmarks below are done on a pretty old Intel Xeon X3470 CPU with 4 cores, 8 threads @ 2.93GHz </em>. You can expect ~2x better performance on modern CPUs.</p>
-<p>There are many tools to benchmark HTTP API. We will use <a href="https://github.com/apigee/apib" class="external-link">apib</a> which is successor of a standard <code>ab</code> tool.</p>
-<p>We will benchmark a very simple web service - it receives HTTP request at <code>/fib?n=10</code> and answers with fibonacci number.</p>
+<p><em>*All benchmarks below are done on a pretty old Intel Xeon X3470
+CPU with 4 cores, 8 threads @ 2.93GHz </em>. You can expect ~2x better
+performance on modern CPUs.</p>
+<p>There are many tools to benchmark HTTP API. We will use <a href="https://github.com/apigee/apib" class="external-link">apib</a> which is successor of a
+standard <code>ab</code> tool.</p>
+<p>We will benchmark a very simple web service - it receives HTTP
+request at <code>/fib?n=10</code> and answers with fibonacci number.</p>
 <div class="section level2">
 <h2 id="details-and-methodology">Details and methodology<a class="anchor" aria-label="anchor" href="#details-and-methodology"></a>
 </h2>
@@ -151,7 +156,7 @@
 <code class="sourceCode R"><span><span class="fu">microbenchmark</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/microbenchmark/man/microbenchmark.html" class="external-link">microbenchmark</a></span><span class="op">(</span>low <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;  expr   min    lq     mean median    uq      max neval</span></span>
-<span><span class="co">#&gt;   low 2.715 2.725 2707.879 3.0065 3.261 27050.97    10</span></span></code></pre></div>
+<span><span class="co">#&gt;   low 2.828 2.935 2750.968 3.0975 3.385 27480.17    10</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="benchmarking-rserve-backend">Benchmarking Rserve backend<a class="anchor" aria-label="anchor" href="#benchmarking-rserve-backend"></a>
@@ -160,8 +165,18 @@
 <p>Configurations:</p>
 <ul>
 <li>
-<code>RestRserve</code> can utilize all CPU cores and process requests in parallel. We will use multiple number of threads to see how it affects performance.</li>
-<li>During application <code>RestRserve</code> checks <code>RESTRSERVE_RUNTIME_ASSERTS</code> environment variable. It controls the amount of input validation <code>RestRserve</code> performs internally using <a href="https://cran.r-project.org/web/packages/checkmate/index.html" class="external-link">checkmate</a> package. Despite the fact that runtime checks comes with additional time overhead this variable is set to <code>TRUE</code> by default. We value correctness and robustness of the application at the first place. We will benchmark application with different values of <code>RESTRSERVE_RUNTIME_ASSERTS</code> to see the difference.</li>
+<code>RestRserve</code> can utilize all CPU cores and process
+requests in parallel. We will use multiple number of threads to see how
+it affects performance.</li>
+<li>During application <code>RestRserve</code> checks
+<code>RESTRSERVE_RUNTIME_ASSERTS</code> environment variable. It
+controls the amount of input validation <code>RestRserve</code> performs
+internally using <a href="https://cran.r-project.org/web/packages/checkmate/index.html" class="external-link">checkmate</a>
+package. Despite the fact that runtime checks comes with additional time
+overhead this variable is set to <code>TRUE</code> by default. We value
+correctness and robustness of the application at the first place. We
+will benchmark application with different values of
+<code>RESTRSERVE_RUNTIME_ASSERTS</code> to see the difference.</li>
 </ul>
 <p>Code below implements allows to test combinations options:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -246,17 +261,32 @@
 <div class="section level2">
 <h2 id="no-keep-alive">No keep-alive<a class="anchor" aria-label="anchor" href="#no-keep-alive"></a>
 </h2>
-<p>Keep in mind that creating new connections is quite expensive for any HTTP server. For <code>RestRserve</code>’s <code>Rserve</code> backend this is particularly true since for each new connection it forks a child process (which has relatively high cost). With other backends slow down might be less significant.</p>
+<p>Keep in mind that creating new connections is quite expensive for any
+HTTP server. For <code>RestRserve</code>’s <code>Rserve</code> backend
+this is particularly true since for each new connection it forks a child
+process (which has relatively high cost). With other backends slow down
+might be less significant.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_no_keep_alive</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>keep_alive <span class="op">=</span> <span class="fl">0</span>, fib_counts <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-no-keep-alive.png?raw=true" width="640"></p>
-<p>Nonetheless one can always put application behind proxy (such as <a href="http://www.haproxy.org/" class="external-link">HAproxy</a> or <a href="https://www.nginx.com/" class="external-link">nginx</a>). It will maintain pool of connections to RestRserve and hence won’t suffer from creating new connections.</p>
+<p>Nonetheless one can always put application behind proxy (such as <a href="http://www.haproxy.org/" class="external-link">HAproxy</a> or <a href="https://www.nginx.com/" class="external-link">nginx</a>). It will maintain pool of
+connections to RestRserve and hence won’t suffer from creating new
+connections.</p>
 </div>
 <div class="section level2">
 <h2 id="comparison-with-plumber">Comparison with Plumber<a class="anchor" aria-label="anchor" href="#comparison-with-plumber"></a>
 </h2>
-<p>Support for <a href="https://rstudio.github.io/promises/" class="external-link"><code>promises</code></a> and <a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code></a> was added in <a href="https://www.rplumber.io/" class="external-link"><code>plumber</code></a> v1.0.0. Extra coding will need to be done within a plumber definition to distinguish which routes utilize promises.</p>
-<p>We will rewrite our <code>calc_fib</code> function in a less efficient way in order to simulate different amount of computation required by handler. We will benchmark frameworks against three styles of routes (low computation, <code>n = 15</code>; medium computation, <code>n = 20</code>; high computation, <code>n = 25</code>) using multiple <code>apib</code> testing threads (1, 2, 4).</p>
+<p>Support for <a href="https://rstudio.github.io/promises/" class="external-link"><code>promises</code></a> and
+<a href="https://github.com/HenrikBengtsson/future" class="external-link"><code>future</code></a>
+was added in <a href="https://www.rplumber.io/" class="external-link"><code>plumber</code></a>
+v1.0.0. Extra coding will need to be done within a plumber definition to
+distinguish which routes utilize promises.</p>
+<p>We will rewrite our <code>calc_fib</code> function in a less
+efficient way in order to simulate different amount of computation
+required by handler. We will benchmark frameworks against three styles
+of routes (low computation, <code>n = 15</code>; medium computation,
+<code>n = 20</code>; high computation, <code>n = 25</code>) using
+multiple <code>apib</code> testing threads (1, 2, 4).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">calc_fib</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">calc_fib_rec</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
@@ -277,10 +307,10 @@
 <span>  high <span class="op">=</span> <span class="fu">calc_fib</span><span class="op">(</span><span class="fl">25</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">10</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: milliseconds</span></span>
-<span><span class="co">#&gt;    expr        min         lq       mean     median         uq       max neval</span></span>
-<span><span class="co">#&gt;     low   1.655223   1.666013   3.054922   1.682933   1.695059  15.44163    10</span></span>
-<span><span class="co">#&gt;  medium  18.522415  18.731804  20.274041  20.336675  21.292522  23.12150    10</span></span>
-<span><span class="co">#&gt;    high 215.234352 220.781271 267.756929 228.263895 271.408345 490.61548    10</span></span></code></pre></div>
+<span><span class="co">#&gt;    expr        min         lq       mean     median         uq        max neval</span></span>
+<span><span class="co">#&gt;     low   1.756772   1.773735   1.811688   1.800546   1.843934   1.914726    10</span></span>
+<span><span class="co">#&gt;  medium  19.977803  20.177211  21.553610  20.477929  22.978596  26.083844    10</span></span>
+<span><span class="co">#&gt;    high 232.171258 234.853417 240.691165 236.552268 238.313170 279.755195    10</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -357,19 +387,33 @@
 <h3 id="results">Results<a class="anchor" aria-label="anchor" href="#results"></a>
 </h3>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-vs-plumber.png?raw=true" width="640"></p>
-<p>As can be seen <code>RestRserce</code> performs very well on every workload and scales linearly with number of cores.</p>
+<p>As can be seen <code>RestRserce</code> performs very well on every
+workload and scales linearly with number of cores.</p>
 </div>
 <div class="section level3">
 <h3 id="keep-alive-disabled">keep-alive disabled<a class="anchor" aria-label="anchor" href="#keep-alive-disabled"></a>
 </h3>
-<p>Additionally we may explore environments where web-service exposed directly to many clients without having load balancer or proxy behind it. This is not very common across real-world deployments, but still worth to keep in mind. We can be simulate such scenario by setting <code>keep_alive = 0</code>:</p>
+<p>Additionally we may explore environments where web-service exposed
+directly to many clients without having load balancer or proxy behind
+it. This is not very common across real-world deployments, but still
+worth to keep in mind. We can be simulate such scenario by setting
+<code>keep_alive = 0</code>:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">results_restrserve</span> <span class="op">=</span> <span class="fu">apib_bench</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, </span>
 <span>                                runtime_checks <span class="op">=</span> <span class="cn">FALSE</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
 <span><span class="va">results_plumber</span> <span class="op">=</span> <span class="fu">apib_bench_plumber</span><span class="op">(</span>fib_counts <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">15</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span>, keep_alive <span class="op">=</span> <span class="fl">0</span>, n_sec <span class="op">=</span> <span class="va">N_SEC</span><span class="op">)</span></span>
 <span><span class="va">results_compare</span> <span class="op">=</span> <span class="fu">rbindlist</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">results_plumber</span>, <span class="va">results_restrserve</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="https://github.com/rexyai/RestRserve/blob/master/vignettes/img/bench-rps-vs-plumber-no-keepalive.png?raw=true" width="640"></p>
-<p>Due to the overhead of creating a new process for each request and <a href="https://github.com/rexyai/RestRserve/issues/149" class="external-link">R’s byte compiler overhead</a> <code>RestRserve</code> with <code>Rserve</code> backend does not perform as quickly as <code>plumber</code> when computing instantaneous routes. However, <code>RestRserve</code> still shows it’s strength when executing routes that have high computational costs. No extra coding logic is needed to leverage <code>RestRserve</code>’s multi-threaded execution. Mixing <code>plumber</code> and <code>future</code> together for <em>high computation</em> routes brings performance that scales with the number of concurrent requests, but at the cost of extra route logic and domain knowledge.</p>
+<p>Due to the overhead of creating a new process for each request and <a href="https://github.com/rexyai/RestRserve/issues/149" class="external-link">R’s byte compiler
+overhead</a> <code>RestRserve</code> with <code>Rserve</code> backend
+does not perform as quickly as <code>plumber</code> when computing
+instantaneous routes. However, <code>RestRserve</code> still shows it’s
+strength when executing routes that have high computational costs. No
+extra coding logic is needed to leverage <code>RestRserve</code>’s
+multi-threaded execution. Mixing <code>plumber</code> and
+<code>future</code> together for <em>high computation</em> routes brings
+performance that scales with the number of concurrent requests, but at
+the cost of extra route logic and domain knowledge.</p>
 </div>
 </div>
   </div>
@@ -391,7 +435,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
       </footer>

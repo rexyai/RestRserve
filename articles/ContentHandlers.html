@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
       <a href="../articles/Authentication.html">Authentication</a>
     </li>
     <li>
+      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
+    </li>
+    <li>
       <a href="../articles/ContentHandlers.html">Body encoding and decoding</a>
     </li>
     <li>
@@ -70,9 +73,6 @@
     </li>
     <li>
       <a href="../articles/Middleware.html">Middleware</a>
-    </li>
-    <li>
-      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
     </li>
   </ul>
 </li>
@@ -97,7 +97,7 @@
 
       
 
-      </header><script src="ContentHandlers_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Body encoding and decoding</h1>
@@ -113,7 +113,8 @@
 <div class="section level2">
 <h2 id="encoding">Encoding<a class="anchor" aria-label="anchor" href="#encoding"></a>
 </h2>
-<p>Let’s consider an example. We develop an application which calculates <code>factorial</code> of a number:</p>
+<p>Let’s consider an example. We develop an application which calculates
+<code>factorial</code> of a number:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
 <span><span class="va">backend</span> <span class="op">=</span> <span class="va"><a href="../reference/BackendRserve.html">BackendRserve</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
@@ -136,12 +137,20 @@
 <span><span class="co">#&gt;   status code: 200 OK</span></span>
 <span><span class="co">#&gt;   content-type: text/plain</span></span>
 <span><span class="co">#&gt;   &lt;Headers&gt;</span></span>
-<span><span class="co">#&gt;     Server: RestRserve/1.2.1; Rserve/1.8.10</span></span></code></pre></div>
-<p>Let’s take a closer look to the <code>response</code> object and its <code>body</code> property:</p>
+<span><span class="co">#&gt;     Server: RestRserve/1.2.2; Rserve/1.8.13</span></span></code></pre></div>
+<p>Let’s take a closer look to the <code>response</code> object and its
+<code>body</code> property:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">response</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></span>
 <span><span class="co">#&gt;  chr "3628800"</span></span></code></pre></div>
-<p>As we can see it is a numeric value. HTTP response body however can’t be an arbitrary R object. It should be something that external systems can understand - either <code>character</code> vector or <code>raw</code> vector. Fortunately <code>application</code> helps to avoid writing boilerplate code to encode the body. Based on the <code>content_type</code> property it can find <code>encode</code> function which will be used to transform <code>body</code> into a http body.</p>
+<p>As we can see it is a numeric value. HTTP response body however can’t
+be an arbitrary R object. It should be something that external systems
+can understand - either <code>character</code> vector or
+<code>raw</code> vector. Fortunately <code>application</code> helps to
+avoid writing boilerplate code to encode the body. Based on the
+<code>content_type</code> property it can find <code>encode</code>
+function which will be used to transform <code>body</code> into a http
+body.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">content_type</span></span>
 <span><span class="co">#&gt; [1] "text/plain"</span></span></code></pre></div>
@@ -152,12 +161,21 @@
 <ol style="list-style-type: decimal">
 <li>Why <code>content_type</code> is equal to <code>text/plain</code>?
 <ul>
-<li>This is because we can specify default <code>content_type</code> in <code>Application</code> constructor. It is <code>text/plain</code> by default, which means all the responses by default will have <code>text/plain</code> content type.</li>
+<li>This is because we can specify default <code>content_type</code> in
+<code>Application</code> constructor. It is <code>text/plain</code> by
+default, which means all the responses by default will have
+<code>text/plain</code> content type.</li>
 </ul>
 </li>
-<li>How does application know how to encode <code>text/plain</code>? Can it encode any arbitrary content type?
+<li>How does application know how to encode <code>text/plain</code>? Can
+it encode any arbitrary content type?
 <ul>
-<li>Application by default is initialized with pre-defined ?EncodeDecodeMiddleware middleware. The logic on how to encode and decode request and response body is controlled by its <code>ContentHandlers</code> property. Out of the box it supports two content types - <code>text/plain</code> and <code>application/json</code>.</li>
+<li>Application by default is initialized with pre-defined
+?EncodeDecodeMiddleware middleware. The logic on how to encode and
+decode request and response body is controlled by its
+<code>ContentHandlers</code> property. Out of the box it supports two
+content types - <code>text/plain</code> and
+<code>application/json</code>.</li>
 </ul>
 </li>
 </ol>
@@ -168,7 +186,8 @@
 <span><span class="va">app1</span><span class="op">$</span><span class="fu">append_middleware</span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">app2</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>Here is example on how you can get the actual function used for <code>application/json</code> encoding:</p>
+<p>Here is example on how you can get the actual function used for
+<code>application/json</code> encoding:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">FUN</span> <span class="op">=</span> <span class="va">encode_decode_middleware</span><span class="op">$</span><span class="va">ContentHandlers</span><span class="op">$</span><span class="fu">get_encode</span><span class="op">(</span><span class="st">'application/json'</span><span class="op">)</span></span>
@@ -177,7 +196,7 @@
 <span><span class="co">#&gt;   res = jsonlite::toJSON(x, dataframe = 'columns', auto_unbox = unbox, null = 'null', na = 'null')</span></span>
 <span><span class="co">#&gt;   unclass(res)</span></span>
 <span><span class="co">#&gt; }</span></span>
-<span><span class="co">#&gt; &lt;bytecode: 0x7f88a5e9b4d8&gt;</span></span>
+<span><span class="co">#&gt; &lt;bytecode: 0x7fd722f76070&gt;</span></span>
 <span><span class="co">#&gt; &lt;environment: namespace:RestRserve&gt;</span></span></code></pre></div>
 <p>We can manually override application default content-type:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -197,7 +216,9 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "{\"result\":3628800}"</span></span></code></pre></div>
-<p>And here is a little bit more complex example where we store a binary object in the body. We will use R’s native serialization, but one can use <code>protobuf</code>, <code>messagepack</code>, etc.</p>
+<p>And here is a little bit more complex example where we store a binary
+object in the body. We will use R’s native serialization, but one can
+use <code>protobuf</code>, <code>messagepack</code>, etc.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
@@ -206,7 +227,9 @@
 <span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_body</span><span class="op">(</span><span class="va">body_rds</span><span class="op">)</span></span>
 <span>  <span class="va">.res</span><span class="op">$</span><span class="fu">set_content_type</span><span class="op">(</span><span class="st">"application/x-rds"</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
-<p>However function above won’t work correctly. Out of the box <code>ContentHndlers</code> doesn’t know anything about <code>application/x-rds</code>:</p>
+<p>However function above won’t work correctly. Out of the box
+<code>ContentHndlers</code> doesn’t know anything about
+<code>application/x-rds</code>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
 <span>  path <span class="op">=</span> <span class="st">"/factorial-rds"</span>, </span>
@@ -216,7 +239,10 @@
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
 <span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "500 Internal Server Error: can't encode body with content_type = 'application/x-rds'"</span></span></code></pre></div>
-<p>In order to resolve problem above we would need to either register <code>application/x-rds</code> content handler with <code>ContentHandlers$set_encode()</code> or manually specify <code>encode</code> function (<code>identity</code> in our case):</p>
+<p>In order to resolve problem above we would need to either register
+<code>application/x-rds</code> content handler with
+<code>ContentHandlers$set_encode()</code> or manually specify
+<code>encode</code> function (<code>identity</code> in our case):</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/factorial-rds2"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">x</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">.req</span><span class="op">$</span><span class="fu">get_param_query</span><span class="op">(</span><span class="st">"x"</span><span class="op">)</span><span class="op">)</span></span>
@@ -241,7 +267,8 @@
 <div class="section level2">
 <h2 id="decoding">Decoding<a class="anchor" aria-label="anchor" href="#decoding"></a>
 </h2>
-<p>RestRserve facilitates with parsing incoming request body as well. Consider a service which expects JSON POST requests:</p>
+<p>RestRserve facilitates with parsing incoming request body as well.
+Consider a service which expects JSON POST requests:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>content_type <span class="op">=</span> <span class="st">"application/json"</span><span class="op">)</span></span>
 <span><span class="va">application</span><span class="op">$</span><span class="fu">add_post</span><span class="op">(</span><span class="st">"/echo"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -252,12 +279,15 @@
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
 <span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "{\"hello\":\"world\"}"</span></span></code></pre></div>
-<p>The logic behind decoding is also controlled by ?EncodeDecodeMiddleware and its <code>ContentHandlers</code> property.</p>
+<p>The logic behind decoding is also controlled by
+?EncodeDecodeMiddleware and its <code>ContentHandlers</code>
+property.</p>
 </div>
 <div class="section level2">
 <h2 id="extending-encoding-and-decoding">Extending encoding and decoding<a class="anchor" aria-label="anchor" href="#extending-encoding-and-decoding"></a>
 </h2>
-<p>Here is an example which demonstrates on how to extend ?EncodeDecodeMiddleware to handle additional content types:</p>
+<p>Here is an example which demonstrates on how to extend
+?EncodeDecodeMiddleware to handle additional content types:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">encode_decode_middleware</span> <span class="op">=</span> <span class="va"><a href="../reference/EncodeDecodeMiddleware.html">EncodeDecodeMiddleware</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -286,7 +316,8 @@
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>Extended middleware needs to be provided to the application constructor:</p>
+<p>Extended middleware needs to be provided to the application
+constructor:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></span>
 <span><span class="va">app</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>middleware <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">encode_decode_middleware</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -325,7 +356,7 @@
 <span><span class="co">#&gt;   status code: 200 OK</span></span>
 <span><span class="co">#&gt;   content-type: text/plain</span></span>
 <span><span class="co">#&gt;   &lt;Headers&gt;</span></span>
-<span><span class="co">#&gt;     Server: RestRserve/1.2.1; Rserve/1.8.10</span></span></code></pre></div>
+<span><span class="co">#&gt;     Server: RestRserve/1.2.2; Rserve/1.8.13</span></span></code></pre></div>
 </div>
   </div>
 
@@ -346,7 +377,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
       </footer>

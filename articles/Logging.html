@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
       </span>
     </div>
 
@@ -63,6 +63,9 @@
       <a href="../articles/Authentication.html">Authentication</a>
     </li>
     <li>
+      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
+    </li>
+    <li>
       <a href="../articles/ContentHandlers.html">Body encoding and decoding</a>
     </li>
     <li>
@@ -70,9 +73,6 @@
     </li>
     <li>
       <a href="../articles/Middleware.html">Middleware</a>
-    </li>
-    <li>
-      <a href="../articles/benchmarks/Benchmarks.html">Benchmarks</a>
     </li>
   </ul>
 </li>
@@ -97,7 +97,7 @@
 
       
 
-      </header><script src="Logging_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Logging</h1>
@@ -110,25 +110,41 @@
 
     
     
-<p>Logging is a very important part of a server application - it allows to analyze workload, collect metrics and facilitates finding critical bugs.</p>
-<p><code>RestRserve</code> ships with basic (yet handy) logging utility - <code>Logger</code>. It can be used in the application code, but what is more important, it is integrated into <code>Application</code> class in order to print useful messages during app execution.</p>
+<p>Logging is a very important part of a server application - it allows
+to analyze workload, collect metrics and facilitates finding critical
+bugs.</p>
+<p><code>RestRserve</code> ships with basic (yet handy) logging utility
+- <code>Logger</code>. It can be used in the application code, but what
+is more important, it is integrated into <code>Application</code> class
+in order to print useful messages during app execution.</p>
 <p>Each applications comes with built-in logger member:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
 <span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">application</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"hello from logger"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2022-09-12 08:42:53.512398","level":"INFO","name":"Application","pid":6936,"msg":"hello from logger"}</span></span></code></pre></div>
-<p><code>logger</code> is an instance of <code>Logger</code> class. We believe it is important to have logs in a machine readable format, so by default logger writes messages to <code>stdout</code> in JSON format.</p>
-<p>Amount of logging can be adjusted with <code>set_log_level</code> method:</p>
+<span><span class="co">#&gt; {"timestamp":"2024-04-18 01:55:49.875186","level":"INFO","name":"Application","pid":4958,"msg":"hello from logger"}</span></span></code></pre></div>
+<p><code>logger</code> is an instance of <code>Logger</code> class. We
+believe it is important to have logs in a machine readable format, so by
+default logger writes messages to <code>stdout</code> in JSON
+format.</p>
+<p>Amount of logging can be adjusted with <code>set_log_level</code>
+method:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">set_log_level</span><span class="op">(</span><span class="st">"error"</span><span class="op">)</span></span>
 <span><span class="va">application</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"you won't see this message"</span><span class="op">)</span></span></code></pre></div>
-<p>If you want to customize <code>logger</code>, you can tweak it with <code>logger$set_printer()</code> function or even swap it to your own (see <code><a href="../reference/Logger.html">?Logger</a></code> for details):</p>
+<p>If you want to customize <code>logger</code>, you can tweak it with
+<code>logger$set_printer()</code> function or even swap it to your own
+(see <code><a href="../reference/Logger.html">?Logger</a></code> for details):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="va">logger</span> <span class="op">=</span> <span class="va"><a href="../reference/Logger.html">Logger</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>level <span class="op">=</span> <span class="st">"trace"</span>, name <span class="op">=</span> <span class="st">"mylogger"</span><span class="op">)</span></span></code></pre></div>
-<p>Moreover <code>Logger</code> mimics loggers from fully-featured <a href="https://cran.r-project.org/package=lgr" class="external-link">lgr</a> package - you can use them interchangeably.</p>
-<p><code>application$logger</code> object however is not designed to be called by end user to produce messages. It is used internally in the <code>application</code> to emit status messages along the request-response processing pipeline.</p>
-<p>Consider following example. We develop a method which takes a square root of a number:</p>
+<p>Moreover <code>Logger</code> mimics loggers from fully-featured <a href="https://cran.r-project.org/package=lgr" class="external-link">lgr</a> package - you can
+use them interchangeably.</p>
+<p><code>application$logger</code> object however is not designed to be
+called by end user to produce messages. It is used internally in the
+<code>application</code> to emit status messages along the
+request-response processing pipeline.</p>
+<p>Consider following example. We develop a method which takes a square
+root of a number:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/sqrt"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -139,17 +155,22 @@
 <code class="sourceCode R"><span><span class="co"># let's emulate query string "/sqrt?x=10"</span></span>
 <span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2022-09-12 08:42:53.910753","level":"ERROR","name":"Application","pid":6936,"msg":"","context":{"request_id":"e466d38a-3276-11ed-8b2a-005056964722","message":{"error":"object 'x' not found","call":".res$set_body(sqrt(x))","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span></span>
+<span><span class="co">#&gt; {"timestamp":"2024-04-18 01:55:50.405704","level":"ERROR","name":"Application","pid":4958,"msg":"","context":{"request_id":"c810771e-fd26-11ee-b17b-0050569e8e3c","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span></span>
 <span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "500 Internal Server Error"</span></span></code></pre></div>
 <p>Surprise! (or not?)</p>
-<p>All request query parameters are strings, but we forgot to convert <code>x</code> to a numeric value. This caused R interpreter to throw an error.</p>
+<p>All request query parameters are strings, but we forgot to convert
+<code>x</code> to a numeric value. This caused R interpreter to throw an
+error.</p>
 <p>Note however how gracefully RestRserve handled this case:</p>
 <ul>
 <li>it hasn’t crashed and produced HTTP error with 500 code</li>
-<li>written error with expanded traceback to the log. This is particularly important as R’s traceback does not contain the full stack trace if you catch errors and warnings!</li>
+<li>written error with expanded traceback to the log. This is
+particularly important as R’s traceback does not contain the full stack
+trace if you catch errors and warnings!</li>
 </ul>
-<p>For example following code will just give you last error (but not a traceback):</p>
+<p>For example following code will just give you last error (but not a
+traceback):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fun2</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
@@ -159,7 +180,8 @@
 <span><span class="op">}</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">fun1</span><span class="op">(</span><span class="st">'a'</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in sqrt(x) : non-numeric argument to mathematical function</span></span></code></pre></div>
-<p>Which is not very useful when you try to debug server application.</p>
+<p>Which is not very useful when you try to debug server
+application.</p>
 <p>In contrast let’s call it within RestRserve application:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">application</span><span class="op">$</span><span class="fu">add_get</span><span class="op">(</span><span class="st">"/sqrt2"</span>, <span class="kw">function</span><span class="op">(</span><span class="va">.req</span>, <span class="va">.res</span><span class="op">)</span> <span class="op">{</span></span>
@@ -167,7 +189,7 @@
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2022-09-12 08:42:54.239748","level":"ERROR","name":"Application","pid":6936,"msg":"","context":{"request_id":"e47b2524-3276-11ed-8b2a-005056964722","message":{"error":"object 'x' not found","call":"fun1(x)","traceback":["FUN(request, response)",".res$set_body(fun1(x))",".res$set_body(fun1(x))","fun2(x)"]}}}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"timestamp":"2024-04-18 01:55:50.909068","level":"ERROR","name":"Application","pid":4958,"msg":"","context":{"request_id":"c82e10f8-fd26-11ee-b17b-0050569e8e3c","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(fun1(x))",".res$set_body(fun1(x))","fun2(x)"]}}}</span></span></code></pre></div>
 <p>Now we clearly see that error happens inside <code>fun2</code></p>
   </div>
 
@@ -186,7 +208,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.8.</p>
 </div>
 
       </footer>
