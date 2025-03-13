@@ -1,8 +1,6 @@
 ## New submission
 
-- minor bugfixes
-- removed SystemRequirements: C++11 from DESCRIPTION
-- fixed 301 urls
+- change maintainer email
 
 ### Test environments
 
