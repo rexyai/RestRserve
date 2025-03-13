@@ -8,12 +8,12 @@ Description:
   application development. Out of the box allows to serve requests using
   'Rserve' package, but flexible enough to integrate with other HTTP servers
   such as 'httpuv'.
-Version: 1.2.2
+Version: 1.2.3
 Authors@R: c(
   person(given = "Dmitry",
          family = "Selivanov",
          role = c("aut", "cre"),
-         email = "ds@rexy.ai",
+         email = "selivanov.dmitriy@gmail.com",
          comment = c(ORCID = "0000-0001-5413-1506")),
   person(given = "Artem",
          family = "Klevtsov",
