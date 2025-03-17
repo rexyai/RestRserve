@@ -50,7 +50,7 @@ expect_equal(guess_mime("abrakadarba"), "text/plain")
 expect_equal(guess_mime(txt_file), "text/plain")
 expect_equal(guess_mime(r_file), "text/plain")
 expect_equal(guess_mime(html_file), "text/html")
-expect_equal(guess_mime(js_file), "application/javascript")
+expect_equal(guess_mime(js_file), "text/javascript")
 expect_equal(guess_mime(css_file), "text/css")
 expect_equal(guess_mime(txt_file, "mytype/text"), "mytype/text")
 
