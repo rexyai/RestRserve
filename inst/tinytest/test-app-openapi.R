@@ -42,7 +42,7 @@ rq = Request$new(path = "/swagger/assets/swagger-ui-standalone-preset.js")
 rs = app$process_request(rq)
 expect_equal(names(rs$body), "file")
 expect_true(file.exists(rs$body))
-expect_equal(rs$content_type, "application/javascript")
+expect_equal(rs$content_type, "text/javascript")
 expect_equal(rs$headers, list(Server = getOption("RestRserve.headers.server")))
 expect_equal(rs$status_code, 200L)
 
