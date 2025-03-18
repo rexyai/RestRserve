@@ -82,8 +82,10 @@ You may have noticed strange \code{.req} and \code{.res} argument names. Startin
 from \code{RestRserve} v0.4.0 these “reserved” names allows to benefit from
 autocomplete:
 
-<img src=“\url{https://cdn.rexy.ai/assets/req-res.gif}” width=“640”
-style=“vertical-align:bottom”, alt=“request-response autocomplete gif”>
+<img
+src=“\url{https://s3.eu-west-1.amazonaws.com/cdn.rexy.ai/assets/req-res.gif}”
+width=“640” style=“vertical-align:bottom”, alt=“request-response
+autocomplete gif”>
 
 Technically \code{.req} and \code{.res} are just empty instances of \code{?Request} and
 \code{?Response} classes exported by \code{RestRserve} in order to make
@@ -186,7 +188,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dmitry Selivanov \email{ds@rexy.ai} (\href{https://orcid.org/0000-0001-5413-1506}{ORCID})
+\strong{Maintainer}: Dmitry Selivanov \email{selivanov.dmitriy@gmail.com} (\href{https://orcid.org/0000-0001-5413-1506}{ORCID})
 
 Authors:
 \itemize{
