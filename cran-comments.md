@@ -1,6 +1,6 @@
 ## New submission
 
-- change maintainer email
+- fixes clang++ 20 warnings
 
 ### Test environments
 
