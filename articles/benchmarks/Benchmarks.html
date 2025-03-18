@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -96,7 +96,7 @@
                         <h4 data-toc-skip class="author">Dmitriy
 Selivanov</h4>
             
-            <h4 data-toc-skip class="date">13 March, 2025</h4>
+            <h4 data-toc-skip class="date">18 March, 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rexyai/RestRserve/blob/master/vignettes/benchmarks/Benchmarks.Rmd" class="external-link"><code>vignettes/benchmarks/Benchmarks.Rmd</code></a></small>
       <div class="hidden name"><code>Benchmarks.Rmd</code></div>
@@ -149,8 +149,8 @@ request at <code>/fib?n=10</code> and answers with fibonacci number.</p>
 <span><span class="co">#&gt; Warning in microbenchmark::microbenchmark(low = calc_fib(10), times = 10): less</span></span>
 <span><span class="co">#&gt; accurate nanosecond times to avoid potential integer overflows</span></span>
 <span><span class="co">#&gt; Unit: nanoseconds</span></span>
-<span><span class="co">#&gt;  expr min  lq     mean median   uq     max neval</span></span>
-<span><span class="co">#&gt;   low 902 943 922098.2    943 1066 9211388    10</span></span></code></pre></div>
+<span><span class="co">#&gt;  expr min  lq     mean median  uq     max neval</span></span>
+<span><span class="co">#&gt;   low 861 861 867412.4    902 984 8665473    10</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="benchmarking-rserve-backend">Benchmarking Rserve backend<a class="anchor" aria-label="anchor" href="#benchmarking-rserve-backend"></a>
@@ -302,9 +302,9 @@ multiple <code>apib</code> testing threads (1, 2, 4).</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Unit: microseconds</span></span>
 <span><span class="co">#&gt;    expr       min        lq       mean     median        uq       max neval</span></span>
-<span><span class="co">#&gt;     low   537.797   553.828   690.3498   563.8525   576.911  1838.112    10</span></span>
-<span><span class="co">#&gt;  medium  6205.965  6321.216  6696.2635  6517.2370  6788.698  8007.382    10</span></span>
-<span><span class="co">#&gt;    high 70087.860 73767.405 77541.6764 75598.1575 79797.603 94570.354    10</span></span></code></pre></div>
+<span><span class="co">#&gt;     low   512.213   519.060   649.7557   521.3765   531.893  1793.955    10</span></span>
+<span><span class="co">#&gt;  medium  5721.673  5788.052  5952.9622  5861.8725  5876.325  7086.276    10</span></span>
+<span><span class="co">#&gt;    high 67033.606 67107.898 68340.5589 67599.7955 68404.482 74794.578    10</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plumber_app</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">calc_fn</span>, <span class="va">use_future</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Logic.html" class="external-link">isTRUE</a></span><span class="op">(</span><span class="va">use_future</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RestRserve</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.4</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@ in order to print useful messages during app execution.</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://restrserve.org">RestRserve</a></span><span class="op">)</span></span>
 <span><span class="va">application</span> <span class="op">=</span> <span class="va"><a href="../reference/Application.html">Application</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">application</span><span class="op">$</span><span class="va">logger</span><span class="op">$</span><span class="fu">info</span><span class="op">(</span><span class="st">"hello from logger"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2025-03-13 04:07:33.987536","level":"INFO","name":"Application","pid":5164,"msg":"hello from logger"}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"timestamp":"2025-03-18 05:58:12.272238","level":"INFO","name":"Application","pid":5485,"msg":"hello from logger"}</span></span></code></pre></div>
 <p><code>logger</code> is an instance of <code>Logger</code> class. We
 believe it is important to have logs in a machine readable format, so by
 default logger writes messages to <code>stdout</code> in JSON
@@ -147,7 +147,7 @@ root of a number:</p>
 <code class="sourceCode R"><span><span class="co"># let's emulate query string "/sqrt?x=10"</span></span>
 <span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2025-03-13 04:07:34.203823","level":"ERROR","name":"Application","pid":5164,"msg":"","context":{"request_id":"b112378a-ffc0-11ef-9151-129e97996b15","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span></span>
+<span><span class="co">#&gt; {"timestamp":"2025-03-18 05:58:12.482196","level":"ERROR","name":"Application","pid":5485,"msg":"","context":{"request_id":"f9dc50bc-03bd-11f0-b439-129e97996b15","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(sqrt(x))"]}}}</span></span>
 <span><span class="va">response</span><span class="op">$</span><span class="va">body</span></span>
 <span><span class="co">#&gt; [1] "500 Internal Server Error"</span></span></code></pre></div>
 <p>Surprise! (or not?)</p>
@@ -181,7 +181,7 @@ application.</p>
 <span><span class="op">}</span><span class="op">)</span></span>
 <span><span class="va">request</span> <span class="op">=</span> <span class="va"><a href="../reference/Request.html">Request</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>path <span class="op">=</span> <span class="st">"/sqrt2"</span>, method <span class="op">=</span> <span class="st">"GET"</span>, parameters_query <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"10"</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="va">response</span> <span class="op">=</span> <span class="va">application</span><span class="op">$</span><span class="fu">process_request</span><span class="op">(</span><span class="va">request</span><span class="op">)</span></span>
-<span><span class="co">#&gt; {"timestamp":"2025-03-13 04:07:34.343060","level":"ERROR","name":"Application","pid":5164,"msg":"","context":{"request_id":"b11d2cbc-ffc0-11ef-9151-129e97996b15","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(fun1(x))","fun1(x)","fun2(x)"]}}}</span></span></code></pre></div>
+<span><span class="co">#&gt; {"timestamp":"2025-03-18 05:58:12.623811","level":"ERROR","name":"Application","pid":5485,"msg":"","context":{"request_id":"f9e6ce52-03bd-11f0-b439-129e97996b15","message":{"error":"object 'x' not found","call":"FUN(request, response)","traceback":["FUN(request, response)",".res$set_body(fun1(x))","fun1(x)","fun2(x)"]}}}</span></span></code></pre></div>
 <p>Now we clearly see that error happens inside <code>fun2</code></p>
   </div>
 
