@@ -34,7 +34,7 @@ Depends:
 Imports:
   methods,
   parallel,
-  Rserve (>= 1.7.3),
+  Rserve (>= 1.7-3),
   Rcpp (>= 1.0.3),
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
