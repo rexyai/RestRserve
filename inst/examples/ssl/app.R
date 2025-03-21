@@ -44,6 +44,7 @@ backend$start(
   http_port = -1,
   https.port = 8443,
   port = 6313,
+  qap=FALSE,
   # you may need also put public keys (CA certs) provided by Certificate Authority (CA)
   # "tls.ca" = normalizePath("cert/server.ca"),
   tls.key = normalizePath("cert/server.key"),
