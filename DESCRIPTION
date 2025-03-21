@@ -39,7 +39,7 @@ Imports:
   R6 (>= 2.4.0),
   uuid (>= 0.1-2),
   checkmate (>= 1.9.4),
-  mime (>= 0.7),
+  mime (>= 0.13),
   jsonlite (>= 1.6),
   digest (>= 0.6.29)
 Suggests:
